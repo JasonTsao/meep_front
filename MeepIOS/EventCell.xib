@@ -27,7 +27,11 @@
                         <color key="textColor" red="0.58039215686274503" green="0.90980392156862744" blue="0.6588235294117647" alpha="1" colorSpace="deviceRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
+<<<<<<< HEAD
                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" tag="2" contentMode="scaleToFill" fixedFrame="YES" editable="NO" text="Sup Mofo" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LNE-76-3Pk">
+=======
+                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" tag="2" contentMode="scaleToFill" fixedFrame="YES" text="Sup Mofo" translatesAutoresizingMaskIntoConstraints="NO" id="LNE-76-3Pk">
+>>>>>>> f94fb6cbe87bd197099f2d9aeeeb160566108cef
                         <rect key="frame" x="0.0" y="20" width="305" height="38"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
