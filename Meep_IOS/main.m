@@ -1,8 +1,8 @@
 //
 //  main.m
-//  Meep_IOS
+//  MeepIOS
 //
-//  Created by Ryan Sharp on 4/21/14.
+//  Created by Ryan Sharp on 4/13/14.
 //  Copyright (c) 2014 futoi. All rights reserved.
 //
 

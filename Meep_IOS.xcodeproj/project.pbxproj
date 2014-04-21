@@ -11,14 +11,37 @@
 		3CCC507B19059F9500EB0980 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CCC507A19059F9500EB0980 /* CoreGraphics.framework */; };
 		3CCC507D19059F9500EB0980 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CCC507C19059F9500EB0980 /* UIKit.framework */; };
 		3CCC508319059F9500EB0980 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3CCC508119059F9500EB0980 /* InfoPlist.strings */; };
-		3CCC508519059F9500EB0980 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CCC508419059F9500EB0980 /* main.m */; };
 		3CCC508919059F9500EB0980 /* MEPAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CCC508819059F9500EB0980 /* MEPAppDelegate.m */; };
-		3CCC508B19059F9500EB0980 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3CCC508A19059F9500EB0980 /* Images.xcassets */; };
 		3CCC509219059F9500EB0980 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CCC509119059F9500EB0980 /* XCTest.framework */; };
 		3CCC509319059F9500EB0980 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CCC507819059F9500EB0980 /* Foundation.framework */; };
 		3CCC509419059F9500EB0980 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CCC507C19059F9500EB0980 /* UIKit.framework */; };
 		3CCC509C19059F9500EB0980 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3CCC509A19059F9500EB0980 /* InfoPlist.strings */; };
 		3CCC509E19059F9500EB0980 /* Meep_IOSTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CCC509D19059F9500EB0980 /* Meep_IOSTests.m */; };
+		3CCC51531905A20D00EB0980 /* Animal.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CCC512F1905A20D00EB0980 /* Animal.m */; };
+		3CCC51541905A20D00EB0980 /* CenterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CCC51311905A20D00EB0980 /* CenterViewController.m */; };
+		3CCC51551905A20D00EB0980 /* CenterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3CCC51321905A20D00EB0980 /* CenterViewController.xib */; };
+		3CCC51561905A20D00EB0980 /* CreateEvent.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3CCC51331905A20D00EB0980 /* CreateEvent.xib */; };
+		3CCC51571905A20D00EB0980 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3CCC51351905A20D00EB0980 /* InfoPlist.strings */; };
+		3CCC51581905A20D00EB0980 /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CCC51381905A20D00EB0980 /* Event.m */; };
+		3CCC51591905A20D00EB0980 /* EventCreatorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CCC513A1905A20D00EB0980 /* EventCreatorViewController.m */; };
+		3CCC515A1905A20D00EB0980 /* EventPage.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3CCC513B1905A20D00EB0980 /* EventPage.xib */; };
+		3CCC515B1905A20D00EB0980 /* EventPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CCC513D1905A20D00EB0980 /* EventPageViewController.m */; };
+		3CCC515C1905A20D00EB0980 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3CCC513E1905A20D00EB0980 /* Images.xcassets */; };
+		3CCC515D1905A20D00EB0980 /* LeftPanelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CCC51401905A20D00EB0980 /* LeftPanelViewController.m */; };
+		3CCC515E1905A20D00EB0980 /* LeftPanelViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3CCC51411905A20D00EB0980 /* LeftPanelViewController.xib */; };
+		3CCC515F1905A20D00EB0980 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CCC51421905A20D00EB0980 /* main.m */; };
+		3CCC51601905A20D00EB0980 /* MainCellLeft.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3CCC51431905A20D00EB0980 /* MainCellLeft.xib */; };
+		3CCC51611905A20D00EB0980 /* MainCellRight.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3CCC51441905A20D00EB0980 /* MainCellRight.xib */; };
+		3CCC51621905A20D00EB0980 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CCC51461905A20D00EB0980 /* MainViewController.m */; };
+		3CCC51631905A20D00EB0980 /* MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3CCC51471905A20D00EB0980 /* MainViewController.xib */; };
+		3CCC51641905A20D00EB0980 /* MEEPhttp.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CCC51491905A20D00EB0980 /* MEEPhttp.m */; };
+		3CCC51651905A20D00EB0980 /* MeepIOS-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3CCC514A1905A20D00EB0980 /* MeepIOS-Info.plist */; };
+		3CCC51661905A20D00EB0980 /* RightPanelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CCC514D1905A20D00EB0980 /* RightPanelViewController.m */; };
+		3CCC51671905A20D00EB0980 /* RightPanelViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3CCC514E1905A20D00EB0980 /* RightPanelViewController.xib */; };
+		3CCC51681905A20D00EB0980 /* SplashPage.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3CCC514F1905A20D00EB0980 /* SplashPage.xib */; };
+		3CCC51691905A20D00EB0980 /* UpcomingEventCell.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3CCC51501905A20D00EB0980 /* UpcomingEventCell.storyboard */; };
+		3CCC516A1905A20D00EB0980 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CCC51521905A20D00EB0980 /* User.m */; };
+		3CCC516D1905A3B000EB0980 /* Meep_IOS-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3CCC516B1905A3B000EB0980 /* Meep_IOS-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,18 +59,52 @@
 		3CCC507819059F9500EB0980 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		3CCC507A19059F9500EB0980 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		3CCC507C19059F9500EB0980 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		3CCC508019059F9500EB0980 /* Meep_IOS-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Meep_IOS-Info.plist"; sourceTree = "<group>"; };
 		3CCC508219059F9500EB0980 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		3CCC508419059F9500EB0980 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		3CCC508619059F9500EB0980 /* Meep_IOS-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Meep_IOS-Prefix.pch"; sourceTree = "<group>"; };
 		3CCC508719059F9500EB0980 /* MEPAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MEPAppDelegate.h; sourceTree = "<group>"; };
 		3CCC508819059F9500EB0980 /* MEPAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MEPAppDelegate.m; sourceTree = "<group>"; };
-		3CCC508A19059F9500EB0980 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		3CCC509019059F9500EB0980 /* Meep_IOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Meep_IOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3CCC509119059F9500EB0980 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		3CCC509919059F9500EB0980 /* Meep_IOSTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Meep_IOSTests-Info.plist"; sourceTree = "<group>"; };
 		3CCC509B19059F9500EB0980 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		3CCC509D19059F9500EB0980 /* Meep_IOSTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Meep_IOSTests.m; sourceTree = "<group>"; };
+		3CCC50F31905A0F300EB0980 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = InfoPlist.strings; sourceTree = "<group>"; };
+		3CCC512E1905A20D00EB0980 /* Animal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Animal.h; sourceTree = "<group>"; };
+		3CCC512F1905A20D00EB0980 /* Animal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Animal.m; sourceTree = "<group>"; };
+		3CCC51301905A20D00EB0980 /* CenterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CenterViewController.h; sourceTree = "<group>"; };
+		3CCC51311905A20D00EB0980 /* CenterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CenterViewController.m; sourceTree = "<group>"; };
+		3CCC51321905A20D00EB0980 /* CenterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CenterViewController.xib; sourceTree = "<group>"; };
+		3CCC51331905A20D00EB0980 /* CreateEvent.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CreateEvent.xib; sourceTree = "<group>"; };
+		3CCC51361905A20D00EB0980 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = InfoPlist.strings; sourceTree = "<group>"; };
+		3CCC51371905A20D00EB0980 /* Event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Event.h; sourceTree = "<group>"; };
+		3CCC51381905A20D00EB0980 /* Event.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Event.m; sourceTree = "<group>"; };
+		3CCC51391905A20D00EB0980 /* EventCreatorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventCreatorViewController.h; sourceTree = "<group>"; };
+		3CCC513A1905A20D00EB0980 /* EventCreatorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventCreatorViewController.m; sourceTree = "<group>"; };
+		3CCC513B1905A20D00EB0980 /* EventPage.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EventPage.xib; sourceTree = "<group>"; };
+		3CCC513C1905A20D00EB0980 /* EventPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventPageViewController.h; sourceTree = "<group>"; };
+		3CCC513D1905A20D00EB0980 /* EventPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventPageViewController.m; sourceTree = "<group>"; };
+		3CCC513E1905A20D00EB0980 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		3CCC513F1905A20D00EB0980 /* LeftPanelViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LeftPanelViewController.h; sourceTree = "<group>"; };
+		3CCC51401905A20D00EB0980 /* LeftPanelViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LeftPanelViewController.m; sourceTree = "<group>"; };
+		3CCC51411905A20D00EB0980 /* LeftPanelViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LeftPanelViewController.xib; sourceTree = "<group>"; };
+		3CCC51421905A20D00EB0980 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		3CCC51431905A20D00EB0980 /* MainCellLeft.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainCellLeft.xib; sourceTree = "<group>"; };
+		3CCC51441905A20D00EB0980 /* MainCellRight.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainCellRight.xib; sourceTree = "<group>"; };
+		3CCC51451905A20D00EB0980 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
+		3CCC51461905A20D00EB0980 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
+		3CCC51471905A20D00EB0980 /* MainViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainViewController.xib; sourceTree = "<group>"; };
+		3CCC51481905A20D00EB0980 /* MEEPhttp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MEEPhttp.h; sourceTree = "<group>"; };
+		3CCC51491905A20D00EB0980 /* MEEPhttp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MEEPhttp.m; sourceTree = "<group>"; };
+		3CCC514A1905A20D00EB0980 /* MeepIOS-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "MeepIOS-Info.plist"; sourceTree = "<group>"; };
+		3CCC514B1905A20D00EB0980 /* MeepIOS-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MeepIOS-Prefix.pch"; sourceTree = "<group>"; };
+		3CCC514C1905A20D00EB0980 /* RightPanelViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RightPanelViewController.h; sourceTree = "<group>"; };
+		3CCC514D1905A20D00EB0980 /* RightPanelViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RightPanelViewController.m; sourceTree = "<group>"; };
+		3CCC514E1905A20D00EB0980 /* RightPanelViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RightPanelViewController.xib; sourceTree = "<group>"; };
+		3CCC514F1905A20D00EB0980 /* SplashPage.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SplashPage.xib; sourceTree = "<group>"; };
+		3CCC51501905A20D00EB0980 /* UpcomingEventCell.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = UpcomingEventCell.storyboard; sourceTree = "<group>"; };
+		3CCC51511905A20D00EB0980 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
+		3CCC51521905A20D00EB0980 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
+		3CCC516B1905A3B000EB0980 /* Meep_IOS-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Meep_IOS-Info.plist"; sourceTree = "<group>"; };
+		3CCC516C1905A3B000EB0980 /* Meep_IOS-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Meep_IOS-Prefix.pch"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,9 +164,42 @@
 		3CCC507E19059F9500EB0980 /* Meep_IOS */ = {
 			isa = PBXGroup;
 			children = (
+				3CCC512E1905A20D00EB0980 /* Animal.h */,
+				3CCC512F1905A20D00EB0980 /* Animal.m */,
+				3CCC51301905A20D00EB0980 /* CenterViewController.h */,
+				3CCC51311905A20D00EB0980 /* CenterViewController.m */,
+				3CCC51321905A20D00EB0980 /* CenterViewController.xib */,
+				3CCC51331905A20D00EB0980 /* CreateEvent.xib */,
+				3CCC51341905A20D00EB0980 /* en.lproj */,
+				3CCC51371905A20D00EB0980 /* Event.h */,
+				3CCC51381905A20D00EB0980 /* Event.m */,
+				3CCC51391905A20D00EB0980 /* EventCreatorViewController.h */,
+				3CCC513A1905A20D00EB0980 /* EventCreatorViewController.m */,
+				3CCC513B1905A20D00EB0980 /* EventPage.xib */,
+				3CCC513C1905A20D00EB0980 /* EventPageViewController.h */,
+				3CCC513D1905A20D00EB0980 /* EventPageViewController.m */,
+				3CCC513E1905A20D00EB0980 /* Images.xcassets */,
+				3CCC513F1905A20D00EB0980 /* LeftPanelViewController.h */,
+				3CCC51401905A20D00EB0980 /* LeftPanelViewController.m */,
+				3CCC51411905A20D00EB0980 /* LeftPanelViewController.xib */,
+				3CCC51431905A20D00EB0980 /* MainCellLeft.xib */,
+				3CCC51441905A20D00EB0980 /* MainCellRight.xib */,
+				3CCC51451905A20D00EB0980 /* MainViewController.h */,
+				3CCC51461905A20D00EB0980 /* MainViewController.m */,
+				3CCC51471905A20D00EB0980 /* MainViewController.xib */,
+				3CCC51481905A20D00EB0980 /* MEEPhttp.h */,
+				3CCC51491905A20D00EB0980 /* MEEPhttp.m */,
+				3CCC514B1905A20D00EB0980 /* MeepIOS-Prefix.pch */,
+				3CCC514C1905A20D00EB0980 /* RightPanelViewController.h */,
+				3CCC514D1905A20D00EB0980 /* RightPanelViewController.m */,
+				3CCC514E1905A20D00EB0980 /* RightPanelViewController.xib */,
+				3CCC514F1905A20D00EB0980 /* SplashPage.xib */,
+				3CCC51501905A20D00EB0980 /* UpcomingEventCell.storyboard */,
+				3CCC51511905A20D00EB0980 /* User.h */,
+				3CCC51521905A20D00EB0980 /* User.m */,
+				3CCC50F11905A0F300EB0980 /* en.lproj */,
 				3CCC508719059F9500EB0980 /* MEPAppDelegate.h */,
 				3CCC508819059F9500EB0980 /* MEPAppDelegate.m */,
-				3CCC508A19059F9500EB0980 /* Images.xcassets */,
 				3CCC507F19059F9500EB0980 /* Supporting Files */,
 			);
 			path = Meep_IOS;
@@ -118,10 +208,11 @@
 		3CCC507F19059F9500EB0980 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				3CCC508019059F9500EB0980 /* Meep_IOS-Info.plist */,
+				3CCC516B1905A3B000EB0980 /* Meep_IOS-Info.plist */,
+				3CCC516C1905A3B000EB0980 /* Meep_IOS-Prefix.pch */,
+				3CCC51421905A20D00EB0980 /* main.m */,
+				3CCC514A1905A20D00EB0980 /* MeepIOS-Info.plist */,
 				3CCC508119059F9500EB0980 /* InfoPlist.strings */,
-				3CCC508419059F9500EB0980 /* main.m */,
-				3CCC508619059F9500EB0980 /* Meep_IOS-Prefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -142,6 +233,23 @@
 				3CCC509A19059F9500EB0980 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		3CCC50F11905A0F300EB0980 /* en.lproj */ = {
+			isa = PBXGroup;
+			children = (
+				3CCC50F21905A0F300EB0980 /* InfoPlist.strings */,
+			);
+			name = en.lproj;
+			path = ../MeepIOS/en.lproj;
+			sourceTree = "<group>";
+		};
+		3CCC51341905A20D00EB0980 /* en.lproj */ = {
+			isa = PBXGroup;
+			children = (
+				3CCC51351905A20D00EB0980 /* InfoPlist.strings */,
+			);
+			path = en.lproj;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -221,7 +329,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				3CCC508319059F9500EB0980 /* InfoPlist.strings in Resources */,
-				3CCC508B19059F9500EB0980 /* Images.xcassets in Resources */,
+				3CCC51671905A20D00EB0980 /* RightPanelViewController.xib in Resources */,
+				3CCC51601905A20D00EB0980 /* MainCellLeft.xib in Resources */,
+				3CCC51651905A20D00EB0980 /* MeepIOS-Info.plist in Resources */,
+				3CCC515C1905A20D00EB0980 /* Images.xcassets in Resources */,
+				3CCC51561905A20D00EB0980 /* CreateEvent.xib in Resources */,
+				3CCC51631905A20D00EB0980 /* MainViewController.xib in Resources */,
+				3CCC515A1905A20D00EB0980 /* EventPage.xib in Resources */,
+				3CCC51551905A20D00EB0980 /* CenterViewController.xib in Resources */,
+				3CCC51611905A20D00EB0980 /* MainCellRight.xib in Resources */,
+				3CCC51681905A20D00EB0980 /* SplashPage.xib in Resources */,
+				3CCC516D1905A3B000EB0980 /* Meep_IOS-Info.plist in Resources */,
+				3CCC515E1905A20D00EB0980 /* LeftPanelViewController.xib in Resources */,
+				3CCC51571905A20D00EB0980 /* InfoPlist.strings in Resources */,
+				3CCC51691905A20D00EB0980 /* UpcomingEventCell.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -240,8 +361,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3CCC508519059F9500EB0980 /* main.m in Sources */,
+				3CCC51641905A20D00EB0980 /* MEEPhttp.m in Sources */,
+				3CCC51581905A20D00EB0980 /* Event.m in Sources */,
 				3CCC508919059F9500EB0980 /* MEPAppDelegate.m in Sources */,
+				3CCC51591905A20D00EB0980 /* EventCreatorViewController.m in Sources */,
+				3CCC51531905A20D00EB0980 /* Animal.m in Sources */,
+				3CCC51621905A20D00EB0980 /* MainViewController.m in Sources */,
+				3CCC515B1905A20D00EB0980 /* EventPageViewController.m in Sources */,
+				3CCC51541905A20D00EB0980 /* CenterViewController.m in Sources */,
+				3CCC516A1905A20D00EB0980 /* User.m in Sources */,
+				3CCC515F1905A20D00EB0980 /* main.m in Sources */,
+				3CCC515D1905A20D00EB0980 /* LeftPanelViewController.m in Sources */,
+				3CCC51661905A20D00EB0980 /* RightPanelViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -276,6 +407,22 @@
 			isa = PBXVariantGroup;
 			children = (
 				3CCC509B19059F9500EB0980 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		3CCC50F21905A0F300EB0980 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				3CCC50F31905A0F300EB0980 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		3CCC51351905A20D00EB0980 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				3CCC51361905A20D00EB0980 /* en */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -360,7 +507,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Meep_IOS/Meep_IOS-Prefix.pch";
-				INFOPLIST_FILE = "Meep_IOS/Meep_IOS-Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Meep_IOS/MeepIOS-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -373,7 +520,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Meep_IOS/Meep_IOS-Prefix.pch";
-				INFOPLIST_FILE = "Meep_IOS/Meep_IOS-Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Meep_IOS/MeepIOS-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -438,6 +585,7 @@
 				3CCC50A319059F9500EB0980 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		3CCC50A419059F9500EB0980 /* Build configuration list for PBXNativeTarget "Meep_IOSTests" */ = {
 			isa = XCConfigurationList;
@@ -446,6 +594,7 @@
 				3CCC50A619059F9500EB0980 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
