@@ -1,0 +1,453 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		3CCC507919059F9500EB0980 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CCC507819059F9500EB0980 /* Foundation.framework */; };
+		3CCC507B19059F9500EB0980 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CCC507A19059F9500EB0980 /* CoreGraphics.framework */; };
+		3CCC507D19059F9500EB0980 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CCC507C19059F9500EB0980 /* UIKit.framework */; };
+		3CCC508319059F9500EB0980 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3CCC508119059F9500EB0980 /* InfoPlist.strings */; };
+		3CCC508519059F9500EB0980 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CCC508419059F9500EB0980 /* main.m */; };
+		3CCC508919059F9500EB0980 /* MEPAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CCC508819059F9500EB0980 /* MEPAppDelegate.m */; };
+		3CCC508B19059F9500EB0980 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3CCC508A19059F9500EB0980 /* Images.xcassets */; };
+		3CCC509219059F9500EB0980 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CCC509119059F9500EB0980 /* XCTest.framework */; };
+		3CCC509319059F9500EB0980 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CCC507819059F9500EB0980 /* Foundation.framework */; };
+		3CCC509419059F9500EB0980 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CCC507C19059F9500EB0980 /* UIKit.framework */; };
+		3CCC509C19059F9500EB0980 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3CCC509A19059F9500EB0980 /* InfoPlist.strings */; };
+		3CCC509E19059F9500EB0980 /* Meep_IOSTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CCC509D19059F9500EB0980 /* Meep_IOSTests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		3CCC509519059F9500EB0980 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3CCC506D19059F9500EB0980 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3CCC507419059F9500EB0980;
+			remoteInfo = Meep_IOS;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		3CCC507519059F9500EB0980 /* Meep_IOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Meep_IOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		3CCC507819059F9500EB0980 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		3CCC507A19059F9500EB0980 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		3CCC507C19059F9500EB0980 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		3CCC508019059F9500EB0980 /* Meep_IOS-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Meep_IOS-Info.plist"; sourceTree = "<group>"; };
+		3CCC508219059F9500EB0980 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		3CCC508419059F9500EB0980 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		3CCC508619059F9500EB0980 /* Meep_IOS-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Meep_IOS-Prefix.pch"; sourceTree = "<group>"; };
+		3CCC508719059F9500EB0980 /* MEPAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MEPAppDelegate.h; sourceTree = "<group>"; };
+		3CCC508819059F9500EB0980 /* MEPAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MEPAppDelegate.m; sourceTree = "<group>"; };
+		3CCC508A19059F9500EB0980 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		3CCC509019059F9500EB0980 /* Meep_IOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Meep_IOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		3CCC509119059F9500EB0980 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		3CCC509919059F9500EB0980 /* Meep_IOSTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Meep_IOSTests-Info.plist"; sourceTree = "<group>"; };
+		3CCC509B19059F9500EB0980 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		3CCC509D19059F9500EB0980 /* Meep_IOSTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Meep_IOSTests.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		3CCC507219059F9500EB0980 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3CCC507B19059F9500EB0980 /* CoreGraphics.framework in Frameworks */,
+				3CCC507D19059F9500EB0980 /* UIKit.framework in Frameworks */,
+				3CCC507919059F9500EB0980 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3CCC508D19059F9500EB0980 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3CCC509219059F9500EB0980 /* XCTest.framework in Frameworks */,
+				3CCC509419059F9500EB0980 /* UIKit.framework in Frameworks */,
+				3CCC509319059F9500EB0980 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		3CCC506C19059F9500EB0980 = {
+			isa = PBXGroup;
+			children = (
+				3CCC507E19059F9500EB0980 /* Meep_IOS */,
+				3CCC509719059F9500EB0980 /* Meep_IOSTests */,
+				3CCC507719059F9500EB0980 /* Frameworks */,
+				3CCC507619059F9500EB0980 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		3CCC507619059F9500EB0980 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				3CCC507519059F9500EB0980 /* Meep_IOS.app */,
+				3CCC509019059F9500EB0980 /* Meep_IOSTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		3CCC507719059F9500EB0980 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				3CCC507819059F9500EB0980 /* Foundation.framework */,
+				3CCC507A19059F9500EB0980 /* CoreGraphics.framework */,
+				3CCC507C19059F9500EB0980 /* UIKit.framework */,
+				3CCC509119059F9500EB0980 /* XCTest.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		3CCC507E19059F9500EB0980 /* Meep_IOS */ = {
+			isa = PBXGroup;
+			children = (
+				3CCC508719059F9500EB0980 /* MEPAppDelegate.h */,
+				3CCC508819059F9500EB0980 /* MEPAppDelegate.m */,
+				3CCC508A19059F9500EB0980 /* Images.xcassets */,
+				3CCC507F19059F9500EB0980 /* Supporting Files */,
+			);
+			path = Meep_IOS;
+			sourceTree = "<group>";
+		};
+		3CCC507F19059F9500EB0980 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				3CCC508019059F9500EB0980 /* Meep_IOS-Info.plist */,
+				3CCC508119059F9500EB0980 /* InfoPlist.strings */,
+				3CCC508419059F9500EB0980 /* main.m */,
+				3CCC508619059F9500EB0980 /* Meep_IOS-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		3CCC509719059F9500EB0980 /* Meep_IOSTests */ = {
+			isa = PBXGroup;
+			children = (
+				3CCC509D19059F9500EB0980 /* Meep_IOSTests.m */,
+				3CCC509819059F9500EB0980 /* Supporting Files */,
+			);
+			path = Meep_IOSTests;
+			sourceTree = "<group>";
+		};
+		3CCC509819059F9500EB0980 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				3CCC509919059F9500EB0980 /* Meep_IOSTests-Info.plist */,
+				3CCC509A19059F9500EB0980 /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		3CCC507419059F9500EB0980 /* Meep_IOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3CCC50A119059F9500EB0980 /* Build configuration list for PBXNativeTarget "Meep_IOS" */;
+			buildPhases = (
+				3CCC507119059F9500EB0980 /* Sources */,
+				3CCC507219059F9500EB0980 /* Frameworks */,
+				3CCC507319059F9500EB0980 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Meep_IOS;
+			productName = Meep_IOS;
+			productReference = 3CCC507519059F9500EB0980 /* Meep_IOS.app */;
+			productType = "com.apple.product-type.application";
+		};
+		3CCC508F19059F9500EB0980 /* Meep_IOSTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3CCC50A419059F9500EB0980 /* Build configuration list for PBXNativeTarget "Meep_IOSTests" */;
+			buildPhases = (
+				3CCC508C19059F9500EB0980 /* Sources */,
+				3CCC508D19059F9500EB0980 /* Frameworks */,
+				3CCC508E19059F9500EB0980 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				3CCC509619059F9500EB0980 /* PBXTargetDependency */,
+			);
+			name = Meep_IOSTests;
+			productName = Meep_IOSTests;
+			productReference = 3CCC509019059F9500EB0980 /* Meep_IOSTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		3CCC506D19059F9500EB0980 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				CLASSPREFIX = MEP;
+				LastUpgradeCheck = 0510;
+				ORGANIZATIONNAME = futoi;
+				TargetAttributes = {
+					3CCC508F19059F9500EB0980 = {
+						TestTargetID = 3CCC507419059F9500EB0980;
+					};
+				};
+			};
+			buildConfigurationList = 3CCC507019059F9500EB0980 /* Build configuration list for PBXProject "Meep_IOS" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 3CCC506C19059F9500EB0980;
+			productRefGroup = 3CCC507619059F9500EB0980 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				3CCC507419059F9500EB0980 /* Meep_IOS */,
+				3CCC508F19059F9500EB0980 /* Meep_IOSTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		3CCC507319059F9500EB0980 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3CCC508319059F9500EB0980 /* InfoPlist.strings in Resources */,
+				3CCC508B19059F9500EB0980 /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3CCC508E19059F9500EB0980 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3CCC509C19059F9500EB0980 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		3CCC507119059F9500EB0980 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3CCC508519059F9500EB0980 /* main.m in Sources */,
+				3CCC508919059F9500EB0980 /* MEPAppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3CCC508C19059F9500EB0980 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3CCC509E19059F9500EB0980 /* Meep_IOSTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		3CCC509619059F9500EB0980 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3CCC507419059F9500EB0980 /* Meep_IOS */;
+			targetProxy = 3CCC509519059F9500EB0980 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		3CCC508119059F9500EB0980 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				3CCC508219059F9500EB0980 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		3CCC509A19059F9500EB0980 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				3CCC509B19059F9500EB0980 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		3CCC509F19059F9500EB0980 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		3CCC50A019059F9500EB0980 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		3CCC50A219059F9500EB0980 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Meep_IOS/Meep_IOS-Prefix.pch";
+				INFOPLIST_FILE = "Meep_IOS/Meep_IOS-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		3CCC50A319059F9500EB0980 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Meep_IOS/Meep_IOS-Prefix.pch";
+				INFOPLIST_FILE = "Meep_IOS/Meep_IOS-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		3CCC50A519059F9500EB0980 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Meep_IOS.app/Meep_IOS";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Meep_IOS/Meep_IOS-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "Meep_IOSTests/Meep_IOSTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		3CCC50A619059F9500EB0980 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Meep_IOS.app/Meep_IOS";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Meep_IOS/Meep_IOS-Prefix.pch";
+				INFOPLIST_FILE = "Meep_IOSTests/Meep_IOSTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		3CCC507019059F9500EB0980 /* Build configuration list for PBXProject "Meep_IOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3CCC509F19059F9500EB0980 /* Debug */,
+				3CCC50A019059F9500EB0980 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3CCC50A119059F9500EB0980 /* Build configuration list for PBXNativeTarget "Meep_IOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3CCC50A219059F9500EB0980 /* Debug */,
+				3CCC50A319059F9500EB0980 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		3CCC50A419059F9500EB0980 /* Build configuration list for PBXNativeTarget "Meep_IOSTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3CCC50A519059F9500EB0980 /* Debug */,
+				3CCC50A619059F9500EB0980 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 3CCC506D19059F9500EB0980 /* Project object */;
+}
