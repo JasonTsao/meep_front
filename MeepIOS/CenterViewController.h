@@ -8,6 +8,7 @@
 
 #import "LeftPanelViewController.h"
 #import "RightPanelViewController.h"
+#import "EventCreatorViewController.h"
 
 @protocol CenterViewControllerDelegate <NSObject>
 
@@ -20,7 +21,7 @@
 
 @end
 
-@interface CenterViewController : UIViewController <LeftPanelViewControllerDelegate, RightPanelViewControllerDelegate>
+@interface CenterViewController : UIViewController <LeftPanelViewControllerDelegate, RightPanelViewControllerDelegate, EventCreatorViewControllerDelegate>
 
 @property (nonatomic, assign) id<CenterViewControllerDelegate> delegate;
 

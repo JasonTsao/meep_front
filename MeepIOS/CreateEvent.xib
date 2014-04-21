@@ -6,6 +6,9 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EventCreatorViewController">
             <connections>
+                <outlet property="NavBar" destination="Vvt-i2-emX" id="csB-4L-TNq"/>
+                <outlet property="eventText" destination="moK-zH-Ezn" id="2ZE-6k-aIz"/>
+                <outlet property="searchDisplayController" destination="t9z-Fc-4gB" id="fbt-Hs-cNZ"/>
                 <outlet property="view" destination="iN0-l3-epB" id="eCB-tg-nge"/>
             </connections>
         </placeholder>
@@ -14,12 +17,11 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" keyboardDismissMode="interactive" translatesAutoresizingMaskIntoConstraints="NO" id="moK-zH-Ezn">
-                    <rect key="frame" x="0.0" y="62" width="320" height="235"/>
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" keyboardDismissMode="interactive" usesAttributedText="YES" translatesAutoresizingMaskIntoConstraints="NO" id="moK-zH-Ezn">
+                    <rect key="frame" x="0.0" y="62" width="320" height="159"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <attributedString key="attributedText"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences" keyboardAppearance="alert" returnKeyType="send"/>
                     <dataDetectorType key="dataDetectorTypes" link="YES" address="YES" calendarEvent="YES"/>
                 </textView>
@@ -33,6 +35,9 @@
                         <navigationItem title="Create Event" id="1KF-El-DYA">
                             <barButtonItem key="leftBarButtonItem" title="Back" id="gy6-ye-IJW">
                                 <color key="tintColor" red="1" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <connections>
+                                    <action selector="backToMain:" destination="-1" id="fUd-9z-61W"/>
+                                </connections>
                             </barButtonItem>
                             <barButtonItem key="rightBarButtonItem" title="Send" id="NWG-wA-5x0">
                                 <color key="tintColor" red="1" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -40,10 +45,23 @@
                         </navigationItem>
                     </items>
                 </navigationBar>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="Vvt-i2-emX">
+                    <rect key="frame" x="0.0" y="221" width="320" height="35"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </tableView>
             </subviews>
             <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>
+        <searchDisplayController id="t9z-Fc-4gB">
+            <connections>
+                <outlet property="delegate" destination="-1" id="gxQ-id-9uL"/>
+                <outlet property="searchContentsController" destination="-1" id="jUr-Rj-gIK"/>
+                <outlet property="searchResultsDataSource" destination="-1" id="b5O-0h-Hsg"/>
+                <outlet property="searchResultsDelegate" destination="-1" id="Bfo-vC-alj"/>
+            </connections>
+        </searchDisplayController>
     </objects>
 </document>

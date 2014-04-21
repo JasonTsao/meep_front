@@ -10,6 +10,8 @@
 #import "CenterViewController.h"
 #import "LeftPanelViewController.h"
 #import "RightPanelViewController.h"
+#import "EventCreatorViewController.h"
+
 #import <QuartzCore/QuartzCore.h>
 
 #define CENTER_TAG 1
@@ -31,6 +33,7 @@
 
 @property (nonatomic, assign) BOOL showPanel;
 @property( nonatomic, assign) CGPoint preVelocity;
+@property( nonatomic, strong) EventCreatorViewController *eventCreatorViewController;
 
 @end
 
@@ -125,6 +128,14 @@
         _centerViewController.rightButton.tag = 1;
         self.showingRightPanel = NO;
     }
+    if (_eventCreatorViewController != nil)
+    {
+        [self.eventCreatorViewController.view removeFromSuperview];
+        self.eventCreatorViewController = nil;
+        
+        _centerViewController.rightButton.tag = 1;
+        self.showingRightPanel = NO;
+    }
     [self showCenterViewWithShadow:NO withOffset:0];
 }
 
@@ -147,18 +158,18 @@
 }
 
 - (UIView *)getRightView
-{     
-    if(_rightPanelViewController == nil) {
-        self.rightPanelViewController = [[RightPanelViewController alloc] initWithNibName:@"RightPanelViewController" bundle:nil];
-        self.rightPanelViewController.view.tag = RIGHT_PANEL_TAG;
-        self.rightPanelViewController.delegate = _centerViewController;
-        [self.view addSubview:self.rightPanelViewController.view];
-        [_rightPanelViewController didMoveToParentViewController:self];
-        _rightPanelViewController.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+{
+    if(_eventCreatorViewController == nil) {
+        self.eventCreatorViewController = [[EventCreatorViewController alloc] initWithNibName:@"CreateEvent" bundle:nil];
+        self.eventCreatorViewController.view.tag = RIGHT_PANEL_TAG;
+        self.eventCreatorViewController.delegate = _centerViewController;
+        [self.view addSubview:self.eventCreatorViewController.view];
+        [_eventCreatorViewController didMoveToParentViewController:self];
+        _eventCreatorViewController.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
     }
     self.showingRightPanel = YES;
     [self showCenterViewWithShadow:YES withOffset:2];
-    UIView * view = self.rightPanelViewController.view;
+    UIView * view = self.eventCreatorViewController.view;
     return view;
 }
 
@@ -255,7 +266,7 @@
     
     [UIView animateWithDuration:SLIDE_TIMING delay:0 options:UIViewAnimationOptionBeginFromCurrentState
                      animations:^{
-                         _centerViewController.view.frame = CGRectMake(-self.view.frame.size.width + PANEL_WIDTH, 0, self.view.frame.size.width, self.view.frame.size.height);
+                         _centerViewController.view.frame = CGRectMake(-self.view.frame.size.width, 0, self.view.frame.size.width, self.view.frame.size.height);
                      }
                      completion:^(BOOL finished) {
                          if (finished) {

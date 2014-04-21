@@ -11,6 +11,7 @@
 #import "Event.h"
 #import "Animal.h"
 
+
 @interface CenterViewController () <UITableViewDataSource>
 
 @property (weak, nonatomic) IBOutlet UITableView *upcomingEventsTable;
@@ -23,6 +24,11 @@
 @end
 
 @implementation CenterViewController
+
+- (void)closeCreatorModal
+{
+    [_delegate movePanelRight];
+}
 
 #pragma mark -
 #pragma mark View Did Load/Unload
@@ -58,6 +64,7 @@
     {
         Event *currentRecord = [self.eventArray objectAtIndex:indexPath.row];
         NSLog(@"%@",currentRecord.description);
+        NSLog(@"%@",currentRecord.name);
         title.text = [NSString stringWithFormat:@"%@", currentRecord.name];
         description.text = [NSString stringWithFormat:@"%@", currentRecord.description];
     }
