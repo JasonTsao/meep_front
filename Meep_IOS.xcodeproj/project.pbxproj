@@ -42,6 +42,7 @@
 		3CCC51691905A20D00EB0980 /* UpcomingEventCell.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3CCC51501905A20D00EB0980 /* UpcomingEventCell.storyboard */; };
 		3CCC516A1905A20D00EB0980 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CCC51521905A20D00EB0980 /* User.m */; };
 		3CCC516D1905A3B000EB0980 /* Meep_IOS-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3CCC516B1905A3B000EB0980 /* Meep_IOS-Info.plist */; };
+		3CCC51701905A46400EB0980 /* EventCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3CCC516F1905A46400EB0980 /* EventCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -105,6 +106,7 @@
 		3CCC51521905A20D00EB0980 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		3CCC516B1905A3B000EB0980 /* Meep_IOS-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Meep_IOS-Info.plist"; sourceTree = "<group>"; };
 		3CCC516C1905A3B000EB0980 /* Meep_IOS-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Meep_IOS-Prefix.pch"; sourceTree = "<group>"; };
+		3CCC516F1905A46400EB0980 /* EventCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EventCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -164,11 +166,9 @@
 		3CCC507E19059F9500EB0980 /* Meep_IOS */ = {
 			isa = PBXGroup;
 			children = (
+				3CCC516E1905A44400EB0980 /* Center Page */,
 				3CCC512E1905A20D00EB0980 /* Animal.h */,
 				3CCC512F1905A20D00EB0980 /* Animal.m */,
-				3CCC51301905A20D00EB0980 /* CenterViewController.h */,
-				3CCC51311905A20D00EB0980 /* CenterViewController.m */,
-				3CCC51321905A20D00EB0980 /* CenterViewController.xib */,
 				3CCC51331905A20D00EB0980 /* CreateEvent.xib */,
 				3CCC51341905A20D00EB0980 /* en.lproj */,
 				3CCC51371905A20D00EB0980 /* Event.h */,
@@ -252,6 +252,17 @@
 			path = en.lproj;
 			sourceTree = "<group>";
 		};
+		3CCC516E1905A44400EB0980 /* Center Page */ = {
+			isa = PBXGroup;
+			children = (
+				3CCC51301905A20D00EB0980 /* CenterViewController.h */,
+				3CCC51311905A20D00EB0980 /* CenterViewController.m */,
+				3CCC51321905A20D00EB0980 /* CenterViewController.xib */,
+				3CCC516F1905A46400EB0980 /* EventCell.xib */,
+			);
+			name = "Center Page";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -328,6 +339,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3CCC51701905A46400EB0980 /* EventCell.xib in Resources */,
 				3CCC508319059F9500EB0980 /* InfoPlist.strings in Resources */,
 				3CCC51671905A20D00EB0980 /* RightPanelViewController.xib in Resources */,
 				3CCC51601905A20D00EB0980 /* MainCellLeft.xib in Resources */,
