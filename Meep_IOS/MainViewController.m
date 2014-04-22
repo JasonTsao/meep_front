@@ -329,6 +329,10 @@
     [[self navigationController] setView:childView];
 }
 
+- (void) returnToMain {
+    [self setupView];
+}
+
 #pragma mark -
 #pragma mark Default System Code
 

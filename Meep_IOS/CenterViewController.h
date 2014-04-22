@@ -20,6 +20,7 @@
 @required
 - (void)movePanelToOriginalPosition;
 - (void)displayEventPage;
+- (void) returnToMain;
 
 @end
 

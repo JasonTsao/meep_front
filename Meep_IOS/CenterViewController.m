@@ -272,6 +272,10 @@
     [self.upcomingEventsTable reloadData];
 }
 
+-(void)closeEventModal {
+    [_delegate returnToMain];
+}
+
 #pragma mark -
 #pragma mark Default System Code
 
