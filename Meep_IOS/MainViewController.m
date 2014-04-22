@@ -11,6 +11,7 @@
 #import "LeftPanelViewController.h"
 #import "RightPanelViewController.h"
 #import "EventCreatorViewController.h"
+#import "EventPageViewController.h"
 
 #import <QuartzCore/QuartzCore.h>
 
@@ -34,6 +35,9 @@
 @property (nonatomic, assign) BOOL showPanel;
 @property( nonatomic, assign) CGPoint preVelocity;
 @property( nonatomic, strong) EventCreatorViewController *eventCreatorViewController;
+
+@property (nonatomic, strong) EventPageViewController *eventPageViewController;
+@property (nonatomic, assign) BOOL showEventPage;
 
 @end
 
@@ -173,6 +177,21 @@
     return view;
 }
 
+- (UIView *)getEventPageView {
+    if(_eventPageViewController == nil) {
+        self.eventPageViewController = [[EventPageViewController alloc] initWithNibName:@"EventPage" bundle:nil];
+        self.eventPageViewController.view.tag = RIGHT_PANEL_TAG;
+        self.eventPageViewController.delegate = _centerViewController;
+        [self.view addSubview:self.eventPageViewController.view];
+        [_eventPageViewController didMoveToParentViewController:self];
+        _eventPageViewController.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+    }
+    self.showingRightPanel = YES;
+    [self showCenterViewWithShadow:YES withOffset:2];
+    UIView * view = self.eventCreatorViewController.view;
+    return view;
+}
+
 #pragma mark -
 #pragma mark Swipe Gesture Setup/Actions
 
@@ -301,6 +320,13 @@
             [self resetMainView];
         }
     }];
+}
+
+- (void)displayEventPage {
+    UIView * childView = [self getEventPageView];
+    // [self.view sendSubviewToBack:childView];
+    // [self.view addSubview:childView ];
+    [[self navigationController] setView:childView];
 }
 
 #pragma mark -

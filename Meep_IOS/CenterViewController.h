@@ -9,6 +9,7 @@
 #import "LeftPanelViewController.h"
 #import "RightPanelViewController.h"
 #import "EventCreatorViewController.h"
+#import "EventPageViewController.h"
 
 @protocol CenterViewControllerDelegate <NSObject>
 
@@ -18,10 +19,11 @@
 
 @required
 - (void)movePanelToOriginalPosition;
+- (void)displayEventPage;
 
 @end
 
-@interface CenterViewController : UIViewController <LeftPanelViewControllerDelegate, RightPanelViewControllerDelegate, EventCreatorViewControllerDelegate>
+@interface CenterViewController : UIViewController <LeftPanelViewControllerDelegate, RightPanelViewControllerDelegate, EventCreatorViewControllerDelegate, EventPageViewControllerDelegate>
 
 @property (nonatomic, assign) id<CenterViewControllerDelegate> delegate;
 

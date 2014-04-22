@@ -118,6 +118,7 @@
     // Return Data to delegate: either way is fine, although passing back the object may be more efficient
     // [_delegate imageSelected:currentRecord.image withTitle:currentRecord.title withCreator:currentRecord.creator];
     // [_delegate animalSelected:currentRecord];
+    [_delegate displayEventPage];
 }
 
 - (void)viewDidLoad
