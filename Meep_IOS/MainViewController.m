@@ -140,6 +140,13 @@
         _centerViewController.rightButton.tag = 1;
         self.showingRightPanel = NO;
     }
+    if (_eventPageViewController != nil)
+    {
+        [self.eventPageViewController.view removeFromSuperview];
+        self.eventCreatorViewController = nil;
+        
+        self.showEventPage = NO;
+    }
     [self showCenterViewWithShadow:NO withOffset:0];
 }
 
@@ -186,7 +193,7 @@
         [_eventPageViewController didMoveToParentViewController:self];
         _eventPageViewController.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
     }
-    self.showingRightPanel = YES;
+    self.showEventPage = YES;
     [self showCenterViewWithShadow:YES withOffset:2];
     UIView * view = self.eventCreatorViewController.view;
     return view;
@@ -330,7 +337,7 @@
 }
 
 - (void) returnToMain {
-    [self setupView];
+    [self resetMainView];
 }
 
 #pragma mark -

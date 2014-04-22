@@ -27,7 +27,7 @@
 
 - (void)closeCreatorModal
 {
-    [_delegate movePanelRight];
+    [_delegate movePanelToOriginalPosition];
 }
 
 #pragma mark -
