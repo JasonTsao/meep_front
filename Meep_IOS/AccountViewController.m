@@ -7,12 +7,14 @@
 //
 
 #import "AccountViewController.h"
+#import "MEEPhttp.h"
 
 @interface AccountViewController ()
 
 @property NSArray *privacy;
 @property NSArray *reminders;
 @property NSArray *notifications;
+@property(nonatomic, strong) NSMutableData * data;
 @end
 
 @implementation AccountViewController
@@ -54,29 +56,83 @@
     return numRows;
 }
 
+- (void) updateAccountSettingfieldName:(NSString *)field valueName:(BOOL) value
+{
+    NSString * requestURL = [NSString stringWithFormat:@"%@settings/update",[MEEPhttp accountURL]];
+    NSLog(@"field: %@", field);
+    NSLog(@"value: %hhd", value);
+    NSString * value_string;
+
+    if (value){
+        value_string = @"true";
+    }
+    else{
+        value_string = @"false";
+    }
+    //[NSNumber numberWithBool:value]
+    NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:@"2",@"user", field, @"field", @YES, @"value",nil];
+    NSLog(@"request url %@", requestURL);
+    NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
+    NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    [conn start];
+}
+
+-(void)connection:(NSURLConnection*)connection didReceiveResponse:(NSURLResponse*)response
+{
+    _data = [[NSMutableData alloc] init]; // _data being an ivar
+}
+-(void)connection:(NSURLConnection*)connection didReceiveData:(NSData*)data
+{
+    [_data appendData:data];
+}
+-(void)connection:(NSURLConnection*)connection didFailWithError:(NSError*)error
+{
+    // Handle the error properly
+    NSLog(@"Call Failed");
+}
+-(void)connectionDidFinishLoading:(NSURLConnection*)connection
+{
+    [self handleData]; // Deal with the data
+}
+
+
+-(void)handleData{
+    NSError* error;
+    NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:_data options:0 error:&error];
+    NSLog(@"Handling data");
+    NSLog(@"%@",jsonResponse);
+    //NSArray * upcoming = jsonResponse[@"upcoming_events"];
+    //NSArray * owned = jsonResponse[@"owned_upcoming_events"];
+}
+
 //- (void)checkButtonTapped:(id)sender sectionNumber:(NSInteger)section rowNumber:(NSInteger)row
 - (void)privateSwitch:(id)sender
 {
     UISwitch *switch_button = sender;
     NSLog(@"Tapped Private Switch! %hhd", switch_button.on);
+    [self updateAccountSettingfieldName: @"private" valueName:switch_button.on];
+    
 }
 
 - (void)searchableSwitch:(id)sender
 {
     UISwitch *switch_button = sender;
     NSLog(@"Tapped Searchable Switch! %hhd", switch_button.on);
+    [self updateAccountSettingfieldName: @"searchable" valueName:switch_button.on];
 }
 
 - (void)remindersSwitch:(id)sender
 {
     UISwitch *switch_button = sender;
     NSLog(@"Tapped Reminders Switch! %hhd", switch_button.on);
+    [self updateAccountSettingfieldName: @"reminder_on" valueName:switch_button.on];
 }
 
 - (void)notificationsSwitch:(id)sender
 {
     UISwitch *switch_button = sender;
     NSLog(@"Tapped Notifications Switch! %hhd", switch_button.on);
+    [self updateAccountSettingfieldName: @"vibrate_on_notification" valueName:switch_button.on];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
