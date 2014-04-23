@@ -43,6 +43,8 @@
 		3CCC516D1905A3B000EB0980 /* Meep_IOS-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3CCC516B1905A3B000EB0980 /* Meep_IOS-Info.plist */; };
 		3CCC51701905A46400EB0980 /* EventCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3CCC516F1905A46400EB0980 /* EventCell.xib */; };
 		3CCC51731905A55F00EB0980 /* MeepIOS-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3CCC51721905A55F00EB0980 /* MeepIOS-Info.plist */; };
+		3CCF971A190827CE005FA454 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3CCF9717190827CE005FA454 /* Main.storyboard */; };
+		3CCF971B190827CE005FA454 /* AccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CCF9719190827CE005FA454 /* AccountViewController.m */; };
 		3CDDFFE01907343A006C91BD /* TagButtons.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3CDDFFDF1907343A006C91BD /* TagButtons.xib */; };
 /* End PBXBuildFile section */
 
@@ -108,6 +110,9 @@
 		3CCC516C1905A3B000EB0980 /* Meep_IOS-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Meep_IOS-Prefix.pch"; sourceTree = "<group>"; };
 		3CCC516F1905A46400EB0980 /* EventCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EventCell.xib; sourceTree = "<group>"; };
 		3CCC51721905A55F00EB0980 /* MeepIOS-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "MeepIOS-Info.plist"; sourceTree = "<group>"; };
+		3CCF9717190827CE005FA454 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		3CCF9718190827CE005FA454 /* AccountViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountViewController.h; sourceTree = "<group>"; };
+		3CCF9719190827CE005FA454 /* AccountViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountViewController.m; sourceTree = "<group>"; };
 		3CDDFFDF1907343A006C91BD /* TagButtons.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TagButtons.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -168,15 +173,13 @@
 		3CCC507E19059F9500EB0980 /* Meep_IOS */ = {
 			isa = PBXGroup;
 			children = (
+				3CCF9716190827A9005FA454 /* Account And Settings */,
 				3CCC51711905A51D00EB0980 /* Event Pages */,
 				3CCC516E1905A44400EB0980 /* Center Page */,
 				3CCC512E1905A20D00EB0980 /* Animal.h */,
 				3CCC512F1905A20D00EB0980 /* Animal.m */,
 				3CCC51341905A20D00EB0980 /* en.lproj */,
 				3CCC513E1905A20D00EB0980 /* Images.xcassets */,
-				3CCC513F1905A20D00EB0980 /* LeftPanelViewController.h */,
-				3CCC51401905A20D00EB0980 /* LeftPanelViewController.m */,
-				3CCC51411905A20D00EB0980 /* LeftPanelViewController.xib */,
 				3CCC51431905A20D00EB0980 /* MainCellLeft.xib */,
 				3CCC51441905A20D00EB0980 /* MainCellRight.xib */,
 				3CCC51481905A20D00EB0980 /* MEEPhttp.h */,
@@ -274,6 +277,19 @@
 			name = "Event Pages";
 			sourceTree = "<group>";
 		};
+		3CCF9716190827A9005FA454 /* Account And Settings */ = {
+			isa = PBXGroup;
+			children = (
+				3CCF9717190827CE005FA454 /* Main.storyboard */,
+				3CCF9718190827CE005FA454 /* AccountViewController.h */,
+				3CCF9719190827CE005FA454 /* AccountViewController.m */,
+				3CCC513F1905A20D00EB0980 /* LeftPanelViewController.h */,
+				3CCC51401905A20D00EB0980 /* LeftPanelViewController.m */,
+				3CCC51411905A20D00EB0980 /* LeftPanelViewController.xib */,
+			);
+			name = "Account And Settings";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -368,6 +384,7 @@
 				3CCC51681905A20D00EB0980 /* SplashPage.xib in Resources */,
 				3CCC516D1905A3B000EB0980 /* Meep_IOS-Info.plist in Resources */,
 				3CCC515E1905A20D00EB0980 /* LeftPanelViewController.xib in Resources */,
+				3CCF971A190827CE005FA454 /* Main.storyboard in Resources */,
 				3CCC51571905A20D00EB0980 /* InfoPlist.strings in Resources */,
 				3CCC51691905A20D00EB0980 /* UpcomingEventCell.storyboard in Resources */,
 			);
@@ -394,6 +411,7 @@
 				3CCC51591905A20D00EB0980 /* EventCreatorViewController.m in Sources */,
 				3CCC51531905A20D00EB0980 /* Animal.m in Sources */,
 				3CCC51621905A20D00EB0980 /* MainViewController.m in Sources */,
+				3CCF971B190827CE005FA454 /* AccountViewController.m in Sources */,
 				3CCC515B1905A20D00EB0980 /* EventPageViewController.m in Sources */,
 				3CCC51541905A20D00EB0980 /* CenterViewController.m in Sources */,
 				3CCC516A1905A20D00EB0980 /* User.m in Sources */,

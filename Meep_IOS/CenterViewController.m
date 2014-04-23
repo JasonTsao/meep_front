@@ -30,6 +30,11 @@
     [_delegate movePanelToOriginalPosition];
 }
 
+- (void)openAccountSettings
+{
+    [_delegate openAccountPage];
+}
+
 #pragma mark -
 #pragma mark View Did Load/Unload
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -125,7 +130,7 @@
 {
     [super viewDidLoad];
     self.eventArray = [[NSMutableArray alloc] init];
-    [self getUpcomingEvents];
+    // [self getUpcomingEvents];
     
 }
 
@@ -249,20 +254,21 @@
     NSLog(@"%@",jsonResponse);
     NSArray * upcoming = jsonResponse[@"upcoming_events"];
     NSArray * owned = jsonResponse[@"owned_upcoming_events"];
+    NSLog(@"%i",[upcoming count]);
     for(NSDictionary *eventObj in upcoming) {
-        Event * event = [[Event alloc] initWithDescription:eventObj[@"event_description"] withName:eventObj[@"event_name"] startTime:eventObj[@"start_time"]];
+        Event * event = [[Event alloc] initWithDescription:eventObj[@"description"] withName:eventObj[@"name"] startTime:eventObj[@"start_time"]];
         [_eventArray addObject:event];
     }
     for(NSString *eventStr in owned) {
         NSString * description = @"empty";
         NSString * name = @"Event";
         NSDictionary * eventObj = [NSJSONSerialization JSONObjectWithData:[eventStr dataUsingEncoding:NSUTF8StringEncoding] options:0 error:nil];
-        if(![[eventObj valueForKey:@"event_name"] isEqualToString:@"\"\""]) {
-            name = [eventObj valueForKey:@"event_name"];
+        if(![[eventObj valueForKey:@"name"] isEqualToString:@"\"\""]) {
+            name = [eventObj valueForKey:@"name"];
             name = @"Event";
         }
-        if(![[eventObj valueForKey:@"event_description"] isEqualToString:@"\"\""]) {
-            description = [eventObj valueForKey:@"event_description"];
+        if(![[eventObj valueForKey:@"description"] isEqualToString:@"\"\""]) {
+            description = [eventObj valueForKey:@"description"];
         }
         Event * event = [[Event alloc] initWithDescription:description withName:name startTime:@""];
         [self.eventArray addObject:event];

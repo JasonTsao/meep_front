@@ -33,6 +33,9 @@
                         <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
+                    <connections>
+                        <action selector="openAccountSettings:" destination="-1" eventType="touchUpInside" id="42M-7n-WYa"/>
+                    </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="vXA-Lc-cFy">
                     <rect key="frame" x="43" y="104" width="77" height="32"/>

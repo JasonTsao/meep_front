@@ -10,6 +10,7 @@
 #import "RightPanelViewController.h"
 #import "EventCreatorViewController.h"
 #import "EventPageViewController.h"
+#import "AccountViewController.h"
 
 @protocol CenterViewControllerDelegate <NSObject>
 
@@ -20,11 +21,12 @@
 @required
 - (void)movePanelToOriginalPosition;
 - (void)displayEventPage;
-- (void) returnToMain;
+- (void)returnToMain;
+- (void)openAccountPage;
 
 @end
 
-@interface CenterViewController : UIViewController <LeftPanelViewControllerDelegate, RightPanelViewControllerDelegate, EventCreatorViewControllerDelegate, EventPageViewControllerDelegate>
+@interface CenterViewController : UIViewController <LeftPanelViewControllerDelegate, RightPanelViewControllerDelegate, EventCreatorViewControllerDelegate, EventPageViewControllerDelegate, AccountViewControllerDelegate, UITableViewDelegate>
 
 @property (nonatomic, assign) id<CenterViewControllerDelegate> delegate;
 

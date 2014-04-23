@@ -17,6 +17,7 @@
 
 @required
 - (void)animalSelected:(Animal *)animal;
+- (void)openAccountSettings;
 
 @end
 

@@ -20,6 +20,9 @@
 @end
 
 @implementation LeftPanelViewController
+- (IBAction)openAccountSettings:(id)sender {
+    [_delegate openAccountSettings];
+}
 
 #pragma mark -
 #pragma mark View Did Load/Unload

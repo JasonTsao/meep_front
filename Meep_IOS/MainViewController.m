@@ -12,6 +12,7 @@
 #import "RightPanelViewController.h"
 #import "EventCreatorViewController.h"
 #import "EventPageViewController.h"
+#import "AccountViewController.h"
 
 #import <QuartzCore/QuartzCore.h>
 
@@ -25,6 +26,9 @@
 @interface MainViewController () <CenterViewControllerDelegate,UIGestureRecognizerDelegate>
 
 @property (nonatomic, strong) CenterViewController *centerViewController;
+
+@property (nonatomic, strong) AccountViewController *accountViewController;
+@property (nonatomic, assign) BOOL showingAccountPanel;
 
 @property (nonatomic, strong) LeftPanelViewController *leftPanelViewController;
 @property (nonatomic, assign) BOOL showingLeftPanel;
@@ -316,6 +320,13 @@
                              _centerViewController.leftButton.tag = 0;
                          }
                      }];
+}
+
+- (void) openAccountPage
+{
+    UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    _accountViewController = (AccountViewController *)[storyboard instantiateViewControllerWithIdentifier:@"accountSettings"];
+    [self presentViewController:_accountViewController animated:YES completion:nil];
 }
 
 - (void)movePanelToOriginalPosition

@@ -6,16 +6,16 @@
 //  Copyright (c) 2014 ___FULLUSERNAME___. All rights reserved.
 //
 
-#import "ViewController.h"
+#import "AccountViewController.h"
 
-@interface ViewController ()
+@interface AccountViewController ()
 
 @property NSArray *privacy;
 @property NSArray *reminders;
 @property NSArray *notifications;
 @end
 
-@implementation ViewController
+@implementation AccountViewController
     
 
 
