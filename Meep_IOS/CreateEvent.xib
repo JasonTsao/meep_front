@@ -10,6 +10,8 @@
                 <outlet property="eventText" destination="moK-zH-Ezn" id="2ZE-6k-aIz"/>
                 <outlet property="keyboardHeight" destination="kLg-4z-lfW" id="2CV-q7-hPR"/>
                 <outlet property="searchDisplayController" destination="t9z-Fc-4gB" id="fbt-Hs-cNZ"/>
+                <outlet property="textBoxTableConstraint" destination="ReB-s4-bcX" id="Spc-ZG-OJ2"/>
+                <outlet property="textboxVerticalTopSpace" destination="Hd5-d9-6Ph" id="DVt-Gj-khd"/>
                 <outlet property="view" destination="iN0-l3-epB" id="eCB-tg-nge"/>
             </connections>
         </placeholder>
@@ -21,7 +23,7 @@
                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalHuggingPriority="1000" verticalCompressionResistancePriority="250" keyboardDismissMode="interactive" usesAttributedText="YES" translatesAutoresizingMaskIntoConstraints="NO" id="moK-zH-Ezn">
                     <rect key="frame" x="0.0" y="65" width="320" height="461"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <attributedString key="attributedText"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences" keyboardAppearance="alert" returnKeyType="send"/>
                     <dataDetectorType key="dataDetectorTypes" link="YES" address="YES" calendarEvent="YES"/>
@@ -42,6 +44,9 @@
                             </barButtonItem>
                             <barButtonItem key="rightBarButtonItem" title="Send" id="NWG-wA-5x0">
                                 <color key="tintColor" red="1" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <connections>
+                                    <action selector="sendMessage:" destination="-1" id="0oa-2D-aa7"/>
+                                </connections>
                             </barButtonItem>
                         </navigationItem>
                     </items>
@@ -57,6 +62,7 @@
             </subviews>
             <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
+                <constraint firstItem="moK-zH-Ezn" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="65" id="Hd5-d9-6Ph"/>
                 <constraint firstItem="Vvt-i2-emX" firstAttribute="trailing" secondItem="moK-zH-Ezn" secondAttribute="trailing" id="Hzp-Gn-vQp"/>
                 <constraint firstItem="Vvt-i2-emX" firstAttribute="trailing" secondItem="m70-1l-eC3" secondAttribute="trailing" id="NKT-eg-Z2V"/>
                 <constraint firstItem="m70-1l-eC3" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="21" id="NS0-qV-zKs"/>

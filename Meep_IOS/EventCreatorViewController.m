@@ -14,6 +14,8 @@
 @property (weak, nonatomic) IBOutlet UITableView *NavBar;
 @property (nonatomic, strong) NSMutableArray *displayCell;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *keyboardHeight;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *textboxVerticalTopSpace;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *textBoxTableConstraint;
 
 @end
 
@@ -23,6 +25,25 @@
     [_delegate closeCreatorModal];
 }
 
+- (IBAction)sendMessage:(id)sender {
+    [self.eventText resignFirstResponder];
+}
+
+- (IBAction)locationSelect:(id)sender {
+    NSLog(@"pick location");
+}
+
+- (IBAction)timeSelect:(id)sender {
+    
+}
+
+- (IBAction)dateSelect:(id)sender {
+    
+}
+
+- (IBAction)nameSelect:(id)sender {
+    
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -34,21 +55,19 @@
 }
 
 - (void) keyboardWillShow:(NSNotification *)notification {
-    NSLog(@"keyboard will show");
     NSDictionary * info = [notification userInfo];
     NSValue *kbFrame = [info objectForKey:UIKeyboardFrameEndUserInfoKey];
     NSTimeInterval animationDuration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
     CGRect keyboardFrame = [kbFrame CGRectValue];
     CGFloat height = keyboardFrame.size.height;
-    NSLog(@"%f",height);
     _keyboardHeight.constant = height;
-    NSLog(@"%f",self.keyboardHeight.constant);
+    CGRect frameRect = self.eventText.frame;
+    frameRect.size.height = (self.eventText.frame.size.height - height);
+    frameRect.origin = self.eventText.frame.origin;
+    _eventText.frame = frameRect;
     [UIView animateWithDuration:animationDuration animations:^{
         [self.view layoutIfNeeded];
     }];
-    CGRect frameRect = self.eventText.frame;
-    frameRect.size.height = 100 * (frameRect.size.height - height);
-    _eventText.frame = frameRect;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView

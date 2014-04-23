@@ -21,10 +21,26 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                         <items>
-                            <barButtonItem title="Place" id="l6r-WM-sJv"/>
-                            <barButtonItem title="Time" id="fdK-yY-p37"/>
-                            <barButtonItem title="Date" id="0GS-RJ-B42"/>
-                            <barButtonItem title="Name" id="FkK-63-GGK"/>
+                            <barButtonItem title="Place" id="l6r-WM-sJv">
+                                <connections>
+                                    <action selector="locationSelect:" destination="-1" id="boJ-Jt-CrX"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem title="Time" id="fdK-yY-p37">
+                                <connections>
+                                    <action selector="timeSelect:" destination="-1" id="KSH-yp-dPC"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem title="Date" id="0GS-RJ-B42">
+                                <connections>
+                                    <action selector="dateSelect:" destination="-1" id="1qL-xg-Bqb"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem title="Name" id="FkK-63-GGK">
+                                <connections>
+                                    <action selector="nameSelect:" destination="-1" id="i36-u6-Hyy"/>
+                                </connections>
+                            </barButtonItem>
                         </items>
                     </toolbar>
                 </subviews>
