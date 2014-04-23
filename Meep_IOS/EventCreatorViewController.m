@@ -26,7 +26,7 @@
 }
 
 - (IBAction)sendMessage:(id)sender {
-    [self.eventText resignFirstResponder];
+
 }
 
 - (IBAction)locationSelect:(id)sender {
