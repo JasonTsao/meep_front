@@ -124,10 +124,6 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     //Event *currentRecord = [self.eventArray objectAtIndex:indexPath.row];
-    
-    // Return Data to delegate: either way is fine, although passing back the object may be more efficient
-    // [_delegate imageSelected:currentRecord.image withTitle:currentRecord.title withCreator:currentRecord.creator];
-    // [_delegate animalSelected:currentRecord];
 }
 
 - (void) observeKeyboard {

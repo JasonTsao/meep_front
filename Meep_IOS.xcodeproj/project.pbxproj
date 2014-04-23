@@ -17,7 +17,6 @@
 		3CCC509419059F9500EB0980 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CCC507C19059F9500EB0980 /* UIKit.framework */; };
 		3CCC509C19059F9500EB0980 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3CCC509A19059F9500EB0980 /* InfoPlist.strings */; };
 		3CCC509E19059F9500EB0980 /* Meep_IOSTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CCC509D19059F9500EB0980 /* Meep_IOSTests.m */; };
-		3CCC51531905A20D00EB0980 /* Animal.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CCC512F1905A20D00EB0980 /* Animal.m */; };
 		3CCC51541905A20D00EB0980 /* CenterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CCC51311905A20D00EB0980 /* CenterViewController.m */; };
 		3CCC51551905A20D00EB0980 /* CenterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3CCC51321905A20D00EB0980 /* CenterViewController.xib */; };
 		3CCC51561905A20D00EB0980 /* CreateEvent.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3CCC51331905A20D00EB0980 /* CreateEvent.xib */; };
@@ -72,8 +71,6 @@
 		3CCC509B19059F9500EB0980 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		3CCC509D19059F9500EB0980 /* Meep_IOSTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Meep_IOSTests.m; sourceTree = "<group>"; };
 		3CCC50F31905A0F300EB0980 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = InfoPlist.strings; sourceTree = "<group>"; };
-		3CCC512E1905A20D00EB0980 /* Animal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Animal.h; sourceTree = "<group>"; };
-		3CCC512F1905A20D00EB0980 /* Animal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Animal.m; sourceTree = "<group>"; };
 		3CCC51301905A20D00EB0980 /* CenterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CenterViewController.h; sourceTree = "<group>"; };
 		3CCC51311905A20D00EB0980 /* CenterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CenterViewController.m; sourceTree = "<group>"; };
 		3CCC51321905A20D00EB0980 /* CenterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CenterViewController.xib; sourceTree = "<group>"; };
@@ -176,8 +173,6 @@
 				3CCF9716190827A9005FA454 /* Account And Settings */,
 				3CCC51711905A51D00EB0980 /* Event Pages */,
 				3CCC516E1905A44400EB0980 /* Center Page */,
-				3CCC512E1905A20D00EB0980 /* Animal.h */,
-				3CCC512F1905A20D00EB0980 /* Animal.m */,
 				3CCC51341905A20D00EB0980 /* en.lproj */,
 				3CCC513E1905A20D00EB0980 /* Images.xcassets */,
 				3CCC51431905A20D00EB0980 /* MainCellLeft.xib */,
@@ -409,7 +404,6 @@
 				3CCC51581905A20D00EB0980 /* Event.m in Sources */,
 				3CCC508919059F9500EB0980 /* MEPAppDelegate.m in Sources */,
 				3CCC51591905A20D00EB0980 /* EventCreatorViewController.m in Sources */,
-				3CCC51531905A20D00EB0980 /* Animal.m in Sources */,
 				3CCC51621905A20D00EB0980 /* MainViewController.m in Sources */,
 				3CCF971B190827CE005FA454 /* AccountViewController.m in Sources */,
 				3CCC515B1905A20D00EB0980 /* EventPageViewController.m in Sources */,

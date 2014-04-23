@@ -9,7 +9,6 @@
 #import "CenterViewController.h"
 #import "MEEPhttp.h"
 #import "Event.h"
-#import "Animal.h"
 
 
 @interface CenterViewController () <UITableViewDataSource>
@@ -119,10 +118,6 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     Event *currentRecord = [self.eventArray objectAtIndex:indexPath.row];
-    
-    // Return Data to delegate: either way is fine, although passing back the object may be more efficient
-    // [_delegate imageSelected:currentRecord.image withTitle:currentRecord.title withCreator:currentRecord.creator];
-    // [_delegate animalSelected:currentRecord];
     [_delegate displayEventPage];
 }
 
@@ -218,16 +213,6 @@
  note: typically, you wouldn't create "duplicate" delagate methods, but we went with simplicity.
        doing it this way allowed us to show how to use the #define statement and the switch statement.
 */
-
-- (void)imageSelected:(UIImage *)image withTitle:(NSString *)imageTitle withCreator:(NSString *)imageCreator
-{
-    // only change the main display if an animal/image was selected
-}
-
-- (void)animalSelected:(Animal *)animal
-{
-    // only change the main display if an animal/image was selected
-}
 
 -(void)connection:(NSURLConnection*)connection didReceiveResponse:(NSURLResponse*)response
 {
