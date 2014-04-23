@@ -143,7 +143,7 @@
     if (_eventPageViewController != nil)
     {
         [self.eventPageViewController.view removeFromSuperview];
-        self.eventCreatorViewController = nil;
+        self.eventPageViewController = nil;
         
         self.showEventPage = NO;
     }
@@ -331,8 +331,6 @@
 
 - (void)displayEventPage {
     UIView * childView = [self getEventPageView];
-    // [self.view sendSubviewToBack:childView];
-    // [self.view addSubview:childView ];
     [[self navigationController] setView:childView];
 }
 

@@ -13,11 +13,13 @@
 @property (weak, nonatomic) IBOutlet UITableViewCell *TagButtonsBar;
 @property (weak, nonatomic) IBOutlet UITableView *NavBar;
 @property (nonatomic, strong) NSMutableArray *displayCell;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *keyboardHeight;
 
 @end
 
 @implementation EventCreatorViewController
 - (IBAction)backToMain:(id)sender {
+    [self.eventText resignFirstResponder];
     [_delegate closeCreatorModal];
 }
 
@@ -31,6 +33,24 @@
     return self;
 }
 
+- (void) keyboardWillShow:(NSNotification *)notification {
+    NSLog(@"keyboard will show");
+    NSDictionary * info = [notification userInfo];
+    NSValue *kbFrame = [info objectForKey:UIKeyboardFrameEndUserInfoKey];
+    NSTimeInterval animationDuration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    CGRect keyboardFrame = [kbFrame CGRectValue];
+    CGFloat height = keyboardFrame.size.height;
+    NSLog(@"%f",height);
+    _keyboardHeight.constant = height;
+    NSLog(@"%f",self.keyboardHeight.constant);
+    [UIView animateWithDuration:animationDuration animations:^{
+        [self.view layoutIfNeeded];
+    }];
+    CGRect frameRect = self.eventText.frame;
+    frameRect.size.height = 100 * (frameRect.size.height - height);
+    _eventText.frame = frameRect;
+}
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return 1;
@@ -38,7 +58,6 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSLog(@"NUMBER OF ROWS");
     //return [_displayCell count];
     return 1;
 }
@@ -111,15 +130,18 @@
     // [_delegate animalSelected:currentRecord];
 }
 
-
+- (void) observeKeyboard {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillChangeFrameNotification object:nil];
+}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [_eventText becomeFirstResponder];
-    //self.NavBar.dataSource = self;
+    self.NavBar.dataSource = self;
     self.NavBar.delegate = self;
     [self.NavBar reloadData];
+    [self observeKeyboard];
+    // [_eventText becomeFirstResponder];
     // Do any additional setup after loading the view.
 }
 

@@ -17,7 +17,7 @@
 
 @end
 
-@interface EventCreatorViewController : UIViewController
+@interface EventCreatorViewController : UIViewController <UITableViewDelegate>
 
 @property (nonatomic, assign) id<EventCreatorViewControllerDelegate> delegate;
 

@@ -8,6 +8,7 @@
             <connections>
                 <outlet property="NavBar" destination="Vvt-i2-emX" id="csB-4L-TNq"/>
                 <outlet property="eventText" destination="moK-zH-Ezn" id="2ZE-6k-aIz"/>
+                <outlet property="keyboardHeight" destination="kLg-4z-lfW" id="2CV-q7-hPR"/>
                 <outlet property="searchDisplayController" destination="t9z-Fc-4gB" id="fbt-Hs-cNZ"/>
                 <outlet property="view" destination="iN0-l3-epB" id="eCB-tg-nge"/>
             </connections>
@@ -17,16 +18,16 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" keyboardDismissMode="interactive" usesAttributedText="YES" translatesAutoresizingMaskIntoConstraints="NO" id="moK-zH-Ezn">
-                    <rect key="frame" x="0.0" y="62" width="320" height="159"/>
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalHuggingPriority="1000" verticalCompressionResistancePriority="250" keyboardDismissMode="interactive" usesAttributedText="YES" translatesAutoresizingMaskIntoConstraints="NO" id="moK-zH-Ezn">
+                    <rect key="frame" x="0.0" y="65" width="320" height="461"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <attributedString key="attributedText"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences" keyboardAppearance="alert" returnKeyType="send"/>
                     <dataDetectorType key="dataDetectorTypes" link="YES" address="YES" calendarEvent="YES"/>
                 </textView>
-                <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="m70-1l-eC3">
-                    <rect key="frame" x="0.0" y="18" width="320" height="44"/>
+                <navigationBar contentMode="scaleToFill" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="m70-1l-eC3">
+                    <rect key="frame" x="0.0" y="21" width="320" height="44"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                     <textAttributes key="titleTextAttributes">
                         <color key="textColor" red="0.54772555440000004" green="0.91066028229999996" blue="0.66053427419999999" alpha="1" colorSpace="calibratedRGB"/>
@@ -45,13 +46,28 @@
                         </navigationItem>
                     </items>
                 </navigationBar>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="Vvt-i2-emX">
-                    <rect key="frame" x="0.0" y="221" width="320" height="35"/>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" alwaysBounceVertical="YES" scrollEnabled="NO" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="Vvt-i2-emX">
+                    <rect key="frame" x="0.0" y="526" width="320" height="42"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="42" id="a0h-G8-uOD"/>
+                    </constraints>
                 </tableView>
             </subviews>
             <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="Vvt-i2-emX" firstAttribute="trailing" secondItem="moK-zH-Ezn" secondAttribute="trailing" id="Hzp-Gn-vQp"/>
+                <constraint firstItem="Vvt-i2-emX" firstAttribute="trailing" secondItem="m70-1l-eC3" secondAttribute="trailing" id="NKT-eg-Z2V"/>
+                <constraint firstItem="m70-1l-eC3" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="21" id="NS0-qV-zKs"/>
+                <constraint firstAttribute="trailing" secondItem="Vvt-i2-emX" secondAttribute="trailing" id="QJe-s8-eus"/>
+                <constraint firstItem="Vvt-i2-emX" firstAttribute="top" secondItem="moK-zH-Ezn" secondAttribute="bottom" id="ReB-s4-bcX"/>
+                <constraint firstItem="Vvt-i2-emX" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="TVk-t4-V2a"/>
+                <constraint firstItem="moK-zH-Ezn" firstAttribute="top" secondItem="m70-1l-eC3" secondAttribute="bottom" id="hnl-B6-NrB"/>
+                <constraint firstItem="Vvt-i2-emX" firstAttribute="leading" secondItem="m70-1l-eC3" secondAttribute="leading" id="jHu-6D-Hk9"/>
+                <constraint firstAttribute="bottom" secondItem="Vvt-i2-emX" secondAttribute="bottom" id="kLg-4z-lfW"/>
+                <constraint firstItem="Vvt-i2-emX" firstAttribute="leading" secondItem="moK-zH-Ezn" secondAttribute="leading" id="zRQ-B9-0Xz"/>
+            </constraints>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>

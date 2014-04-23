@@ -43,6 +43,7 @@
 		3CCC516D1905A3B000EB0980 /* Meep_IOS-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3CCC516B1905A3B000EB0980 /* Meep_IOS-Info.plist */; };
 		3CCC51701905A46400EB0980 /* EventCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3CCC516F1905A46400EB0980 /* EventCell.xib */; };
 		3CCC51731905A55F00EB0980 /* MeepIOS-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3CCC51721905A55F00EB0980 /* MeepIOS-Info.plist */; };
+		3CDDFFE01907343A006C91BD /* TagButtons.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3CDDFFDF1907343A006C91BD /* TagButtons.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -107,6 +108,7 @@
 		3CCC516C1905A3B000EB0980 /* Meep_IOS-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Meep_IOS-Prefix.pch"; sourceTree = "<group>"; };
 		3CCC516F1905A46400EB0980 /* EventCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EventCell.xib; sourceTree = "<group>"; };
 		3CCC51721905A55F00EB0980 /* MeepIOS-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "MeepIOS-Info.plist"; sourceTree = "<group>"; };
+		3CDDFFDF1907343A006C91BD /* TagButtons.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TagButtons.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -170,7 +172,6 @@
 				3CCC516E1905A44400EB0980 /* Center Page */,
 				3CCC512E1905A20D00EB0980 /* Animal.h */,
 				3CCC512F1905A20D00EB0980 /* Animal.m */,
-				3CCC51331905A20D00EB0980 /* CreateEvent.xib */,
 				3CCC51341905A20D00EB0980 /* en.lproj */,
 				3CCC513E1905A20D00EB0980 /* Images.xcassets */,
 				3CCC513F1905A20D00EB0980 /* LeftPanelViewController.h */,
@@ -260,6 +261,7 @@
 		3CCC51711905A51D00EB0980 /* Event Pages */ = {
 			isa = PBXGroup;
 			children = (
+				3CCC51331905A20D00EB0980 /* CreateEvent.xib */,
 				3CCC51371905A20D00EB0980 /* Event.h */,
 				3CCC51381905A20D00EB0980 /* Event.m */,
 				3CCC51391905A20D00EB0980 /* EventCreatorViewController.h */,
@@ -267,6 +269,7 @@
 				3CCC513B1905A20D00EB0980 /* EventPage.xib */,
 				3CCC513C1905A20D00EB0980 /* EventPageViewController.h */,
 				3CCC513D1905A20D00EB0980 /* EventPageViewController.m */,
+				3CDDFFDF1907343A006C91BD /* TagButtons.xib */,
 			);
 			name = "Event Pages";
 			sourceTree = "<group>";
@@ -350,6 +353,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3CDDFFE01907343A006C91BD /* TagButtons.xib in Resources */,
 				3CCC51701905A46400EB0980 /* EventCell.xib in Resources */,
 				3CCC508319059F9500EB0980 /* InfoPlist.strings in Resources */,
 				3CCC51671905A20D00EB0980 /* RightPanelViewController.xib in Resources */,
