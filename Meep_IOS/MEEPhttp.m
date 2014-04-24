@@ -18,23 +18,12 @@
     NSMutableData * body = [NSMutableData data];
     for(NSString * key in postDict.allKeys) {
         NSData * value = [[NSData alloc] init];
-<<<<<<< HEAD
-        NSLog(@"%@",key);
-        NSLog(@"%@",postDict[key]);
-        NSLog(@"%@",[postDict[key] class]);
-        if([postDict[key] isMemberOfClass:[NSString class]]) {
-            value = [[NSString stringWithFormat:@"%@",postDict[key]] dataUsingEncoding:NSUTF8StringEncoding];
-        }
-        else {
-            value = [[NSString stringWithFormat:@"%@",postDict[key]] dataUsingEncoding:NSUTF8StringEncoding];
-=======
-
         if([postDict[key] isKindOfClass:[NSString class]]) {
             value = [[NSString stringWithFormat:@"%@",postDict[key]] dataUsingEncoding:NSUTF8StringEncoding];
         }
         else {
+            value = [[NSString stringWithFormat:@"%@",postDict[key]] dataUsingEncoding:NSUTF8StringEncoding];
             NSLog(@"Error: no member postdict key: %@",postDict[key]);
->>>>>>> 869687bf68fa8911f99563fd7474b0e2beae547d
         }
         [body appendData:[[NSString stringWithFormat:@"--%@%@", boundary, kNewLine] dataUsingEncoding:NSUTF8StringEncoding]];
         [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"", key] dataUsingEncoding:NSUTF8StringEncoding]];
