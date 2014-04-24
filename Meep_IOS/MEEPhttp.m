@@ -19,11 +19,14 @@
     NSLog(@"%@",postDict);
     for(NSString * key in postDict.allKeys) {
         NSData * value = [[NSData alloc] init];
+        NSLog(@"%@",key);
+        NSLog(@"%@",postDict[key]);
+        NSLog(@"%@",[postDict[key] class]);
         if([postDict[key] isMemberOfClass:[NSString class]]) {
             value = [[NSString stringWithFormat:@"%@",postDict[key]] dataUsingEncoding:NSUTF8StringEncoding];
         }
         else {
-            NSLog(@"%@",postDict[key]);
+            value = [[NSString stringWithFormat:@"%@",postDict[key]] dataUsingEncoding:NSUTF8StringEncoding];
         }
         [body appendData:[[NSString stringWithFormat:@"--%@%@", boundary, kNewLine] dataUsingEncoding:NSUTF8StringEncoding]];
         [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"", key] dataUsingEncoding:NSUTF8StringEncoding]];
