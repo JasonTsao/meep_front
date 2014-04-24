@@ -8,6 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol EventElementViewControllerDelegate <NSObject>
+
+@optional
+
+@required
+
+@end
+
 @interface EventElementViewController : UIViewController
+
+@property (nonatomic, assign) id<EventElementViewControllerDelegate> delegate;
 
 @end
