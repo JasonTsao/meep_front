@@ -23,7 +23,7 @@
                         <items>
                             <barButtonItem title="Place" id="l6r-WM-sJv">
                                 <connections>
-                                    <action selector="locationSelect:" destination="-1" id="boJ-Jt-CrX"/>
+                                    <action selector="locationSelect:" destination="-1" id="qwS-mc-Cg7"/>
                                 </connections>
                             </barButtonItem>
                             <barButtonItem title="Time" id="fdK-yY-p37">

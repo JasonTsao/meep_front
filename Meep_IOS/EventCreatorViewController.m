@@ -10,9 +10,13 @@
 
 @interface EventCreatorViewController () <UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UITextView *eventText;
+
 @property (weak, nonatomic) IBOutlet UITableViewCell *TagButtonsBar;
+@property (strong, nonatomic) IBOutlet UITableViewCell *timeSelector;
+
 @property (weak, nonatomic) IBOutlet UITableView *NavBar;
 @property (nonatomic, strong) NSMutableArray *displayCell;
+
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *keyboardHeight;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *textboxVerticalTopSpace;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *textBoxTableConstraint;
@@ -30,7 +34,7 @@
 }
 
 - (IBAction)locationSelect:(id)sender {
-    NSLog(@"pick location");
+    
 }
 
 - (IBAction)timeSelect:(id)sender {
@@ -88,15 +92,22 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"HI Again");
+    if([_displayCell count] > 0) {
+        NSString * cellMainNibID = [self.displayCell objectAtIndex:indexPath.row];
+        if([cellMainNibID  isEqual: @"TimeSelect"]) {
+            _timeSelector = [_NavBar dequeueReusableCellWithIdentifier:cellMainNibID];
+            if(_timeSelector == nil) {
+                [[NSBundle mainBundle] loadNibNamed:cellMainNibID owner:self options:nil];
+            }
+            [self.NavBar registerClass:[UITableViewCell class] forCellReuseIdentifier:cellMainNibID];
+            return _timeSelector;
+        }
+    }
     static NSString *cellMainNibID = @"TagButtons";
-    
     _TagButtonsBar = [_NavBar dequeueReusableCellWithIdentifier:cellMainNibID];
-    NSLog(@"Tag buttons bar %@", _TagButtonsBar);
     if (_TagButtonsBar == nil) {
         [[NSBundle mainBundle] loadNibNamed:cellMainNibID owner:self options:nil];
     }
-
     [self.NavBar registerClass:[UITableViewCell class] forCellReuseIdentifier:cellMainNibID];
     return _TagButtonsBar;
 }
