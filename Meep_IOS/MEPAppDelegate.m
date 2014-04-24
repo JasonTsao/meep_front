@@ -7,9 +7,90 @@
 //
 
 #import "MEPAppDelegate.h"
+#import "MEEPhttp.h"
 #import "MainViewController.h"
+#import "AccountSettings.h"
 
 @implementation MEPAppDelegate
+
+
+- (void)getAccountSettings
+{
+    NSString * requestURL = [NSString stringWithFormat:@"%@settings/get",[MEEPhttp accountURL]];
+    NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:@"2",@"user",nil];
+    NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
+    NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    [conn start];
+}
+
+-(void)connection:(NSURLConnection*)connection didReceiveResponse:(NSURLResponse*)response
+{
+    _data = [[NSMutableData alloc] init]; // _data being an ivar
+}
+-(void)connection:(NSURLConnection*)connection didReceiveData:(NSData*)data
+{
+    [_data appendData:data];
+}
+-(void)connection:(NSURLConnection*)connection didFailWithError:(NSError*)error
+{
+    // Handle the error properly
+    NSLog(@"Call Failed");
+}
+-(void)connectionDidFinishLoading:(NSURLConnection*)connection
+{
+    [self handleData]; // Deal with the data
+}
+
+
+-(void)handleData{
+    NSError* error;
+    NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:_data options:0 error:&error];
+    NSDictionary * settings_data = jsonResponse[@"settings"];
+    BOOL privacy_allowed;
+    BOOL search_allowed;
+    BOOL reminders_allowed;
+    BOOL vibrate_on_notification;
+    @try{
+        if ([settings_data[@"private"] boolValue]){
+            privacy_allowed = YES;
+        }
+        else{
+            privacy_allowed = NO;
+        }
+        if ([settings_data[@"private"] boolValue]){
+            search_allowed = YES;
+        }
+        else{
+            search_allowed = NO;
+        }
+        if ([settings_data[@"searchable"] boolValue]){
+            reminders_allowed = YES;
+        }
+        else{
+            reminders_allowed = NO;
+        }
+        if ([settings_data[@"vibrate_on_notification"] boolValue]){
+            vibrate_on_notification = YES;
+        }
+        else{
+            vibrate_on_notification = NO;
+        }
+        privacy_allowed = [settings_data[@"private"] boolValue];
+        search_allowed = [settings_data[@"searchable"] boolValue];
+        reminders_allowed = [settings_data[@"reminder_on"] boolValue];
+        vibrate_on_notification = [settings_data[@"vibrate_on_notification"] boolValue];
+        
+        _account_settings = [[AccountSettings alloc]initWithPrivate: privacy_allowed withSearchable:search_allowed withReminders:reminders_allowed withVibrateOnNotification:vibrate_on_notification];
+    }
+    @catch(NSString *){
+        NSLog(@"Not getting account settings");
+    }
+    
+    //NSArray * upcoming = jsonResponse[@"upcoming_events"];
+    //NSArray * owned = jsonResponse[@"owned_upcoming_events"];
+}
+
+
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -18,6 +99,7 @@
     self.viewController = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
     self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];
+    [self getAccountSettings];
     return YES;
 }
 
