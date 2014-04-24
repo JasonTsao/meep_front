@@ -13,9 +13,6 @@
 
 @interface MEPAppDelegate()
 
-@property(nonatomic, strong) NSMutableData * data;
-@property (nonatomic, strong) AccountSettings * account_settings;
-
 @end
 
 @implementation MEPAppDelegate
@@ -107,9 +104,7 @@
     self.viewController = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
     self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];
-<<<<<<< HEAD
-    // [self getAccountSettings];
-=======
+    [self getAccountSettings];
     
     NSData *settingsData = [[NSUserDefaults standardUserDefaults] objectForKey:@"account_settings"];
     AccountSettings *user_account_settings = [NSKeyedUnarchiver unarchiveObjectWithData:settingsData];
@@ -126,8 +121,6 @@
         NSLog(@"reminders: %hhd", user_account_settings.reminders);
         NSLog(@"vibrate_on_notification%hhd", user_account_settings.vibrate_on_notification);
     }
-    
->>>>>>> 1f59d1d3f72a4c5ccf58b92768c6a6202896c520
     return YES;
 }
 
