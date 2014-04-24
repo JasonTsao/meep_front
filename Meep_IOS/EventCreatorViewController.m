@@ -7,12 +7,12 @@
 //
 
 #import "EventCreatorViewController.h"
+#import "EventElementViewController.h"
 
-@interface EventCreatorViewController () <UITableViewDataSource>
+@interface EventCreatorViewController () <UITableViewDataSource, EventElementViewControllerDelegate>
 @property (weak, nonatomic) IBOutlet UITextView *eventText;
 
 @property (weak, nonatomic) IBOutlet UITableViewCell *TagButtonsBar;
-@property (strong, nonatomic) IBOutlet UITableViewCell *timeSelector;
 
 @property (weak, nonatomic) IBOutlet UITableView *NavBar;
 @property (nonatomic, strong) NSMutableArray *displayCell;
@@ -20,6 +20,8 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *keyboardHeight;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *textboxVerticalTopSpace;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *textBoxTableConstraint;
+
+@property (nonatomic, strong) EventElementViewController *eventElementViewController;
 
 @end
 
@@ -38,7 +40,9 @@
 }
 
 - (IBAction)timeSelect:(id)sender {
-    
+    self.eventElementViewController = [[EventElementViewController alloc] initWithNibName:@"TimeSelect" bundle:nil];
+    self.eventElementViewController.delegate = self;
+    [self presentViewController:self.eventElementViewController animated:YES completion:nil];
 }
 
 - (IBAction)dateSelect:(id)sender {
@@ -92,17 +96,6 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if([_displayCell count] > 0) {
-        NSString * cellMainNibID = [self.displayCell objectAtIndex:indexPath.row];
-        if([cellMainNibID  isEqual: @"TimeSelect"]) {
-            _timeSelector = [_NavBar dequeueReusableCellWithIdentifier:cellMainNibID];
-            if(_timeSelector == nil) {
-                [[NSBundle mainBundle] loadNibNamed:cellMainNibID owner:self options:nil];
-            }
-            [self.NavBar registerClass:[UITableViewCell class] forCellReuseIdentifier:cellMainNibID];
-            return _timeSelector;
-        }
-    }
     static NSString *cellMainNibID = @"TagButtons";
     _TagButtonsBar = [_NavBar dequeueReusableCellWithIdentifier:cellMainNibID];
     if (_TagButtonsBar == nil) {
