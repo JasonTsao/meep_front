@@ -38,7 +38,6 @@
     [request setHTTPMethod:@"POST"];
     [request setValue:@"multipart/form-data; boundary=0xKhTmLbOuNdArY" forHTTPHeaderField:@"Content-Type"];
     [request setHTTPBody:body];
-    NSLog(@"%@", [[NSString alloc] initWithData:request.HTTPBody encoding:NSUTF8StringEncoding]);
     return request;
 }
 
