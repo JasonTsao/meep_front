@@ -125,7 +125,11 @@
 {
     [super viewDidLoad];
     self.eventArray = [[NSMutableArray alloc] init];
+<<<<<<< HEAD
     [self getUpcomingEvents];
+=======
+    //[self getUpcomingEvents];
+>>>>>>> 081cfdc41ba9885f40a93c6ef53ea528c61dfe46
     
 }
 
@@ -236,7 +240,7 @@
 -(void)handleData{
     NSError* error;
     NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:_data options:0 error:&error];
-    NSLog(@"%@",jsonResponse);
+    NSLog(@"Upcoming events response %@",jsonResponse);
     NSArray * upcoming = jsonResponse[@"upcoming_events"];
     NSArray * owned = jsonResponse[@"owned_upcoming_events"];
     NSLog(@"%i",[upcoming count]);
