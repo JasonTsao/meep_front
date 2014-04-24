@@ -9,6 +9,7 @@
 #import "AccountViewController.h"
 #import "MEEPhttp.h"
 #import "AccountSettings.h"
+#import "MEPAppDelegate.h"
 
 @interface AccountViewController ()
 
@@ -16,6 +17,8 @@
 @property NSArray *reminders;
 @property NSArray *notifications;
 @property(nonatomic, strong) NSMutableData * data;
+@property(nonatomic, strong) AccountSettings * user_account_settings;
+
 
 @property BOOL privacy_allowed;
 @property BOOL search_allowed;
@@ -75,7 +78,6 @@
     }
     //[NSNumber numberWithBool:value]
     NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:@"2",@"user", field, @"field", value_string, @"value",nil];
-    NSLog(@"request url %@", requestURL);
     NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
     NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
     [conn start];
@@ -113,6 +115,9 @@
 {
     UISwitch *switch_button = sender;
     NSLog(@"Tapped Private Switch! %hhd", switch_button.on);
+    _user_account_settings.user_is_private = switch_button.on;
+    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:_user_account_settings];
+    [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"account_settings"];
     [self updateAccountSettingfieldName: @"private" valueName:switch_button.on];
     
 }
@@ -121,6 +126,9 @@
 {
     UISwitch *switch_button = sender;
     NSLog(@"Tapped Searchable Switch! %hhd", switch_button.on);
+    _user_account_settings.searchable = switch_button.on;
+    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:_user_account_settings];
+    [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"account_settings"];
     [self updateAccountSettingfieldName: @"searchable" valueName:switch_button.on];
 }
 
@@ -128,6 +136,9 @@
 {
     UISwitch *switch_button = sender;
     NSLog(@"Tapped Reminders Switch! %hhd", switch_button.on);
+    _user_account_settings.reminders = switch_button.on;
+    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:_user_account_settings];
+    [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"account_settings"];
     [self updateAccountSettingfieldName: @"reminder_on" valueName:switch_button.on];
 }
 
@@ -135,6 +146,9 @@
 {
     UISwitch *switch_button = sender;
     NSLog(@"Tapped Notifications Switch! %hhd", switch_button.on);
+    _user_account_settings.vibrate_on_notification = switch_button.on;
+    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:_user_account_settings];
+    [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"account_settings"];
     [self updateAccountSettingfieldName: @"vibrate_on_notification" valueName:switch_button.on];
 }
 
@@ -153,11 +167,11 @@
         cell.textLabel.text = self.privacy[indexPath.row];
         
         if (indexPath.row == 0){
-            newSwitch.on = self.privacy_allowed;
+            newSwitch.on = _user_account_settings.user_is_private;
             [newSwitch addTarget:self action:@selector(privateSwitch:) forControlEvents:UIControlEventTouchUpInside];
         }
         else if(indexPath.row == 1){
-            newSwitch.on = self.search_allowed;
+            newSwitch.on = _user_account_settings.searchable;
             [newSwitch addTarget:self action:@selector(searchableSwitch:) forControlEvents:UIControlEventTouchUpInside];
         }
     }
@@ -165,7 +179,7 @@
         cell.textLabel.text = self.reminders[indexPath.row];
         if (indexPath.row == 0){
             //newSwitch.on = YES;
-            newSwitch.on = self.reminders_allowed;
+            newSwitch.on =  _user_account_settings.reminders;
             [newSwitch addTarget:self action:@selector(remindersSwitch:) forControlEvents:UIControlEventTouchUpInside];
         }
     }
@@ -173,7 +187,7 @@
         cell.textLabel.text = self.notifications[indexPath.row];
         if (indexPath.row == 0){
             //newSwitch.on = YES;
-            newSwitch.on = self.vibrate_on_notification;
+            newSwitch.on =  _user_account_settings.vibrate_on_notification;
             [newSwitch addTarget:self action:@selector(notificationsSwitch:) forControlEvents:UIControlEventTouchUpInside];
         }
         
@@ -188,6 +202,14 @@
     self.privacy = @[@"Private", @"Searchable"];
     self.reminders = @[@"Reminder"];
     self.notifications = @[@"Vibrate On Notification"];
+
+    NSLog(@"Settings from archive");
+    NSData *settingsData = [[NSUserDefaults standardUserDefaults] objectForKey:@"account_settings"];
+    _user_account_settings = [NSKeyedUnarchiver unarchiveObjectWithData:settingsData];
+    NSLog(@"private: %hhd", _user_account_settings.user_is_private);
+    NSLog(@"searchable: %hhd", _user_account_settings.searchable);
+    NSLog(@"reminders: %hhd", _user_account_settings.reminders);
+    NSLog(@"vibrate_on_notification%hhd", _user_account_settings.vibrate_on_notification);
 	// Do any additional setup after loading the view, typically from a nib.
 }
 

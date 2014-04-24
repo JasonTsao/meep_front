@@ -12,8 +12,6 @@
 #import "AccountSettings.h"
 
 @implementation MEPAppDelegate
-
-
 - (void)getAccountSettings
 {
     NSString * requestURL = [NSString stringWithFormat:@"%@settings/get",[MEEPhttp accountURL]];
@@ -80,7 +78,10 @@
         reminders_allowed = [settings_data[@"reminder_on"] boolValue];
         vibrate_on_notification = [settings_data[@"vibrate_on_notification"] boolValue];
         
-        _account_settings = [[AccountSettings alloc]initWithPrivate: privacy_allowed withSearchable:search_allowed withReminders:reminders_allowed withVibrateOnNotification:vibrate_on_notification];
+        AccountSettings *account_settings = [[AccountSettings alloc]initWithPrivate: privacy_allowed withSearchable:search_allowed withReminders:reminders_allowed withVibrateOnNotification:vibrate_on_notification];
+        
+        NSData *data = [NSKeyedArchiver archivedDataWithRootObject:account_settings];
+        [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"account_settings"];
     }
     @catch(NSString *){
         NSLog(@"Not getting account settings");
@@ -99,7 +100,23 @@
     self.viewController = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
     self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];
-    [self getAccountSettings];
+    
+    NSData *settingsData = [[NSUserDefaults standardUserDefaults] objectForKey:@"account_settings"];
+    AccountSettings *user_account_settings = [NSKeyedUnarchiver unarchiveObjectWithData:settingsData];
+    if (!user_account_settings){
+        NSLog(@"No user account settings");
+        NSLog(@"%@", user_account_settings);
+        [self getAccountSettings];
+    }
+    else{
+        NSLog(@"yes there is user accounts");
+        NSLog(@"%@", user_account_settings);
+        NSLog(@"private: %hhd", user_account_settings.user_is_private);
+        NSLog(@"searchable: %hhd", user_account_settings.searchable);
+        NSLog(@"reminders: %hhd", user_account_settings.reminders);
+        NSLog(@"vibrate_on_notification%hhd", user_account_settings.vibrate_on_notification);
+    }
+    
     return YES;
 }
 
