@@ -13,6 +13,7 @@
 @optional
 
 @required
+- (void)updateEventWithDateTime:(NSDate *)selectedDate;
 
 @end
 

@@ -20,8 +20,11 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *keyboardHeight;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *textboxVerticalTopSpace;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *textBoxTableConstraint;
+@property (nonatomic, assign) BOOL keyboardShowed;
 
 @property (nonatomic, strong) EventElementViewController *eventElementViewController;
+
+@property (nonatomic, assign) NSString *eventMessage;
 
 @end
 
@@ -40,6 +43,7 @@
 }
 
 - (IBAction)timeSelect:(id)sender {
+    self.eventMessage = [_eventText text];
     self.eventElementViewController = [[EventElementViewController alloc] initWithNibName:@"TimeSelect" bundle:nil];
     self.eventElementViewController.delegate = self;
     [self presentViewController:self.eventElementViewController animated:YES completion:nil];
@@ -53,6 +57,22 @@
     
 }
 
+- (void)updateEventWithDateTime:(NSDate *) selectedDate {
+    NSLog(@"%@",selectedDate);
+    NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+    [dateFormat setDateFormat:@"MM/dd/yyyy"];
+    NSDateFormatter *timeFormat = [[NSDateFormatter alloc] init];
+    [timeFormat setDateFormat:@"HH:mm"];
+    NSString *time = [timeFormat stringFromDate:selectedDate];
+    NSString *date = [dateFormat stringFromDate:selectedDate];
+    NSString *dateTimeInsert = [NSString stringWithFormat:@" at %@ on %@",time,date];
+    NSLog(@"%@",dateTimeInsert);
+    NSString *textHolder = [[NSString alloc] initWithFormat:@"%@%@",_eventMessage,dateTimeInsert];
+    [self.eventText setText:textHolder];
+    [self dismissViewControllerAnimated:YES completion:nil];
+    [self.eventText becomeFirstResponder];
+}
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -63,6 +83,8 @@
 }
 
 - (void) keyboardWillShow:(NSNotification *)notification {
+    if(_keyboardShowed)
+        return;
     NSDictionary * info = [notification userInfo];
     NSValue *kbFrame = [info objectForKey:UIKeyboardFrameEndUserInfoKey];
     NSTimeInterval animationDuration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
@@ -76,6 +98,7 @@
     [UIView animateWithDuration:animationDuration animations:^{
         [self.view layoutIfNeeded];
     }];
+    self.keyboardShowed = YES;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -159,8 +182,10 @@
     self.NavBar.dataSource = self;
     self.NavBar.delegate = self;
     [self.NavBar reloadData];
+    self.keyboardShowed = NO;
+    self.eventMessage = @"";
     [self observeKeyboard];
-    // [_eventText becomeFirstResponder];
+    [_eventText becomeFirstResponder];
     // Do any additional setup after loading the view.
 }
 

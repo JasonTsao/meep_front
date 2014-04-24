@@ -11,6 +11,13 @@
 #import "MainViewController.h"
 #import "AccountSettings.h"
 
+@interface MEPAppDelegate()
+
+@property(nonatomic, strong) NSMutableData * data;
+@property (nonatomic, strong) AccountSettings * account_settings;
+
+@end
+
 @implementation MEPAppDelegate
 
 
@@ -99,7 +106,7 @@
     self.viewController = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
     self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];
-    [self getAccountSettings];
+    // [self getAccountSettings];
     return YES;
 }
 

@@ -11,9 +11,6 @@
 #import "AccountSettings.h"
 
 @interface MEPAppDelegate : UIResponder <UIApplicationDelegate>
-
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) MainViewController *viewController;
-@property(nonatomic, strong) NSMutableData * data;
-@property (nonatomic) AccountSettings * account_settings;
 @end

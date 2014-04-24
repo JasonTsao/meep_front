@@ -20,7 +20,8 @@
 }
 
 - (IBAction)selectTime:(id)sender {
-    
+    NSDate * selectedDay = [self.timeSelect date];
+    [_delegate updateEventWithDateTime:selectedDay];
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil

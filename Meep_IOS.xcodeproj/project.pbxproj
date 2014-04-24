@@ -47,6 +47,7 @@
 		3CDDCDA1190872C600F851EE /* TimeSelect.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3CDDCDA0190872C600F851EE /* TimeSelect.xib */; };
 		3CDDCDA419087D0000F851EE /* EventElementViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CDDCDA319087D0000F851EE /* EventElementViewController.m */; };
 		3CDDFFE01907343A006C91BD /* TagButtons.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3CDDFFDF1907343A006C91BD /* TagButtons.xib */; };
+		3CE1C87719099BCB00E4375A /* AccountSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE1C87619099BCB00E4375A /* AccountSettings.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -116,6 +117,8 @@
 		3CDDCDA219087D0000F851EE /* EventElementViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventElementViewController.h; sourceTree = "<group>"; };
 		3CDDCDA319087D0000F851EE /* EventElementViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventElementViewController.m; sourceTree = "<group>"; };
 		3CDDFFDF1907343A006C91BD /* TagButtons.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TagButtons.xib; sourceTree = "<group>"; };
+		3CE1C87519099BCB00E4375A /* AccountSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountSettings.h; sourceTree = "<group>"; };
+		3CE1C87619099BCB00E4375A /* AccountSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountSettings.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -175,6 +178,8 @@
 		3CCC507E19059F9500EB0980 /* Meep_IOS */ = {
 			isa = PBXGroup;
 			children = (
+				3CE1C87519099BCB00E4375A /* AccountSettings.h */,
+				3CE1C87619099BCB00E4375A /* AccountSettings.m */,
 				3CD313B21908A664002DDBF1 /* Event Creator */,
 				3CCF9716190827A9005FA454 /* Account And Settings */,
 				3CCC51711905A51D00EB0980 /* Event Pages */,
@@ -417,6 +422,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3CE1C87719099BCB00E4375A /* AccountSettings.m in Sources */,
 				3CCC51641905A20D00EB0980 /* MEEPhttp.m in Sources */,
 				3CCC51581905A20D00EB0980 /* Event.m in Sources */,
 				3CCC508919059F9500EB0980 /* MEPAppDelegate.m in Sources */,
