@@ -16,14 +16,14 @@
     NSString * kNewLine = @"\r\n";
     
     NSMutableData * body = [NSMutableData data];
-    NSLog(@"%@",postDict);
     for(NSString * key in postDict.allKeys) {
         NSData * value = [[NSData alloc] init];
-        if([postDict[key] isMemberOfClass:[NSString class]]) {
+
+        if([postDict[key] isKindOfClass:[NSString class]]) {
             value = [[NSString stringWithFormat:@"%@",postDict[key]] dataUsingEncoding:NSUTF8StringEncoding];
         }
         else {
-            NSLog(@"%@",postDict[key]);
+            NSLog(@"Error: no member postdict key: %@",postDict[key]);
         }
         [body appendData:[[NSString stringWithFormat:@"--%@%@", boundary, kNewLine] dataUsingEncoding:NSUTF8StringEncoding]];
         [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"", key] dataUsingEncoding:NSUTF8StringEncoding]];
@@ -38,6 +38,7 @@
     [request setHTTPMethod:@"POST"];
     [request setValue:@"multipart/form-data; boundary=0xKhTmLbOuNdArY" forHTTPHeaderField:@"Content-Type"];
     [request setHTTPBody:body];
+    NSLog(@"%@", [[NSString alloc] initWithData:request.HTTPBody encoding:NSUTF8StringEncoding]);
     return request;
 }
 
