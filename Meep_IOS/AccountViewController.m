@@ -114,12 +114,8 @@
 - (void)privateSwitch:(id)sender
 {
     UISwitch *switch_button = sender;
-    NSLog(@"Tapped Private Switch! %hhd", switch_button.on);
     _user_account_settings.user_is_private = switch_button.on;
-    NSLog(@"private: %hhd", _user_account_settings.user_is_private);
     NSData *data = [NSKeyedArchiver archivedDataWithRootObject:_user_account_settings];
-    //[[NSUserDefaults standardUserDefaults] se];
-    
     [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"account_settings"];
     [NSUserDefaults resetStandardUserDefaults];
     [self updateAccountSettingfieldName: @"private" valueName:switch_button.on];
@@ -129,9 +125,7 @@
 - (void)searchableSwitch:(id)sender
 {
     UISwitch *switch_button = sender;
-    NSLog(@"Tapped Searchable Switch! %hhd", switch_button.on);
     _user_account_settings.searchable = switch_button.on;
-    NSLog(@"searchable: %hhd", _user_account_settings.searchable);
     NSData *data = [NSKeyedArchiver archivedDataWithRootObject:_user_account_settings];
     [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"account_settings"];
     [NSUserDefaults resetStandardUserDefaults];
@@ -141,9 +135,7 @@
 - (void)remindersSwitch:(id)sender
 {
     UISwitch *switch_button = sender;
-    NSLog(@"Tapped Reminders Switch! %hhd", switch_button.on);
     _user_account_settings.reminders = switch_button.on;
-    NSLog(@"reminders: %hhd", _user_account_settings.reminders);
     NSData *data = [NSKeyedArchiver archivedDataWithRootObject:_user_account_settings];
     [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"account_settings"];
     [NSUserDefaults resetStandardUserDefaults];
@@ -153,9 +145,7 @@
 - (void)notificationsSwitch:(id)sender
 {
     UISwitch *switch_button = sender;
-    NSLog(@"Tapped Notifications Switch! %hhd", switch_button.on);
     _user_account_settings.vibrate_on_notification = switch_button.on;
-    NSLog(@"vibrate_on_notification: %hhd", _user_account_settings.vibrate_on_notification);
     NSData *data = [NSKeyedArchiver archivedDataWithRootObject:_user_account_settings];
     [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"account_settings"];
     [NSUserDefaults resetStandardUserDefaults];
