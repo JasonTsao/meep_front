@@ -8,6 +8,7 @@
 
 #import "AccountViewController.h"
 #import "MEEPhttp.h"
+#import "AccountSettings.h"
 
 @interface AccountViewController ()
 
@@ -59,17 +60,6 @@
     return numRows;
 }
 
-- (NSDictionary*)getAccountSettings
-{
-    NSDictionary * account_settings_dict;
-    NSString * requestURL = [NSString stringWithFormat:@"%@settings/get",[MEEPhttp accountURL]];
-    NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:@"2",@"user",nil];
-    NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
-    NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
-    [conn start];
-    return account_settings_dict;
-}
-
 - (void) updateAccountSettingfieldName:(NSString *)field valueName:(BOOL) value
 {
     NSString * requestURL = [NSString stringWithFormat:@"%@settings/update",[MEEPhttp accountURL]];
@@ -84,14 +74,7 @@
         value_string = @"false";
     }
     //[NSNumber numberWithBool:value]
-<<<<<<< HEAD
-    NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:
-                               @"2",@"user",
-                               field,@"field",
-                               @YES,@"value",nil];
-=======
     NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:@"2",@"user", field, @"field", value_string, @"value",nil];
->>>>>>> 869687bf68fa8911f99563fd7474b0e2beae547d
     NSLog(@"request url %@", requestURL);
     NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
     NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
@@ -120,42 +103,6 @@
 -(void)handleData{
     NSError* error;
     NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:_data options:0 error:&error];
-    NSDictionary * settings_data = jsonResponse[@"settings"];
-    @try{
-        if ([settings_data[@"private"] boolValue]){
-            self.privacy_allowed = YES;
-        }
-        else{
-            self.privacy_allowed = NO;
-        }
-        if ([settings_data[@"private"] boolValue]){
-            self.search_allowed = YES;
-        }
-        else{
-            self.search_allowed = NO;
-        }
-        if ([settings_data[@"searchable"] boolValue]){
-            self.reminders_allowed = YES;
-        }
-        else{
-            self.reminders_allowed = NO;
-        }
-        if ([settings_data[@"vibrate_on_notification"] boolValue]){
-            self.vibrate_on_notification = YES;
-        }
-        else{
-            self.vibrate_on_notification = NO;
-        }
-        self.privacy_allowed = [settings_data[@"private"] boolValue];
-        self.search_allowed = [settings_data[@"searchable"] boolValue];
-        self.reminders_allowed = [settings_data[@"reminder_on"] boolValue];
-        self.vibrate_on_notification = [settings_data[@"vibrate_on_notification"] boolValue];
-        
-
-    }
-    @catch(NSString *){
-        NSLog(@"Not getting account settings");
-    }
 
     //NSArray * upcoming = jsonResponse[@"upcoming_events"];
     //NSArray * owned = jsonResponse[@"owned_upcoming_events"];
@@ -241,10 +188,6 @@
     self.privacy = @[@"Private", @"Searchable"];
     self.reminders = @[@"Reminder"];
     self.notifications = @[@"Vibrate On Notification"];
-    
-    NSLog(@"Getting Account settings from server");
-    [self getAccountSettings];
-
 	// Do any additional setup after loading the view, typically from a nib.
 }
 
