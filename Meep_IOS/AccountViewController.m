@@ -74,7 +74,14 @@
         value_string = @"false";
     }
     //[NSNumber numberWithBool:value]
+<<<<<<< HEAD
+    NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:
+                               @"2",@"user",
+                               field,@"field",
+                               @YES,@"value",nil];
+=======
     NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:@"2",@"user", field, @"field", value_string, @"value",nil];
+>>>>>>> 869687bf68fa8911f99563fd7474b0e2beae547d
     NSLog(@"request url %@", requestURL);
     NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
     NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];

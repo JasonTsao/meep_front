@@ -125,8 +125,12 @@
 {
     [super viewDidLoad];
     self.eventArray = [[NSMutableArray alloc] init];
-    //[self getUpcomingEvents];
-    
+    // [self getUpcomingEvents];
+
+
+
+
+
 }
 
 - (void) getUpcomingEvents {
