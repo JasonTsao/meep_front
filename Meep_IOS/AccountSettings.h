@@ -8,11 +8,16 @@
 
 #import <Foundation/Foundation.h>
 
-@interface AccountSettings : NSObject
-@property BOOL user_is_private;
-@property BOOL searchable;
-@property BOOL reminders;
-@property BOOL vibrate_on_notification;
+@interface AccountSettings : NSObject <NSCoding>{
+    BOOL user_is_private;
+    BOOL searchable;
+    BOOL reminders;
+    BOOL vibrate_on_notification;
+}
+@property (nonatomic) BOOL user_is_private;
+@property (nonatomic) BOOL searchable;
+@property (nonatomic) BOOL reminders;
+@property (nonatomic) BOOL vibrate_on_notification;
 
 -(id) initWithPrivate:(BOOL) acctPrivate
                  withSearchable:(BOOL) acctSearchable
