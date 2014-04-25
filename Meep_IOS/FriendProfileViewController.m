@@ -38,6 +38,7 @@
     self.title = self.currentFriend.name;
     [_nameLabel setText:_currentFriend.name];
     [_bioLabel setText:_currentFriend.bio];
+    [_currentProfileImage setImage:self.currentFriend.profilePic];
     // Do any additional setup after loading the view.
 }
 
@@ -57,7 +58,6 @@
     // Pass the selected object to the new view controller.
     FriendFullSizeProfileImageViewController *pvc = [segue destinationViewController];
     pvc.currentFriend = self.currentFriend;
-    //pvc.fullProfilePicture = self.profilePicture;
 }
 
 
