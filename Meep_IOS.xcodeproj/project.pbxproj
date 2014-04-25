@@ -49,6 +49,12 @@
 		3CDDCDA419087D0000F851EE /* EventElementViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CDDCDA319087D0000F851EE /* EventElementViewController.m */; };
 		3CDDFFE01907343A006C91BD /* TagButtons.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3CDDFFDF1907343A006C91BD /* TagButtons.xib */; };
 		3CE1C87719099BCB00E4375A /* AccountSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE1C87619099BCB00E4375A /* AccountSettings.m */; };
+		968630351909FAB200CAE305 /* Friend.m in Sources */ = {isa = PBXBuildFile; fileRef = 9686302C1909FAB200CAE305 /* Friend.m */; };
+		968630361909FAB200CAE305 /* FriendFullSizeProfileImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9686302E1909FAB200CAE305 /* FriendFullSizeProfileImageViewController.m */; };
+		968630371909FAB200CAE305 /* FriendProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 968630301909FAB200CAE305 /* FriendProfileViewController.m */; };
+		968630381909FAB200CAE305 /* FriendsListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 968630321909FAB200CAE305 /* FriendsListTableViewController.m */; };
+		968630391909FAB200CAE305 /* Photo.m in Sources */ = {isa = PBXBuildFile; fileRef = 968630341909FAB200CAE305 /* Photo.m */; };
+		9686303B1909FB1100CAE305 /* FriendsStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9686303A1909FB1100CAE305 /* FriendsStoryboard.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -121,6 +127,17 @@
 		3CDDFFDF1907343A006C91BD /* TagButtons.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TagButtons.xib; sourceTree = "<group>"; };
 		3CE1C87519099BCB00E4375A /* AccountSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountSettings.h; sourceTree = "<group>"; };
 		3CE1C87619099BCB00E4375A /* AccountSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountSettings.m; sourceTree = "<group>"; };
+		9686302B1909FAB200CAE305 /* Friend.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Friend.h; sourceTree = "<group>"; };
+		9686302C1909FAB200CAE305 /* Friend.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Friend.m; sourceTree = "<group>"; };
+		9686302D1909FAB200CAE305 /* FriendFullSizeProfileImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendFullSizeProfileImageViewController.h; sourceTree = "<group>"; };
+		9686302E1909FAB200CAE305 /* FriendFullSizeProfileImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendFullSizeProfileImageViewController.m; sourceTree = "<group>"; };
+		9686302F1909FAB200CAE305 /* FriendProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendProfileViewController.h; sourceTree = "<group>"; };
+		968630301909FAB200CAE305 /* FriendProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendProfileViewController.m; sourceTree = "<group>"; };
+		968630311909FAB200CAE305 /* FriendsListTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendsListTableViewController.h; sourceTree = "<group>"; };
+		968630321909FAB200CAE305 /* FriendsListTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendsListTableViewController.m; sourceTree = "<group>"; };
+		968630331909FAB200CAE305 /* Photo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Photo.h; sourceTree = "<group>"; };
+		968630341909FAB200CAE305 /* Photo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Photo.m; sourceTree = "<group>"; };
+		9686303A1909FB1100CAE305 /* FriendsStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = FriendsStoryboard.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -180,6 +197,7 @@
 		3CCC507E19059F9500EB0980 /* Meep_IOS */ = {
 			isa = PBXGroup;
 			children = (
+				9686302A1909FA7700CAE305 /* Friend Pages */,
 				3CE1C87519099BCB00E4375A /* AccountSettings.h */,
 				3CE1C87619099BCB00E4375A /* AccountSettings.m */,
 				3CD313B21908A664002DDBF1 /* Event Creator */,
@@ -309,6 +327,24 @@
 			name = "Event Creator";
 			sourceTree = "<group>";
 		};
+		9686302A1909FA7700CAE305 /* Friend Pages */ = {
+			isa = PBXGroup;
+			children = (
+				9686302B1909FAB200CAE305 /* Friend.h */,
+				9686302C1909FAB200CAE305 /* Friend.m */,
+				9686302D1909FAB200CAE305 /* FriendFullSizeProfileImageViewController.h */,
+				9686302E1909FAB200CAE305 /* FriendFullSizeProfileImageViewController.m */,
+				9686302F1909FAB200CAE305 /* FriendProfileViewController.h */,
+				968630301909FAB200CAE305 /* FriendProfileViewController.m */,
+				968630311909FAB200CAE305 /* FriendsListTableViewController.h */,
+				968630321909FAB200CAE305 /* FriendsListTableViewController.m */,
+				968630331909FAB200CAE305 /* Photo.h */,
+				968630341909FAB200CAE305 /* Photo.m */,
+				9686303A1909FB1100CAE305 /* FriendsStoryboard.storyboard */,
+			);
+			name = "Friend Pages";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -396,6 +432,7 @@
 				3CCC51601905A20D00EB0980 /* MainCellLeft.xib in Resources */,
 				3CCC515C1905A20D00EB0980 /* Images.xcassets in Resources */,
 				3CCC51561905A20D00EB0980 /* CreateEvent.xib in Resources */,
+				9686303B1909FB1100CAE305 /* FriendsStoryboard.storyboard in Resources */,
 				3CCC51631905A20D00EB0980 /* MainViewController.xib in Resources */,
 				3CCC51731905A55F00EB0980 /* MeepIOS-Info.plist in Resources */,
 				3CCC515A1905A20D00EB0980 /* EventPage.xib in Resources */,
@@ -429,16 +466,21 @@
 				3CE1C87719099BCB00E4375A /* AccountSettings.m in Sources */,
 				3CCC51641905A20D00EB0980 /* MEEPhttp.m in Sources */,
 				3CCC51581905A20D00EB0980 /* Event.m in Sources */,
+				968630391909FAB200CAE305 /* Photo.m in Sources */,
 				3CCC508919059F9500EB0980 /* MEPAppDelegate.m in Sources */,
 				3CCC51591905A20D00EB0980 /* EventCreatorViewController.m in Sources */,
 				3CCC51621905A20D00EB0980 /* MainViewController.m in Sources */,
+				968630351909FAB200CAE305 /* Friend.m in Sources */,
 				3CDDCDA419087D0000F851EE /* EventElementViewController.m in Sources */,
 				3CCF971B190827CE005FA454 /* AccountViewController.m in Sources */,
 				3CCC515B1905A20D00EB0980 /* EventPageViewController.m in Sources */,
 				3CCC51541905A20D00EB0980 /* CenterViewController.m in Sources */,
 				3CCC516A1905A20D00EB0980 /* User.m in Sources */,
+				968630381909FAB200CAE305 /* FriendsListTableViewController.m in Sources */,
 				3CCC515F1905A20D00EB0980 /* main.m in Sources */,
 				3CCC515D1905A20D00EB0980 /* LeftPanelViewController.m in Sources */,
+				968630371909FAB200CAE305 /* FriendProfileViewController.m in Sources */,
+				968630361909FAB200CAE305 /* FriendFullSizeProfileImageViewController.m in Sources */,
 				3CCC51661905A20D00EB0980 /* RightPanelViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

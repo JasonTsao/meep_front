@@ -23,6 +23,7 @@
 - (void)displayEventPage;
 - (void)returnToMain;
 - (void)openAccountPage;
+- (void)openFriendsListPage;
 
 @end
 
