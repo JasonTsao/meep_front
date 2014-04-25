@@ -337,7 +337,10 @@
 {
     UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"FriendsStoryboard" bundle:nil];
     _friendsListTableViewController = (FriendsListTableViewController *)[storyboard instantiateViewControllerWithIdentifier:@"friendsList"];
-    [self presentViewController:_friendsListTableViewController animated:YES completion:nil];
+    
+    UINavigationController *navigation = [[UINavigationController alloc]initWithRootViewController:_friendsListTableViewController];
+    [self presentViewController:navigation animated:YES completion:nil];
+    /*[self presentViewController:_friendsListTableViewController animated:YES completion:nil];*/
 }
 
 

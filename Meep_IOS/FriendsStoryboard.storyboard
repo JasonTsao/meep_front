@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5053" systemVersion="12F45" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="HSh-dA-ke6">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5053" systemVersion="12F45" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="l58-8e-dOf">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
@@ -34,7 +34,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XJR-6Y-UAh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-394" y="-160"/>
+            <point key="canvasLocation" x="132" y="-160"/>
         </scene>
         <!--Friend Profile View Controller-->
         <scene sceneID="VlD-Bg-GyA">
@@ -89,7 +89,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="isj-jj-cpJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-11" y="-393"/>
+            <point key="canvasLocation" x="515" y="-393"/>
         </scene>
         <!--Friend Full Size Profile Image View Controller-->
         <scene sceneID="F7N-kQ-tVp">
@@ -127,25 +127,25 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2QN-Td-CbB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-11" y="294"/>
+            <point key="canvasLocation" x="515" y="294"/>
         </scene>
         <!--Navigation Controller-->
-        <scene sceneID="Lu5-pk-EaJ">
+        <scene sceneID="O7J-tn-CF8">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="HSh-dA-ke6" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="l58-8e-dOf" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="iPL-T3-RVm">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="QoP-2m-upd">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="h00-dK-bOe" kind="relationship" relationship="rootViewController" id="Vej-Wy-v3n"/>
+                        <segue destination="h00-dK-bOe" kind="relationship" relationship="rootViewController" id="11q-Cb-xQc"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="h1i-9b-xPk" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="KRR-nk-GZZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-920" y="-160"/>
+            <point key="canvasLocation" x="-394" y="-160"/>
         </scene>
     </scenes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
