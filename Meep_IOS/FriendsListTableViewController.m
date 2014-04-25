@@ -145,6 +145,15 @@
     cell.textLabel.text = currentFriend.name;
     // Configure the cell...
     
+    //NSURL *url = [[NSURL alloc] initWithString:currentFriend.imageFileName ];
+    NSURL *url = [[NSURL alloc] initWithString:@"https://graph.facebook.com/jason.s.tsao/picture"];
+    NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url];
+    //NSData *urlData = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:&response error:nil];
+    NSData *urlData = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:nil error:nil];
+    UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
+    NSLog(@"ui image %@", image);
+    [cell.imageView setImage: image];
+    
     return cell;
 }
 
