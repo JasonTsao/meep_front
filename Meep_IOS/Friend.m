@@ -17,6 +17,7 @@
 @synthesize phoneNumber;
 @synthesize numFriends;
 @synthesize numTimesInvitedByMe;
+@synthesize profilePic;
 
 - (id)initWithCoder:(NSCoder *)decoder {
     if (self = [super init]) {
@@ -27,6 +28,7 @@
         self.phoneNumber = [decoder decodeObjectForKey:@"phoneNumber"];
         self.numFriends = [decoder decodeIntegerForKey:@"numFriends"];
         self.numTimesInvitedByMe = [decoder decodeIntegerForKey:@"numTimesInvitedByMe"];
+        self.profilePic = [decoder decodeObjectForKey:@"profilePic"];
     }
     return self;
 }
@@ -39,6 +41,7 @@
     [encoder encodeObject: phoneNumber forKey:@"phoneNumber"];
     [encoder encodeInteger:numFriends forKey:@"numFriends"];
     [encoder encodeInteger:numTimesInvitedByMe forKey:@"numTimesInvitedByMe"];
+    [encoder encodeObject:profilePic forKey:@"profilePic"];
 }
 
 

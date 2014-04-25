@@ -28,7 +28,7 @@
 
 - (void)getFriendsList
 {
-    NSString * requestURL = [NSString stringWithFormat:@"%@friends/list/1",[MEEPhttp accountURL]];
+    NSString * requestURL = [NSString stringWithFormat:@"%@friends/list/2",[MEEPhttp accountURL]];
     NSLog(@"request url : %@", requestURL);
     NSDictionary * postDict = [[NSDictionary alloc] init];
     NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
@@ -58,7 +58,6 @@
 -(void)handleData{
     NSError* error;
     NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:_data options:0 error:&error];
-    NSLog(@"List of friends:%@", jsonResponse);
     NSArray * friends = jsonResponse[@"friends"];
     NSLog(@"friends list: %@", friends);
     friends_list = [[NSMutableArray alloc]init];
@@ -73,8 +72,15 @@
         new_friend.phoneNumber= new_friend_dict[@"phone_number"];
         new_friend.imageFileName = new_friend_dict[@"pf_pic"];
         new_friend.bio = new_friend_dict[@"bio"];
-        //new_friend.bio = @"Standard Bio";
         
+        NSURL *url = [[NSURL alloc] initWithString:new_friend_dict[@"fb_pfpic_url"]];
+        //NSURL *url = [[NSURL alloc] initWithString:@"https://graph.facebook.com/jason.s.tsao/picture"];
+        NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url];
+        //NSData *urlData = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:&response error:nil];
+        NSData *urlData = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:nil error:nil];
+        UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
+        new_friend.profilePic = image;
+        NSLog(@"new friend pf pic %@", new_friend.profilePic);
         
         [friends_list addObject:new_friend];
     }
@@ -104,8 +110,8 @@
     }
     else{
         NSLog(@"There was friends list data stored already");
-        friends_list = user_friends_list;
-    }*/
+    }
+    friends_list = user_friends_list;*/
 
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -143,15 +149,7 @@
     
     Friend *currentFriend = [friends_list objectAtIndex:indexPath.row];
     cell.textLabel.text = currentFriend.name;
-    // Configure the cell...
-    
-    //NSURL *url = [[NSURL alloc] initWithString:currentFriend.imageFileName ];
-    NSURL *url = [[NSURL alloc] initWithString:@"https://graph.facebook.com/jason.s.tsao/picture"];
-    NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url];
-    //NSData *urlData = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:&response error:nil];
-    NSData *urlData = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:nil error:nil];
-    UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
-    NSLog(@"ui image %@", image);
+    UIImage *image = currentFriend.profilePic;
     [cell.imageView setImage: image];
     
     return cell;

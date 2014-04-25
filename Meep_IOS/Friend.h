@@ -16,6 +16,7 @@
     NSString *phoneNumber;
     NSInteger numFriends;
     NSInteger numTimesInvitedByMe;
+    UIImage * profilePic;
 }
 
 @property (nonatomic) NSInteger account_id;
@@ -25,7 +26,7 @@
 @property (nonatomic) NSString *phoneNumber;
 @property (nonatomic) NSInteger numFriends;
 @property (nonatomic) NSInteger numTimesInvitedByMe;
-
+@property (nonatomic) UIImage * profilePic;
 
 
 @end
