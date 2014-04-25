@@ -13,6 +13,7 @@
 #import "EventCreatorViewController.h"
 #import "EventPageViewController.h"
 #import "AccountViewController.h"
+#import "FriendsListTableViewController.h"
 
 #import <QuartzCore/QuartzCore.h>
 
@@ -26,6 +27,9 @@
 @interface MainViewController () <CenterViewControllerDelegate,UIGestureRecognizerDelegate>
 
 @property (nonatomic, strong) CenterViewController *centerViewController;
+
+@property (nonatomic, strong) FriendsListTableViewController *friendsListTableViewController;
+@property (nonatomic, assign) BOOL showingFriendsPanel;
 
 @property (nonatomic, strong) AccountViewController *accountViewController;
 @property (nonatomic, assign) BOOL showingAccountPanel;
@@ -328,6 +332,14 @@
     _accountViewController = (AccountViewController *)[storyboard instantiateViewControllerWithIdentifier:@"accountSettings"];
     [self presentViewController:_accountViewController animated:YES completion:nil];
 }
+
+- (void) openFriendsListPage
+{
+    UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"FriendsStoryboard" bundle:nil];
+    _friendsListTableViewController = (FriendsListTableViewController *)[storyboard instantiateViewControllerWithIdentifier:@"friendsList"];
+    [self presentViewController:_friendsListTableViewController animated:YES completion:nil];
+}
+
 
 - (void)movePanelToOriginalPosition
 {

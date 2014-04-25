@@ -14,6 +14,7 @@
 
 @required
 - (void)openAccountSettings;
+- (void)openFriendsListPage;
 
 @end
 

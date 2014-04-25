@@ -21,6 +21,9 @@
 - (IBAction)openAccountSettings:(id)sender {
     [_delegate openAccountSettings];
 }
+- (IBAction)openFriendsListPage:(id)sender {
+    [_delegate openFriendsListPage];
+}
 
 #pragma mark -
 #pragma mark View Did Load/Unload
