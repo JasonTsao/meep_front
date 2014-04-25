@@ -18,7 +18,7 @@
 
 @end
 
-@interface EventCreatorViewController : UIViewController <UITableViewDelegate>
+@interface EventCreatorViewController : UIViewController <UITableViewDelegate, UITextInputDelegate>
 
 @property (nonatomic, assign) id<EventCreatorViewControllerDelegate> delegate;
 

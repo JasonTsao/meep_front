@@ -39,7 +39,10 @@
 }
 
 - (IBAction)locationSelect:(id)sender {
-    
+    self.eventMessage = [_eventText text];
+    self.eventElementViewController = [[EventElementViewController alloc] initWithNibName:@"LocationSearch" bundle:nil];
+    self.eventElementViewController.delegate = self;
+    [self presentViewController:self.eventElementViewController animated:YES completion:nil];
 }
 
 - (IBAction)timeSelect:(id)sender {
