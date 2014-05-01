@@ -24,6 +24,10 @@
 - (IBAction)openFriendsListPage:(id)sender {
     [_delegate openFriendsListPage];
 }
+- (IBAction)openCreateGroupPage:(id)sender {
+    [_delegate openCreateGroupPage];
+}
+
 
 #pragma mark -
 #pragma mark View Did Load/Unload

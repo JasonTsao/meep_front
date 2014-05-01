@@ -7,7 +7,7 @@
         <!--Create Group View Controller-->
         <scene sceneID="KdE-Mq-Q32">
             <objects>
-                <viewController id="jC0-DX-Qft" customClass="CreateGroupViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="createGroup" id="jC0-DX-Qft" customClass="CreateGroupViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="PWa-0M-Hl4"/>
                         <viewControllerLayoutGuide type="bottom" id="ODa-x1-uJp"/>

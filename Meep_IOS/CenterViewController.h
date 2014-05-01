@@ -11,6 +11,7 @@
 #import "EventCreatorViewController.h"
 #import "EventPageViewController.h"
 #import "AccountViewController.h"
+#import "CreateGroupViewController.h"
 
 @protocol CenterViewControllerDelegate <NSObject>
 
@@ -24,6 +25,7 @@
 - (void)returnToMain;
 - (void)openAccountPage;
 - (void)openFriendsListPage;
+- (void)openCreateGroupPage;
 
 @end
 

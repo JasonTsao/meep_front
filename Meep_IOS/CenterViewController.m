@@ -39,6 +39,11 @@
     [_delegate openFriendsListPage];
 }
 
+- (void)openCreateGroupPage
+{
+    [_delegate openCreateGroupPage];
+}
+
 #pragma mark -
 #pragma mark View Did Load/Unload
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView

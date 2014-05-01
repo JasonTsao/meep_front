@@ -14,6 +14,7 @@
 #import "EventPageViewController.h"
 #import "AccountViewController.h"
 #import "FriendsListTableViewController.h"
+#import "CreateGroupViewController.h"
 
 #import <QuartzCore/QuartzCore.h>
 
@@ -27,6 +28,9 @@
 @interface MainViewController () <CenterViewControllerDelegate,UIGestureRecognizerDelegate>
 
 @property (nonatomic, strong) CenterViewController *centerViewController;
+
+@property (nonatomic, strong) CreateGroupViewController *createGroupViewController;
+@property (nonatomic, assign) BOOL showGroupCreationPage;
 
 @property (nonatomic, strong) FriendsListTableViewController *friendsListTableViewController;
 @property (nonatomic, assign) BOOL showingFriendsPanel;
@@ -331,6 +335,13 @@
     UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     _accountViewController = (AccountViewController *)[storyboard instantiateViewControllerWithIdentifier:@"accountSettings"];
     [self presentViewController:_accountViewController animated:YES completion:nil];
+}
+
+- (void) openCreateGroupPage
+{
+    UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"GroupsStoryboard" bundle:nil];
+    _createGroupViewController = (CreateGroupViewController *)[storyboard instantiateViewControllerWithIdentifier:@"createGroup"];
+    [self presentViewController:_createGroupViewController animated:YES completion:nil];
 }
 
 - (void) openFriendsListPage

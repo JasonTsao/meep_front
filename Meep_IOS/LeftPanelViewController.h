@@ -15,7 +15,7 @@
 @required
 - (void)openAccountSettings;
 - (void)openFriendsListPage;
-
+- (void)openCreateGroupPage;
 @end
 
 @interface LeftPanelViewController : UIViewController
