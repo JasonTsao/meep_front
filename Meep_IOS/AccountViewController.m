@@ -28,6 +28,11 @@
 
 @implementation AccountViewController
 
+- (IBAction)backToMain:(id)sender {
+    [self.delegate backToCenterFromAccountSettings:self];
+}
+
+
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return 3;

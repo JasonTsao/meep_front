@@ -49,6 +49,11 @@
     [_delegate openCreateEventPage];
 }
 
+- (void)openGroupsPage
+{
+    [_delegate openGroupsPage];
+}
+
 
 #pragma mark -
 #pragma mark View Did Load/Unload

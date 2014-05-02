@@ -1,13 +1,69 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5053" systemVersion="12F45" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="jC0-DX-Qft">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5053" systemVersion="12F45" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="5fm-XC-SF0">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <scenes>
+        <!--Navigation Controller-->
+        <scene sceneID="nZs-Sp-qit">
+            <objects>
+                <navigationController definesPresentationContext="YES" id="5fm-XC-SF0" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="K6e-FG-tj7">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="5Gn-CY-OXz" kind="relationship" relationship="rootViewController" id="tmM-s1-voe"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="45Q-bM-yAc" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-987" y="-135"/>
+        </scene>
+        <!--Groups View Controller - Groups-->
+        <scene sceneID="jPT-Xw-eIl">
+            <objects>
+                <tableViewController storyboardIdentifier="groups" id="5Gn-CY-OXz" customClass="GroupsViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="YgQ-tf-jEp">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="gkN-RX-MSS">
+                                <rect key="frame" x="0.0" y="86" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="gkN-RX-MSS" id="611-7F-MeS">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="5Gn-CY-OXz" id="n4q-wu-4hh"/>
+                            <outlet property="delegate" destination="5Gn-CY-OXz" id="Dqh-8g-Rmg"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Groups" id="FhS-FR-9I3">
+                        <barButtonItem key="leftBarButtonItem" title="Back" id="KXK-78-Oka">
+                            <connections>
+                                <action selector="backToMain:" destination="5Gn-CY-OXz" id="bp7-QW-xrl"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Create" id="Tna-2P-YPN">
+                            <connections>
+                                <segue destination="jC0-DX-Qft" kind="push" id="3jG-Nf-fO5"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="eJK-gT-OL8" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-13" y="-11"/>
+        </scene>
         <!--Create Group View Controller-->
         <scene sceneID="KdE-Mq-Q32">
             <objects>
-                <viewController storyboardIdentifier="createGroup" id="jC0-DX-Qft" customClass="CreateGroupViewController" sceneMemberID="viewController">
+                <placeholder placeholderIdentifier="IBFirstResponder" id="9sv-Wg-L2p" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <viewController id="jC0-DX-Qft" customClass="CreateGroupViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="PWa-0M-Hl4"/>
                         <viewControllerLayoutGuide type="bottom" id="ODa-x1-uJp"/>
@@ -22,7 +78,7 @@
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="selectCell" id="xS1-q8-dm1">
-                                        <rect key="frame" x="0.0" y="55" width="320" height="44"/>
+                                        <rect key="frame" x="0.0" y="119" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="xS1-q8-dm1" id="MbW-fn-N4z">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
@@ -35,19 +91,6 @@
                                     <outlet property="delegate" destination="jC0-DX-Qft" id="xTK-hE-Gan"/>
                                 </connections>
                             </tableView>
-                            <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="D8A-SA-QWW">
-                                <rect key="frame" x="0.0" y="19" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                <items>
-                                    <navigationItem title="Create Group" id="7XL-Rp-3ec">
-                                        <barButtonItem key="rightBarButtonItem" title="Create" id="PXK-z2-pcU">
-                                            <connections>
-                                                <action selector="createGroup:" destination="jC0-DX-Qft" id="GIc-LF-nFu"/>
-                                            </connections>
-                                        </barButtonItem>
-                                    </navigationItem>
-                                </items>
-                            </navigationBar>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Name: ex Roomates" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="FFB-mt-hSP">
                                 <rect key="frame" x="20" y="75" width="280" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -57,14 +100,16 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
+                    <navigationItem key="navigationItem" id="zIP-ZX-RuW">
+                        <barButtonItem key="rightBarButtonItem" title="Create" id="hob-CH-J0j"/>
+                    </navigationItem>
                     <connections>
                         <outlet property="friendTable" destination="RXP-rq-3xF" id="6RC-3N-WrN"/>
                         <outlet property="nameField" destination="FFB-mt-hSP" id="3up-wW-y1L"/>
                     </connections>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="9sv-Wg-L2p" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="138" y="83"/>
+            <point key="canvasLocation" x="402" y="21"/>
         </scene>
     </scenes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

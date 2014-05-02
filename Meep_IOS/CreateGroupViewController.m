@@ -187,6 +187,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.title = @"Create Group";
     friends_list = [[NSMutableArray alloc]init];
     selected_friends_list = [[NSMutableArray alloc]init];
     NSData *friendsListData = [[NSUserDefaults standardUserDefaults] objectForKey:@"friends_list"];

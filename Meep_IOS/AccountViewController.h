@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+@class AccountViewController;
 @protocol AccountViewControllerDelegate <NSObject>
-
+- (void) backToCenterFromAccountSettings:(AccountViewController *)controller;
 @optional
 
 @required
@@ -19,5 +20,5 @@
 @interface AccountViewController : UIViewController <UITableViewDataSource>
 
 @property (nonatomic, assign) id <AccountViewControllerDelegate> delegate;
-
+- (IBAction) backToMain:(id)sender;
 @end

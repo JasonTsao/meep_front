@@ -12,9 +12,9 @@
 #import "RightPanelViewController.h"
 #import "EventCreatorViewController.h"
 #import "EventPageViewController.h"
-#import "AccountViewController.h"
+//#import "AccountViewController.h"
 #import "FriendsListTableViewController.h"
-#import "CreateGroupViewController.h"
+//#import "CreateGroupViewController.h"
 #import "InviteFriendsViewController.h"
 
 #import <QuartzCore/QuartzCore.h>
@@ -32,6 +32,9 @@
 
 @property (nonatomic, strong) CreateGroupViewController *createGroupViewController;
 @property (nonatomic, assign) BOOL showGroupCreationPage;
+
+@property (nonatomic, strong) GroupsViewController *groupsViewController;
+@property (nonatomic, assign) BOOL showGroupsPage;
 
 @property (nonatomic, strong) FriendsListTableViewController *friendsListTableViewController;
 @property (nonatomic, assign) BOOL showingFriendsPanel;
@@ -338,15 +341,33 @@
 {
     UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     _accountViewController = (AccountViewController *)[storyboard instantiateViewControllerWithIdentifier:@"accountSettings"];
-    [self presentViewController:_accountViewController animated:YES completion:nil];
+    
+    UINavigationController *navigation = [[UINavigationController alloc]initWithRootViewController:_accountViewController];
+    [_accountViewController setDelegate:self];
+    [self presentViewController:navigation animated:YES completion:nil];
+    //[self presentViewController:_accountViewController animated:YES completion:nil];
 }
 
 - (void) openCreateGroupPage
 {
     UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"GroupsStoryboard" bundle:nil];
-    _createGroupViewController = (CreateGroupViewController *)[storyboard instantiateViewControllerWithIdentifier:@"createGroup"];
+    _createGroupViewController = (CreateGroupViewController *)[storyboard instantiateViewControllerWithIdentifier:@"groups"];
     [self presentViewController:_createGroupViewController animated:YES completion:nil];
 }
+
+
+
+- (void) openGroupsPage
+{
+    UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"GroupsStoryboard" bundle:nil];
+    _groupsViewController = (GroupsViewController *)[storyboard instantiateViewControllerWithIdentifier:@"groups"];
+    
+    UINavigationController *navigation = [[UINavigationController alloc]initWithRootViewController:_groupsViewController];
+    [_groupsViewController setDelegate:self];
+    [self presentViewController:navigation animated:YES completion:nil];
+    /*[self presentViewController:_friendsListTableViewController animated:YES completion:nil];*/
+}
+
 
 - (void) openCreateEventPage
 {
@@ -368,11 +389,27 @@
     _friendsListTableViewController = (FriendsListTableViewController *)[storyboard instantiateViewControllerWithIdentifier:@"friendsList"];
     
     UINavigationController *navigation = [[UINavigationController alloc]initWithRootViewController:_friendsListTableViewController];
+    [_friendsListTableViewController setDelegate:self];
     [self presentViewController:navigation animated:YES completion:nil];
     /*[self presentViewController:_friendsListTableViewController animated:YES completion:nil];*/
 }
 
 - (void) backToCenterFromCreateEvent:(InviteFriendsViewController *)controller
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void) backToCenterFromAccountSettings:(AccountViewController *)controller
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void) backToCenterFromGroups:(GroupsViewController *)controller
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void) backToCenterFromFriends:(FriendsListTableViewController *)controller
 {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
