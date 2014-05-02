@@ -58,6 +58,11 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="izL-D3-9yv">
+                        <barButtonItem key="leftBarButtonItem" title="Back" id="G5v-da-JO2">
+                            <connections>
+                                <action selector="backToMain:" destination="jC0-DX-Qft" id="rjf-k1-aLI"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Next" id="GeG-fR-Lfp">
                             <connections>
                                 <segue destination="XGZ-vb-7Gt" kind="push" id="pft-gy-D4y"/>

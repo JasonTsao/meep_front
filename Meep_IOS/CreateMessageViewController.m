@@ -26,6 +26,8 @@
     return self;
 }
 
+
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     NSString *friend_name;
     Friend *selectedFriend;

@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "InviteFriendsViewController.h"
 
-@interface MainViewController : UIViewController
+@interface MainViewController : UIViewController<InviteFriendsViewControllerDelegate>
 
 @end

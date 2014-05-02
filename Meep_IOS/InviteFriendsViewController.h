@@ -9,6 +9,15 @@
 #import <UIKit/UIKit.h>
 #import "CreateMessageViewController.h"
 
+@class InviteFriendsViewController;
+
+@protocol InviteFriendsViewControllerDelegate
+- (void) backToCenterFromCreateEvent:(InviteFriendsViewController *)controller;
+@end
+
 @interface InviteFriendsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
+@property(nonatomic, strong) id <InviteFriendsViewControllerDelegate> delegate;
 @property(nonatomic, strong) NSMutableData * data;
+
+- (IBAction) backToMain:(id)sender;
 @end

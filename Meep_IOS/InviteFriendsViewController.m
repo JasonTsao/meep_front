@@ -31,6 +31,11 @@
     return self;
 }
 
+- (IBAction)backToMain:(id)sender {
+    [self.delegate backToCenterFromCreateEvent:self];
+}
+
+
 - (void)getFriendsList
 {
     NSString * requestURL = [NSString stringWithFormat:@"%@friends/list/1",[MEEPhttp accountURL]];

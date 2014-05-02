@@ -357,6 +357,7 @@
     _inviteFriendsViewController = (InviteFriendsViewController *)[storyboard instantiateViewControllerWithIdentifier:@"createEvent"];
     
     UINavigationController *navigation = [[UINavigationController alloc]initWithRootViewController:_inviteFriendsViewController];
+    [_inviteFriendsViewController setDelegate:self];
     [self presentViewController:navigation animated:YES completion:nil];
 }
 
@@ -369,6 +370,11 @@
     UINavigationController *navigation = [[UINavigationController alloc]initWithRootViewController:_friendsListTableViewController];
     [self presentViewController:navigation animated:YES completion:nil];
     /*[self presentViewController:_friendsListTableViewController animated:YES completion:nil];*/
+}
+
+- (void) backToCenterFromCreateEvent:(InviteFriendsViewController *)controller
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 
