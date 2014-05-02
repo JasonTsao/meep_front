@@ -211,10 +211,6 @@
     NSLog(@"Settings from archive");
     NSData *settingsData = [[NSUserDefaults standardUserDefaults] objectForKey:@"account_settings"];
     _user_account_settings = [NSKeyedUnarchiver unarchiveObjectWithData:settingsData];
-    NSLog(@"private: %hhd", _user_account_settings.user_is_private);
-    NSLog(@"searchable: %hhd", _user_account_settings.searchable);
-    NSLog(@"reminders: %hhd", _user_account_settings.reminders);
-    NSLog(@"vibrate_on_notification: %hhd", _user_account_settings.vibrate_on_notification);
 	// Do any additional setup after loading the view, typically from a nib.
 }
 

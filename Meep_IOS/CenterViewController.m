@@ -90,6 +90,7 @@
         Event *currentRecord = [self.eventArray objectAtIndex:indexPath.row];
         NSLog(@"%@",currentRecord.description);
         NSLog(@"%@",currentRecord.name);
+        
         title.text = [NSString stringWithFormat:@"%@", currentRecord.name];
         description.text = [NSString stringWithFormat:@"%@", currentRecord.description];
     }
@@ -139,24 +140,19 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     Event *currentRecord = [self.eventArray objectAtIndex:indexPath.row];
-    [_delegate displayEventPage];
+    [_delegate displayEventPage:currentRecord];
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     self.eventArray = [[NSMutableArray alloc] init];
-    // [self getUpcomingEvents];
-
-
-
-
-
+    [self getUpcomingEvents];
 }
 
 - (void) getUpcomingEvents {
     NSString * requestURL = [NSString stringWithFormat:@"%@upcoming/1",[MEEPhttp eventURL]];
-    NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:@"12",@"user", nil];
+    NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:@"1",@"user", nil];
     NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
     NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
     [conn start];
@@ -274,7 +270,8 @@
         Event * event = [[Event alloc] initWithDescription:eventObj[@"description"] withName:eventObj[@"name"] startTime:eventObj[@"start_time"]];
         [_eventArray addObject:event];
     }
-    for(NSString *eventStr in owned) {
+    
+    /*for(NSString *eventStr in owned) {
         NSString * description = @"empty";
         NSString * name = @"Event";
         NSDictionary * eventObj = [NSJSONSerialization JSONObjectWithData:[eventStr dataUsingEncoding:NSUTF8StringEncoding] options:0 error:nil];
@@ -287,7 +284,7 @@
         }
         Event * event = [[Event alloc] initWithDescription:description withName:name startTime:@""];
         [self.eventArray addObject:event];
-    }
+    }*/
     self.upcomingEventsTable.dataSource = self;
     self.upcomingEventsTable.delegate = self;
     [self.upcomingEventsTable reloadData];

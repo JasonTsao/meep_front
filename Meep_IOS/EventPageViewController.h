@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Event.h"
 
 @protocol EventPageViewControllerDelegate <NSObject>
 
@@ -18,7 +19,7 @@
 @end
 
 @interface EventPageViewController : UIViewController
-
+@property (nonatomic) Event *currentEvent;
 @property (nonatomic, assign) id<EventPageViewControllerDelegate> delegate;
 
 @end

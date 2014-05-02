@@ -16,6 +16,7 @@
 #import "FriendsListTableViewController.h"
 //#import "CreateGroupViewController.h"
 #import "InviteFriendsViewController.h"
+#import "Event.h"
 
 #import <QuartzCore/QuartzCore.h>
 
@@ -211,6 +212,8 @@
         [self.view addSubview:self.eventPageViewController.view];
         [_eventPageViewController didMoveToParentViewController:self];
         _eventPageViewController.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+        //_eventPageViewController.currentEvent =
+        
     }
     self.showEventPage = YES;
     [self showCenterViewWithShadow:YES withOffset:2];
@@ -426,7 +429,8 @@
     }];
 }
 
-- (void)displayEventPage {
+- (void)displayEventPage:(Event *)event{
+    NSLog(@"event: %@", event);
     UIView * childView = [self getEventPageView];
     [[self navigationController] setView:childView];
 }

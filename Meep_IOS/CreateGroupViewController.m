@@ -67,9 +67,7 @@
 -(void)handleData{
     NSError* error;
     NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:_data options:0 error:&error];
-    NSLog(@"List of friends:%@", jsonResponse);
     NSArray * friends = jsonResponse[@"friends"];
-    NSLog(@"friends list: %@", friends);
     friends_list = [[NSMutableArray alloc]init];
     for( int i = 0; i< [friends count]; i++){
         Friend *new_friend = [[Friend alloc]init];
