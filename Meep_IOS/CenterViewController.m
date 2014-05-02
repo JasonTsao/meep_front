@@ -44,6 +44,12 @@
     [_delegate openCreateGroupPage];
 }
 
+- (void)openCreateEventPage
+{
+    [_delegate openCreateEventPage];
+}
+
+
 #pragma mark -
 #pragma mark View Did Load/Unload
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -202,6 +208,11 @@
             break;
     }
 }
+
+- (IBAction)openCreateEvent:(id)sender {
+    [_delegate openCreateEventPage];
+}
+
 
 - (IBAction)btnMovePanelLeft:(id)sender
 {

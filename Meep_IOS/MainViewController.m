@@ -15,6 +15,7 @@
 #import "AccountViewController.h"
 #import "FriendsListTableViewController.h"
 #import "CreateGroupViewController.h"
+#import "InviteFriendsViewController.h"
 
 #import <QuartzCore/QuartzCore.h>
 
@@ -47,6 +48,9 @@
 @property (nonatomic, assign) BOOL showPanel;
 @property( nonatomic, assign) CGPoint preVelocity;
 @property( nonatomic, strong) EventCreatorViewController *eventCreatorViewController;
+
+@property (nonatomic, strong) InviteFriendsViewController *inviteFriendsViewController;
+@property (nonatomic, assign) BOOL showEventCreator;
 
 @property (nonatomic, strong) EventPageViewController *eventPageViewController;
 @property (nonatomic, assign) BOOL showEventPage;
@@ -343,6 +347,19 @@
     _createGroupViewController = (CreateGroupViewController *)[storyboard instantiateViewControllerWithIdentifier:@"createGroup"];
     [self presentViewController:_createGroupViewController animated:YES completion:nil];
 }
+
+- (void) openCreateEventPage
+{
+    /*UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"CreateEventStoryboard" bundle:nil];
+    _inviteFriendsViewController = (InviteFriendsViewController *)[storyboard instantiateViewControllerWithIdentifier:@"createEvent"];
+    [self presentViewController:_inviteFriendsViewController animated:YES completion:nil];*/
+    UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"CreateEventStoryboard" bundle:nil];
+    _inviteFriendsViewController = (InviteFriendsViewController *)[storyboard instantiateViewControllerWithIdentifier:@"createEvent"];
+    
+    UINavigationController *navigation = [[UINavigationController alloc]initWithRootViewController:_inviteFriendsViewController];
+    [self presentViewController:navigation animated:YES completion:nil];
+}
+
 
 - (void) openFriendsListPage
 {
