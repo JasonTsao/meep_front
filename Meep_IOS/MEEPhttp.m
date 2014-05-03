@@ -21,7 +21,22 @@
         if([postDict[key] isKindOfClass:[NSString class]]) {
             value = [[NSString stringWithFormat:@"%@",postDict[key]] dataUsingEncoding:NSUTF8StringEncoding];
         }
-        else {
+        else if ([postDict[key] isKindOfClass:[NSMutableArray class]]){
+            NSError *error;
+            NSData *jsonData = [NSJSONSerialization dataWithJSONObject:postDict[key]
+                                                               options:0
+                                                                 error:&error];
+            
+            if (!jsonData) {
+                NSLog(@"No json mutable array data: %@", error);
+            } else {
+                
+                NSString *JSONString = [[NSString alloc] initWithBytes:[jsonData bytes] length:[jsonData length] encoding:NSUTF8StringEncoding];
+                NSLog(@"JSON string: %@", JSONString);
+                value = [[NSString stringWithFormat:@"%@",JSONString] dataUsingEncoding:NSUTF8StringEncoding];
+            }
+        }
+        else{
             value = [[NSString stringWithFormat:@"%@",postDict[key]] dataUsingEncoding:NSUTF8StringEncoding];
             NSLog(@"Error: no member postdict key: %@",postDict[key]);
         }
@@ -31,6 +46,7 @@
         [body appendData:[[NSString stringWithFormat:@"%@%@", kNewLine, kNewLine] dataUsingEncoding:NSUTF8StringEncoding]];
         [body appendData:value];
         [body appendData:[kNewLine dataUsingEncoding:NSUTF8StringEncoding]];
+        NSLog(@"got past creating the body");
         
     }
     [body appendData:[[NSString stringWithFormat:@"--%@--", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
