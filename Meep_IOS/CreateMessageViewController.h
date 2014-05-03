@@ -11,4 +11,6 @@
 
 @interface CreateMessageViewController : UIViewController<UITableViewDataSource>
 @property (nonatomic) NSMutableArray *invited_friends_list;
+
+-(void)textFieldDidChange;
 @end

@@ -7,6 +7,7 @@
 //
 
 #import "CreateMessageViewController.h"
+#import "MEPTextParse.h"
 
 @interface CreateMessageViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *messageField;
@@ -14,6 +15,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *timeField;
 @property (weak, nonatomic) IBOutlet UITextField *dateField;
 @property (weak, nonatomic) IBOutlet UITextField *locationField;
+@property (nonatomic, strong) MEPTextParse *parser;
 
 @end
 
@@ -84,10 +86,17 @@
     return cell;
 }
 
+- (void) textFieldDidChange {
+    NSDictionary * contentDetails = [_parser parseText:[_messageField text]];
+    NSLog(@"%@",contentDetails);
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    self.parser = [[MEPTextParse alloc] init];
+    [self.messageField addTarget:self action:@selector(textFieldDidChange) forControlEvents:UIControlEventEditingChanged];
 }
 
 - (void)didReceiveMemoryWarning

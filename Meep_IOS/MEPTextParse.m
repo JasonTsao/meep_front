@@ -41,8 +41,11 @@
     NSArray * textArray = [text componentsSeparatedByString:@" "];
     NSMutableDictionary * contentDictionary = [[NSMutableDictionary alloc] init];
     int arraySize = [textArray count];
+    _beginningOfExpression = 0;
     for (int i = 0; i < arraySize; i++) {
+        NSLog(@"%@",[textArray objectAtIndex:i]);
         if([self isTimePreposition:[textArray objectAtIndex:i]] | [self isDatePreposition:[textArray objectAtIndex:i]] | [self isLocationPreposition:[textArray objectAtIndex:i]]) {
+            NSLog(@"%@ is a preposition!",[textArray objectAtIndex:i]);
             NSString * phrase = @"";
             for (int j = _beginningOfExpression; j < i; j++) {
                 phrase = [NSString stringWithFormat:@"%@ %@",phrase,[textArray objectAtIndex:j]];
@@ -54,6 +57,7 @@
             if([content objectForKey:@"startDate"]) {
                 [contentDictionary setValue:[content objectForKey:@"startDate"] forKey:@"startDate"];
             }
+            _beginningOfExpression = i + 1;
         }
     }
     return contentDictionary;
@@ -75,19 +79,19 @@
     NSArray *content;
     content = [_timeIntRegex matchesInString:text options:0 range:NSMakeRange(0, [text length])];
     if([content count] > 0) {
-        return [[NSDictionary alloc] initWithObjectsAndKeys:[content objectAtIndex:0],@"startTime", nil];
+        return [[NSDictionary alloc] initWithObjectsAndKeys:[text substringWithRange:[[content objectAtIndex:0] range]],@"startTime", nil];
     }
     content = [_timeExplicitRegex matchesInString:text options:0 range:NSMakeRange(0, [text length])];
     if([content count] > 0) {
-        return [[NSDictionary alloc] initWithObjectsAndKeys:[content objectAtIndex:0],@"startTime", nil];
+        return [[NSDictionary alloc] initWithObjectsAndKeys:[text substringWithRange:[[content objectAtIndex:0] range]],@"startTime", nil];
     }
     content = [_dateIntRegex matchesInString:text options:0 range:NSMakeRange(0, [text length])];
     if([content count] > 0) {
-        return [[NSDictionary alloc] initWithObjectsAndKeys:[content objectAtIndex:0],@"startDate", nil];
+        return [[NSDictionary alloc] initWithObjectsAndKeys:[text substringWithRange:[[content objectAtIndex:0] range]],@"startDate", nil];
     }
     content = [_dateExplicitRegex matchesInString:text options:0 range:NSMakeRange(0, [text length])];
     if([content count] > 0) {
-        return [[NSDictionary alloc] initWithObjectsAndKeys:[content objectAtIndex:0],@"startDate", nil];
+        return [[NSDictionary alloc] initWithObjectsAndKeys:[text substringWithRange:[[content objectAtIndex:0] range]],@"startDate", nil];
     }
     return nil;
 }
