@@ -8,8 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import "Friend.h"
+#import "InvitedFriend.h"
 #import "MEEPhttp.h"
 #import "EventPageViewController.h"
+
 
 @interface CreateMessageViewController : UIViewController<UITableViewDataSource, UITextFieldDelegate>
 @property (nonatomic) NSMutableArray *invited_friends_list;

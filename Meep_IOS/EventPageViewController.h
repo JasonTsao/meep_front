@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "Event.h"
+#import "Friend.h"
+#import "InvitedFriend.h"
 
 @protocol EventPageViewControllerDelegate <NSObject>
 
@@ -18,7 +20,7 @@
 
 @end
 
-@interface EventPageViewController : UIViewController
+@interface EventPageViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
 @property (nonatomic) Event *currentEvent;
 @property (nonatomic) NSMutableArray *invitedFriends;
 @property (nonatomic, assign) id<EventPageViewControllerDelegate> delegate;

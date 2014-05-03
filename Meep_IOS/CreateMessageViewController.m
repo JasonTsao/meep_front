@@ -147,8 +147,19 @@
     NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:return_data options:0 error:&error];
     NSLog(@"jsonResponse: %@", jsonResponse);
     NSArray * success = jsonResponse[@"success"];
+    NSMutableArray * return_invited_friends = jsonResponse[@"invited_friends"];
+    NSMutableArray * invitedFriendsList = [[NSMutableArray alloc]init];
+    
+    /*for (int i = 0; i < [return_invited_friends count]; i++){
+        
+        InvitedFriend * invited_friend = [[InvitedFriend alloc] initWithName:[_invited_friends_list[i] name] withAccountID:return_invited_friends[i][@"user"] withAttending:return_invited_friends[i][@"attending"] withCanInvite:return_invited_friends[i][@"can_invite_friends"]];
+        [invitedFriendsList addObject: invited_friend];
+    }*/
+    
+    Event * newEvent = [[Event alloc] initWithDescription:jsonResponse[@"event"][@"description"] withName:jsonResponse[@"event"][@"name"] startTime:jsonResponse[@"event"][@"start_time"]];
     
     EventPageViewController * eventPage = [segue destinationViewController];
+    eventPage.currentEvent = newEvent;
     eventPage.invitedFriends = _invited_friends_list;
     /*
     eventPage.currentEvent = */

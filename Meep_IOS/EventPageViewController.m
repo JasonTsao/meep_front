@@ -10,6 +10,7 @@
 #import "Event.h"
 
 @interface EventPageViewController ()
+
 @property (weak, nonatomic) IBOutlet UILabel *eventDescription;
 
 @end
@@ -28,13 +29,70 @@
     return self;
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    NSString *friend_name;
+    Friend *selectedFriend;
+    
+    if(indexPath.section == 0){
+        /*selectedFriend = selected_friends_list[indexPath.row];
+        friend_name = selectedFriend.name;
+        [tableView beginUpdates];
+        [selected_friends_list removeObjectAtIndex: indexPath.row];
+        [tableView deleteRowsAtIndexPaths: [NSArray arrayWithObject:[NSIndexPath indexPathForRow:indexPath.row inSection:0]]
+                         withRowAnimation:UITableViewRowAnimationFade];
+        
+        [tableView endUpdates];*/
+    }
+    
+}
+
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+
+-(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    NSString *header;
+    if (section == 0){
+        header = @"Invited";
+    }
+    
+    return header;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    NSInteger numRows = 1;
+    if (section == 0){
+        numRows = [_invitedFriends count];
+    }
+
+    return numRows;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"eventInvitedFriend"];
+    
+    if (indexPath.section == 0){
+        Friend *currentFriend = _invitedFriends[indexPath.row];
+        cell.textLabel.text = currentFriend.name;
+    }
+    
+    return cell;
+}
+
 
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.title = _currentEvent.name;
-    NSLog(@"description: %@", _currentEvent.description);
+    if ([_currentEvent.description length] > 15){
+        self.title = [_currentEvent.description substringToIndex:15];
+    }
+    
+    _eventDescription.text = _currentEvent.description;
     NSLog(@"invited_friends: %@", _invitedFriends);
     _eventDescription.text = _currentEvent.description;
     // Do any additional setup after loading the view.
