@@ -43,6 +43,7 @@
 		3CCC51701905A46400EB0980 /* EventCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3CCC516F1905A46400EB0980 /* EventCell.xib */; };
 		3CCC51731905A55F00EB0980 /* MeepIOS-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3CCC51721905A55F00EB0980 /* MeepIOS-Info.plist */; };
 		3CCE111F190AAA88004AD66E /* LocationSearch.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3CCE111E190AAA88004AD66E /* LocationSearch.xib */; };
+		3CCF3CE41912A70A00DED761 /* MEPTextParse.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CCF3CE31912A70A00DED761 /* MEPTextParse.m */; };
 		3CCF971A190827CE005FA454 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3CCF9717190827CE005FA454 /* Main.storyboard */; };
 		3CCF971B190827CE005FA454 /* AccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CCF9719190827CE005FA454 /* AccountViewController.m */; };
 		3CDDCDA1190872C600F851EE /* TimeSelect.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3CDDCDA0190872C600F851EE /* TimeSelect.xib */; };
@@ -118,6 +119,8 @@
 		3CCC516F1905A46400EB0980 /* EventCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EventCell.xib; sourceTree = "<group>"; };
 		3CCC51721905A55F00EB0980 /* MeepIOS-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "MeepIOS-Info.plist"; sourceTree = "<group>"; };
 		3CCE111E190AAA88004AD66E /* LocationSearch.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LocationSearch.xib; sourceTree = "<group>"; };
+		3CCF3CE21912A70A00DED761 /* MEPTextParse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MEPTextParse.h; sourceTree = "<group>"; };
+		3CCF3CE31912A70A00DED761 /* MEPTextParse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MEPTextParse.m; sourceTree = "<group>"; };
 		3CCF9717190827CE005FA454 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		3CCF9718190827CE005FA454 /* AccountViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountViewController.h; sourceTree = "<group>"; };
 		3CCF9719190827CE005FA454 /* AccountViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountViewController.m; sourceTree = "<group>"; };
@@ -323,6 +326,8 @@
 				3CDDCDA219087D0000F851EE /* EventElementViewController.h */,
 				3CDDCDA319087D0000F851EE /* EventElementViewController.m */,
 				3CCE111E190AAA88004AD66E /* LocationSearch.xib */,
+				3CCF3CE21912A70A00DED761 /* MEPTextParse.h */,
+				3CCF3CE31912A70A00DED761 /* MEPTextParse.m */,
 			);
 			name = "Event Creator";
 			sourceTree = "<group>";
@@ -470,6 +475,7 @@
 				3CCC508919059F9500EB0980 /* MEPAppDelegate.m in Sources */,
 				3CCC51591905A20D00EB0980 /* EventCreatorViewController.m in Sources */,
 				3CCC51621905A20D00EB0980 /* MainViewController.m in Sources */,
+				3CCF3CE41912A70A00DED761 /* MEPTextParse.m in Sources */,
 				968630351909FAB200CAE305 /* Friend.m in Sources */,
 				3CDDCDA419087D0000F851EE /* EventElementViewController.m in Sources */,
 				3CCF971B190827CE005FA454 /* AccountViewController.m in Sources */,
