@@ -37,7 +37,7 @@
     return self;
 }
 
-- (void) parseText:(NSString*)text {
+- (NSDictionary*) parseText:(NSString*)text {
     NSArray * textArray = [text componentsSeparatedByString:@" "];
     NSMutableDictionary * contentDictionary = [[NSMutableDictionary alloc] init];
     int arraySize = [textArray count];
@@ -56,6 +56,7 @@
             }
         }
     }
+    return contentDictionary;
 }
 
 - (BOOL) isTimePreposition:(NSString*)text {

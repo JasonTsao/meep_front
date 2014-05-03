@@ -11,6 +11,9 @@
 @interface CreateMessageViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *messageField;
 @property (weak, nonatomic) IBOutlet UITableView *invitedFriendsTable;
+@property (weak, nonatomic) IBOutlet UITextField *timeField;
+@property (weak, nonatomic) IBOutlet UITextField *dateField;
+@property (weak, nonatomic) IBOutlet UITextField *locationField;
 
 @end
 
