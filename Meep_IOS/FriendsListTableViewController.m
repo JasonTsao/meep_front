@@ -26,9 +26,14 @@
     return self;
 }
 
+- (IBAction)backToMain:(id)sender {
+    [self.delegate backToCenterFromFriends:self];
+}
+
+
 - (void)getFriendsList
 {
-    NSString * requestURL = [NSString stringWithFormat:@"%@friends/list/2",[MEEPhttp accountURL]];
+    NSString * requestURL = [NSString stringWithFormat:@"%@friends/list/1",[MEEPhttp accountURL]];
     NSLog(@"request url : %@", requestURL);
     NSDictionary * postDict = [[NSDictionary alloc] init];
     NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];

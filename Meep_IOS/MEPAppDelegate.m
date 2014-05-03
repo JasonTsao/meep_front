@@ -114,12 +114,6 @@
         [self getAccountSettings];
     }
     else{
-        NSLog(@"yes there is user accounts");
-        NSLog(@"%@", user_account_settings);
-        NSLog(@"private: %hhd", user_account_settings.user_is_private);
-        NSLog(@"searchable: %hhd", user_account_settings.searchable);
-        NSLog(@"reminders: %hhd", user_account_settings.reminders);
-        NSLog(@"vibrate_on_notification%hhd", user_account_settings.vibrate_on_notification);
     }
     return YES;
 }

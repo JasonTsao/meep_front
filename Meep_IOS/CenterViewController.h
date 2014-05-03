@@ -11,6 +11,9 @@
 #import "EventCreatorViewController.h"
 #import "EventPageViewController.h"
 #import "AccountViewController.h"
+#import "CreateGroupViewController.h"
+#import "InviteFriendsViewController.h"
+#import "Event.h"
 
 @protocol CenterViewControllerDelegate <NSObject>
 
@@ -20,10 +23,13 @@
 
 @required
 - (void)movePanelToOriginalPosition;
-- (void)displayEventPage;
+- (void)displayEventPage:(Event *)event;
 - (void)returnToMain;
 - (void)openAccountPage;
 - (void)openFriendsListPage;
+- (void)openCreateGroupPage;
+- (void)openCreateEventPage;
+- (void)openGroupsPage;
 
 @end
 

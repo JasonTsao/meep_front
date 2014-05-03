@@ -7,7 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "InviteFriendsViewController.h"
+#import "AccountViewController.h"
+#import "CreateGroupViewController.h"
+#import "GroupsViewController.h"
 
-@interface MainViewController : UIViewController
+@interface MainViewController : UIViewController<InviteFriendsViewControllerDelegate, AccountViewControllerDelegate, CreateGroupViewControllerDelegate, GroupsViewControllerDelegate>
 
 @end

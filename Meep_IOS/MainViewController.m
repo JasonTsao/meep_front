@@ -12,8 +12,11 @@
 #import "RightPanelViewController.h"
 #import "EventCreatorViewController.h"
 #import "EventPageViewController.h"
-#import "AccountViewController.h"
+//#import "AccountViewController.h"
 #import "FriendsListTableViewController.h"
+//#import "CreateGroupViewController.h"
+#import "InviteFriendsViewController.h"
+#import "Event.h"
 
 #import <QuartzCore/QuartzCore.h>
 
@@ -27,6 +30,12 @@
 @interface MainViewController () <CenterViewControllerDelegate,UIGestureRecognizerDelegate>
 
 @property (nonatomic, strong) CenterViewController *centerViewController;
+
+@property (nonatomic, strong) CreateGroupViewController *createGroupViewController;
+@property (nonatomic, assign) BOOL showGroupCreationPage;
+
+@property (nonatomic, strong) GroupsViewController *groupsViewController;
+@property (nonatomic, assign) BOOL showGroupsPage;
 
 @property (nonatomic, strong) FriendsListTableViewController *friendsListTableViewController;
 @property (nonatomic, assign) BOOL showingFriendsPanel;
@@ -43,6 +52,9 @@
 @property (nonatomic, assign) BOOL showPanel;
 @property( nonatomic, assign) CGPoint preVelocity;
 @property( nonatomic, strong) EventCreatorViewController *eventCreatorViewController;
+
+@property (nonatomic, strong) InviteFriendsViewController *inviteFriendsViewController;
+@property (nonatomic, assign) BOOL showEventCreator;
 
 @property (nonatomic, strong) EventPageViewController *eventPageViewController;
 @property (nonatomic, assign) BOOL showEventPage;
@@ -192,18 +204,22 @@
     return view;
 }
 
-- (UIView *)getEventPageView {
+- (UIView *)getEventPageView:(Event*)selectedEvent {
+    NSLog(@"selected event: %@", selectedEvent);
     if(_eventPageViewController == nil) {
+        NSLog(@"byahh!");
         self.eventPageViewController = [[EventPageViewController alloc] initWithNibName:@"EventPage" bundle:nil];
         self.eventPageViewController.view.tag = RIGHT_PANEL_TAG;
         self.eventPageViewController.delegate = _centerViewController;
         [self.view addSubview:self.eventPageViewController.view];
         [_eventPageViewController didMoveToParentViewController:self];
         _eventPageViewController.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+        _eventPageViewController.currentEvent = selectedEvent;
     }
     self.showEventPage = YES;
     [self showCenterViewWithShadow:YES withOffset:2];
-    UIView * view = self.eventCreatorViewController.view;
+    //UIView * view = self.eventCreatorViewController.view;
+    UIView * view = _eventPageViewController.view;
     return view;
 }
 
@@ -330,8 +346,47 @@
 {
     UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     _accountViewController = (AccountViewController *)[storyboard instantiateViewControllerWithIdentifier:@"accountSettings"];
-    [self presentViewController:_accountViewController animated:YES completion:nil];
+    
+    UINavigationController *navigation = [[UINavigationController alloc]initWithRootViewController:_accountViewController];
+    [_accountViewController setDelegate:self];
+    [self presentViewController:navigation animated:YES completion:nil];
+    //[self presentViewController:_accountViewController animated:YES completion:nil];
 }
+
+- (void) openCreateGroupPage
+{
+    UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"GroupsStoryboard" bundle:nil];
+    _createGroupViewController = (CreateGroupViewController *)[storyboard instantiateViewControllerWithIdentifier:@"groups"];
+    [self presentViewController:_createGroupViewController animated:YES completion:nil];
+}
+
+
+
+- (void) openGroupsPage
+{
+    UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"GroupsStoryboard" bundle:nil];
+    _groupsViewController = (GroupsViewController *)[storyboard instantiateViewControllerWithIdentifier:@"groups"];
+    
+    UINavigationController *navigation = [[UINavigationController alloc]initWithRootViewController:_groupsViewController];
+    [_groupsViewController setDelegate:self];
+    [self presentViewController:navigation animated:YES completion:nil];
+    /*[self presentViewController:_friendsListTableViewController animated:YES completion:nil];*/
+}
+
+
+- (void) openCreateEventPage
+{
+    /*UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"CreateEventStoryboard" bundle:nil];
+    _inviteFriendsViewController = (InviteFriendsViewController *)[storyboard instantiateViewControllerWithIdentifier:@"createEvent"];
+    [self presentViewController:_inviteFriendsViewController animated:YES completion:nil];*/
+    UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"CreateEventStoryboard" bundle:nil];
+    _inviteFriendsViewController = (InviteFriendsViewController *)[storyboard instantiateViewControllerWithIdentifier:@"createEvent"];
+    
+    UINavigationController *navigation = [[UINavigationController alloc]initWithRootViewController:_inviteFriendsViewController];
+    [_inviteFriendsViewController setDelegate:self];
+    [self presentViewController:navigation animated:YES completion:nil];
+}
+
 
 - (void) openFriendsListPage
 {
@@ -339,8 +394,49 @@
     _friendsListTableViewController = (FriendsListTableViewController *)[storyboard instantiateViewControllerWithIdentifier:@"friendsList"];
     
     UINavigationController *navigation = [[UINavigationController alloc]initWithRootViewController:_friendsListTableViewController];
+    [_friendsListTableViewController setDelegate:self];
     [self presentViewController:navigation animated:YES completion:nil];
     /*[self presentViewController:_friendsListTableViewController animated:YES completion:nil];*/
+}
+
+// MOST LIKELY WONT USE THIS FUNCTION ANYMORE
+- (EventPageViewController *)OpenEventPage:(Event*)selectedEvent {
+    NSLog(@"selected event: %@", selectedEvent);
+    if(_eventPageViewController == nil) {
+        NSLog(@"byahh!");
+        self.eventPageViewController = [[EventPageViewController alloc] initWithNibName:@"EventPage" bundle:nil];
+        self.eventPageViewController.view.tag = RIGHT_PANEL_TAG;
+        self.eventPageViewController.delegate = _centerViewController;
+        [self.view addSubview:self.eventPageViewController.view];
+        [_eventPageViewController didMoveToParentViewController:self];
+        _eventPageViewController.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+        _eventPageViewController.currentEvent = selectedEvent;
+    }
+    self.showEventPage = YES;
+    [self showCenterViewWithShadow:YES withOffset:2];
+    //UIView * view = self.eventCreatorViewController.view;
+    //UIView * view = _eventPageViewController.view;
+    return _eventPageViewController;
+}
+
+- (void) backToCenterFromCreateEvent:(InviteFriendsViewController *)controller
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void) backToCenterFromAccountSettings:(AccountViewController *)controller
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void) backToCenterFromGroups:(GroupsViewController *)controller
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void) backToCenterFromFriends:(FriendsListTableViewController *)controller
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 
@@ -355,9 +451,12 @@
     }];
 }
 
-- (void)displayEventPage {
-    UIView * childView = [self getEventPageView];
+- (void)displayEventPage:(Event *)event{
+    NSLog(@"event: %@", event);
+    UIView * childView = [self getEventPageView:event];
     [[self navigationController] setView:childView];
+    //EventPageViewController *childView = [self OpenEventPage:event];
+    //[self presentViewController:childView animated:YES completion:nil];
 }
 
 - (void) returnToMain {
