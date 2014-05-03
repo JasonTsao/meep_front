@@ -20,6 +20,7 @@
 
 @interface EventPageViewController : UIViewController
 @property (nonatomic) Event *currentEvent;
+@property (nonatomic) NSMutableArray *invitedFriends;
 @property (nonatomic, assign) id<EventPageViewControllerDelegate> delegate;
 
 @end
