@@ -270,7 +270,6 @@
         Event * event = [[Event alloc] initWithDescription:eventObj[@"description"] withName:eventObj[@"name"] startTime:eventObj[@"start_time"]];
         [_eventArray addObject:event];
     }
-    
     /*for(NSString *eventStr in owned) {
         NSString * description = @"empty";
         NSString * name = @"Event";

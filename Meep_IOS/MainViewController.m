@@ -204,20 +204,22 @@
     return view;
 }
 
-- (UIView *)getEventPageView {
+- (UIView *)getEventPageView:(Event*)selectedEvent {
+    NSLog(@"selected event: %@", selectedEvent);
     if(_eventPageViewController == nil) {
+        NSLog(@"byahh!");
         self.eventPageViewController = [[EventPageViewController alloc] initWithNibName:@"EventPage" bundle:nil];
         self.eventPageViewController.view.tag = RIGHT_PANEL_TAG;
         self.eventPageViewController.delegate = _centerViewController;
         [self.view addSubview:self.eventPageViewController.view];
         [_eventPageViewController didMoveToParentViewController:self];
         _eventPageViewController.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
-        //_eventPageViewController.currentEvent =
-        
+        _eventPageViewController.currentEvent = selectedEvent;
     }
     self.showEventPage = YES;
     [self showCenterViewWithShadow:YES withOffset:2];
-    UIView * view = self.eventCreatorViewController.view;
+    //UIView * view = self.eventCreatorViewController.view;
+    UIView * view = _eventPageViewController.view;
     return view;
 }
 
@@ -397,6 +399,26 @@
     /*[self presentViewController:_friendsListTableViewController animated:YES completion:nil];*/
 }
 
+// MOST LIKELY WONT USE THIS FUNCTION ANYMORE
+- (EventPageViewController *)OpenEventPage:(Event*)selectedEvent {
+    NSLog(@"selected event: %@", selectedEvent);
+    if(_eventPageViewController == nil) {
+        NSLog(@"byahh!");
+        self.eventPageViewController = [[EventPageViewController alloc] initWithNibName:@"EventPage" bundle:nil];
+        self.eventPageViewController.view.tag = RIGHT_PANEL_TAG;
+        self.eventPageViewController.delegate = _centerViewController;
+        [self.view addSubview:self.eventPageViewController.view];
+        [_eventPageViewController didMoveToParentViewController:self];
+        _eventPageViewController.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+        _eventPageViewController.currentEvent = selectedEvent;
+    }
+    self.showEventPage = YES;
+    [self showCenterViewWithShadow:YES withOffset:2];
+    //UIView * view = self.eventCreatorViewController.view;
+    //UIView * view = _eventPageViewController.view;
+    return _eventPageViewController;
+}
+
 - (void) backToCenterFromCreateEvent:(InviteFriendsViewController *)controller
 {
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -431,8 +453,10 @@
 
 - (void)displayEventPage:(Event *)event{
     NSLog(@"event: %@", event);
-    UIView * childView = [self getEventPageView];
+    UIView * childView = [self getEventPageView:event];
     [[self navigationController] setView:childView];
+    //EventPageViewController *childView = [self OpenEventPage:event];
+    //[self presentViewController:childView animated:YES completion:nil];
 }
 
 - (void) returnToMain {

@@ -10,6 +10,7 @@
 #import "Event.h"
 
 @interface EventPageViewController ()
+@property (weak, nonatomic) IBOutlet UILabel *eventDescription;
 
 @end
 
@@ -30,6 +31,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.title = _currentEvent.name;
+    NSLog(@"description: %@", _currentEvent.description);
+    _eventDescription.text = _currentEvent.description;
     // Do any additional setup after loading the view.
 }
 
