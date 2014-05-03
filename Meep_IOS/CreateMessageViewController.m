@@ -16,6 +16,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *dateField;
 @property (weak, nonatomic) IBOutlet UITextField *locationField;
 @property (nonatomic, strong) MEPTextParse *parser;
+@property (nonatomic, strong) NSMutableData * data;
 
 @end
 
@@ -31,7 +32,47 @@
     return self;
 }
 
+- (IBAction)createEvent:(id)sender {
+    NSString *messageText = _messageField.text;
+    NSLog(@"Message: %@", messageText);
+    NSMutableArray *invitedFriendsToSend = [[NSMutableArray alloc] init];
+    
+    for (int i = 0; i < [_invited_friends_list count]; i++){
+        NSString *user_id = [NSString stringWithFormat: @"%i", [_invited_friends_list[i] account_id]];
+        NSDictionary *friend_dict = [[NSDictionary alloc] initWithObjectsAndKeys:user_id,@"user_id", @"False", @"can_invite_frien   ds", nil];
+        [invitedFriendsToSend addObject:friend_dict];
+        NSLog(@"invited friend: %i", [_invited_friends_list[i] account_id]);
+    }
+    
+    NSString * requestURL = [NSString stringWithFormat:@"%@new",[MEEPhttp eventURL]];
+    NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:@"2",@"user", messageText, @"description", invitedFriendsToSend, @"invited_friends", nil];
+    NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
+    NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    [conn start];
+}
 
+-(void)connection:(NSURLConnection*)connection didReceiveResponse:(NSURLResponse*)response{
+    _data = [[NSMutableData alloc] init]; // _data being an ivar
+}
+
+-(void)connection:(NSURLConnection*)connection didReceiveData:(NSData*)data{
+    [self.data appendData:data];
+}
+
+-(void)connection:(NSURLConnection*)connection didFailWithError:(NSError*)error{
+    // Handle the error properly
+    NSLog(@"Call Failed");
+}
+
+-(void)connectionDidFinishLoading:(NSURLConnection*)connection{
+    [self handleData]; // Deal with the data
+}
+
+-(void)handleData{
+    NSError* error;
+    NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:_data options:0 error:&error];
+    NSArray * success = jsonResponse[@"success"];
+}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     NSString *friend_name;
@@ -91,9 +132,21 @@
     NSLog(@"%@",contentDetails);
 }
 
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    return YES;
+}
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [self.view endEditing: YES];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.messageField.delegate = self;
     // Do any additional setup after loading the view.
     self.parser = [[MEPTextParse alloc] init];
     [self.messageField addTarget:self action:@selector(textFieldDidChange) forControlEvents:UIControlEventEditingChanged];

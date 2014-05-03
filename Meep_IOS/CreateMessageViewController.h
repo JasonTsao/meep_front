@@ -8,9 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "Friend.h"
+#import "MEEPhttp.h"
 
-@interface CreateMessageViewController : UIViewController<UITableViewDataSource>
+@interface CreateMessageViewController : UIViewController<UITableViewDataSource, UITextFieldDelegate>
 @property (nonatomic) NSMutableArray *invited_friends_list;
-
 -(void)textFieldDidChange;
 @end

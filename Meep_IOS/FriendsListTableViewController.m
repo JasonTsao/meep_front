@@ -77,6 +77,7 @@
         new_friend.phoneNumber= new_friend_dict[@"phone_number"];
         new_friend.imageFileName = new_friend_dict[@"pf_pic"];
         new_friend.bio = new_friend_dict[@"bio"];
+        new_friend.account_id = [new_friend_dict[@"account_id"] intValue];
         
         NSURL *url = [[NSURL alloc] initWithString:new_friend_dict[@"fb_pfpic_url"]];
         //NSURL *url = [[NSURL alloc] initWithString:@"https://graph.facebook.com/jason.s.tsao/picture"];

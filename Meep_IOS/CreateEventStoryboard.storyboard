@@ -94,6 +94,9 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="XGZ-vb-7Gt" id="zR9-pR-cvw"/>
+                                </connections>
                             </textField>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="ofV-5P-bT8">
                                 <rect key="frame" x="0.0" y="294" width="320" height="274"/>
@@ -157,7 +160,11 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="gcG-L8-Yyc">
-                        <barButtonItem key="rightBarButtonItem" title="Create" id="HLj-9H-vVf"/>
+                        <barButtonItem key="rightBarButtonItem" title="Create" id="HLj-9H-vVf">
+                            <connections>
+                                <action selector="createEvent:" destination="XGZ-vb-7Gt" id="cnW-8i-BWj"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="dateField" destination="f6S-Me-cIL" id="JkR-9q-C2L"/>

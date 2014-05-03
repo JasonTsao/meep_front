@@ -28,6 +28,8 @@
     return self;
 }
 
+
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -36,6 +38,8 @@
     _eventDescription.text = _currentEvent.description;
     // Do any additional setup after loading the view.
 }
+
+
 
 - (void)didReceiveMemoryWarning
 {
