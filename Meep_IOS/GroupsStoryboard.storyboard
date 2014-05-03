@@ -19,6 +19,35 @@
             </objects>
             <point key="canvasLocation" x="-987" y="-135"/>
         </scene>
+        <!--Group Table View Controller-->
+        <scene sceneID="6Ol-XF-bvF">
+            <objects>
+                <tableViewController id="FhT-ae-XUo" customClass="GroupTableViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="3eF-BQ-VF7">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="groupMember" id="JdF-Ek-Xs7">
+                                <rect key="frame" x="0.0" y="86" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="JdF-Ek-Xs7" id="Xnm-vq-bV2">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="FhT-ae-XUo" id="dZS-7Z-ILw"/>
+                            <outlet property="delegate" destination="FhT-ae-XUo" id="Xaw-bJ-eKC"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="wbu-hD-sbb"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="pTG-MA-Ach" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-368" y="-450"/>
+        </scene>
         <!--Groups View Controller - Groups-->
         <scene sceneID="jPT-Xw-eIl">
             <objects>
@@ -28,13 +57,16 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="gkN-RX-MSS">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="group" id="gkN-RX-MSS">
                                 <rect key="frame" x="0.0" y="86" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="gkN-RX-MSS" id="611-7F-MeS">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <segue destination="FhT-ae-XUo" kind="push" identifier="goToGroupPage" id="uIa-C2-aXb"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -50,7 +82,7 @@
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Create" id="Tna-2P-YPN">
                             <connections>
-                                <segue destination="jC0-DX-Qft" kind="push" id="3jG-Nf-fO5"/>
+                                <segue destination="jC0-DX-Qft" kind="push" identifier="createGroup" id="wzi-6m-xBk"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -101,7 +133,11 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="zIP-ZX-RuW">
-                        <barButtonItem key="rightBarButtonItem" title="Create" id="hob-CH-J0j"/>
+                        <barButtonItem key="rightBarButtonItem" title="Create" id="hob-CH-J0j">
+                            <connections>
+                                <segue destination="FhT-ae-XUo" kind="push" id="nsv-OG-n6U"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="friendTable" destination="RXP-rq-3xF" id="6RC-3N-WrN"/>
@@ -117,4 +153,7 @@
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
+    <inferredMetricsTieBreakers>
+        <segue reference="uIa-C2-aXb"/>
+    </inferredMetricsTieBreakers>
 </document>

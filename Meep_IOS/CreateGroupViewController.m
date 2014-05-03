@@ -7,8 +7,6 @@
 //
 
 #import "CreateGroupViewController.h"
-#import "MEEPhttp.h"
-#import "Friend.h"
 
 @interface CreateGroupViewController ()
 @property (weak, nonatomic) IBOutlet UITableView *friendTable;
@@ -91,11 +89,15 @@
     
 }
 
-- (IBAction)createGroup:(id)sender {
-    NSLog(@"Name: %@", self.nameField.text);
-    for (int i = 0; i < [selected_friends_list count]; i++){
-        NSLog(@"%@", [selected_friends_list[i] name]);
-    }
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    return YES;
+}
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [self.view endEditing: YES];
 }
 
 
@@ -221,6 +223,35 @@
 {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
+
+    NSMutableArray *groupMembersToCreate = [[NSMutableArray alloc] init];
+    
+    for (int i = 0; i < [selected_friends_list count]; i++){
+        NSString *account_id = [NSString stringWithFormat: @"%i", [selected_friends_list[i] account_id]];
+
+        [groupMembersToCreate addObject:account_id];
+        NSLog(@"group Member: %i", account_id);
+    }
+    
+    NSString * requestURL = [NSString stringWithFormat:@"%@group/new",[MEEPhttp accountURL]];
+    NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:@"2",@"user",_nameField.text,@"name", groupMembersToCreate, @"members", nil];
+    NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
+    NSURLResponse * response = nil;
+    NSError * error = nil;
+    NSData *return_data = [NSURLConnection sendSynchronousRequest:request
+                                                returningResponse:&response
+                                                            error:&error];
+    
+    NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:return_data options:0 error:&error];
+    NSLog(@"jsonResponse: %@", jsonResponse);
+    NSArray * success = jsonResponse[@"success"];
+    
+    Group * createdGroup = [[Group alloc] initWithName:_nameField.text];    //NSMutableArray * return_group_members = jsonResponse[@"group_members"];
+    //NSMutableArray * groupMembersList = [[NSMutableArray alloc]init];
+    
+    GroupTableViewController * groupPage = [segue destinationViewController];
+    groupPage.group = createdGroup;
+    groupPage.groupMembers = selected_friends_list;
 }
 
 

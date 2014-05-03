@@ -1,20 +1,19 @@
 //
-//  GroupsViewController.m
+//  GroupTableViewController.m
 //  Meep_IOS
 //
-//  Created by Jason Tsao on 5/1/14.
+//  Created by Jason Tsao on 5/3/14.
 //  Copyright (c) 2014 futoi. All rights reserved.
 //
 
-#import "GroupsViewController.h"
+#import "GroupTableViewController.h"
 
-@interface GroupsViewController (){
-    NSMutableArray *groups_list;
-}
+@interface GroupTableViewController ()
+
 
 @end
 
-@implementation GroupsViewController
+@implementation GroupTableViewController
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -24,15 +23,14 @@
     }
     return self;
 }
-- (IBAction)backToMain:(id)sender {
-    [self.delegate backToCenterFromGroups:self];
-}
 
-- (void)getGroupList
+- (void)getGroupMembers
 {
-    NSString * requestURL = [NSString stringWithFormat:@"%@group/list/1",[MEEPhttp accountURL]];
+    NSLog(@"getting group members for %i", _group.group_id);
+    NSString * requestURL = [NSString stringWithFormat:@"%@group/%i/members",[MEEPhttp accountURL], _group.group_id];
     NSLog(@"request url : %@", requestURL);
-    NSDictionary * postDict = [[NSDictionary alloc] init];
+    //NSDictionary * postDict = [[NSDictionary alloc] init];
+    NSDictionary *postDict = [[NSDictionary alloc] initWithObjectsAndKeys:@"2",@"user", nil];
     NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
     NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
     [conn start];
@@ -40,7 +38,6 @@
 
 -(void)connection:(NSURLConnection*)connection didReceiveResponse:(NSURLResponse*)response
 {
-    NSLog(@"did recieve response");
     _data = [[NSMutableData alloc] init]; // _data being an ivar
 }
 -(void)connection:(NSURLConnection*)connection didReceiveData:(NSData*)data
@@ -54,7 +51,6 @@
 }
 -(void)connectionDidFinishLoading:(NSURLConnection*)connection
 {
-    NSLog(@"did finish loading");
     [self handleData]; // Deal with the data
 }
 
@@ -62,38 +58,46 @@
 -(void)handleData{
     NSError* error;
     NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:_data options:0 error:&error];
-    NSArray * groups = jsonResponse[@"groups"];
-    NSLog(@"groups list: %@", groups);
-    groups_list = [[NSMutableArray alloc]init];
-    for( int i = 0; i< [groups count]; i++){
-        Group *new_group = [[Group alloc]init];
-    
-        NSDictionary * new_group_dict = groups[i];
-        new_group.name = new_group_dict[@"name"];
-        new_group.group_id = [new_group_dict[@"id"] integerValue];
+    NSArray * members = jsonResponse[@"members"];
+    _groupMembers = [[NSMutableArray alloc]init];
+    for( int i = 0; i< [members count]; i++){
+        Friend *new_friend = [[Friend alloc]init];
         
-        /*NSURL *url = [[NSURL alloc] initWithString:new_friend_dict[@"group_pic_url"]];
+        /*NSDictionary * new_friend_dict = [NSJSONSerialization JSONObjectWithData: [members[i] dataUsingEncoding:NSUTF8StringEncoding]
+                                                                         options: NSJSONReadingMutableContainers
+                                                                           error: &error];*/
+        NSLog(@"member : %@", members[i]);
+        NSDictionary * new_friend_dict = members[i];
+        new_friend.name = new_friend_dict[@"user_name"];
+        new_friend.bio = new_friend_dict[@"bio"];
+        new_friend.account_id = [new_friend_dict[@"account_id"] intValue];
+        
+        /*NSURL *url = [[NSURL alloc] initWithString:new_friend_dict[@"fb_pfpic_url"]];
+        //NSURL *url = [[NSURL alloc] initWithString:@"https://graph.facebook.com/jason.s.tsao/picture"];
         NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url];
+        //NSData *urlData = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:&response error:nil];
         NSData *urlData = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:nil error:nil];
         UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
         new_friend.profilePic = image;
         NSLog(@"new friend pf pic %@", new_friend.profilePic);*/
-        [groups_list addObject:new_group];
+        
+        [_groupMembers addObject:new_friend];
     }
     
-   /* NSData *data = [NSKeyedArchiver archivedDataWithRootObject:groups_list];
-    [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"groups"];
-    [NSUserDefaults resetStandardUserDefaults];*/
-    
     [self.tableView reloadData];
-
+    
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.title = @"My Groups";
-    [self getGroupList];
+    self.title = _group.name;
+    
+    if (!_groupMembers){
+        NSLog(@"getting group members");
+        [self getGroupMembers];
+    }
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -120,31 +124,35 @@
 {
 #warning Incomplete method implementation.
     // Return the number of rows in the section.
-    return [groups_list count];
+    return [_groupMembers count];
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"group" forIndexPath:indexPath];
-    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"groupMember" forIndexPath:indexPath];
+    NSLog(@"group members %@", _groupMembers);
     // Configure the cell...
-    Group *currentGroup = [groups_list objectAtIndex:indexPath.row];
-    cell.textLabel.text = currentGroup.name;
-    /*UIImage *image = currentFriend.profilePic;
-    [cell.imageView setImage: image];*/
+    NSLog(@"indexpath : %@", indexPath);
+    if (indexPath.section == 0){
+        NSLog(@"row :%i", indexPath.row);
+        NSLog(@"friend at row: %@", _groupMembers[indexPath.row]);
+        Friend *currentFriend = _groupMembers[indexPath.row];
+        NSLog(@"current friend: %@", currentFriend.name);
+        cell.textLabel.text = currentFriend.name;
+    }
     return cell;
 }
 
 
-
+/*
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Return NO if you do not want the specified item to be editable.
     return YES;
 }
-
+*/
 
 /*
 // Override to support editing the table view.
@@ -175,7 +183,7 @@
 }
 */
 
-
+/*
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -183,17 +191,7 @@
 {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
-    NSLog(@"sender : %@", [segue identifier]);
-    if (![[segue identifier] isEqualToString:@"createGroup"]){
-        GroupTableViewController * groupPage = [segue destinationViewController];
-        NSIndexPath *path = [self.tableView indexPathForSelectedRow];
-        Group *selected_group = groups_list[path.row];
-        groupPage.group = selected_group;
-    }else{
-        
-    }
-
 }
-
+*/
 
 @end
