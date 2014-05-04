@@ -12,8 +12,10 @@
 
 -(id) initWithDescription:(NSString*) evdescription
                  withName:(NSString*) evname
-                startTime:(NSString*) evstarttime {
+                startTime:(NSString*) evstarttime
+                  eventId:(NSInteger)evId{
     if((self = [super init])) {
+        _event_id = evId;
         _name = evname;
         _description = evdescription;
         _start_time = evstarttime;

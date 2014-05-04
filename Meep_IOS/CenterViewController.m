@@ -274,7 +274,7 @@
     NSArray * upcoming = jsonResponse[@"upcoming_events"];
     NSArray * owned = jsonResponse[@"owned_upcoming_events"];
     for(NSDictionary *eventObj in upcoming) {
-        Event * event = [[Event alloc] initWithDescription:eventObj[@"description"] withName:eventObj[@"name"] startTime:eventObj[@"start_time"]];
+        Event * event = [[Event alloc] initWithDescription:eventObj[@"description"] withName:eventObj[@"name"] startTime:eventObj[@"start_time"] eventId:[eventObj[@"id"] integerValue]] ;
         [_eventArray addObject:event];
     }
     /*for(NSString *eventStr in owned) {

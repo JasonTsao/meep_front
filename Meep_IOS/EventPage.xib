@@ -6,6 +6,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EventPageViewController">
             <connections>
+                <outlet property="eventDescription" destination="ncT-K1-Pa3" id="1MV-Cz-Fwp"/>
                 <outlet property="view" destination="iN0-l3-epB" id="drV-DM-98D"/>
             </connections>
         </placeholder>

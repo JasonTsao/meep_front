@@ -218,23 +218,24 @@
     return view;
 }
 
-- (UIView *)getEventPageView:(Event*)selectedEvent {
-    NSLog(@"selected event: %@", selectedEvent);
+//- (UIView *)getEventPageView:(Event*)selectedEvent {
+- (EventPageViewController *)getEventPageView:(Event*)selectedEvent {
     if(_eventPageViewController == nil) {
-        NSLog(@"byahh!");
         self.eventPageViewController = [[EventPageViewController alloc] initWithNibName:@"EventPage" bundle:nil];
+        _eventPageViewController.currentEvent = selectedEvent;
         self.eventPageViewController.view.tag = RIGHT_PANEL_TAG;
         self.eventPageViewController.delegate = _centerViewController;
         [self.view addSubview:self.eventPageViewController.view];
         [_eventPageViewController didMoveToParentViewController:self];
         _eventPageViewController.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
-        _eventPageViewController.currentEvent = selectedEvent;
+        
     }
     self.showEventPage = YES;
     [self showCenterViewWithShadow:YES withOffset:2];
     //UIView * view = self.eventCreatorViewController.view;
     UIView * view = _eventPageViewController.view;
-    return view;
+    //return view;
+    return _eventPageViewController;
 }
 
 #pragma mark -
@@ -417,7 +418,6 @@
 - (EventPageViewController *)OpenEventPage:(Event*)selectedEvent {
     NSLog(@"selected event: %@", selectedEvent);
     if(_eventPageViewController == nil) {
-        NSLog(@"byahh!");
         self.eventPageViewController = [[EventPageViewController alloc] initWithNibName:@"EventPage" bundle:nil];
         self.eventPageViewController.view.tag = RIGHT_PANEL_TAG;
         self.eventPageViewController.delegate = _centerViewController;
@@ -467,8 +467,18 @@
 
 - (void)displayEventPage:(Event *)event{
     NSLog(@"event: %@", event);
-    UIView * childView = [self getEventPageView:event];
-    [[self navigationController] setView:childView];
+    //UIView * childView = [self getEventPageView:event];
+    //[[self navigationController] setView:childView];
+    EventPageViewController * eventPage = [self getEventPageView:event];
+    NSLog(@"eventdescription : %@", eventPage.currentEvent.description);
+    //NSLog(@"%@", eventPage.modalTransitionStyle);
+    //eventPage.
+    /*
+    NSArray *viewArray = [[NSArray alloc] initWithObjects:eventPage,nil];
+    [[self navigationController] pushViewController:eventPage animated:YES];*/
+    //[[self navigationController] setViewControllers:viewArray animated:YES];
+    
+    //[[self navigationController] ];
     //EventPageViewController *childView = [self OpenEventPage:event];
     //[self presentViewController:childView animated:YES completion:nil];
 }

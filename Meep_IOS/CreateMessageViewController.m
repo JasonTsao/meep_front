@@ -156,7 +156,7 @@
         [invitedFriendsList addObject: invited_friend];
     }*/
     
-    Event * newEvent = [[Event alloc] initWithDescription:jsonResponse[@"event"][@"description"] withName:jsonResponse[@"event"][@"name"] startTime:jsonResponse[@"event"][@"start_time"]];
+    Event * newEvent = [[Event alloc] initWithDescription:jsonResponse[@"event"][@"description"] withName:jsonResponse[@"event"][@"name"] startTime:jsonResponse[@"event"][@"start_time"] eventId:[jsonResponse[@"event"][@"id"] integerValue]];
     
     EventPageViewController * eventPage = [segue destinationViewController];
     eventPage.currentEvent = newEvent;

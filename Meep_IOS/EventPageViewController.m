@@ -30,6 +30,61 @@
     return self;
 }
 
+- (void) getInvitedFriends
+{
+    NSString * requestURL = [NSString stringWithFormat:@"%@invited_friends/%i",[MEEPhttp eventURL], _currentEvent.event_id];
+    //NSString * event_id = [NSString stringWithFormat:@"%i", _currentEvent.event_id ];
+    NSLog(@"request url : %@", requestURL);
+    NSDictionary *postDict = [[NSDictionary alloc] init];
+    //NSDictionary *postDict = [[NSDictionary alloc] initWithObjectsAndKeys:@"2",@"user", event_id, @"event", nil];
+    NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
+    NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    [conn start];
+}
+
+-(void)connection:(NSURLConnection*)connection didReceiveResponse:(NSURLResponse*)response
+{
+    _data = [[NSMutableData alloc] init]; // _data being an ivar
+}
+-(void)connection:(NSURLConnection*)connection didReceiveData:(NSData*)data
+{
+    [_data appendData:data];
+}
+-(void)connection:(NSURLConnection*)connection didFailWithError:(NSError*)error
+{
+    // Handle the error properly
+    NSLog(@"Call Failed");
+}
+-(void)connectionDidFinishLoading:(NSURLConnection*)connection
+{
+    [self handleData]; // Deal with the data
+}
+
+
+-(void)handleData{
+    NSError* error;
+    NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:_data options:0 error:&error];
+    NSArray * friends = jsonResponse[@"invited_friends"];
+    _invitedFriends = [[NSMutableArray alloc]init];
+    for( int i = 0; i< [friends count]; i++){
+        InvitedFriend *new_friend = [[InvitedFriend alloc]init];
+        
+        NSDictionary * new_friend_dict = [NSJSONSerialization JSONObjectWithData: [friends[i] dataUsingEncoding:NSUTF8StringEncoding]
+                                                                         options: NSJSONReadingMutableContainers
+                                                                           error: &error];
+        new_friend.name = new_friend_dict[@"name"];
+        
+        [_invitedFriends addObject:new_friend];
+    }
+    
+    NSLog(@"invited friends: %@", _invitedFriends);
+    /*NSData *data = [NSKeyedArchiver archivedDataWithRootObject:_invitedFriends];
+    [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"invited_friends_list"];
+    [NSUserDefaults resetStandardUserDefaults];*/
+    //[self.];
+    
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     NSString *friend_name;
     Friend *selectedFriend;
@@ -92,8 +147,10 @@
     if ([_currentEvent.description length] > 15){
         self.title = [_currentEvent.description substringToIndex:15];
     }
+    [self getInvitedFriends];
     _description.text =_currentEvent.description;
     _eventDescription.text = _currentEvent.description;
+    NSLog(@"event description; %@", _currentEvent.description);
     NSLog(@"invited_friends: %@", _invitedFriends);
     // Do any additional setup after loading the view.
 }

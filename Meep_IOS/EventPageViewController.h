@@ -10,6 +10,7 @@
 #import "Event.h"
 #import "Friend.h"
 #import "InvitedFriend.h"
+#import "MEEPhttp.h"
 
 @protocol EventPageViewControllerDelegate <NSObject>
 
@@ -23,6 +24,7 @@
 @interface EventPageViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
 @property (nonatomic) Event *currentEvent;
 @property (nonatomic) NSMutableArray *invitedFriends;
+@property(nonatomic, strong) NSMutableData * data;
 @property (nonatomic, assign) id<EventPageViewControllerDelegate> delegate;
 
 @end
