@@ -11,9 +11,14 @@
 #import "Group.h"
 #import "MEEPhttp.h"
 
+@class GroupTableViewController;
+@protocol GroupTableViewControllerDelegate
+@end
+
 @interface GroupTableViewController : UITableViewController<UITableViewDataSource, UITableViewDelegate>
 //@property (nonatomic) Group *selectedGroup;
 @property (nonatomic) NSMutableArray *groupMembers;
 @property (nonatomic) Group *group;
+@property(nonatomic, strong) id <GroupTableViewControllerDelegate> delegate;
 @property(nonatomic, strong) NSMutableData * data;
 @end

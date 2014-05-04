@@ -179,13 +179,16 @@
 {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
+    
     if (![[segue identifier] isEqualToString:@"createGroup"]){
         GroupTableViewController * groupPage = [segue destinationViewController];
         NSIndexPath *path = [self.tableView indexPathForSelectedRow];
         Group *selected_group = groups_list[path.row];
         groupPage.group = selected_group;
-    }else{
         
+    }else{
+        CreateGroupViewController *createGroupPage = [segue destinationViewController];
+        [createGroupPage setDelegate:self.delegate];
     }
 
 }

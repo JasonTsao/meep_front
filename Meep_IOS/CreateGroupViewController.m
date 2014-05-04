@@ -211,6 +211,49 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (IBAction)createGroup:(id)sender {
+    NSMutableArray *groupMembersToCreate = [[NSMutableArray alloc] init];
+    
+    for (int i = 0; i < [selected_friends_list count]; i++){
+        NSString *account_id = [NSString stringWithFormat: @"%i", [selected_friends_list[i] account_id]];
+        
+        [groupMembersToCreate addObject:account_id];
+        NSLog(@"group Member: %i", account_id);
+    }
+    
+    NSString * requestURL = [NSString stringWithFormat:@"%@group/new",[MEEPhttp accountURL]];
+    NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:@"2",@"user",_nameField.text,@"name", groupMembersToCreate, @"members", nil];
+    NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
+    NSURLResponse * response = nil;
+    NSError * error = nil;
+    NSData *return_data = [NSURLConnection sendSynchronousRequest:request
+                                                returningResponse:&response
+                                                            error:&error];
+    
+    NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:return_data options:0 error:&error];
+    NSArray * success = jsonResponse[@"success"];
+    
+    Group * createdGroup = [[Group alloc] initWithName:_nameField.text];    //NSMutableArray * return_group_members = jsonResponse[@"group_members"];
+    //NSMutableArray * groupMembersList = [[NSMutableArray alloc]init];
+    
+    //GroupTableViewController * groupPage = [segue destinationViewController];
+    
+    UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"CenterStoryboard" bundle:nil];
+    
+    GroupsViewController *groupsViewController = (GroupsViewController *)[storyboard instantiateViewControllerWithIdentifier:@"groups"];
+    //GroupTableViewController *groupTableViewController = (GroupTableViewController *)[storyboard instantiateViewControllerWithIdentifier:@"groupPage"];
+    
+    //GroupTableViewController *groupTableViewController = (GroupTableViewController *)[storyboard
+    //groupTableViewController.group = createdGroup;
+    //groupTableViewController.groupMembers = selected_friends_list;
+    
+    UINavigationController *navigation = [[UINavigationController alloc]initWithRootViewController:groupsViewController];
+    //[navigation setDelegate:self.delegate];
+    [groupsViewController setDelegate:self.delegate];
+    //[groupTableViewController setDelegate:self.delegate];
+    //[self presentViewController:groupTableViewController animated:YES completion:nil];
+    [self presentViewController:navigation animated:YES completion:nil];
+}
 
 #pragma mark - Navigation
 

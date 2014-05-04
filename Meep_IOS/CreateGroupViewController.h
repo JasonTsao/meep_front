@@ -9,13 +9,14 @@
 #import <UIKit/UIKit.h>
 #import "MEEPhttp.h"
 #import "Friend.h"
-#import "GroupTableViewController.h"
+#import "GroupsViewController.h"
+//#import "GroupTableViewController.h"
 
 
 @class CreateGroupViewController;
 
 @protocol CreateGroupViewControllerDelegate
-- (void) backToCenterFromGroups:(CreateGroupViewController *)controller;
+//- (void) backToCenterFromGroups:(CreateGroupViewController *)controller;
 @end
 
 @interface CreateGroupViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>

@@ -394,13 +394,12 @@
 
 - (void) openGroupsPage
 {
-    UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"GroupsStoryboard" bundle:nil];
+    //UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"GroupsStoryboard" bundle:nil];
+    UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"CenterStoryboard" bundle:nil];
     _groupsViewController = (GroupsViewController *)[storyboard instantiateViewControllerWithIdentifier:@"groups"];
-    
     UINavigationController *navigation = [[UINavigationController alloc]initWithRootViewController:_groupsViewController];
     [_groupsViewController setDelegate:self];
     [self presentViewController:navigation animated:YES completion:nil];
-    /*[self presentViewController:_friendsListTableViewController animated:YES completion:nil];*/
 }
 
 
