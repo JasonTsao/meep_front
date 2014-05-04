@@ -11,6 +11,7 @@
 #import "Friend.h"
 #import "InvitedFriend.h"
 #import "MEEPhttp.h"
+@class EventPageViewController;
 
 @protocol EventPageViewControllerDelegate <NSObject>
 
@@ -18,10 +19,11 @@
 
 @required
 - (void)closeEventModal;
+- (void) backToCenterFromEventPage:(EventPageViewController *)controller;
 
 @end
 
-@interface EventPageViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
+@interface EventPageViewController : UIViewController
 @property (nonatomic) Event *currentEvent;
 @property (nonatomic) NSMutableArray *invitedFriends;
 @property(nonatomic, strong) NSMutableData * data;

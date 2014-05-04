@@ -12,7 +12,10 @@
 @interface EventPageViewController ()
 
 @property (weak, nonatomic) IBOutlet UILabel *eventDescription;
+@property (weak, nonatomic) IBOutlet UICollectionView *friendsCollection;
+
 @property (weak, nonatomic) IBOutlet UILabel *description;
+@property (weak, nonatomic) IBOutlet UINavigationItem *eventNavBar;
 
 @end
 
@@ -20,6 +23,11 @@
 - (IBAction)closeModal:(id)sender {
     [_delegate closeEventModal];
 }
+
+- (IBAction)backToCenterFromEventPage:(id)sender {
+    [self.delegate backToCenterFromEventPage:self];
+}
+
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil event:(Event*) event
 {
@@ -34,7 +42,6 @@
 {
     NSString * requestURL = [NSString stringWithFormat:@"%@invited_friends/%i",[MEEPhttp eventURL], _currentEvent.event_id];
     //NSString * event_id = [NSString stringWithFormat:@"%i", _currentEvent.event_id ];
-    NSLog(@"request url : %@", requestURL);
     NSDictionary *postDict = [[NSDictionary alloc] init];
     //NSDictionary *postDict = [[NSDictionary alloc] initWithObjectsAndKeys:@"2",@"user", event_id, @"event", nil];
     NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
@@ -77,12 +84,52 @@
         [_invitedFriends addObject:new_friend];
     }
     
-    NSLog(@"invited friends: %@", _invitedFriends);
+    [self.friendsCollection reloadData];
     /*NSData *data = [NSKeyedArchiver archivedDataWithRootObject:_invitedFriends];
     [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"invited_friends_list"];
     [NSUserDefaults resetStandardUserDefaults];*/
     //[self.];
     
+}
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+{
+    return [_invitedFriends count];
+}
+
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
+{
+    return 1;
+}
+
+-(void) aMethod
+{
+    NSLog(@"yay!");
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    //UICollectionViewCell *cell = [_friendsCollection dequeueReusableCellWithReuseIdentifier:@"table" forIndexPath:indexPath];
+    UICollectionViewCell *cell = [_friendsCollection dequeueReusableCellWithReuseIdentifier:@"invitedFriendCell" forIndexPath:indexPath];
+    //UIImage *cellImage = [[UIImage alloc] init];
+    UIButton *cellButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    NSString *user_name;
+
+    if([[_invitedFriends[indexPath.row] name] length] >= 6){
+        //user_name = [_invitedFriends[indexPath.row] name];
+        user_name = [[_invitedFriends[indexPath.row] name] substringToIndex:6];
+    }
+    else{
+        user_name = [_invitedFriends[indexPath.row] name];
+    }
+
+    [cellButton addTarget:self
+               action:@selector(aMethod:)
+     forControlEvents:UIControlEventTouchUpInside];
+    [cellButton setTitle:user_name forState:UIControlStateNormal];
+    cellButton.frame = CGRectMake(0.0, 0.0, 50.0, 50.0);
+    [cell.contentView addSubview: cellButton];
+    return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -145,13 +192,18 @@
 {
     [super viewDidLoad];
     if ([_currentEvent.description length] > 15){
-        self.title = [_currentEvent.description substringToIndex:15];
+        self.eventNavBar.title = [_currentEvent.description substringToIndex:15];
     }
     [self getInvitedFriends];
-    _description.text =_currentEvent.description;
     _eventDescription.text = _currentEvent.description;
-    NSLog(@"event description; %@", _currentEvent.description);
-    NSLog(@"invited_friends: %@", _invitedFriends);
+    _description.text = _currentEvent.description;
+    //self.friendsCollection.dataSource = self;
+    //self.friendsCollection.delegate = self;
+    
+    UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
+    [flowLayout setScrollDirection:UICollectionViewScrollDirectionVertical];
+    [self.friendsCollection setCollectionViewLayout:flowLayout];
+    //[self.friendsCollection registerNib:[UINib nibWithNibName:@"EventPage" bundle:nil] forCellWithReuseIdentifier:@"5"];
     // Do any additional setup after loading the view.
 }
 

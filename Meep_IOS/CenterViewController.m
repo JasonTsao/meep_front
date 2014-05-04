@@ -145,6 +145,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     Event *currentRecord = [self.eventArray objectAtIndex:indexPath.row];
+
     NSLog(@"displaying event: %@", currentRecord);
     [_delegate displayEventPage:currentRecord];
 }
@@ -315,16 +316,16 @@
     return self;
 }
 
-/*- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
     
-    EventPageViewController * eventPage = [segue destinationViewController];
+    /*EventPageViewController * eventPage = [segue destinationViewController];
     NSIndexPath *path = [_upcomingEvents indexPathForSelectedRow];
     Event *selected_event = _eventArray[path.row];
-    eventPage.currentEvent = selected_event;
-}*/
+    eventPage.currentEvent = selected_event;*/
+}
 
 
 

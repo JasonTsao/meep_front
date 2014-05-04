@@ -59,6 +59,8 @@
 @property (nonatomic, strong) EventPageViewController *eventPageViewController;
 @property (nonatomic, assign) BOOL showEventPage;
 
+
+
 @end
 
 @implementation MainViewController
@@ -220,21 +222,34 @@
 
 //- (UIView *)getEventPageView:(Event*)selectedEvent {
 - (EventPageViewController *)getEventPageView:(Event*)selectedEvent {
-    if(_eventPageViewController == nil) {
-        self.eventPageViewController = [[EventPageViewController alloc] initWithNibName:@"EventPage" bundle:nil];
-        _eventPageViewController.currentEvent = selectedEvent;
-        self.eventPageViewController.view.tag = RIGHT_PANEL_TAG;
-        self.eventPageViewController.delegate = _centerViewController;
-        [self.view addSubview:self.eventPageViewController.view];
+    /*
+     OLD DEPRECATED CODE
+     if(_eventPageViewController == nil) {
+        //self.eventPageViewController = [[EventPageViewController alloc] initWithNibName:@"EventPage" bundle:nil];
+        //self.eventPageViewController.view.tag = RIGHT_PANEL_TAG;
+        //self.eventPageViewController.delegate = _centerViewController;
+        //[self.view addSubview:self.eventPageViewController.view];
+        
+        
         [_eventPageViewController didMoveToParentViewController:self];
         _eventPageViewController.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
         
-    }
-    self.showEventPage = YES;
-    [self showCenterViewWithShadow:YES withOffset:2];
+    }*/
+    
+    //self.showEventPage = YES;
+    //[self showCenterViewWithShadow:YES withOffset:2];
     //UIView * view = self.eventCreatorViewController.view;
-    UIView * view = _eventPageViewController.view;
+    //UIView * view = _eventPageViewController.view;
     //return view;
+    
+    UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"CenterStoryboard" bundle:nil];
+    self.eventPageViewController = (EventPageViewController *)[storyboard instantiateViewControllerWithIdentifier:@"EventViewController"];
+    _eventPageViewController.currentEvent = selectedEvent;
+    [self.eventPageViewController setDelegate:self];
+    [self presentViewController:self.eventPageViewController animated:YES completion:nil];
+    
+    
+    
     return _eventPageViewController;
 }
 
@@ -449,6 +464,11 @@
 }
 
 - (void) backToCenterFromFriends:(FriendsListTableViewController *)controller
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void) backToCenterFromEventPage:(EventPageViewController *)controller
 {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
