@@ -26,7 +26,6 @@
 
 - (void)getGroupMembers
 {
-    NSLog(@"getting group members for %i", _group.group_id);
     NSString * requestURL = [NSString stringWithFormat:@"%@group/%i/members",[MEEPhttp accountURL], _group.group_id];
     NSLog(@"request url : %@", requestURL);
     //NSDictionary * postDict = [[NSDictionary alloc] init];
@@ -53,7 +52,6 @@
 {
     [self handleData]; // Deal with the data
 }
-
 
 -(void)handleData{
     NSError* error;
@@ -94,7 +92,6 @@
     self.title = _group.name;
     
     if (!_groupMembers){
-        NSLog(@"getting group members");
         [self getGroupMembers];
     }
     
@@ -131,30 +128,26 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"groupMember" forIndexPath:indexPath];
-    NSLog(@"group members %@", _groupMembers);
     // Configure the cell...
-    NSLog(@"indexpath : %@", indexPath);
     if (indexPath.section == 0){
-        NSLog(@"row :%i", indexPath.row);
-        NSLog(@"friend at row: %@", _groupMembers[indexPath.row]);
         Friend *currentFriend = _groupMembers[indexPath.row];
-        NSLog(@"current friend: %@", currentFriend.name);
         cell.textLabel.text = currentFriend.name;
     }
     return cell;
 }
 
 
-/*
+
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Return NO if you do not want the specified item to be editable.
+    NSLog(@"can edit index path : %@", indexPath);
     return YES;
 }
-*/
 
-/*
+
+
 // Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -165,7 +158,7 @@
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
     }   
 }
-*/
+
 
 /*
 // Override to support rearranging the table view.
