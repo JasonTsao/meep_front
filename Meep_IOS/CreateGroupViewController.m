@@ -33,7 +33,6 @@
 - (void)getFriendsList
 {
     NSString * requestURL = [NSString stringWithFormat:@"%@friends/list/1",[MEEPhttp accountURL]];
-    NSLog(@"request url : %@", requestURL);
     NSDictionary * postDict = [[NSDictionary alloc] init];
     NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
     NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
@@ -42,12 +41,10 @@
 
 -(void)connection:(NSURLConnection*)connection didReceiveResponse:(NSURLResponse*)response
 {
-    NSLog(@"connection did recieve response");
     _data = [[NSMutableData alloc] init]; // _data being an ivar
 }
 -(void)connection:(NSURLConnection*)connection didReceiveData:(NSData*)data
 {
-    NSLog(@"connection did recieve data");
     [_data appendData:data];
 }
 -(void)connection:(NSURLConnection*)connection didFailWithError:(NSError*)error
@@ -57,7 +54,6 @@
 }
 -(void)connectionDidFinishLoading:(NSURLConnection*)connection
 {
-    NSLog(@"connection did finish loading");
     [self handleData]; // Deal with the data
 }
 
@@ -243,7 +239,6 @@
                                                             error:&error];
     
     NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:return_data options:0 error:&error];
-    NSLog(@"jsonResponse: %@", jsonResponse);
     NSArray * success = jsonResponse[@"success"];
     
     Group * createdGroup = [[Group alloc] initWithName:_nameField.text];    //NSMutableArray * return_group_members = jsonResponse[@"group_members"];

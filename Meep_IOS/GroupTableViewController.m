@@ -27,7 +27,6 @@
 - (void)getGroupMembers
 {
     NSString * requestURL = [NSString stringWithFormat:@"%@group/%i/members",[MEEPhttp accountURL], _group.group_id];
-    NSLog(@"request url : %@", requestURL);
     //NSDictionary * postDict = [[NSDictionary alloc] init];
     NSDictionary *postDict = [[NSDictionary alloc] initWithObjectsAndKeys:@"2",@"user", nil];
     NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
@@ -64,7 +63,6 @@
         /*NSDictionary * new_friend_dict = [NSJSONSerialization JSONObjectWithData: [members[i] dataUsingEncoding:NSUTF8StringEncoding]
                                                                          options: NSJSONReadingMutableContainers
                                                                            error: &error];*/
-        NSLog(@"member : %@", members[i]);
         NSDictionary * new_friend_dict = members[i];
         new_friend.name = new_friend_dict[@"user_name"];
         new_friend.bio = new_friend_dict[@"bio"];

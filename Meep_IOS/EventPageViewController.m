@@ -12,6 +12,7 @@
 @interface EventPageViewController ()
 
 @property (weak, nonatomic) IBOutlet UILabel *eventDescription;
+@property (weak, nonatomic) IBOutlet UILabel *description;
 
 @end
 
@@ -91,10 +92,9 @@
     if ([_currentEvent.description length] > 15){
         self.title = [_currentEvent.description substringToIndex:15];
     }
-    
+    _description.text =_currentEvent.description;
     _eventDescription.text = _currentEvent.description;
     NSLog(@"invited_friends: %@", _invitedFriends);
-    _eventDescription.text = _currentEvent.description;
     // Do any additional setup after loading the view.
 }
 

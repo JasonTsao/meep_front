@@ -31,7 +31,6 @@
 - (void)getGroupList
 {
     NSString * requestURL = [NSString stringWithFormat:@"%@group/list/1",[MEEPhttp accountURL]];
-    NSLog(@"request url : %@", requestURL);
     NSDictionary * postDict = [[NSDictionary alloc] init];
     NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
     NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
@@ -40,7 +39,6 @@
 
 -(void)connection:(NSURLConnection*)connection didReceiveResponse:(NSURLResponse*)response
 {
-    NSLog(@"did recieve response");
     _data = [[NSMutableData alloc] init]; // _data being an ivar
 }
 -(void)connection:(NSURLConnection*)connection didReceiveData:(NSData*)data
@@ -54,7 +52,6 @@
 }
 -(void)connectionDidFinishLoading:(NSURLConnection*)connection
 {
-    NSLog(@"did finish loading");
     [self handleData]; // Deal with the data
 }
 
@@ -63,7 +60,6 @@
     NSError* error;
     NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:_data options:0 error:&error];
     NSArray * groups = jsonResponse[@"groups"];
-    NSLog(@"groups list: %@", groups);
     groups_list = [[NSMutableArray alloc]init];
     for( int i = 0; i< [groups count]; i++){
         Group *new_group = [[Group alloc]init];
@@ -183,7 +179,6 @@
 {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
-    NSLog(@"sender : %@", [segue identifier]);
     if (![[segue identifier] isEqualToString:@"createGroup"]){
         GroupTableViewController * groupPage = [segue destinationViewController];
         NSIndexPath *path = [self.tableView indexPathForSelectedRow];

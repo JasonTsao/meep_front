@@ -65,6 +65,7 @@
 		96E1D2311915709300951DEB /* InvitedFriend.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E1D2301915709300951DEB /* InvitedFriend.m */; };
 		96E1D2341915932100951DEB /* GroupTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E1D2331915932100951DEB /* GroupTableViewController.m */; };
 		96E1D2371915977400951DEB /* Group.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E1D2361915977400951DEB /* Group.m */; };
+		96E1D2391915CFE000951DEB /* CenterStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 96E1D2381915CFE000951DEB /* CenterStoryboard.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -166,6 +167,7 @@
 		96E1D2331915932100951DEB /* GroupTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupTableViewController.m; sourceTree = "<group>"; };
 		96E1D2351915977400951DEB /* Group.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Group.h; sourceTree = "<group>"; };
 		96E1D2361915977400951DEB /* Group.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Group.m; sourceTree = "<group>"; };
+		96E1D2381915CFE000951DEB /* CenterStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = CenterStoryboard.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -312,6 +314,7 @@
 				3CCC51311905A20D00EB0980 /* CenterViewController.m */,
 				3CCC51321905A20D00EB0980 /* CenterViewController.xib */,
 				3CCC516F1905A46400EB0980 /* EventCell.xib */,
+				96E1D2381915CFE000951DEB /* CenterStoryboard.storyboard */,
 			);
 			name = "Center Page";
 			sourceTree = "<group>";
@@ -490,6 +493,7 @@
 				3CCC51631905A20D00EB0980 /* MainViewController.xib in Resources */,
 				3CCC51731905A55F00EB0980 /* MeepIOS-Info.plist in Resources */,
 				3CCC515A1905A20D00EB0980 /* EventPage.xib in Resources */,
+				96E1D2391915CFE000951DEB /* CenterStoryboard.storyboard in Resources */,
 				3CDDCDA1190872C600F851EE /* TimeSelect.xib in Resources */,
 				9606E6AD191318ED00D985A7 /* CreateEventStoryboard.storyboard in Resources */,
 				3CCC51551905A20D00EB0980 /* CenterViewController.xib in Resources */,

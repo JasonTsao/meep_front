@@ -109,15 +109,29 @@
 
 - (void)setupView
 {
+    UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"CenterStoryboard" bundle:nil];
+    _centerViewController = (GroupsViewController *)[storyboard instantiateViewControllerWithIdentifier:@"centerView"];
+    
+    //UINavigationController *navigation = [[UINavigationController alloc]initWithRootViewController:_centerViewController];
+    //[self presentViewController:navigation animated:YES completion:nil];
+    _centerViewController.delegate = self;
+    
+    [self.view addSubview:_centerViewController.view];
+    [self addChildViewController:_centerViewController];
+    
+    [_centerViewController didMoveToParentViewController:self];
+    
+    
     // setup center view
-    self.centerViewController = [[CenterViewController alloc] initWithNibName:@"CenterViewController" bundle:nil];
+    /*self.centerViewController = [[CenterViewController alloc] initWithNibName:@"CenterViewController" bundle:nil];
     self.centerViewController.view.tag = CENTER_TAG;
+    
     self.centerViewController.delegate = self;
     
     [self.view addSubview:self.centerViewController.view];
     [self addChildViewController:_centerViewController];
     
-    [_centerViewController didMoveToParentViewController:self];
+    [_centerViewController didMoveToParentViewController:self];*/
     [self setupGestures];
 }
 
