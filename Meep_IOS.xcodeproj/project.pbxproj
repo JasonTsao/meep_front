@@ -71,6 +71,9 @@
 		96E1D26319172F3000951DEB /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96E1D26219172F3000951DEB /* AddressBookUI.framework */; };
 		96E1D26719173E8D00951DEB /* AddFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E1D26619173E8D00951DEB /* AddFriendsViewController.m */; };
 		96E1D26D19174EA000951DEB /* AddFriendsFromTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E1D26C19174EA000951DEB /* AddFriendsFromTableViewController.m */; };
+		96E1D2731918549400951DEB /* DjangoAuthClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E1D2701918549400951DEB /* DjangoAuthClient.m */; };
+		96E1D2741918549400951DEB /* DjangoAuthLoginResultObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E1D2721918549400951DEB /* DjangoAuthLoginResultObject.m */; };
+		96E1D277191854D900951DEB /* AuthenticationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E1D276191854D900951DEB /* AuthenticationViewController.m */; };
 		DAF700821917209A004EDC66 /* ABIGBOOB.m in Sources */ = {isa = PBXBuildFile; fileRef = DAF700811917209A004EDC66 /* ABIGBOOB.m */; };
 /* End PBXBuildFile section */
 
@@ -197,6 +200,12 @@
 		96E1D26619173E8D00951DEB /* AddFriendsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddFriendsViewController.m; sourceTree = "<group>"; };
 		96E1D26B19174EA000951DEB /* AddFriendsFromTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddFriendsFromTableViewController.h; sourceTree = "<group>"; };
 		96E1D26C19174EA000951DEB /* AddFriendsFromTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddFriendsFromTableViewController.m; sourceTree = "<group>"; };
+		96E1D26F1918549400951DEB /* DjangoAuthClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DjangoAuthClient.h; sourceTree = "<group>"; };
+		96E1D2701918549400951DEB /* DjangoAuthClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DjangoAuthClient.m; sourceTree = "<group>"; };
+		96E1D2711918549400951DEB /* DjangoAuthLoginResultObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DjangoAuthLoginResultObject.h; sourceTree = "<group>"; };
+		96E1D2721918549400951DEB /* DjangoAuthLoginResultObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DjangoAuthLoginResultObject.m; sourceTree = "<group>"; };
+		96E1D275191854D900951DEB /* AuthenticationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthenticationViewController.h; sourceTree = "<group>"; };
+		96E1D276191854D900951DEB /* AuthenticationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthenticationViewController.m; sourceTree = "<group>"; };
 		DAF700801917209A004EDC66 /* ABIGBOOB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABIGBOOB.h; sourceTree = "<group>"; };
 		DAF700811917209A004EDC66 /* ABIGBOOB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABIGBOOB.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -283,6 +292,7 @@
 		3CCC507E19059F9500EB0980 /* Meep_IOS */ = {
 			isa = PBXGroup;
 			children = (
+				96E1D26E1918545000951DEB /* Authentication */,
 				96E1D26419173E2900951DEB /* AddFriends */,
 				9686302A1909FA7700CAE305 /* Friend Pages */,
 				3CE1C87519099BCB00E4375A /* AccountSettings.h */,
@@ -468,6 +478,19 @@
 			name = AddFriends;
 			sourceTree = "<group>";
 		};
+		96E1D26E1918545000951DEB /* Authentication */ = {
+			isa = PBXGroup;
+			children = (
+				96E1D26F1918549400951DEB /* DjangoAuthClient.h */,
+				96E1D2701918549400951DEB /* DjangoAuthClient.m */,
+				96E1D2711918549400951DEB /* DjangoAuthLoginResultObject.h */,
+				96E1D2721918549400951DEB /* DjangoAuthLoginResultObject.m */,
+				96E1D275191854D900951DEB /* AuthenticationViewController.h */,
+				96E1D276191854D900951DEB /* AuthenticationViewController.m */,
+			);
+			name = Authentication;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -644,6 +667,7 @@
 				3CCC51591905A20D00EB0980 /* EventCreatorViewController.m in Sources */,
 				96E1D2371915977400951DEB /* Group.m in Sources */,
 				3CCC51621905A20D00EB0980 /* MainViewController.m in Sources */,
+				96E1D2741918549400951DEB /* DjangoAuthLoginResultObject.m in Sources */,
 				3CCF3CE41912A70A00DED761 /* MEPTextParse.m in Sources */,
 				96E1D2341915932100951DEB /* GroupTableViewController.m in Sources */,
 				968630351909FAB200CAE305 /* Friend.m in Sources */,
@@ -653,11 +677,13 @@
 				3CCC515B1905A20D00EB0980 /* EventPageViewController.m in Sources */,
 				DAF700821917209A004EDC66 /* ABIGBOOB.m in Sources */,
 				96E1D26D19174EA000951DEB /* AddFriendsFromTableViewController.m in Sources */,
+				96E1D277191854D900951DEB /* AuthenticationViewController.m in Sources */,
 				3CCC51541905A20D00EB0980 /* CenterViewController.m in Sources */,
 				3CCC516A1905A20D00EB0980 /* User.m in Sources */,
 				96E1D2311915709300951DEB /* InvitedFriend.m in Sources */,
 				968630381909FAB200CAE305 /* FriendsListTableViewController.m in Sources */,
 				3CCC515F1905A20D00EB0980 /* main.m in Sources */,
+				96E1D2731918549400951DEB /* DjangoAuthClient.m in Sources */,
 				3CCC515D1905A20D00EB0980 /* LeftPanelViewController.m in Sources */,
 				968630371909FAB200CAE305 /* FriendProfileViewController.m in Sources */,
 				968630361909FAB200CAE305 /* FriendFullSizeProfileImageViewController.m in Sources */,
