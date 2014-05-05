@@ -217,6 +217,7 @@
     // Pass the selected object to the new view controller.
     CreateMessageViewController * createMessage = [segue destinationViewController];
     createMessage.invited_friends_list = selected_friends_list;
+    [createMessage setDelegate:self.delegate];
 }
 
 

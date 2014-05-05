@@ -24,10 +24,6 @@
 - (IBAction)openFriendsListPage:(id)sender {
     [_delegate openFriendsListPage];
 }
-/*
-- (IBAction)openCreateGroupPage:(id)sender {
-    [_delegate openCreateGroupPage];
-}*/
 
 - (IBAction)openGroupsPage:(id)sender {
     [_delegate openGroupsPage];

@@ -7,6 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Friend.h"
+#import "MEEPhttp.h"
+#import "Group.h"
+#import "GroupTableViewController.h"
+#import "CreateGroupViewController.h"
 
 @class GroupsViewController;
 @protocol GroupsViewControllerDelegate

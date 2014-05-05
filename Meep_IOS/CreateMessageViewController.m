@@ -18,6 +18,7 @@
 @property (nonatomic, strong) MEPTextParse *parser;
 @property (nonatomic, strong) NSMutableData * data;
 
+
 @end
 
 @implementation CreateMessageViewController
@@ -39,7 +40,7 @@
     
     for (int i = 0; i < [_invited_friends_list count]; i++){
         NSString *user_id = [NSString stringWithFormat: @"%i", [_invited_friends_list[i] account_id]];
-        NSDictionary *friend_dict = [[NSDictionary alloc] initWithObjectsAndKeys:user_id,@"user_id", @"False", @"can_invite_frien   ds", nil];
+        NSDictionary *friend_dict = [[NSDictionary alloc] initWithObjectsAndKeys:user_id,@"user_id", @"false", @"can_invite_friends", nil];
         [invitedFriendsToSend addObject:friend_dict];
         NSLog(@"invited friend: %i", [_invited_friends_list[i] account_id]);
     }
@@ -47,32 +48,34 @@
     NSString * requestURL = [NSString stringWithFormat:@"%@new",[MEEPhttp eventURL]];
     NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:@"2",@"user", messageText, @"description", invitedFriendsToSend, @"invited_friends", nil];
     NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
-    NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
-    [conn start];
-}
-
--(void)connection:(NSURLConnection*)connection didReceiveResponse:(NSURLResponse*)response{
-    _data = [[NSMutableData alloc] init]; // _data being an ivar
-}
-
--(void)connection:(NSURLConnection*)connection didReceiveData:(NSData*)data{
-    [self.data appendData:data];
-}
-
--(void)connection:(NSURLConnection*)connection didFailWithError:(NSError*)error{
-    // Handle the error properly
-    NSLog(@"Call Failed");
-}
-
--(void)connectionDidFinishLoading:(NSURLConnection*)connection{
-    [self handleData]; // Deal with the data
-}
-
--(void)handleData{
-    NSError* error;
-    NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:_data options:0 error:&error];
+    NSURLResponse * response = nil;
+    NSError * error = nil;
+    NSData *return_data = [NSURLConnection sendSynchronousRequest:request
+                                                returningResponse:&response
+                                                            error:&error];
+    
+    NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:return_data options:0 error:&error];
+    NSLog(@"jsonResponse: %@", jsonResponse);
     NSArray * success = jsonResponse[@"success"];
+    NSMutableArray * return_invited_friends = jsonResponse[@"invited_friends"];
+    NSMutableArray * invitedFriendsList = [[NSMutableArray alloc]init];
+    
+    /*for (int i = 0; i < [return_invited_friends count]; i++){
+     
+     InvitedFriend * invited_friend = [[InvitedFriend alloc] initWithName:[_invited_friends_list[i] name] withAccountID:return_invited_friends[i][@"user"] withAttending:return_invited_friends[i][@"attending"] withCanInvite:return_invited_friends[i][@"can_invite_friends"]];
+     [invitedFriendsList addObject: invited_friend];
+     }*/
+    
+    Event * newEvent = [[Event alloc] initWithDescription:jsonResponse[@"event"][@"description"] withName:jsonResponse[@"event"][@"name"] startTime:jsonResponse[@"event"][@"start_time"] eventId:[jsonResponse[@"event"][@"id"] integerValue]];
+    
+    UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"CenterStoryboard" bundle:nil];
+    EventPageViewController *eventPageViewController = (EventPageViewController *)[storyboard instantiateViewControllerWithIdentifier:@"EventViewController"];
+    eventPageViewController.currentEvent = newEvent;
+    [eventPageViewController setDelegate:self.delegate];
+    [self presentViewController:eventPageViewController animated:YES completion:nil];
 }
+
+
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     NSString *friend_name;
@@ -163,15 +166,15 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
+
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+    
+
 }
-*/
+
 
 @end

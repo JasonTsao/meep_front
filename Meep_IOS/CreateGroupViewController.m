@@ -7,8 +7,6 @@
 //
 
 #import "CreateGroupViewController.h"
-#import "MEEPhttp.h"
-#import "Friend.h"
 
 @interface CreateGroupViewController ()
 @property (weak, nonatomic) IBOutlet UITableView *friendTable;
@@ -35,7 +33,6 @@
 - (void)getFriendsList
 {
     NSString * requestURL = [NSString stringWithFormat:@"%@friends/list/1",[MEEPhttp accountURL]];
-    NSLog(@"request url : %@", requestURL);
     NSDictionary * postDict = [[NSDictionary alloc] init];
     NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
     NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
@@ -44,12 +41,10 @@
 
 -(void)connection:(NSURLConnection*)connection didReceiveResponse:(NSURLResponse*)response
 {
-    NSLog(@"connection did recieve response");
     _data = [[NSMutableData alloc] init]; // _data being an ivar
 }
 -(void)connection:(NSURLConnection*)connection didReceiveData:(NSData*)data
 {
-    NSLog(@"connection did recieve data");
     [_data appendData:data];
 }
 -(void)connection:(NSURLConnection*)connection didFailWithError:(NSError*)error
@@ -59,7 +54,6 @@
 }
 -(void)connectionDidFinishLoading:(NSURLConnection*)connection
 {
-    NSLog(@"connection did finish loading");
     [self handleData]; // Deal with the data
 }
 
@@ -91,11 +85,15 @@
     
 }
 
-- (IBAction)createGroup:(id)sender {
-    NSLog(@"Name: %@", self.nameField.text);
-    for (int i = 0; i < [selected_friends_list count]; i++){
-        NSLog(@"%@", [selected_friends_list[i] name]);
-    }
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    return YES;
+}
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [self.view endEditing: YES];
 }
 
 
@@ -213,6 +211,37 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (IBAction)createGroup:(id)sender {
+    NSMutableArray *groupMembersToCreate = [[NSMutableArray alloc] init];
+    
+    for (int i = 0; i < [selected_friends_list count]; i++){
+        NSString *account_id = [NSString stringWithFormat: @"%i", [selected_friends_list[i] account_id]];
+        
+        [groupMembersToCreate addObject:account_id];
+    }
+    
+    NSString * requestURL = [NSString stringWithFormat:@"%@group/new",[MEEPhttp accountURL]];
+    NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:@"2",@"user",_nameField.text,@"name", groupMembersToCreate, @"members", nil];
+    NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
+    NSURLResponse * response = nil;
+    NSError * error = nil;
+    NSData *return_data = [NSURLConnection sendSynchronousRequest:request
+                                                returningResponse:&response
+                                                            error:&error];
+    
+    NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:return_data options:0 error:&error];
+    NSArray * success = jsonResponse[@"success"];
+    
+    Group * createdGroup = [[Group alloc] initWithName:_nameField.text];    //NSMutableArray * return_group_members = jsonResponse[@"group_members"];
+
+    UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"CenterStoryboard" bundle:nil];
+    
+    GroupsViewController *groupsViewController = (GroupsViewController *)[storyboard instantiateViewControllerWithIdentifier:@"groups"];
+    UINavigationController *navigation = [[UINavigationController alloc]initWithRootViewController:groupsViewController];
+
+    [groupsViewController setDelegate:self.delegate];
+    [self presentViewController:navigation animated:YES completion:nil];
+}
 
 #pragma mark - Navigation
 
@@ -221,6 +250,37 @@
 {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
+
+    
+    /*
+     OLD DEPRECATED CODE
+     NSMutableArray *groupMembersToCreate = [[NSMutableArray alloc] init];
+    
+    for (int i = 0; i < [selected_friends_list count]; i++){
+        NSString *account_id = [NSString stringWithFormat: @"%i", [selected_friends_list[i] account_id]];
+
+        [groupMembersToCreate addObject:account_id];
+        NSLog(@"group Member: %i", account_id);
+    }
+    
+    NSString * requestURL = [NSString stringWithFormat:@"%@group/new",[MEEPhttp accountURL]];
+    NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:@"2",@"user",_nameField.text,@"name", groupMembersToCreate, @"members", nil];
+    NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
+    NSURLResponse * response = nil;
+    NSError * error = nil;
+    NSData *return_data = [NSURLConnection sendSynchronousRequest:request
+                                                returningResponse:&response
+                                                            error:&error];
+    
+    NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:return_data options:0 error:&error];
+    NSArray * success = jsonResponse[@"success"];
+    
+    Group * createdGroup = [[Group alloc] initWithName:_nameField.text];    //NSMutableArray * return_group_members = jsonResponse[@"group_members"];
+    //NSMutableArray * groupMembersList = [[NSMutableArray alloc]init];
+    
+    GroupTableViewController * groupPage = [segue destinationViewController];
+    groupPage.group = createdGroup;
+    groupPage.groupMembers = selected_friends_list;*/
 }
 
 

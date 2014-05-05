@@ -15,6 +15,7 @@
 
 @property (weak, nonatomic) IBOutlet UITableView *upcomingEventsTable;
 @property (weak, nonatomic) IBOutlet UITableViewCell *cellMain;
+@property (weak, nonatomic) IBOutlet UITableView *upcomingEvents;
 
 @property(nonatomic, strong) NSMutableArray * eventArray;
 
@@ -39,11 +40,6 @@
     [_delegate openFriendsListPage];
 }
 
-- (void)openCreateGroupPage
-{
-    [_delegate openCreateGroupPage];
-}
-
 - (void)openCreateEventPage
 {
     [_delegate openCreateEventPage];
@@ -64,7 +60,6 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSLog(@"NUMBER OF ROWS");
     return [_eventArray count];
 }
 
@@ -75,7 +70,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *cellMainNibID = @"EventCell";
+    /*static NSString *cellMainNibID = @"EventCell";
     NSLog(@"HI");
     _cellMain = [_upcomingEventsTable dequeueReusableCellWithIdentifier:cellMainNibID];
     
@@ -95,7 +90,12 @@
         description.text = [NSString stringWithFormat:@"%@", currentRecord.description];
     }
     [self.upcomingEventsTable registerClass:[UITableViewCell class] forCellReuseIdentifier:cellMainNibID];
-    return _cellMain;
+    return _cellMain;*/
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"upcomingEvent" forIndexPath:indexPath];
+    Event *upcomingEvent = [_eventArray objectAtIndex:indexPath.row];
+    cell.textLabel.text = upcomingEvent.description;
+    
+    return cell;
 }
 
 /*
@@ -140,6 +140,8 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     Event *currentRecord = [self.eventArray objectAtIndex:indexPath.row];
+
+    NSLog(@"displaying event: %@", currentRecord);
     [_delegate displayEventPage:currentRecord];
 }
 
@@ -214,6 +216,9 @@
     [_delegate openCreateEventPage];
 }
 
+- (IBAction)openCreateEventPage:(id)sender {
+    [_delegate openCreateEventPage];
+}
 
 - (IBAction)btnMovePanelLeft:(id)sender
 {
@@ -262,12 +267,10 @@
 -(void)handleData{
     NSError* error;
     NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:_data options:0 error:&error];
-    NSLog(@"Upcoming events response %@",jsonResponse);
     NSArray * upcoming = jsonResponse[@"upcoming_events"];
     NSArray * owned = jsonResponse[@"owned_upcoming_events"];
-    NSLog(@"%i",[upcoming count]);
     for(NSDictionary *eventObj in upcoming) {
-        Event * event = [[Event alloc] initWithDescription:eventObj[@"description"] withName:eventObj[@"name"] startTime:eventObj[@"start_time"]];
+        Event * event = [[Event alloc] initWithDescription:eventObj[@"description"] withName:eventObj[@"name"] startTime:eventObj[@"start_time"] eventId:[eventObj[@"id"] integerValue]] ;
         [_eventArray addObject:event];
     }
     /*for(NSString *eventStr in owned) {
@@ -284,9 +287,12 @@
         Event * event = [[Event alloc] initWithDescription:description withName:name startTime:@""];
         [self.eventArray addObject:event];
     }*/
-    self.upcomingEventsTable.dataSource = self;
+    self.upcomingEvents.dataSource = self;
+    self.upcomingEvents.delegate = self;
+    [self.upcomingEvents reloadData];
+    /*self.upcomingEventsTable.dataSource = self;
     self.upcomingEventsTable.delegate = self;
-    [self.upcomingEventsTable reloadData];
+    [self.upcomingEventsTable reloadData];*/
 }
 
 -(void)closeEventModal {
@@ -304,6 +310,19 @@
     }
     return self;
 }
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+    
+    /*EventPageViewController * eventPage = [segue destinationViewController];
+    NSIndexPath *path = [_upcomingEvents indexPathForSelectedRow];
+    Event *selected_event = _eventArray[path.row];
+    eventPage.currentEvent = selected_event;*/
+}
+
+
 
 - (void)didReceiveMemoryWarning
 {

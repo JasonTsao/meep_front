@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @interface Event : NSObject
-
+@property NSInteger * event_id;
 @property NSString * name;
 @property NSString * description;
 @property NSString * locationName;
@@ -20,6 +20,7 @@
 
 -(id) initWithDescription:(NSString*) evdescription
                  withName:(NSString*) evname
-               startTime:(NSString*) evstarttime;
+               startTime:(NSString*) evstarttime
+                  eventId:(NSInteger)evId;
 
 @end

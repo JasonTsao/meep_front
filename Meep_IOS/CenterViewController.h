@@ -27,7 +27,6 @@
 - (void)returnToMain;
 - (void)openAccountPage;
 - (void)openFriendsListPage;
-- (void)openCreateGroupPage;
 - (void)openCreateEventPage;
 - (void)openGroupsPage;
 
