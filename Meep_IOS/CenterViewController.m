@@ -40,11 +40,6 @@
     [_delegate openFriendsListPage];
 }
 
-- (void)openCreateGroupPage
-{
-    [_delegate openCreateGroupPage];
-}
-
 - (void)openCreateEventPage
 {
     [_delegate openCreateEventPage];

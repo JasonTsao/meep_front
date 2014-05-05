@@ -123,7 +123,6 @@
     
     [_centerViewController didMoveToParentViewController:self];
     
-    
     // setup center view
     /*self.centerViewController = [[CenterViewController alloc] initWithNibName:@"CenterViewController" bundle:nil];
     self.centerViewController.view.tag = CENTER_TAG;
@@ -220,28 +219,7 @@
     return view;
 }
 
-//- (UIView *)getEventPageView:(Event*)selectedEvent {
 - (EventPageViewController *)getEventPageView:(Event*)selectedEvent {
-    /*
-     OLD DEPRECATED CODE
-     if(_eventPageViewController == nil) {
-        //self.eventPageViewController = [[EventPageViewController alloc] initWithNibName:@"EventPage" bundle:nil];
-        //self.eventPageViewController.view.tag = RIGHT_PANEL_TAG;
-        //self.eventPageViewController.delegate = _centerViewController;
-        //[self.view addSubview:self.eventPageViewController.view];
-        
-        
-        [_eventPageViewController didMoveToParentViewController:self];
-        _eventPageViewController.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
-        
-    }*/
-    
-    //self.showEventPage = YES;
-    //[self showCenterViewWithShadow:YES withOffset:2];
-    //UIView * view = self.eventCreatorViewController.view;
-    //UIView * view = _eventPageViewController.view;
-    //return view;
-    
     UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"CenterStoryboard" bundle:nil];
     self.eventPageViewController = (EventPageViewController *)[storyboard instantiateViewControllerWithIdentifier:@"EventViewController"];
     _eventPageViewController.currentEvent = selectedEvent;
@@ -374,28 +352,17 @@
 
 - (void) openAccountPage
 {
-    //UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"CenterStoryboard" bundle:nil];
     _accountViewController = (AccountViewController *)[storyboard instantiateViewControllerWithIdentifier:@"accountSettings"];
     
     UINavigationController *navigation = [[UINavigationController alloc]initWithRootViewController:_accountViewController];
     [_accountViewController setDelegate:self];
     [self presentViewController:navigation animated:YES completion:nil];
-    //[self presentViewController:_accountViewController animated:YES completion:nil];
 }
-
-- (void) openCreateGroupPage
-{
-    UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"GroupsStoryboard" bundle:nil];
-    _createGroupViewController = (CreateGroupViewController *)[storyboard instantiateViewControllerWithIdentifier:@"groups"];
-    [self presentViewController:_createGroupViewController animated:YES completion:nil];
-}
-
 
 
 - (void) openGroupsPage
 {
-    //UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"GroupsStoryboard" bundle:nil];
     UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"CenterStoryboard" bundle:nil];
     _groupsViewController = (GroupsViewController *)[storyboard instantiateViewControllerWithIdentifier:@"groups"];
     UINavigationController *navigation = [[UINavigationController alloc]initWithRootViewController:_groupsViewController];
@@ -406,11 +373,7 @@
 
 - (void) openCreateEventPage
 {
-    /*UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"CreateEventStoryboard" bundle:nil];
-    _inviteFriendsViewController = (InviteFriendsViewController *)[storyboard instantiateViewControllerWithIdentifier:@"createEvent"];
-    [self presentViewController:_inviteFriendsViewController animated:YES completion:nil];*/
-    
-    //UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"CreateEventStoryboard" bundle:nil];
+
     UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"CenterStoryboard" bundle:nil];
     _inviteFriendsViewController = (InviteFriendsViewController *)[storyboard instantiateViewControllerWithIdentifier:@"createEvent"];
     
@@ -422,14 +385,12 @@
 
 - (void) openFriendsListPage
 {
-    //UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"FriendsStoryboard" bundle:nil];
     UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"CenterStoryboard" bundle:nil];
     _friendsListTableViewController = (FriendsListTableViewController *)[storyboard instantiateViewControllerWithIdentifier:@"friendsList"];
     
     UINavigationController *navigation = [[UINavigationController alloc]initWithRootViewController:_friendsListTableViewController];
     [_friendsListTableViewController setDelegate:self];
     [self presentViewController:navigation animated:YES completion:nil];
-    /*[self presentViewController:_friendsListTableViewController animated:YES completion:nil];*/
 }
 
 // MOST LIKELY WONT USE THIS FUNCTION ANYMORE
@@ -446,8 +407,6 @@
     }
     self.showEventPage = YES;
     [self showCenterViewWithShadow:YES withOffset:2];
-    //UIView * view = self.eventCreatorViewController.view;
-    //UIView * view = _eventPageViewController.view;
     return _eventPageViewController;
 }
 
@@ -489,21 +448,7 @@
 }
 
 - (void)displayEventPage:(Event *)event{
-    NSLog(@"event: %@", event);
-    //UIView * childView = [self getEventPageView:event];
-    //[[self navigationController] setView:childView];
     EventPageViewController * eventPage = [self getEventPageView:event];
-    NSLog(@"eventdescription : %@", eventPage.currentEvent.description);
-    //NSLog(@"%@", eventPage.modalTransitionStyle);
-    //eventPage.
-    /*
-    NSArray *viewArray = [[NSArray alloc] initWithObjects:eventPage,nil];
-    [[self navigationController] pushViewController:eventPage animated:YES];*/
-    //[[self navigationController] setViewControllers:viewArray animated:YES];
-    
-    //[[self navigationController] ];
-    //EventPageViewController *childView = [self OpenEventPage:event];
-    //[self presentViewController:childView animated:YES completion:nil];
 }
 
 - (void) returnToMain {
