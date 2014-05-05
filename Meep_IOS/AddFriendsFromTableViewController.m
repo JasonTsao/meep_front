@@ -65,10 +65,10 @@
 -(void)handleData{
     
     if ([_viewTitle isEqualToString:@"From Contacts"]){
-        
         NSError* nserror;
         NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:_data options:0 error:&nserror];
         
+        NSLog(@"jsonResponse: %@", jsonResponse);
         if ([jsonResponse objectForKey:@"registered_users"] != nil){
             _phoneRegisteredUsers = [[NSMutableArray alloc] init];
             _phoneNonRegisteredUsers = [[NSMutableArray alloc] init];
@@ -138,6 +138,9 @@
                 }
             }
             [self getFriendsToInviteAndRegisteredUsers:_phoneNonFriendUsers];
+        }
+        else{
+            
         }
         
     }
@@ -215,11 +218,61 @@
     return 0;
 }
 
+- (void)selectFriend:(id)sender
+{
+    UIButton *button = (UIButton*) sender;
+    
+    if([button isSelected]){
+        [button setSelected:NO];
+        NSString * requestURL = [NSString stringWithFormat:@"%@friends/unfriend",[MEEPhttp accountURL]];
+        NSLog(@"request url : %@", requestURL);
+        NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:@"2", @"user", _buttonTagDictionary[[NSString stringWithFormat:@"%i", button.tag]],@"phone_number", nil];
+        NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
+        NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+        [conn start];
+    }
+    else if( ![button isSelected]){
+        [button setSelected:YES];
+        NSString * requestURL = [NSString stringWithFormat:@"%@friends/add_by_phone",[MEEPhttp accountURL]];
+        NSLog(@"request url : %@", requestURL);
+        NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:@"2", @"user", _buttonTagDictionary[[NSString stringWithFormat:@"%i", button.tag]],@"phone_number", nil];
+        NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
+        NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+        [conn start];
+    }
+    
+    
+}
+
 - (void)addFriend:(id)sender
+{
+    
+    UIButton *button = (UIButton*) sender;
+    NSLog(@"Add Friend tag: %i", button.tag);
+    NSLog(@"Add Friend description: %@", _buttonTagDictionary[[NSString stringWithFormat:@"%i", button.tag]]);
+    
+    NSString * requestURL = [NSString stringWithFormat:@"%@friends/add_by_phone",[MEEPhttp accountURL]];
+    NSLog(@"request url : %@", requestURL);
+    NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:@"2", @"user", _buttonTagDictionary[[NSString stringWithFormat:@"%i", button.tag]],@"phone_number", nil];
+    NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
+    NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    [conn start];
+    
+}
+
+- (void)unFriend:(id)sender
 {
     UIButton *button = (UIButton*) sender;
     NSLog(@"Add Friend tag: %i", button.tag);
     NSLog(@"Add Friend description: %@", _buttonTagDictionary[[NSString stringWithFormat:@"%i", button.tag]]);
+    
+    NSString * requestURL = [NSString stringWithFormat:@"%@friends/unfriend",[MEEPhttp accountURL]];
+    NSLog(@"request url : %@", requestURL);
+    NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:@"2", @"user", _buttonTagDictionary[[NSString stringWithFormat:@"%i", button.tag]],@"phone_number", nil];
+    NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
+    NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    [conn start];
+    
 }
 
 - (void)inviteFriend:(id)sender
@@ -243,7 +296,8 @@
                                         23)];
          newButton.backgroundColor = [UIColor grayColor];
          [newButton setTitle:@"add" forState:UIControlStateNormal];
-         [newButton addTarget:self action:@selector(addFriend:)
+         
+         [newButton addTarget:self action:@selector(selectFriend:)
               forControlEvents:UIControlEventTouchUpInside];
          [newButton setTag: _buttonTagNumber];
          NSString *key = [NSString stringWithFormat:@"%i", _buttonTagNumber];
@@ -279,12 +333,7 @@
          cell.textLabel.text = full_name;
      }
      
-     //[full_name appendString: _phoneContacts[indexPath.row][@"last_name"]];
-     
-     
- // Configure the cell...
- 
- return cell;
+     return cell;
  }
  
 
