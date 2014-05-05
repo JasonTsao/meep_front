@@ -23,90 +23,139 @@
     return self;
 }
 
-- (void)peoplePickerNavigationControllerDidCancel:
-(ABPeoplePickerNavigationController *)peoplePicker
+- (void)getFriendsList
 {
-    [self dismissModalViewControllerAnimated:YES];
+    NSString * requestURL = [NSString stringWithFormat:@"%@friends/list/1",[MEEPhttp accountURL]];
+    NSLog(@"request url : %@", requestURL);
+    NSDictionary * postDict = [[NSDictionary alloc] init];
+    NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
+    NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    [conn start];
+}
+
+-(void)connection:(NSURLConnection*)connection didReceiveResponse:(NSURLResponse*)response
+{
+    _data = [[NSMutableData alloc] init]; // _data being an ivar
+}
+-(void)connection:(NSURLConnection*)connection didReceiveData:(NSData*)data
+{
+    [_data appendData:data];
+}
+-(void)connection:(NSURLConnection*)connection didFailWithError:(NSError*)error
+{
+    // Handle the error properly
+    NSLog(@"Call Failed");
+}
+-(void)connectionDidFinishLoading:(NSURLConnection*)connection
+{
+    [self handleData]; // Deal with the data
+}
+
+-(void)getFriendsToInviteAndRegisteredUsers:(NSMutableArray*)nonFriends
+{
+    NSString * requestURL = [NSString stringWithFormat:@"%@check_if_phone_users_registered",[MEEPhttp accountURL]];
+    NSLog(@"request url : %@", requestURL);
+    NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:@"2", @"user",_phoneNonFriendUsersNumbers,@"phone_numbers", nil];
+    NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
+    NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    [conn start];
 }
 
 
-- (BOOL)peoplePickerNavigationController:
-(ABPeoplePickerNavigationController *)peoplePicker
-      shouldContinueAfterSelectingPerson:(ABRecordRef)person {
+-(void)handleData{
     
-    
-    NSString* name = (__bridge_transfer NSString*)ABRecordCopyValue(person,
-                                                                    kABPersonFirstNameProperty);
-    NSLog(@"name : %@", name);
-    NSString* phone = nil;
-    ABMultiValueRef phoneNumbers = ABRecordCopyValue(person,
-                                                     kABPersonPhoneProperty);
-    if (ABMultiValueGetCount(phoneNumbers) > 0) {
-        phone = (__bridge_transfer NSString*)
-        ABMultiValueCopyValueAtIndex(phoneNumbers, 0);
-    } else {
-        phone = @"[None]";
+    if ([_viewTitle isEqualToString:@"From Contacts"]){
+        
+        NSError* nserror;
+        NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:_data options:0 error:&nserror];
+        
+        if ([jsonResponse objectForKey:@"registered_users"] != nil){
+            _phoneRegisteredUsers = [[NSMutableArray alloc] init];
+            _phoneNonRegisteredUsers = [[NSMutableArray alloc] init];
+            NSMutableArray *registeredUsers = jsonResponse[@"registered_users"];
+            NSMutableArray *nonregisteredUsers = jsonResponse[@"nonregistered_users"];
+            for ( int i = 0; i < [registeredUsers count]; i++){
+                NSInteger index = [_phoneNonFriendUsersNumbers indexOfObject:registeredUsers[i]];
+                [_phoneRegisteredUsers addObject:_phoneNonFriendUsers[index]];
+            }
+            for ( int i = 0; i < [nonregisteredUsers count]; i++){
+                NSInteger index = [_phoneNonFriendUsersNumbers indexOfObject:nonregisteredUsers[i]];
+                [_phoneNonRegisteredUsers addObject:_phoneNonFriendUsers[index]];
+            }
+
+            [self.tableView reloadData];
+            
+        }
+        else if([jsonResponse objectForKey:@"friends"] != nil){
+            //_phoneRegisteredUsers = [[NSMutableArray alloc]init];
+            _phoneNonFriendUsersNumbers = [[NSMutableArray alloc]init];
+            _phoneNonFriendUsers = [[NSMutableArray alloc]init];
+            _phoneContacts = [[NSMutableArray alloc]init];
+            _phoneContactNumbers = [[NSMutableArray alloc]init];
+            CFErrorRef error = NULL;
+            ABAddressBookRef addressBook = ABAddressBookCreate( );
+            CFArrayRef allPeople = ABAddressBookCopyArrayOfAllPeople( addressBook );
+            CFIndex nPeople = ABAddressBookGetPersonCount( addressBook );
+            
+            for ( int i = 0; i < nPeople; i++ )
+            {
+                ABRecordRef person = CFArrayGetValueAtIndex( allPeople, i );
+                NSString *firstName = (__bridge NSString *)(ABRecordCopyValue(person, kABPersonFirstNameProperty));
+                NSString *lastName = (__bridge NSString *)(ABRecordCopyValue(person, kABPersonLastNameProperty));
+                if(!firstName){
+                    firstName = @"";
+                }
+                if(!lastName){
+                    lastName = @"";
+                }
+                ABMultiValueRef phoneNumbers = ABRecordCopyValue(person, kABPersonPhoneProperty);
+                NSString *phoneNumber;
+                for (CFIndex i = 0; i < ABMultiValueGetCount(phoneNumbers); i++) {
+                    NSString *numberFromPhone = (__bridge_transfer NSString *) ABMultiValueCopyValueAtIndex(phoneNumbers, i);
+                    NSCharacterSet *onlyAllowedChars = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789"] invertedSet];
+                    phoneNumber = [[numberFromPhone componentsSeparatedByCharactersInSet:onlyAllowedChars] componentsJoinedByString:@""];
+                }
+                NSDictionary *user_dictionary = [[NSDictionary alloc]initWithObjectsAndKeys:lastName, @"last_name", firstName, @"first_name", phoneNumber, @"phone_number", nil];
+                [_phoneContacts addObject:user_dictionary];
+                [_phoneContactNumbers addObject:phoneNumber];
+            }
+            CFRelease(addressBook);
+
+            NSArray * friends = jsonResponse[@"friends"];
+            _friendsList = [[NSMutableArray alloc]init];
+            
+            for( int i = 0; i< [friends count]; i++){
+                NSDictionary * new_friend_dict = [NSJSONSerialization JSONObjectWithData: [friends[i] dataUsingEncoding:NSUTF8StringEncoding]
+                                                                                 options: NSJSONReadingMutableContainers
+                                                                                   error: &nserror];
+                [_friendsList addObject:new_friend_dict[@"phone_number"]];
+            }
+            for (int k = 0; k < [_phoneContacts count]; k++)
+            {
+                if (![_friendsList containsObject:_phoneContactNumbers[k]]){
+                    [_phoneNonFriendUsers addObject:_phoneContacts[k]];
+                    [_phoneNonFriendUsersNumbers addObject:_phoneContactNumbers[k]];
+                }
+            }
+            [self getFriendsToInviteAndRegisteredUsers:_phoneNonFriendUsers];
+        }
+        
     }
     
-    NSLog(@"phone number: %@", phone);
-    CFRelease(phoneNumbers);
-    [self dismissModalViewControllerAnimated:YES];
     
-    return NO;
+    //[self.tableView reloadData];
+    
 }
 
-- (BOOL)peoplePickerNavigationController:
-(ABPeoplePickerNavigationController *)peoplePicker
-      shouldContinueAfterSelectingPerson:(ABRecordRef)person
-                                property:(ABPropertyID)property
-                              identifier:(ABMultiValueIdentifier)identifier
-{
-    return NO;
-}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     self.title = _viewTitle;
     
-    if( _viewTitle == @"From Contacts"){
-        CFErrorRef error = NULL;
-        ABAddressBookRef addressBook = ABAddressBookCreate( );
-        CFArrayRef allPeople = ABAddressBookCopyArrayOfAllPeople( addressBook );
-        CFIndex nPeople = ABAddressBookGetPersonCount( addressBook );
-        
-        for ( int i = 0; i < nPeople; i++ )
-        {
-            ABRecordRef person = CFArrayGetValueAtIndex( allPeople, i );
-            NSString *firstName = (__bridge NSString *)(ABRecordCopyValue(person, kABPersonFirstNameProperty));
-            NSString *lastName = (__bridge NSString *)(ABRecordCopyValue(person, kABPersonLastNameProperty));
-            //NSLog(@"Name:%@ %@", firstName, lastName);
-            
-            ABMultiValueRef phoneNumbers = ABRecordCopyValue(person, kABPersonPhoneProperty);
-            NSString *phoneNumber;
-            for (CFIndex i = 0; i < ABMultiValueGetCount(phoneNumbers); i++) {
-                phoneNumber = (__bridge_transfer NSString *) ABMultiValueCopyValueAtIndex(phoneNumbers, i);
-                //NSLog(@"phone:%@", phoneNumber);
-            }
-            
-            NSDictionary *user_dictionary = [[NSDictionary alloc]initWithObjectsAndKeys:lastName, @"last_name", firstName, @"first_name", phoneNumber, @"phone_number", nil];
-            [_phoneContacts addObject:user_dictionary];
-            
-        }
-        NSLog(@"Contacts: %@", _phoneContacts);
-        CFRelease(addressBook);
+    if( [_viewTitle isEqualToString:@"From Contacts"]){
+        [self getFriendsList];
     }
-    
-    /* ... Work with the address book. ... */
-    
-    /*if (ABAddressBookHasUnsavedChanges(addressBook)) {
-        if (wantToSaveChanges) {
-            didSave = ABAddressBookSave(addressBook, &error);
-            if (!didSave) {}
-        } else {
-            ABAddressBookRevert(addressBook);
-        }
-    }*/
     
     
     // Uncomment the following line to preserve selection between presentations.
@@ -118,13 +167,6 @@
 
 - (void)viewDidAppear:(BOOL) animated
 {
-    
-    
-    /*ABPeoplePickerNavigationController *picker =
-    [[ABPeoplePickerNavigationController alloc] init];
-    picker.peoplePickerDelegate = self;
-    
-    [self presentModalViewController:picker animated:YES];*/
 }
 
 - (void)didReceiveMemoryWarning
@@ -135,30 +177,66 @@
 
 #pragma mark - Table view data source
 
+-(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    NSString *header;
+    if (section == 0){
+        header = @"Friends who have Meep";
+    }
+    else if(section == 1){
+        header = @"Invite";
+    }
+    return header;
+}
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
 #warning Potentially incomplete method implementation.
     // Return the number of sections.
-    return 0;
+    return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
 #warning Incomplete method implementation.
     // Return the number of rows in the section.
+    if ([_viewTitle isEqualToString:@"From Contacts"]){
+        
+        if( section == 0){
+            return [_phoneRegisteredUsers count];
+        }
+        else if(section ==1){
+            return[_phoneNonRegisteredUsers count];
+        }
+    }
+    
     return 0;
 }
 
-/*
+
  - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
  {
- UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
- 
+ UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"friendToAdd" forIndexPath:indexPath];
+     
+     if (indexPath.section == 0){
+         NSMutableString *full_name = [[NSMutableString alloc] initWithString: _phoneRegisteredUsers[indexPath.row][@"first_name"]];
+         [full_name appendString: @" "];
+         cell.textLabel.text = full_name;
+     }
+     else if(indexPath.section == 1){
+         NSMutableString *full_name = [[NSMutableString alloc] initWithString: _phoneNonRegisteredUsers[indexPath.row][@"first_name"]];
+         [full_name appendString: @" "];
+         cell.textLabel.text = full_name;
+     }
+     
+     //[full_name appendString: _phoneContacts[indexPath.row][@"last_name"]];
+     
+     
  // Configure the cell...
  
  return cell;
  }
- */
+ 
 
 /*
  // Override to support conditional editing of the table view.

@@ -284,7 +284,6 @@
 			isa = PBXGroup;
 			children = (
 				96E1D26419173E2900951DEB /* AddFriends */,
-				9606E6A3191308A300D985A7 /* Group Pages */,
 				9686302A1909FA7700CAE305 /* Friend Pages */,
 				3CE1C87519099BCB00E4375A /* AccountSettings.h */,
 				3CE1C87619099BCB00E4375A /* AccountSettings.m */,
@@ -464,6 +463,7 @@
 				96E1D26619173E8D00951DEB /* AddFriendsViewController.m */,
 				96E1D26B19174EA000951DEB /* AddFriendsFromTableViewController.h */,
 				96E1D26C19174EA000951DEB /* AddFriendsFromTableViewController.m */,
+				9606E6A3191308A300D985A7 /* Group Pages */,
 			);
 			name = AddFriends;
 			sourceTree = "<group>";
@@ -985,6 +985,7 @@
 				96E1D25B19172E7F00951DEB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		96E1D25F19172E7F00951DEB /* Build configuration list for PBXNativeTarget "addressBookTests" */ = {
 			isa = XCConfigurationList;
@@ -993,6 +994,7 @@
 				96E1D25D19172E7F00951DEB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
