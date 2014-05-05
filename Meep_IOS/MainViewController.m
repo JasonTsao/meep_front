@@ -374,7 +374,8 @@
 
 - (void) openAccountPage
 {
-    UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    //UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"CenterStoryboard" bundle:nil];
     _accountViewController = (AccountViewController *)[storyboard instantiateViewControllerWithIdentifier:@"accountSettings"];
     
     UINavigationController *navigation = [[UINavigationController alloc]initWithRootViewController:_accountViewController];
@@ -421,7 +422,8 @@
 
 - (void) openFriendsListPage
 {
-    UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"FriendsStoryboard" bundle:nil];
+    //UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"FriendsStoryboard" bundle:nil];
+    UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"CenterStoryboard" bundle:nil];
     _friendsListTableViewController = (FriendsListTableViewController *)[storyboard instantiateViewControllerWithIdentifier:@"friendsList"];
     
     UINavigationController *navigation = [[UINavigationController alloc]initWithRootViewController:_friendsListTableViewController];

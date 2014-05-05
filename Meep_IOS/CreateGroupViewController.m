@@ -218,7 +218,6 @@
         NSString *account_id = [NSString stringWithFormat: @"%i", [selected_friends_list[i] account_id]];
         
         [groupMembersToCreate addObject:account_id];
-        NSLog(@"group Member: %i", account_id);
     }
     
     NSString * requestURL = [NSString stringWithFormat:@"%@group/new",[MEEPhttp accountURL]];
@@ -234,24 +233,13 @@
     NSArray * success = jsonResponse[@"success"];
     
     Group * createdGroup = [[Group alloc] initWithName:_nameField.text];    //NSMutableArray * return_group_members = jsonResponse[@"group_members"];
-    //NSMutableArray * groupMembersList = [[NSMutableArray alloc]init];
-    
-    //GroupTableViewController * groupPage = [segue destinationViewController];
-    
+
     UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"CenterStoryboard" bundle:nil];
     
     GroupsViewController *groupsViewController = (GroupsViewController *)[storyboard instantiateViewControllerWithIdentifier:@"groups"];
-    //GroupTableViewController *groupTableViewController = (GroupTableViewController *)[storyboard instantiateViewControllerWithIdentifier:@"groupPage"];
-    
-    //GroupTableViewController *groupTableViewController = (GroupTableViewController *)[storyboard
-    //groupTableViewController.group = createdGroup;
-    //groupTableViewController.groupMembers = selected_friends_list;
-    
     UINavigationController *navigation = [[UINavigationController alloc]initWithRootViewController:groupsViewController];
-    //[navigation setDelegate:self.delegate];
+
     [groupsViewController setDelegate:self.delegate];
-    //[groupTableViewController setDelegate:self.delegate];
-    //[self presentViewController:groupTableViewController animated:YES completion:nil];
     [self presentViewController:navigation animated:YES completion:nil];
 }
 
@@ -263,7 +251,10 @@
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
 
-    NSMutableArray *groupMembersToCreate = [[NSMutableArray alloc] init];
+    
+    /*
+     OLD DEPRECATED CODE
+     NSMutableArray *groupMembersToCreate = [[NSMutableArray alloc] init];
     
     for (int i = 0; i < [selected_friends_list count]; i++){
         NSString *account_id = [NSString stringWithFormat: @"%i", [selected_friends_list[i] account_id]];
@@ -289,7 +280,7 @@
     
     GroupTableViewController * groupPage = [segue destinationViewController];
     groupPage.group = createdGroup;
-    groupPage.groupMembers = selected_friends_list;
+    groupPage.groupMembers = selected_friends_list;*/
 }
 
 
