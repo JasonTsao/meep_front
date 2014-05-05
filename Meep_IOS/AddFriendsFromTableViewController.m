@@ -213,17 +213,50 @@
     return 0;
 }
 
+- (void)addFriend:(id)sender
+{
+    NSLog(@"Add Friend sender: %@", sender);
+}
+
+- (void)inviteFriend:(id)sender
+{
+    NSLog(@"Invite Friend sender: %@", sender);
+}
 
  - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
  {
  UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"friendToAdd" forIndexPath:indexPath];
      
      if (indexPath.section == 0){
+         UIButton *newButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+         [newButton setFrame:CGRectMake(
+                                        cell.bounds.size.width-(cell.bounds.size.width/5.0),
+                                        (cell.bounds.size.height/4.0),
+                                        50,
+                                        23)];
+         newButton.backgroundColor = [UIColor grayColor];
+         [newButton setTitle:@"add" forState:UIControlStateNormal];
+         [newButton addTarget:self action:@selector(addFriend:)
+              forControlEvents:UIControlEventTouchUpInside];
+         [cell addSubview:newButton];
+         
          NSMutableString *full_name = [[NSMutableString alloc] initWithString: _phoneRegisteredUsers[indexPath.row][@"first_name"]];
          [full_name appendString: @" "];
          cell.textLabel.text = full_name;
      }
      else if(indexPath.section == 1){
+         UIButton *newButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+         [newButton setFrame:CGRectMake(
+                                        cell.bounds.size.width-(cell.bounds.size.width/5.0),
+                                        (cell.bounds.size.height/4.0),
+                                        50,
+                                        23)];
+         newButton.backgroundColor = [UIColor grayColor];
+         [newButton setTitle:@"Invite" forState:UIControlStateNormal];
+         [newButton addTarget:self action:@selector(inviteFriend:)
+             forControlEvents:UIControlEventTouchUpInside];
+         [cell addSubview:newButton];
+         
          NSMutableString *full_name = [[NSMutableString alloc] initWithString: _phoneNonRegisteredUsers[indexPath.row][@"first_name"]];
          [full_name appendString: @" "];
          cell.textLabel.text = full_name;
