@@ -9,5 +9,5 @@
 #import <Foundation/Foundation.h>
 
 @interface MEPTextParse : NSObject
--(NSDictionary*)parseText:(NSString*)text;
+-(NSDictionary*)parseText:(NSString*)text withOverride:(BOOL)override;
 @end

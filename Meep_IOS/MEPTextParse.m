@@ -37,15 +37,14 @@
     return self;
 }
 
-- (NSDictionary*) parseText:(NSString*)text {
+- (NSDictionary*) parseText:(NSString*)text withOverride:(BOOL)override {
     NSArray * textArray = [text componentsSeparatedByString:@" "];
     NSMutableDictionary * contentDictionary = [[NSMutableDictionary alloc] init];
     int arraySize = [textArray count];
     _beginningOfExpression = 0;
     for (int i = 0; i < arraySize; i++) {
         NSLog(@"%@",[textArray objectAtIndex:i]);
-        if([self isTimePreposition:[textArray objectAtIndex:i]] | [self isDatePreposition:[textArray objectAtIndex:i]] | [self isLocationPreposition:[textArray objectAtIndex:i]]) {
-            NSLog(@"%@ is a preposition!",[textArray objectAtIndex:i]);
+        if([self isTimePreposition:[textArray objectAtIndex:i]] | [self isDatePreposition:[textArray objectAtIndex:i]] | [self isLocationPreposition:[textArray objectAtIndex:i]] | override) {
             NSString * phrase = @"";
             for (int j = _beginningOfExpression; j < i; j++) {
                 phrase = [NSString stringWithFormat:@"%@ %@",phrase,[textArray objectAtIndex:j]];
@@ -57,7 +56,9 @@
             if([content objectForKey:@"startDate"]) {
                 [contentDictionary setValue:[content objectForKey:@"startDate"] forKey:@"startDate"];
             }
-            _beginningOfExpression = i + 1;
+            if([self isTimePreposition:[textArray objectAtIndex:i]] | [self isDatePreposition:[textArray objectAtIndex:i]] | [self isLocationPreposition:[textArray objectAtIndex:i]]) {
+                _beginningOfExpression = i + 1;
+            }
         }
     }
     return contentDictionary;

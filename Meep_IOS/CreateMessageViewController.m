@@ -128,7 +128,12 @@
 }
 
 - (void) textFieldDidChange {
-    NSDictionary * contentDetails = [_parser parseText:[_messageField text]];
+    NSString * lastKey = [[_messageField text] substringFromIndex:[[_messageField text] length] - 1];
+    BOOL override = NO;
+    if([lastKey isEqual:@" "] | [lastKey isEqual:@"."] | [lastKey isEqual:@"?"] | [lastKey isEqual:@","]) {
+        override = YES;
+    }
+    NSDictionary * contentDetails = [_parser parseText:[_messageField text]withOverride:override];
     NSLog(@"%@",contentDetails);
 }
 
