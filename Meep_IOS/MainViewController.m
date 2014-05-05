@@ -219,18 +219,6 @@
     return view;
 }
 
-- (EventPageViewController *)getEventPageView:(Event*)selectedEvent {
-    UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"CenterStoryboard" bundle:nil];
-    self.eventPageViewController = (EventPageViewController *)[storyboard instantiateViewControllerWithIdentifier:@"EventViewController"];
-    _eventPageViewController.currentEvent = selectedEvent;
-    [self.eventPageViewController setDelegate:self];
-    [self presentViewController:self.eventPageViewController animated:YES completion:nil];
-    
-    
-    
-    return _eventPageViewController;
-}
-
 #pragma mark -
 #pragma mark Swipe Gesture Setup/Actions
 
@@ -393,22 +381,6 @@
     [self presentViewController:navigation animated:YES completion:nil];
 }
 
-// MOST LIKELY WONT USE THIS FUNCTION ANYMORE
-- (EventPageViewController *)OpenEventPage:(Event*)selectedEvent {
-    NSLog(@"selected event: %@", selectedEvent);
-    if(_eventPageViewController == nil) {
-        self.eventPageViewController = [[EventPageViewController alloc] initWithNibName:@"EventPage" bundle:nil];
-        self.eventPageViewController.view.tag = RIGHT_PANEL_TAG;
-        self.eventPageViewController.delegate = _centerViewController;
-        [self.view addSubview:self.eventPageViewController.view];
-        [_eventPageViewController didMoveToParentViewController:self];
-        _eventPageViewController.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
-        _eventPageViewController.currentEvent = selectedEvent;
-    }
-    self.showEventPage = YES;
-    [self showCenterViewWithShadow:YES withOffset:2];
-    return _eventPageViewController;
-}
 
 - (void) backToCenterFromCreateEvent:(InviteFriendsViewController *)controller
 {
@@ -448,7 +420,11 @@
 }
 
 - (void)displayEventPage:(Event *)event{
-    EventPageViewController * eventPage = [self getEventPageView:event];
+    UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"CenterStoryboard" bundle:nil];
+    self.eventPageViewController = (EventPageViewController *)[storyboard instantiateViewControllerWithIdentifier:@"EventViewController"];
+    _eventPageViewController.currentEvent = event;
+    [self.eventPageViewController setDelegate:self];
+    [self presentViewController:self.eventPageViewController animated:YES completion:nil];
 }
 
 - (void) returnToMain {
