@@ -62,6 +62,7 @@
 		96E1D2341915932100951DEB /* GroupTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E1D2331915932100951DEB /* GroupTableViewController.m */; };
 		96E1D2371915977400951DEB /* Group.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E1D2361915977400951DEB /* Group.m */; };
 		96E1D2391915CFE000951DEB /* CenterStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 96E1D2381915CFE000951DEB /* CenterStoryboard.storyboard */; };
+		DAF700821917209A004EDC66 /* ABIGBOOB.m in Sources */ = {isa = PBXBuildFile; fileRef = DAF700811917209A004EDC66 /* ABIGBOOB.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -160,6 +161,8 @@
 		96E1D2351915977400951DEB /* Group.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Group.h; sourceTree = "<group>"; };
 		96E1D2361915977400951DEB /* Group.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Group.m; sourceTree = "<group>"; };
 		96E1D2381915CFE000951DEB /* CenterStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = CenterStoryboard.storyboard; sourceTree = "<group>"; };
+		DAF700801917209A004EDC66 /* ABIGBOOB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABIGBOOB.h; sourceTree = "<group>"; };
+		DAF700811917209A004EDC66 /* ABIGBOOB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABIGBOOB.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -245,6 +248,8 @@
 				3CCC508719059F9500EB0980 /* MEPAppDelegate.h */,
 				3CCC508819059F9500EB0980 /* MEPAppDelegate.m */,
 				3CCC507F19059F9500EB0980 /* Supporting Files */,
+				DAF700801917209A004EDC66 /* ABIGBOOB.h */,
+				DAF700811917209A004EDC66 /* ABIGBOOB.m */,
 			);
 			path = Meep_IOS;
 			sourceTree = "<group>";
@@ -525,6 +530,7 @@
 				3CCF971B190827CE005FA454 /* AccountViewController.m in Sources */,
 				9606E6A6191308EA00D985A7 /* CreateGroupViewController.m in Sources */,
 				3CCC515B1905A20D00EB0980 /* EventPageViewController.m in Sources */,
+				DAF700821917209A004EDC66 /* ABIGBOOB.m in Sources */,
 				3CCC51541905A20D00EB0980 /* CenterViewController.m in Sources */,
 				3CCC516A1905A20D00EB0980 /* User.m in Sources */,
 				96E1D2311915709300951DEB /* InvitedFriend.m in Sources */,
