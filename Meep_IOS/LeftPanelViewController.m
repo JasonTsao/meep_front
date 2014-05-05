@@ -30,6 +30,10 @@
 }
 
 
+- (IBAction)openAddFriendsPage:(id)sender {
+    [_delegate openAddFriendsPage];
+}
+
 
 #pragma mark -
 #pragma mark View Did Load/Unload

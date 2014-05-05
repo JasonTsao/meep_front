@@ -62,6 +62,15 @@
 		96E1D2341915932100951DEB /* GroupTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E1D2331915932100951DEB /* GroupTableViewController.m */; };
 		96E1D2371915977400951DEB /* Group.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E1D2361915977400951DEB /* Group.m */; };
 		96E1D2391915CFE000951DEB /* CenterStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 96E1D2381915CFE000951DEB /* CenterStoryboard.storyboard */; };
+		96E1D23F19172E7E00951DEB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CCC507819059F9500EB0980 /* Foundation.framework */; };
+		96E1D24C19172E7F00951DEB /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CCC509119059F9500EB0980 /* XCTest.framework */; };
+		96E1D24D19172E7F00951DEB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CCC507819059F9500EB0980 /* Foundation.framework */; };
+		96E1D24E19172E7F00951DEB /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CCC507C19059F9500EB0980 /* UIKit.framework */; };
+		96E1D25119172E7F00951DEB /* libaddressBook.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 96E1D23E19172E7E00951DEB /* libaddressBook.a */; };
+		96E1D26119172F2A00951DEB /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96E1D26019172F2A00951DEB /* AddressBook.framework */; };
+		96E1D26319172F3000951DEB /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96E1D26219172F3000951DEB /* AddressBookUI.framework */; };
+		96E1D26719173E8D00951DEB /* AddFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E1D26619173E8D00951DEB /* AddFriendsViewController.m */; };
+		96E1D26D19174EA000951DEB /* AddFriendsFromTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E1D26C19174EA000951DEB /* AddFriendsFromTableViewController.m */; };
 		DAF700821917209A004EDC66 /* ABIGBOOB.m in Sources */ = {isa = PBXBuildFile; fileRef = DAF700811917209A004EDC66 /* ABIGBOOB.m */; };
 /* End PBXBuildFile section */
 
@@ -73,7 +82,26 @@
 			remoteGlobalIDString = 3CCC507419059F9500EB0980;
 			remoteInfo = Meep_IOS;
 		};
+		96E1D24F19172E7F00951DEB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3CCC506D19059F9500EB0980 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 96E1D23D19172E7E00951DEB;
+			remoteInfo = addressBook;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		96E1D23C19172E7E00951DEB /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		3CCC507519059F9500EB0980 /* Meep_IOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Meep_IOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -161,6 +189,14 @@
 		96E1D2351915977400951DEB /* Group.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Group.h; sourceTree = "<group>"; };
 		96E1D2361915977400951DEB /* Group.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Group.m; sourceTree = "<group>"; };
 		96E1D2381915CFE000951DEB /* CenterStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = CenterStoryboard.storyboard; sourceTree = "<group>"; };
+		96E1D23E19172E7E00951DEB /* libaddressBook.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libaddressBook.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		96E1D24B19172E7F00951DEB /* addressBookTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = addressBookTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		96E1D26019172F2A00951DEB /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
+		96E1D26219172F3000951DEB /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
+		96E1D26519173E8D00951DEB /* AddFriendsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddFriendsViewController.h; sourceTree = "<group>"; };
+		96E1D26619173E8D00951DEB /* AddFriendsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddFriendsViewController.m; sourceTree = "<group>"; };
+		96E1D26B19174EA000951DEB /* AddFriendsFromTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddFriendsFromTableViewController.h; sourceTree = "<group>"; };
+		96E1D26C19174EA000951DEB /* AddFriendsFromTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddFriendsFromTableViewController.m; sourceTree = "<group>"; };
 		DAF700801917209A004EDC66 /* ABIGBOOB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABIGBOOB.h; sourceTree = "<group>"; };
 		DAF700811917209A004EDC66 /* ABIGBOOB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABIGBOOB.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -170,6 +206,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				96E1D26319172F3000951DEB /* AddressBookUI.framework in Frameworks */,
+				96E1D26119172F2A00951DEB /* AddressBook.framework in Frameworks */,
 				3CCC507B19059F9500EB0980 /* CoreGraphics.framework in Frameworks */,
 				3CCC507D19059F9500EB0980 /* UIKit.framework in Frameworks */,
 				3CCC507919059F9500EB0980 /* Foundation.framework in Frameworks */,
@@ -183,6 +221,25 @@
 				3CCC509219059F9500EB0980 /* XCTest.framework in Frameworks */,
 				3CCC509419059F9500EB0980 /* UIKit.framework in Frameworks */,
 				3CCC509319059F9500EB0980 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		96E1D23B19172E7E00951DEB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				96E1D23F19172E7E00951DEB /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		96E1D24819172E7E00951DEB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				96E1D24C19172E7F00951DEB /* XCTest.framework in Frameworks */,
+				96E1D24E19172E7F00951DEB /* UIKit.framework in Frameworks */,
+				96E1D24D19172E7F00951DEB /* Foundation.framework in Frameworks */,
+				96E1D25119172E7F00951DEB /* libaddressBook.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -204,6 +261,8 @@
 			children = (
 				3CCC507519059F9500EB0980 /* Meep_IOS.app */,
 				3CCC509019059F9500EB0980 /* Meep_IOSTests.xctest */,
+				96E1D23E19172E7E00951DEB /* libaddressBook.a */,
+				96E1D24B19172E7F00951DEB /* addressBookTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -211,6 +270,8 @@
 		3CCC507719059F9500EB0980 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				96E1D26219172F3000951DEB /* AddressBookUI.framework */,
+				96E1D26019172F2A00951DEB /* AddressBook.framework */,
 				3CCC507819059F9500EB0980 /* Foundation.framework */,
 				3CCC507A19059F9500EB0980 /* CoreGraphics.framework */,
 				3CCC507C19059F9500EB0980 /* UIKit.framework */,
@@ -222,6 +283,7 @@
 		3CCC507E19059F9500EB0980 /* Meep_IOS */ = {
 			isa = PBXGroup;
 			children = (
+				96E1D26419173E2900951DEB /* AddFriends */,
 				9606E6A3191308A300D985A7 /* Group Pages */,
 				9686302A1909FA7700CAE305 /* Friend Pages */,
 				3CE1C87519099BCB00E4375A /* AccountSettings.h */,
@@ -395,6 +457,17 @@
 			name = "Friend Pages";
 			sourceTree = "<group>";
 		};
+		96E1D26419173E2900951DEB /* AddFriends */ = {
+			isa = PBXGroup;
+			children = (
+				96E1D26519173E8D00951DEB /* AddFriendsViewController.h */,
+				96E1D26619173E8D00951DEB /* AddFriendsViewController.m */,
+				96E1D26B19174EA000951DEB /* AddFriendsFromTableViewController.h */,
+				96E1D26C19174EA000951DEB /* AddFriendsFromTableViewController.m */,
+			);
+			name = AddFriends;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -433,6 +506,41 @@
 			productReference = 3CCC509019059F9500EB0980 /* Meep_IOSTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		96E1D23D19172E7E00951DEB /* addressBook */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 96E1D25E19172E7F00951DEB /* Build configuration list for PBXNativeTarget "addressBook" */;
+			buildPhases = (
+				96E1D23A19172E7E00951DEB /* Sources */,
+				96E1D23B19172E7E00951DEB /* Frameworks */,
+				96E1D23C19172E7E00951DEB /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = addressBook;
+			productName = addressBook;
+			productReference = 96E1D23E19172E7E00951DEB /* libaddressBook.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		96E1D24A19172E7E00951DEB /* addressBookTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 96E1D25F19172E7F00951DEB /* Build configuration list for PBXNativeTarget "addressBookTests" */;
+			buildPhases = (
+				96E1D24719172E7E00951DEB /* Sources */,
+				96E1D24819172E7E00951DEB /* Frameworks */,
+				96E1D24919172E7E00951DEB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				96E1D25019172E7F00951DEB /* PBXTargetDependency */,
+			);
+			name = addressBookTests;
+			productName = addressBookTests;
+			productReference = 96E1D24B19172E7F00951DEB /* addressBookTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -447,6 +555,9 @@
 						DevelopmentTeam = 4H2EZA5CD8;
 					};
 					3CCC508F19059F9500EB0980 = {
+						TestTargetID = 3CCC507419059F9500EB0980;
+					};
+					96E1D24A19172E7E00951DEB = {
 						TestTargetID = 3CCC507419059F9500EB0980;
 					};
 				};
@@ -465,6 +576,8 @@
 			targets = (
 				3CCC507419059F9500EB0980 /* Meep_IOS */,
 				3CCC508F19059F9500EB0980 /* Meep_IOSTests */,
+				96E1D23D19172E7E00951DEB /* addressBook */,
+				96E1D24A19172E7E00951DEB /* addressBookTests */,
 			);
 		};
 /* End PBXProject section */
@@ -505,6 +618,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		96E1D24919172E7E00951DEB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -519,6 +639,7 @@
 				96E1D22E1913645600951DEB /* GroupsViewController.m in Sources */,
 				96E1D22B1913503600951DEB /* CreateMessageViewController.m in Sources */,
 				968630391909FAB200CAE305 /* Photo.m in Sources */,
+				96E1D26719173E8D00951DEB /* AddFriendsViewController.m in Sources */,
 				3CCC508919059F9500EB0980 /* MEPAppDelegate.m in Sources */,
 				3CCC51591905A20D00EB0980 /* EventCreatorViewController.m in Sources */,
 				96E1D2371915977400951DEB /* Group.m in Sources */,
@@ -531,6 +652,7 @@
 				9606E6A6191308EA00D985A7 /* CreateGroupViewController.m in Sources */,
 				3CCC515B1905A20D00EB0980 /* EventPageViewController.m in Sources */,
 				DAF700821917209A004EDC66 /* ABIGBOOB.m in Sources */,
+				96E1D26D19174EA000951DEB /* AddFriendsFromTableViewController.m in Sources */,
 				3CCC51541905A20D00EB0980 /* CenterViewController.m in Sources */,
 				3CCC516A1905A20D00EB0980 /* User.m in Sources */,
 				96E1D2311915709300951DEB /* InvitedFriend.m in Sources */,
@@ -551,6 +673,20 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		96E1D23A19172E7E00951DEB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		96E1D24719172E7E00951DEB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -558,6 +694,11 @@
 			isa = PBXTargetDependency;
 			target = 3CCC507419059F9500EB0980 /* Meep_IOS */;
 			targetProxy = 3CCC509519059F9500EB0980 /* PBXContainerItemProxy */;
+		};
+		96E1D25019172E7F00951DEB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 96E1D23D19172E7E00951DEB /* addressBook */;
+			targetProxy = 96E1D24F19172E7F00951DEB /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -739,6 +880,74 @@
 			};
 			name = Release;
 		};
+		96E1D25A19172E7F00951DEB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/addressBook.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "addressBook/addressBook-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		96E1D25B19172E7F00951DEB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/addressBook.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "addressBook/addressBook-Prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		96E1D25C19172E7F00951DEB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Meep_IOS.app/Meep_IOS";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "addressBook/addressBook-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "addressBookTests/addressBookTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		96E1D25D19172E7F00951DEB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Meep_IOS.app/Meep_IOS";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "addressBook/addressBook-Prefix.pch";
+				INFOPLIST_FILE = "addressBookTests/addressBookTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -768,6 +977,22 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		96E1D25E19172E7F00951DEB /* Build configuration list for PBXNativeTarget "addressBook" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				96E1D25A19172E7F00951DEB /* Debug */,
+				96E1D25B19172E7F00951DEB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		96E1D25F19172E7F00951DEB /* Build configuration list for PBXNativeTarget "addressBookTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				96E1D25C19172E7F00951DEB /* Debug */,
+				96E1D25D19172E7F00951DEB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};

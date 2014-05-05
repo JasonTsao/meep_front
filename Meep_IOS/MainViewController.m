@@ -54,6 +54,9 @@
 @property( nonatomic, strong) EventCreatorViewController *eventCreatorViewController;
 
 @property (nonatomic, strong) InviteFriendsViewController *inviteFriendsViewController;
+
+@property (nonatomic, strong) AddFriendsViewController *addFriendsViewController;
+@property (nonatomic, assign) BOOL showaddFriends;
 @property (nonatomic, assign) BOOL showEventCreator;
 
 @property (nonatomic, strong) EventPageViewController *eventPageViewController;
@@ -87,6 +90,7 @@
 {
     [super viewWillAppear:animated];
 }
+
 
 - (void)viewDidAppear:(BOOL)animated
 {
@@ -381,6 +385,15 @@
     [self presentViewController:navigation animated:YES completion:nil];
 }
 
+- (void) openAddFriendsPage
+{
+    UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"CenterStoryboard" bundle:nil];
+    _addFriendsViewController = (AddFriendsViewController *)[storyboard instantiateViewControllerWithIdentifier:@"addFriends"];
+    
+    UINavigationController *navigation = [[UINavigationController alloc]initWithRootViewController:_addFriendsViewController];
+    [_addFriendsViewController setDelegate:self];
+    [self presentViewController:navigation animated:YES completion:nil];
+}
 
 - (void) backToCenterFromCreateEvent:(InviteFriendsViewController *)controller
 {
@@ -403,6 +416,11 @@
 }
 
 - (void) backToCenterFromEventPage:(EventPageViewController *)controller
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void) backToCenterFromAddFriends:(AddFriendsViewController *)controller
 {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
