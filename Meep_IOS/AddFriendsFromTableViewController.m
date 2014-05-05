@@ -152,6 +152,8 @@
 {
     [super viewDidLoad];
     self.title = _viewTitle;
+    _buttonTagDictionary = [[NSMutableDictionary alloc] init];
+    _buttonTagNumber = 0;
     
     if( [_viewTitle isEqualToString:@"From Contacts"]){
         [self getFriendsList];
@@ -215,12 +217,17 @@
 
 - (void)addFriend:(id)sender
 {
-    NSLog(@"Add Friend sender: %@", sender);
+    UIButton *button = (UIButton*) sender;
+    NSLog(@"Add Friend tag: %i", button.tag);
+    NSLog(@"Add Friend description: %@", _buttonTagDictionary[[NSString stringWithFormat:@"%i", button.tag]]);
 }
 
 - (void)inviteFriend:(id)sender
 {
-    NSLog(@"Invite Friend sender: %@", sender);
+    
+    UIButton *button = (UIButton*) sender;
+    NSLog(@"Invite Friend tag: %i", button.tag);
+    NSLog(@"Invite Friend description: %@", _buttonTagDictionary[[NSString stringWithFormat:@"%i", button.tag]]);
 }
 
  - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -238,6 +245,11 @@
          [newButton setTitle:@"add" forState:UIControlStateNormal];
          [newButton addTarget:self action:@selector(addFriend:)
               forControlEvents:UIControlEventTouchUpInside];
+         [newButton setTag: _buttonTagNumber];
+         NSString *key = [NSString stringWithFormat:@"%i", _buttonTagNumber];
+         [_buttonTagDictionary setObject:_phoneRegisteredUsers[indexPath.row][@"phone_number"] forKey:key];
+         _buttonTagNumber++;
+         
          [cell addSubview:newButton];
          
          NSMutableString *full_name = [[NSMutableString alloc] initWithString: _phoneRegisteredUsers[indexPath.row][@"first_name"]];
@@ -255,6 +267,11 @@
          [newButton setTitle:@"Invite" forState:UIControlStateNormal];
          [newButton addTarget:self action:@selector(inviteFriend:)
              forControlEvents:UIControlEventTouchUpInside];
+         [newButton setTag: _buttonTagNumber];
+         NSString *key = [NSString stringWithFormat:@"%i", _buttonTagNumber];
+         [_buttonTagDictionary setObject:_phoneNonRegisteredUsers[indexPath.row][@"phone_number"] forKey:key];
+         _buttonTagNumber++;
+
          [cell addSubview:newButton];
          
          NSMutableString *full_name = [[NSMutableString alloc] initWithString: _phoneNonRegisteredUsers[indexPath.row][@"first_name"]];
