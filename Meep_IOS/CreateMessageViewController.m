@@ -17,7 +17,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *locationField;
 @property (nonatomic, strong) MEPTextParse *parser;
 @property (nonatomic, strong) NSMutableData * data;
-
+@property (nonatomic, strong) NSMutableDictionary * parsedData;
 
 @end
 
@@ -132,6 +132,18 @@
 
 - (void) textFieldDidChange {
     NSDictionary * contentDetails = [_parser parseText:[_messageField text]];
+    if ([contentDetails objectForKey:@"startDate"]) {
+        [self.dateField setText:[contentDetails objectForKey:@"startDate"]];
+    }
+    else {
+        [self.dateField setText:@""];
+    }
+    if ([contentDetails objectForKey:@"startTime"]) {
+        [self.timeField setText:[contentDetails objectForKey:@"startTime"]];
+    }
+    else {
+        [self.timeField setText:@""];
+    }
     NSLog(@"%@",contentDetails);
 }
 
@@ -153,6 +165,7 @@
     // Do any additional setup after loading the view.
     self.parser = [[MEPTextParse alloc] init];
     [self.messageField addTarget:self action:@selector(textFieldDidChange) forControlEvents:UIControlEventEditingChanged];
+    self.parsedData = [[NSMutableDictionary alloc] init];
 }
 
 - (void)didReceiveMemoryWarning

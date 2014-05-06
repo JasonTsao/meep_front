@@ -36,8 +36,8 @@
         _timeExplicitRegex = [[NSRegularExpression alloc] initWithPattern:@"[@]?(one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|noon)\\s?(ten|fifteen|twenty|twenty\\s?five|thirty|forty\\s?five|fifty)?" options:NSRegularExpressionCaseInsensitive error:nil];
         _dateIntRegex = [[NSRegularExpression alloc] initWithPattern:@"(0[1-9]|1[0-2]|[1-9])(/|-)([1-31])(/|-)([0-9]{4,4})?" options:NSRegularExpressionCaseInsensitive error:nil];
         _dateExplicitRegex = [[NSRegularExpression alloc] initWithPattern:@"(next\\s)?(mon(day)?|tues?(day)?|wed(nesday)?|thu?r?s?(day)?|fri(day)?|sat(urday)?|sun(day)?)\\s" options:NSRegularExpressionCaseInsensitive error:nil];
-        _datePreceedingExpressions = [[NSArray alloc] initWithObjects:@"next",@"following",@"this",nil];
-        _dateKeywords = [[NSArray alloc] initWithObjects:@"week",@"afternoon",@"evening",@"day",@"month",@"morning",@"noon",nil];
+        _datePreceedingExpressions = [[NSArray alloc] initWithObjects:@"next",@"this",nil];
+        _dateKeywords = [[NSArray alloc] initWithObjects:@"week",@"afternoon",@"evening",@"day",@"month",@"morning",nil];
         _dateIdentifiers = [[NSArray alloc] initWithObjects:@"tomorrow",@"today",@"tonight",nil];
     }
     return self;
@@ -163,10 +163,38 @@
     }
     NSArray * textArray = [text componentsSeparatedByString:@" "];
     BOOL searching = NO;
+    NSString * preceedingElement;
     for (NSString * textArrayElement in textArray) {
-        
+        if ([_dateIdentifiers containsObject:[textArrayElement lowercaseString]]) {
+            if ([[textArrayElement lowercaseString] isEqualToString:@"tomorrow"]) {
+                [returnDictionary setObject:[self createDateString:1] forKey:@"startDate"];
+            }
+            else {
+                [returnDictionary setObject:[self createDateString:0] forKey:@"startDate"];
+            }
+        }
+        if ([_datePreceedingExpressions containsObject:[textArrayElement lowercaseString]]) {
+            searching = YES;
+            preceedingElement = [textArrayElement lowercaseString];
+        }
+        if (searching) {
+            if ([_dateKeywords containsObject:[textArrayElement lowercaseString]]) {
+                if ([preceedingElement isEqualToString:@"this"]) {
+                    [returnDictionary setObject:[self createDateString:0] forKey:@"startDate"];
+                }
+            }
+        }
     }
     return returnDictionary;
+}
+
+- (NSString*) createDateString:(int)daysFromToday {
+    NSDate * today = [NSDate date];
+    int intervalInSeconds = daysFromToday * 60 * 60 * 24;
+    NSDate * targetDate = [NSDate dateWithTimeInterval:intervalInSeconds sinceDate:today];
+    NSDateFormatter * df = [[NSDateFormatter alloc] init];
+    [df setDateFormat:@"MMM dd, yyyy"];
+    return [df stringFromDate:targetDate];
 }
 
 @end
