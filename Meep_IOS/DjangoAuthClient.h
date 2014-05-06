@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import "MEEPhttp.h"
 
 // Notifications
 extern NSString * const DjangoAuthClientDidLoginSuccessfully;

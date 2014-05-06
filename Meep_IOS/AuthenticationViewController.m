@@ -63,22 +63,7 @@
 #pragma mark - DjangoAuthClientDelegate methods
 
 - (void)loginSuccessful:(DjangoAuthLoginResultObject *)result {
-    NSLog(@"result: %@", result);
-    NSLog(@"response headers : %@", result.responseHeaders);
-    NSLog(@"server response: %@", result.serverResponse);
-    NSLog(@"status code : %i", result.statusCode);
-    
-    /*UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"CenterStoryboard" bundle:nil];
-    _centerViewController = (CenterViewController *)[storyboard instantiateViewControllerWithIdentifier:@"centerView"];
-    _centerViewController.delegate = self.delegate;
-    
-    [self.view addSubview:_centerViewController.view];
-    [self addChildViewController:_centerViewController];
-    
-    [_centerViewController didMoveToParentViewController:self];*/
-    //_loginMessage.text = @"Login successful";
-    //[self dismissViewControllerAnimated:YES completion:nil];
-    
+
     [_delegate loadMainViewAfterAuthentication];
 }
 
@@ -93,7 +78,8 @@
         //NSLog(@"Login failed: Please check your username and password.");
     }else{
         NSLog(@"Unknown reason for login failure");
-        [_delegate loadMainViewAfterAuthentication];
+        _loginMessage.text = @"Login failed: Please check your username and password.";
+        //[_delegate loadMainViewAfterAuthentication];
     }
 
 }

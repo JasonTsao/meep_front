@@ -21,7 +21,8 @@ NSString *const kDjangoAuthClientLoginFailureInactiveAccount = @"kDjangoAuthClie
 // Private properties
 @property (nonatomic, strong) NSString *username;
 @property (nonatomic, strong) NSString *password;
-
+@property (nonatomic) BOOL serverDidRespond;
+@property (nonatomic) BOOL serverDidAuthenticate;
 @end
 
 @implementation DjangoAuthClient
@@ -36,27 +37,32 @@ NSString *const kDjangoAuthClientLoginFailureInactiveAccount = @"kDjangoAuthClie
     _password = password;
     _requestURL = [NSURL URLWithString:loginURL];
     _responseData = [[NSMutableData alloc] initWithCapacity:512];
+    _serverDidRespond = NO;
+    _serverDidAuthenticate = NO;
     
     return self;
 }
 
 - (void)login {
-    [self makeLoginRequest:nil];
+    //[self makeLoginRequest:nil];
+    NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:_username, @"username", _password, @"password", nil];
+    NSLog(@"request url: %@", _requestURL);
+    NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:[_requestURL absoluteString] postDictionary:postDict];
+    [self makeLoginRequest:request];
 }
 
 - (void)makeLoginRequest:(NSMutableURLRequest *)request {
     if (request == nil) {
         request = [NSMutableURLRequest requestWithURL:_requestURL];
     }
-    
+    NSLog(@"make login request request method: %@", request.HTTPMethod);
     NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    
     if (!connection) {
         NSLog(@"no connection!");
         [[NSNotificationCenter defaultCenter] postNotificationName:DjangoAuthClientDidFailToCreateConnectionToAuthURL object:self];
     }
-    
-    /*DELETE THIS CODE LATER*/
-    //[_delegate loginFailed:nil];
+
 }
 
 #pragma mark - NSURLConnectionDelegate Methods
@@ -66,10 +72,24 @@ NSString *const kDjangoAuthClientLoginFailureInactiveAccount = @"kDjangoAuthClie
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
+    
     DjangoAuthLoginResultObject *resultObject = [DjangoAuthLoginResultObject loginResultObjectFromResponse:response];
+    
+    NSLog(@"status code is %i", resultObject.statusCode);
     
     if (resultObject.statusCode == 200) {
         // We're logged in and good to go
+        NSLog(@"initial login attempt!!");
+        // Initial login attempt
+        NSArray *cookies = [NSHTTPCookie cookiesWithResponseHeaderFields:resultObject.responseHeaders forURL:self.requestURL];
+        
+        // Django defaults to CSRF protection, so we need to get the token to send back in the request
+        NSHTTPCookie *csrfCookie;
+        for (NSHTTPCookie *cookie in cookies) {
+            if ([cookie.name isEqualToString:@"csrftoken"]) {
+                csrfCookie = cookie;
+            }
+        }
         [connection cancel];
         if ([_delegate respondsToSelector:@selector(loginSuccessful:)]) {
             [_delegate loginSuccessful:resultObject];
@@ -77,11 +97,18 @@ NSString *const kDjangoAuthClientLoginFailureInactiveAccount = @"kDjangoAuthClie
         [[NSNotificationCenter defaultCenter] postNotificationName:DjangoAuthClientDidLoginSuccessfully object:resultObject];
     }
     else if (resultObject.statusCode == 401) {
+        NSLog(@"we're not authorized");
         // We're not authorized, so cancel the connection since we need to send the login POST request
         [connection cancel];
         
+        resultObject.loginFailureReason = kDjangoAuthClientLoginFailureInvalidCredentials;
+        if ([_delegate respondsToSelector:@selector(loginFailed:)]) {
+            [_delegate loginFailed:resultObject];
+        }
+        [[NSNotificationCenter defaultCenter] postNotificationName:DjangoAuthClientDidFailToLogin object:resultObject];
+        
         // Check to see if we've already made an attempt to log in and failed
-        if ([[resultObject.responseHeaders objectForKey:@"Auth-Response"] isEqualToString:@"Login failed"]) {
+        /*if ([[resultObject.responseHeaders objectForKey:@"Auth-Response"] isEqualToString:@"Login failed"]) {
             resultObject.loginFailureReason = kDjangoAuthClientLoginFailureInvalidCredentials;
             if ([_delegate respondsToSelector:@selector(loginFailed:)]) {
                 [_delegate loginFailed:resultObject];
@@ -89,6 +116,7 @@ NSString *const kDjangoAuthClientLoginFailureInactiveAccount = @"kDjangoAuthClie
             [[NSNotificationCenter defaultCenter] postNotificationName:DjangoAuthClientDidFailToLogin object:resultObject];
         }
         else {
+            NSLog(@"else initial login attempt!!");
             // Initial login attempt
             NSArray *cookies = [NSHTTPCookie cookiesWithResponseHeaderFields:resultObject.responseHeaders forURL:self.requestURL];
             
@@ -102,12 +130,12 @@ NSString *const kDjangoAuthClientLoginFailureInactiveAccount = @"kDjangoAuthClie
             
             NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:self.requestURL];
             [request setHTTPMethod:@"POST"];
-            
+            //[request setValue:@"multipart/form-data; boundary=0xKhTmLbOuNdArY" forHTTPHeaderField:@"Content-Type"];
             NSString *authString = [NSString stringWithFormat:@"username=%@;password=%@;csrfmiddlewaretoken=%@;", _username, _password, csrfCookie.value, nil];
             [request setHTTPBody:[authString dataUsingEncoding:NSUTF8StringEncoding]];
 
             [self makeLoginRequest:request];
-        }
+        }*/
     }
     else if (resultObject.statusCode == 403) {
         // Login failed because the user's account is inactive
@@ -125,7 +153,7 @@ NSString *const kDjangoAuthClientLoginFailureInactiveAccount = @"kDjangoAuthClie
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
-    NSLog(@"%@", [[NSString alloc] initWithData:self.responseData encoding:NSUTF8StringEncoding]);
+    NSLog(@"response data string %@", [[NSString alloc] initWithData:self.responseData encoding:NSUTF8StringEncoding]);
     [self.responseData setLength:0];
 }
 
