@@ -12,6 +12,7 @@
 #import "CreateGroupViewController.h"
 #import "GroupsViewController.h"
 #import "EventPageViewController.h"
+#import "AddFriendsViewController.h"
 
 @interface MainViewController : UIViewController<AccountViewControllerDelegate, CreateGroupViewControllerDelegate, GroupsViewControllerDelegate, InviteFriendsViewControllerDelegate>
 

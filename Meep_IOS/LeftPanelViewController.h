@@ -16,6 +16,7 @@
 - (void)openAccountSettings;
 - (void)openFriendsListPage;
 - (void)openGroupsPage;
+- (void)openAddFriendsPage;
 @end
 
 @interface LeftPanelViewController : UIViewController

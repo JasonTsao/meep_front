@@ -5,7 +5,6 @@
 //  Created by Tammy Coron on 1/19/13.
 //  Copyright (c) 2013 Tammy L Coron. All rights reserved.
 //
-
 #import "LeftPanelViewController.h"
 #import "RightPanelViewController.h"
 #import "EventCreatorViewController.h"
@@ -29,6 +28,7 @@
 - (void)openFriendsListPage;
 - (void)openCreateEventPage;
 - (void)openGroupsPage;
+- (void)openAddFriendsPage;
 
 @end
 

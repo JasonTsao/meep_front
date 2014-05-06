@@ -50,6 +50,10 @@
     [_delegate openGroupsPage];
 }
 
+- (void)openAddFriendsPage
+{
+    [_delegate openAddFriendsPage];
+}
 
 #pragma mark -
 #pragma mark View Did Load/Unload
@@ -145,11 +149,49 @@
     [_delegate displayEventPage:currentRecord];
 }
 
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     self.eventArray = [[NSMutableArray alloc] init];
     [self getUpcomingEvents];
+    
+    /*ABAddressBookRef addressBook = ABAddressBookCreate();
+    
+    // create 200 random contacts
+    for (int i = 0; i < 200; i++)
+    {
+        // create an ABRecordRef
+        ABRecordRef record = ABPersonCreate();
+        
+        ABMutableMultiValueRef multi = ABMultiValueCreateMutable(kABStringPropertyType);
+        
+        NSString *email = [NSString stringWithFormat:@"%i@%ifoo.com", i, i];
+        ABMultiValueAddValueAndLabel(multi, (__bridge CFTypeRef)(email), kABHomeLabel, NULL);
+        
+        NSString *fname = [NSString stringWithFormat:@"Name %i", i];
+        NSString *lname = [NSString stringWithFormat:@"Last %i", i];
+        
+        // add the first name
+        ABRecordSetValue(record, kABPersonFirstNameProperty, (__bridge CFTypeRef)(fname), NULL);
+        
+        // add the last name
+        ABRecordSetValue(record, kABPersonLastNameProperty, (__bridge CFTypeRef)(lname), NULL);
+        
+        // add the home email
+        ABRecordSetValue(record, kABPersonEmailProperty, multi, NULL);
+        
+        
+        // add the record
+        ABAddressBookAddRecord(addressBook, record, NULL);
+    }
+    
+    // save the address book
+    ABAddressBookSave(addressBook, NULL);
+    
+    // release
+    CFRelease(addressBook);*/
+    
 }
 
 - (void) getUpcomingEvents {
