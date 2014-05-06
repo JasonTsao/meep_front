@@ -96,15 +96,15 @@
 }
 
 
-
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+- (void) loadMainViewAfterAuthentication
 {
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    // Override point for customization after application launch.
+    
+    NSLog(@"loading main view after authentication");
+    [_authenticationViewController dismissViewControllerAnimated:YES completion:nil];
+    
     self.viewController = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
     self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];
-    [self getAccountSettings];
     
     NSData *settingsData = [[NSUserDefaults standardUserDefaults] objectForKey:@"account_settings"];
     AccountSettings *user_account_settings = [NSKeyedUnarchiver unarchiveObjectWithData:settingsData];
@@ -115,6 +115,20 @@
     }
     else{
     }
+}
+
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    // Override point for customization after application launch.
+    
+    UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"CenterStoryboard" bundle:nil];
+    _authenticationViewController  = (AuthenticationViewController *)[storyboard instantiateViewControllerWithIdentifier:@"authentication"];
+     _authenticationViewController.delegate = self;
+    
+    self.window.rootViewController = _authenticationViewController;
+    [self.window makeKeyAndVisible];
+    
     return YES;
 }
 

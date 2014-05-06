@@ -8,9 +8,10 @@
 
 #import "AuthenticationViewController.h"
 #import "DjangoAuthLoginResultObject.h"
+#import "CenterViewController.h"
 
 @interface AuthenticationViewController ()
-
+@property (nonatomic, strong) CenterViewController *centerViewController;
 @end
 
 @implementation AuthenticationViewController
@@ -24,19 +25,28 @@
     return self;
 }
 
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    return YES;
+}
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [self.view endEditing: YES];
+}
+
 - (BOOL)validateInputs {
     // Ensure that something has been entered in the username and password fields
-    /*if (![_username.text isEqualToString:@""] && ![_password.text isEqualToString:@""]) {
+    if (![_username.text isEqualToString:@""] && ![_password.text isEqualToString:@""]) {
         return YES;
     }
-    */
+    
     return NO;
 }
 - (IBAction)login:(id)sender {
     if ([self validateInputs]) {
-        /*_authClient = [[DjangoAuthClient alloc] initWithURL:@"http://127.0.0.1:8000/accounts/login/"
-         forUsername:_username.text
-         andPassword:_password.text];*/
+        NSLog(@"trying to login");
         _authClient = [[DjangoAuthClient alloc] initWithURL:@"http://50.112.180.63:8000/acct/login"
                                                 forUsername:_username.text
                                                 andPassword:_password.text];
@@ -58,19 +68,34 @@
     NSLog(@"server response: %@", result.serverResponse);
     NSLog(@"status code : %i", result.statusCode);
     
-    NSLog(@"Login successful");
+    /*UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"CenterStoryboard" bundle:nil];
+    _centerViewController = (CenterViewController *)[storyboard instantiateViewControllerWithIdentifier:@"centerView"];
+    _centerViewController.delegate = self.delegate;
+    
+    [self.view addSubview:_centerViewController.view];
+    [self addChildViewController:_centerViewController];
+    
+    [_centerViewController didMoveToParentViewController:self];*/
     //_loginMessage.text = @"Login successful";
+    //[self dismissViewControllerAnimated:YES completion:nil];
+    
+    [_delegate loadMainViewAfterAuthentication];
 }
 
 - (void)loginFailed:(DjangoAuthLoginResultObject *)result {
+
     if (result.loginFailureReason == kDjangoAuthClientLoginFailureInactiveAccount) {
-        //_loginMessage.text = @"Login failed: Your account is inactive.";
-        NSLog(@"Login failed: Your account is inactive.");
+        _loginMessage.text = @"Login failed: Your account is inactive.";
+       // NSLog(@"Login failed: Your account is inactive.");
     }
     else if (result.loginFailureReason == kDjangoAuthClientLoginFailureInvalidCredentials) {
-        //_loginMessage.text = @"Login failed: Please check your username and password.";
-        NSLog(@"Login failed: Please check your username and password.");
+        _loginMessage.text = @"Login failed: Please check your username and password.";
+        //NSLog(@"Login failed: Please check your username and password.");
+    }else{
+        NSLog(@"Unknown reason for login failure");
+        [_delegate loadMainViewAfterAuthentication];
     }
+
 }
 
 

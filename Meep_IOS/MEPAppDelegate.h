@@ -9,10 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "MainViewController.h"
 #import "AccountSettings.h"
+#import "AuthenticationViewController.h"
 
 @interface MEPAppDelegate : UIResponder <UIApplicationDelegate>
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) MainViewController *viewController;
 @property(nonatomic, strong) NSMutableData * data;
+@property (strong, nonatomic) AuthenticationViewController *authenticationViewController;
 @property (nonatomic, strong) AccountSettings * account_settings;
 @end

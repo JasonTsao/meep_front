@@ -54,6 +54,7 @@
 @property( nonatomic, strong) EventCreatorViewController *eventCreatorViewController;
 
 @property (nonatomic, strong) InviteFriendsViewController *inviteFriendsViewController;
+@property (nonatomic, strong) AuthenticationViewController *authenticationViewController;
 
 @property (nonatomic, strong) AddFriendsViewController *addFriendsViewController;
 @property (nonatomic, assign) BOOL showaddFriends;
@@ -116,27 +117,13 @@
 - (void)setupView
 {
     UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"CenterStoryboard" bundle:nil];
-    _centerViewController = (GroupsViewController *)[storyboard instantiateViewControllerWithIdentifier:@"centerView"];
     
-    //UINavigationController *navigation = [[UINavigationController alloc]initWithRootViewController:_centerViewController];
-    //[self presentViewController:navigation animated:YES completion:nil];
+    _centerViewController = (GroupsViewController *)[storyboard instantiateViewControllerWithIdentifier:@"centerView"];
     _centerViewController.delegate = self;
     
     [self.view addSubview:_centerViewController.view];
     [self addChildViewController:_centerViewController];
     
-    [_centerViewController didMoveToParentViewController:self];
-    
-    // setup center view
-    /*self.centerViewController = [[CenterViewController alloc] initWithNibName:@"CenterViewController" bundle:nil];
-    self.centerViewController.view.tag = CENTER_TAG;
-    
-    self.centerViewController.delegate = self;
-    
-    [self.view addSubview:self.centerViewController.view];
-    [self addChildViewController:_centerViewController];
-    
-    [_centerViewController didMoveToParentViewController:self];*/
     [self setupGestures];
 }
 
@@ -230,6 +217,7 @@
 
 - (void)setupGestures
 {
+    NSLog(@"setting up gestures!!");
     UIPanGestureRecognizer * panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(movePanel:)];
     [panRecognizer setMinimumNumberOfTouches:1];
     [panRecognizer setMaximumNumberOfTouches:1];

@@ -51,8 +51,12 @@ NSString *const kDjangoAuthClientLoginFailureInactiveAccount = @"kDjangoAuthClie
     
     NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
     if (!connection) {
+        NSLog(@"no connection!");
         [[NSNotificationCenter defaultCenter] postNotificationName:DjangoAuthClientDidFailToCreateConnectionToAuthURL object:self];
     }
+    
+    /*DELETE THIS CODE LATER*/
+    //[_delegate loginFailed:nil];
 }
 
 #pragma mark - NSURLConnectionDelegate Methods
@@ -112,6 +116,11 @@ NSString *const kDjangoAuthClientLoginFailureInactiveAccount = @"kDjangoAuthClie
             [_delegate loginFailed:resultObject];
         }
         [[NSNotificationCenter defaultCenter] postNotificationName:DjangoAuthClientDidFailToLogin object:resultObject];
+    }
+    /*delete this code later*/
+    else{
+        NSLog(@"no valid response code");
+        [_delegate loginFailed:nil];
     }
 }
 

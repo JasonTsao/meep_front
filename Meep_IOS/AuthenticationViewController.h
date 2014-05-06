@@ -9,6 +9,13 @@
 #import <UIKit/UIKit.h>
 #import "DjangoAuthClient.h"
 
+//@protocol AuthenticationViewControllerDelegate <NSObject>
+@class AuthenticationViewController;
+
+@protocol AuthenticationViewControllerDelegate
+- (void) loadMainViewAfterAuthentication;
+@end
+
 @interface AuthenticationViewController : UIViewController<DjangoAuthClientDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *username;
 
@@ -16,6 +23,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *loginMessage;
 
 @property (nonatomic, strong) DjangoAuthClient *authClient;
-
+@property (nonatomic, assign) id<AuthenticationViewControllerDelegate> delegate;
 -(IBAction) logIn:(id) sender;
 @end
