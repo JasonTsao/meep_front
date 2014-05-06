@@ -257,7 +257,7 @@
 {
     // Handle the error properly
     NSLog(@"Call Failed");
-    [self getUpcomingEvents];
+    // [self getUpcomingEvents];
 }
 -(void)connectionDidFinishLoading:(NSURLConnection*)connection
 {
