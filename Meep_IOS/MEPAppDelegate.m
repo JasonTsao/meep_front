@@ -132,10 +132,13 @@
     // Override point for customization after application launch.
     
     UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"CenterStoryboard" bundle:nil];
+    
     _authenticationViewController  = (AuthenticationViewController *)[storyboard instantiateViewControllerWithIdentifier:@"authentication"];
      _authenticationViewController.delegate = self;
+    UINavigationController *navigation = [[UINavigationController alloc]initWithRootViewController:_authenticationViewController];
     
-    self.window.rootViewController = _authenticationViewController;
+    //self.window.rootViewController = _authenticationViewController;
+    self.window.rootViewController = navigation;
     [self.window makeKeyAndVisible];
    // [_authenticationViewController dismissViewControllerAnimated:YES completion:nil];
     
