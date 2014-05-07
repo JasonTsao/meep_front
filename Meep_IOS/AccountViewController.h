@@ -11,13 +11,14 @@
 @class AccountViewController;
 @protocol AccountViewControllerDelegate <NSObject>
 - (void) backToCenterFromAccountSettings:(AccountViewController *)controller;
+- (void) logout:(AccountViewController*)controller;
 @optional
 
 @required
 
 @end
 
-@interface AccountViewController : UIViewController <UITableViewDataSource>
+@interface AccountViewController : UIViewController <UITableViewDataSource,UIActionSheetDelegate>
 
 @property (nonatomic, assign) id <AccountViewControllerDelegate> delegate;
 - (IBAction) backToMain:(id)sender;

@@ -64,6 +64,7 @@
 
 - (void)loginSuccessful:(DjangoAuthLoginResultObject *)result {
 
+    NSLog(@"login successful");
     [_delegate loadMainViewAfterAuthentication];
 }
 

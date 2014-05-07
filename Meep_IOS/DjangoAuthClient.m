@@ -51,6 +51,10 @@ NSString *const kDjangoAuthClientLoginFailureInactiveAccount = @"kDjangoAuthClie
     [self makeLoginRequest:request];
 }
 
+-(void)logout{
+    
+}
+
 - (void)makeLoginRequest:(NSMutableURLRequest *)request {
     if (request == nil) {
         request = [NSMutableURLRequest requestWithURL:_requestURL];

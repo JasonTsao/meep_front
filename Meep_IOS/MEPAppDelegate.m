@@ -95,14 +95,23 @@
     //NSArray * owned = jsonResponse[@"owned_upcoming_events"];
 }
 
+- (void) logout:(AccountViewController *)controller
+{
+    NSLog(@"logging out in app delegate");
+}
+
 
 - (void) loadMainViewAfterAuthentication
 {
     
     NSLog(@"loading main view after authentication");
     [_authenticationViewController dismissViewControllerAnimated:YES completion:nil];
+    NSLog(@"main view controller %@", self.viewController);
     
+    //self.window.rootViewController = self.viewController;
+    //[self.window makeKeyAndVisible];
     self.viewController = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
+
     self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];
     
@@ -128,6 +137,17 @@
     
     self.window.rootViewController = _authenticationViewController;
     [self.window makeKeyAndVisible];
+   // [_authenticationViewController dismissViewControllerAnimated:YES completion:nil];
+    
+    /*self.viewController = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
+    self.window.rootViewController = self.viewController;
+    [self.window makeKeyAndVisible];*/
+
+    //[self.window.rootViewController.view addSubview:_authenticationViewController.view];
+    //[_authenticationViewController didMoveToParentViewController:self];
+    
+    // if user not logged in
+    
     
     return YES;
 }

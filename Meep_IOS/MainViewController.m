@@ -75,8 +75,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
     [self setupView];
+    //if( user is authenticated){
+    //    [self setupView];
+    //}
+    //else{
+    //[self openAuthenticationPage];
+    //}
 }
 
 - (void)viewDidUnload
@@ -111,6 +116,13 @@
 	[super viewDidDisappear:animated];
 }
 
+- (void) logout:(AccountViewController *)controller{
+    NSLog(@"logging out in main view");
+    [self dismissViewControllerAnimated:YES completion:nil];
+    //[self dismissViewControllerAnimated:NO completion:^{[self openAuthenticationPage];}];
+    
+}
+
 #pragma mark -
 #pragma mark Setup View
 
@@ -125,6 +137,9 @@
     [self addChildViewController:_centerViewController];
     
     [self setupGestures];
+    
+    
+    //[self openAuthenticationPage];
 }
 
 - (void)showCenterViewWithShadow:(BOOL)value withOffset:(double)offset
@@ -330,6 +345,18 @@
                      }];
 }
 
+- (void) openAuthenticationPage
+{
+    NSLog(@"opening authentication page");
+    UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"CenterStoryboard" bundle:nil];
+    _authenticationViewController = (AuthenticationViewController *)[storyboard instantiateViewControllerWithIdentifier:@"authentication"];
+    
+    [self.view addSubview:_authenticationViewController.view];
+    [_authenticationViewController setDelegate:self];
+    [self addChildViewController:_authenticationViewController];
+
+}
+
 - (void) openAccountPage
 {
     UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"CenterStoryboard" bundle:nil];
@@ -381,6 +408,14 @@
     UINavigationController *navigation = [[UINavigationController alloc]initWithRootViewController:_addFriendsViewController];
     [_addFriendsViewController setDelegate:self];
     [self presentViewController:navigation animated:YES completion:nil];
+}
+
+- (void) loadMainViewAfterAuthentication
+{
+    
+    NSLog(@"loading main view after authentication");
+    [_authenticationViewController dismissViewControllerAnimated:YES completion:nil];
+    [self setupView];
 }
 
 - (void) backToCenterFromCreateEvent:(InviteFriendsViewController *)controller

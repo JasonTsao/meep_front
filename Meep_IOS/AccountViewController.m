@@ -35,7 +35,7 @@
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 3;
+    return 4;
 }
 
 -(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
@@ -64,6 +64,9 @@
     }
     else if(section == 2){
         numRows = [self.notifications count];
+    }
+    else if(section == 3){
+        numRows = 1;
     }
     return numRows;
 }
@@ -157,45 +160,93 @@
     [self updateAccountSettingfieldName: @"vibrate_on_notification" valueName:switch_button.on];
 }
 
+- (void) logoutSelect
+{
+    NSLog(@"selected logout");
+    [_delegate logout:self];
+}
+
+- (void)actionSheet:(UIActionSheet *)popup clickedButtonAtIndex:(NSInteger)buttonIndex {
+    NSLog(@"clicked button at index");
+    switch (popup.tag) {
+        case 1: {
+            NSLog(@"case 1");
+            NSLog(@"button index: %i", buttonIndex);
+            switch (buttonIndex) {
+                case 0:
+                    NSLog(@"case 0");
+                    [self logoutSelect];
+                    break;
+                default:
+                    break;
+            }
+            break;
+        }
+        default:
+            break;
+    }
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    if(indexPath.section == 3){
+        if(indexPath.row == 0){
+            NSLog(@"logout");
+            UIActionSheet *logoutPopup = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Logout", nil];
+            logoutPopup.tag = 1;
+            [logoutPopup showInView:self.view];
+            
+        }
+    }
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
     //initWithFrame:CGRectMake(cell.bounds.size.width-10,-10,23,23) == top right
-    UISwitch *newSwitch=[[UISwitch alloc]initWithFrame:CGRectMake(
-                                                                  cell.bounds.size.width-(cell.bounds.size.width/5.0),
-                                                                  (cell.bounds.size.height/6.0),
-                                                                  23,
-                                                                  23)];
-    [cell addSubview:newSwitch];
+    
+    if (indexPath.section != 3){
+        UISwitch *newSwitch=[[UISwitch alloc]initWithFrame:CGRectMake(
+                                                                      cell.bounds.size.width-(cell.bounds.size.width/5.0),
+                                                                      (cell.bounds.size.height/6.0),
+                                                                      23,
+                                                                      23)];
+        [cell addSubview:newSwitch];
         
-    if (indexPath.section == 0){
-        cell.textLabel.text = self.privacy[indexPath.row];
-        
-        if (indexPath.row == 0){
-            newSwitch.on = _user_account_settings.user_is_private;
-            [newSwitch addTarget:self action:@selector(privateSwitch:) forControlEvents:UIControlEventTouchUpInside];
+        if (indexPath.section == 0){
+            cell.textLabel.text = self.privacy[indexPath.row];
+            
+            if (indexPath.row == 0){
+                newSwitch.on = _user_account_settings.user_is_private;
+                [newSwitch addTarget:self action:@selector(privateSwitch:) forControlEvents:UIControlEventTouchUpInside];
+            }
+            else if(indexPath.row == 1){
+                newSwitch.on = _user_account_settings.searchable;
+                [newSwitch addTarget:self action:@selector(searchableSwitch:) forControlEvents:UIControlEventTouchUpInside];
+            }
         }
-        else if(indexPath.row == 1){
-            newSwitch.on = _user_account_settings.searchable;
-            [newSwitch addTarget:self action:@selector(searchableSwitch:) forControlEvents:UIControlEventTouchUpInside];
+        else if (indexPath.section == 1){
+            cell.textLabel.text = self.reminders[indexPath.row];
+            if (indexPath.row == 0){
+                //newSwitch.on = YES;
+                newSwitch.on =  _user_account_settings.reminders;
+                [newSwitch addTarget:self action:@selector(remindersSwitch:) forControlEvents:UIControlEventTouchUpInside];
+            }
+        }
+        else if (indexPath.section == 2){
+            cell.textLabel.text = self.notifications[indexPath.row];
+            if (indexPath.row == 0){
+                //newSwitch.on = YES;
+                newSwitch.on =  _user_account_settings.vibrate_on_notification;
+                [newSwitch addTarget:self action:@selector(notificationsSwitch:) forControlEvents:UIControlEventTouchUpInside];
+            }
+            
         }
     }
-    else if (indexPath.section == 1){
-        cell.textLabel.text = self.reminders[indexPath.row];
-        if (indexPath.row == 0){
-            //newSwitch.on = YES;
-            newSwitch.on =  _user_account_settings.reminders;
-            [newSwitch addTarget:self action:@selector(remindersSwitch:) forControlEvents:UIControlEventTouchUpInside];
-        }
-    }
-    else if (indexPath.section == 2){
-        cell.textLabel.text = self.notifications[indexPath.row];
-        if (indexPath.row == 0){
-            //newSwitch.on = YES;
-            newSwitch.on =  _user_account_settings.vibrate_on_notification;
-            [newSwitch addTarget:self action:@selector(notificationsSwitch:) forControlEvents:UIControlEventTouchUpInside];
-        }
+    
         
+    
+    else if (indexPath.section == 3){
+        cell.textLabel.text= @"Logout";
     }
     
     return cell;
