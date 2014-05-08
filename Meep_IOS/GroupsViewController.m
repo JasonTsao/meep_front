@@ -30,7 +30,7 @@
 
 - (void)getGroupList
 {
-    NSString * requestURL = [NSString stringWithFormat:@"%@group/list/1",[MEEPhttp accountURL]];
+    NSString * requestURL = [NSString stringWithFormat:@"%@group/list",[MEEPhttp accountURL]];
     NSDictionary * postDict = [[NSDictionary alloc] init];
     NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
     NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];

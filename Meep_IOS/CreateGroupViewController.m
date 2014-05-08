@@ -32,7 +32,7 @@
 
 - (void)getFriendsList
 {
-    NSString * requestURL = [NSString stringWithFormat:@"%@friends/list/1",[MEEPhttp accountURL]];
+    NSString * requestURL = [NSString stringWithFormat:@"%@friends/list",[MEEPhttp accountURL]];
     NSDictionary * postDict = [[NSDictionary alloc] init];
     NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
     NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
@@ -221,7 +221,8 @@
     }
     
     NSString * requestURL = [NSString stringWithFormat:@"%@group/new",[MEEPhttp accountURL]];
-    NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:@"2",@"user",_nameField.text,@"name", groupMembersToCreate, @"members", nil];
+    //NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:@"2",@"user",_nameField.text,@"name", groupMembersToCreate, @"members", nil];
+    NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:_nameField.text,@"name", groupMembersToCreate, @"members", nil];
     NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
     NSURLResponse * response = nil;
     NSError * error = nil;

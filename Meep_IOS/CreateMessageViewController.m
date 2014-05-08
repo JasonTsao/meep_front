@@ -46,7 +46,8 @@
     }
     
     NSString * requestURL = [NSString stringWithFormat:@"%@new",[MEEPhttp eventURL]];
-    NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:@"2",@"user", messageText, @"description", invitedFriendsToSend, @"invited_friends", nil];
+    //NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:@"2",@"user", messageText, @"description", invitedFriendsToSend, @"invited_friends", nil];
+    NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:messageText, @"description", invitedFriendsToSend, @"invited_friends", nil];
     NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
     NSURLResponse * response = nil;
     NSError * error = nil;
