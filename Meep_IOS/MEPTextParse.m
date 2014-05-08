@@ -32,10 +32,10 @@
         _timePrepositionArray = [[NSArray alloc] initWithObjects:@"about",@"after",@"around",@"at",@"before",@"by",@"from",@"in",@"past",@"since",@"till",@"until",@"within", nil];
         _datePrepositionArray = [[NSArray alloc] initWithObjects:@"about",@"after",@"around",@"at",@"before",@"by",@"from",@"in",@"past",@"since",@"till",@"until",@"within", nil];
         _locationPrepositionArray = [[NSArray alloc] initWithObjects:@"around",@"behind",@"below",@"beneath",@"beside",@"between",@"by",@"in",@"inside",@"near",@"of",@"on",@"to",@"within",nil];
-        _timeIntRegex = [[NSRegularExpression alloc] initWithPattern:@"[@]?\\s?(0[1-9]|1[0-2]|[1-9])(:|.|\\s)?([0-5][0-9])?\\s?(AM|am|PM|pm)?" options:NSRegularExpressionCaseInsensitive error:nil];
-        _timeExplicitRegex = [[NSRegularExpression alloc] initWithPattern:@"[@]?(one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|noon)\\s?(ten|fifteen|twenty|twenty\\s?five|thirty|forty\\s?five|fifty)?" options:NSRegularExpressionCaseInsensitive error:nil];
+        _timeIntRegex = [[NSRegularExpression alloc] initWithPattern:@"(0[1-9]|1[0-2]|[1-9])((:|.|\\s)?([0-5][0-9]))?\\s?(AM|am|PM|pm)?" options:NSRegularExpressionCaseInsensitive error:nil];
+        _timeExplicitRegex = [[NSRegularExpression alloc] initWithPattern:@"(one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|noon)\\s?(ten|fifteen|twenty|twenty\\s?five|thirty|forty\\s?five|fifty)?" options:NSRegularExpressionCaseInsensitive error:nil];
         _dateIntRegex = [[NSRegularExpression alloc] initWithPattern:@"(0[1-9]|1[0-2]|[1-9])(/|-)([1-31])(/|-)([0-9]{4,4})?" options:NSRegularExpressionCaseInsensitive error:nil];
-        _dateExplicitRegex = [[NSRegularExpression alloc] initWithPattern:@"(next\\s)?(mon(day)?|tues?(day)?|wed(nesday)?|thu?r?s?(day)?|fri(day)?|sat(urday)?|sun(day)?)\\s" options:NSRegularExpressionCaseInsensitive error:nil];
+        _dateExplicitRegex = [[NSRegularExpression alloc] initWithPattern:@"(mon(day)?|tues?(day)?|wed(nesday)?|thu?r?s?(day)?|fri(day)?|sat(urday)?|sun(day)?)" options:NSRegularExpressionCaseInsensitive error:nil];
         _datePreceedingExpressions = [[NSArray alloc] initWithObjects:@"next",@"this",nil];
         _dateKeywords = [[NSArray alloc] initWithObjects:@"week",@"afternoon",@"evening",@"day",@"month",@"morning",nil];
         _dateIdentifiers = [[NSArray alloc] initWithObjects:@"tomorrow",@"today",@"tonight",nil];
@@ -158,11 +158,14 @@
         [returnDictionary setObject:[text substringWithRange:[[content objectAtIndex:0] range]] forKey:@"startDate"];
     }
     content = [_dateExplicitRegex matchesInString:text options:0 range:NSMakeRange(0, [text length])];
+    BOOL containsExplicitDate = NO;
     if ([content count] > 0) {
-        [returnDictionary setObject:[text substringWithRange:[[content objectAtIndex:0] range]] forKey:@"startDate"];
+        containsExplicitDate = YES;
+        // [returnDictionary setObject:[text substringWithRange:[[content objectAtIndex:0] range]] forKey:@"startDate"];
     }
     NSArray * textArray = [text componentsSeparatedByString:@" "];
     BOOL searching = NO;
+    BOOL stillSearching = NO;
     NSString * preceedingElement;
     for (NSString * textArrayElement in textArray) {
         if ([_dateIdentifiers containsObject:[textArrayElement lowercaseString]]) {
@@ -184,6 +187,22 @@
                 }
             }
         }
+        if (containsExplicitDate) {
+            int weeks = 0;
+            if (searching) {
+                if ([preceedingElement isEqualToString:@"next"]) {
+                    weeks = 1;
+                }
+            }
+            [returnDictionary setObject:[self evaluateExplicitDateString:[text substringWithRange:[[content objectAtIndex:0] range]] plusWeeks:weeks] forKey:@"startDate"];
+        }
+        if (searching && !stillSearching) {
+            stillSearching = YES;
+        }
+        else {
+            searching = NO;
+            stillSearching = NO;
+        }
     }
     return returnDictionary;
 }
@@ -195,6 +214,74 @@
     NSDateFormatter * df = [[NSDateFormatter alloc] init];
     [df setDateFormat:@"MMM dd, yyyy"];
     return [df stringFromDate:targetDate];
+}
+
+- (NSString*) evaluateExplicitDateString:(NSString*)dateText plusWeeks:(int)weeks {
+    NSDate * today = [NSDate date];
+    NSDateFormatter * dayStringFormat = [[NSDateFormatter alloc] init];
+    [dayStringFormat setDateFormat:@"c"];
+    NSString * text = [dateText lowercaseString];
+    NSString * writtenDay = [dayStringFormat stringFromDate:today];
+    NSLog(@"DATE INT :: %@",writtenDay);
+    int currentDay = [writtenDay intValue];
+    int daysFromToday = 0;
+    NSLog(@"%i",currentDay);
+    if ([text isEqualToString:@"sun"] | [text isEqualToString:@"sunday"]) {
+        if (currentDay < 2) {
+            daysFromToday = 0;
+        }
+        else {
+            daysFromToday = 8 - currentDay;
+        }
+    }
+    if ([text isEqualToString:@"mon"] | [text isEqualToString:@"monday"]) {
+        if (currentDay < 3) {
+            daysFromToday = 2 - currentDay;
+        }
+        else {
+            daysFromToday = 9 - currentDay;
+        }
+    }
+    if ([text isEqualToString:@"tue"] | [text isEqualToString:@"tues"] | [text isEqualToString:@"tuesday"]) {
+        if (currentDay < 4) {
+            daysFromToday = 3 - currentDay;
+        }
+        else {
+            daysFromToday = 10 - currentDay;
+        }
+    }
+    if ([text isEqualToString:@"wed"] | [text isEqualToString:@"wednesday"]) {
+        if (currentDay < 5) {
+            daysFromToday = 4 - currentDay;
+        }
+        else {
+            daysFromToday = 11 - currentDay;
+        }
+    }
+    if ([text isEqualToString:@"thu"] | [text isEqualToString:@"thur"] | [text isEqualToString:@"thurs"] | [text isEqualToString:@"thursday"]) {
+        if (currentDay < 6) {
+            daysFromToday = 5 - currentDay;
+        }
+        else {
+            daysFromToday = 12 - currentDay;
+        }
+    }
+    if ([text isEqualToString:@"fri"] | [text isEqualToString:@"friday"]) {
+        if (currentDay < 7) {
+            daysFromToday = 6 - currentDay;
+        }
+        else {
+            daysFromToday = 13 - currentDay;
+        }
+    }
+    if ([text isEqualToString:@"sat"] | [text isEqualToString:@"saturday"]) {
+        daysFromToday = 7 - currentDay;
+    }
+    int secondsFromToday = (daysFromToday + (weeks * 7)) * 24 * 60 * 60;
+    NSLog(@"%i",secondsFromToday);
+    NSDate * targetDate = [NSDate dateWithTimeInterval:secondsFromToday sinceDate:today];
+    [dayStringFormat setDateFormat:@"MMM dd, yyyy"];
+    return [dayStringFormat stringFromDate:targetDate];
 }
 
 @end

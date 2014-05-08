@@ -5,36 +5,36 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>4FC9E166-7D43-478D-B6F1-C7DF9E62B4E7</string>
+	<string>74E11AB6-F5BF-4EE8-9F02-164172FB19D5</string>
 	<key>IDESourceControlProjectName</key>
 	<string>Meep_IOS</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>75C0A60C-4A0D-4477-BE28-5BE7229ADDEC</key>
-		<string>ssh://github.com/JasonTsao/meep_front.git</string>
+		<key>444396E2-AE52-4F3F-A040-BBB2D8203986</key>
+		<string>https://github.com/JasonTsao/meep_front</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>Meep_IOS.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>75C0A60C-4A0D-4477-BE28-5BE7229ADDEC</key>
+		<key>444396E2-AE52-4F3F-A040-BBB2D8203986</key>
 		<string>../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>ssh://github.com/JasonTsao/meep_front.git</string>
+	<string>https://github.com/JasonTsao/meep_front</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>110</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>75C0A60C-4A0D-4477-BE28-5BE7229ADDEC</string>
+	<string>444396E2-AE52-4F3F-A040-BBB2D8203986</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>75C0A60C-4A0D-4477-BE28-5BE7229ADDEC</string>
+			<string>444396E2-AE52-4F3F-A040-BBB2D8203986</string>
 			<key>IDESourceControlWCCName</key>
-			<string>Meep_IOS</string>
+			<string>meep_front</string>
 		</dict>
 	</array>
 </dict>
