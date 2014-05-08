@@ -21,6 +21,7 @@ NSString *const kDjangoAuthClientLoginFailureInactiveAccount = @"kDjangoAuthClie
 // Private properties
 @property (nonatomic, strong) NSString *username;
 @property (nonatomic, strong) NSString *password;
+@property (nonatomic, strong) NSString *email;
 @property (nonatomic) BOOL serverDidRespond;
 @property (nonatomic) BOOL serverDidAuthenticate;
 @end
@@ -43,10 +44,35 @@ NSString *const kDjangoAuthClientLoginFailureInactiveAccount = @"kDjangoAuthClie
     return self;
 }
 
+- (id)initWithURL:(NSString *)loginURL forUsername:(NSString *)username andEmail:(NSString *)email andPassword:(NSString *)password {
+    self = [super init];
+    if (!self) {
+        return nil;
+    }
+    
+    _username = username;
+    _password = password;
+    _email = email;
+    _requestURL = [NSURL URLWithString:loginURL];
+    _responseData = [[NSMutableData alloc] initWithCapacity:512];
+    _serverDidRespond = NO;
+    _serverDidAuthenticate = NO;
+    
+    return self;
+}
+
 - (void)login {
     //[self makeLoginRequest:nil];
     NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:_username, @"username", _password, @"password", nil];
-    NSLog(@"request url: %@", _requestURL);
+    NSLog(@"login request url: %@", _requestURL);
+    NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:[_requestURL absoluteString] postDictionary:postDict];
+    [self makeLoginRequest:request];
+}
+
+- (void)registerUser {
+    //[self makeLoginRequest:nil];
+    NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:_username, @"username", _password, @"password1", _email, @"email",nil];
+    NSLog(@"register request url: %@", _requestURL);
     NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:[_requestURL absoluteString] postDictionary:postDict];
     [self makeLoginRequest:request];
 }
@@ -73,6 +99,9 @@ NSString *const kDjangoAuthClientLoginFailureInactiveAccount = @"kDjangoAuthClie
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
     [self.responseData appendData:data];
+    NSError *error;
+    NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:self.responseData options:0 error:&error];
+    NSLog(@"jsonREsponse: %@", jsonResponse);
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {

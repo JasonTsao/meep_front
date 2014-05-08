@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "DjangoAuthClient.h"
-#import "SignInViewController.h"
+#import "SignUpViewController.h"
 
 //@protocol AuthenticationViewControllerDelegate <NSObject>
 @class AuthenticationViewController;

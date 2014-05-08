@@ -39,6 +39,8 @@ extern NSString *const kDjangoAuthClientLoginFailureInactiveAccount;
 @property (nonatomic, strong) NSMutableData *responseData;
 
 - (id)initWithURL:(NSString *)loginURL forUsername:(NSString *)username andPassword:(NSString *)password;
+- (id)initWithURL:(NSString *)loginURL forUsername:(NSString *)username andEmail:(NSString *)email andPassword:(NSString *)password;
 - (void)login;
+- (void)registerUser;
 
 @end

@@ -1,20 +1,24 @@
 //
-//  AuthenticationViewController.m
+//  SignUpViewController.m
 //  Meep_IOS
 //
-//  Created by Jason Tsao on 5/5/14.
+//  Created by Jason Tsao on 5/7/14.
 //  Copyright (c) 2014 futoi. All rights reserved.
 //
 
-#import "AuthenticationViewController.h"
-#import "DjangoAuthLoginResultObject.h"
-#import "CenterViewController.h"
+#import "SignUpViewController.h"
 
-@interface AuthenticationViewController ()
-@property (nonatomic, strong) CenterViewController *centerViewController;
+@interface SignUpViewController ()
+@property (weak, nonatomic) IBOutlet UITextField *usernameField;
+@property (weak, nonatomic) IBOutlet UITextField *emailField;
+
+@property (weak, nonatomic) IBOutlet UITextField *passwordField;
+@property (weak, nonatomic) IBOutlet UITextField *retypePasswordField;
+@property (weak, nonatomic) IBOutlet UILabel *registerMessage;
+@property (nonatomic) NSString *errorMessage;
 @end
 
-@implementation AuthenticationViewController
+@implementation SignUpViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -38,55 +42,59 @@
 
 - (BOOL)validateInputs {
     // Ensure that something has been entered in the username and password fields
-    if (![_username.text isEqualToString:@""] && ![_password.text isEqualToString:@""]) {
-        return YES;
+    if (![_usernameField.text isEqualToString:@""] && ![_passwordField.text isEqualToString:@""] && ![_retypePasswordField.text isEqualToString:@""]) {
+        if([_passwordField.text isEqualToString:_retypePasswordField.text]){
+            return YES;
+        }
+        else{
+            _errorMessage = @"Passwords do not match";
+        }
+        
+    }
+    else{
+        _errorMessage = @"Username and Password are required to log in.";
     }
     
     return NO;
 }
-- (IBAction)login:(id)sender {
+
+- (IBAction)registerUser:(id)sender {
     if ([self validateInputs]) {
         NSLog(@"trying to login");
-        _authClient = [[DjangoAuthClient alloc] initWithURL:@"http://50.112.180.63:8000/acct/login"
-                                                forUsername:_username.text
-                                                andPassword:_password.text];
+        _authClient = [[DjangoAuthClient alloc] initWithURL:@"http://50.112.180.63:8000/acct/register"
+                                                forUsername:_usernameField.text
+                                                   andEmail:_emailField.text
+                                                andPassword:_passwordField.text];
         _authClient.delegate = self;
-        [_authClient login];
+        [_authClient registerUser];
     }
     else {
-        _loginMessage.text = @"Username and Password are required to log in.";
+        _registerMessage.text = _errorMessage;
     }
 }
 
-
-
-#pragma mark - DjangoAuthClientDelegate methods
-
 - (void)loginSuccessful:(DjangoAuthLoginResultObject *)result {
-
+    
     NSLog(@"login successful");
     [_delegate loadMainViewAfterAuthentication];
 }
 
 - (void)loginFailed:(DjangoAuthLoginResultObject *)result {
-
+    
     if (result.loginFailureReason == kDjangoAuthClientLoginFailureInactiveAccount) {
-        _loginMessage.text = @"Login failed: Your account is inactive.";
-       // NSLog(@"Login failed: Your account is inactive.");
+        _registerMessage.text = @"Login failed: Your account is inactive.";
+        // NSLog(@"Login failed: Your account is inactive.");
     }
     else if (result.loginFailureReason == kDjangoAuthClientLoginFailureInvalidCredentials) {
-        _loginMessage.text = @"Login failed: Please check your username and password.";
+        _registerMessage.text = @"Login failed: Please check your username and password.";
         //NSLog(@"Login failed: Please check your username and password.");
     }else{
         NSLog(@"Unknown reason for login failure");
-        _loginMessage.text = @"Login failed: Please check your username and password.";
+        _registerMessage.text = @"Login failed: Please check your username and password.";
         //[_delegate loadMainViewAfterAuthentication];
     }
-
+    
 }
-
-
-
 
 - (void)viewDidLoad
 {
@@ -100,7 +108,7 @@
     // Dispose of any resources that can be recreated.
 }
 
-
+/*
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -108,9 +116,7 @@
 {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
-    SignUpViewController * signup = [segue destinationViewController];
-    [signup setDelegate:self.delegate];
 }
-
+*/
 
 @end
