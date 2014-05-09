@@ -225,7 +225,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RvS-4h-Jab" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-507" y="147"/>
+            <point key="canvasLocation" x="-609" y="-55"/>
         </scene>
         <!--Event Page View Controller - EventViewController-->
         <scene sceneID="zQv-Uz-o4I">
@@ -294,7 +294,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2D6-c2-k8f" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-128" y="211"/>
+            <point key="canvasLocation" x="-194" y="197"/>
         </scene>
         <!--Edit Event View Controller-->
         <scene sceneID="91q-aU-Xuc">
@@ -330,7 +330,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7B6-yH-r86" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="240" y="211"/>
+            <point key="canvasLocation" x="154" y="801"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="O3m-m1-daf">
@@ -506,6 +506,42 @@
             </objects>
             <point key="canvasLocation" x="462" y="-589"/>
         </scene>
+        <!--Add Remove Friends From Event Table View Controller-->
+        <scene sceneID="6qh-7t-V9Q">
+            <objects>
+                <tableViewController storyboardIdentifier="addRemoveFriendsFromEvent" id="Vfm-hJ-IkO" customClass="AddRemoveFriendsFromEventTableViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="MPu-ll-LpN">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="F6Y-Ow-iAt">
+                                <rect key="frame" x="0.0" y="22" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="F6Y-Ow-iAt" id="qv1-hY-CO2">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="eventFriendCell" id="zD4-DR-H2b">
+                                <rect key="frame" x="0.0" y="66" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="zD4-DR-H2b" id="GcH-uw-fFK">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="Vfm-hJ-IkO" id="h3d-gN-Rs8"/>
+                            <outlet property="delegate" destination="Vfm-hJ-IkO" id="vf6-Hw-7bV"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="UdV-4u-RGJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="203" y="117"/>
+        </scene>
         <!--Navigation Controller-->
         <scene sceneID="UKe-JS-umv">
             <objects>
@@ -519,7 +555,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="P6t-MF-0Rx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-295" y="901"/>
+            <point key="canvasLocation" x="-239" y="1655"/>
         </scene>
         <!--Group Table View Controller-->
         <scene sceneID="F78-K5-8Ma">
@@ -548,7 +584,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fsQ-0N-qeg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="982" y="1030"/>
+            <point key="canvasLocation" x="1010" y="1636"/>
         </scene>
         <!--Groups View Controller - Groups-->
         <scene sceneID="hML-6j-WG7">
@@ -591,7 +627,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="n4r-RE-D1Q" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="295" y="861"/>
+            <point key="canvasLocation" x="237" y="1697"/>
         </scene>
         <!--Create Group View Controller-->
         <scene sceneID="KOD-NQ-wwc">
@@ -647,7 +683,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0zW-IS-ljh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="910" y="245"/>
+            <point key="canvasLocation" x="988" y="963"/>
         </scene>
         <!--Friends List Table View Controller-->
         <scene sceneID="Axk-a6-Qks">
@@ -685,7 +721,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HrG-Bf-XGG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="156" y="2128"/>
+            <point key="canvasLocation" x="218" y="2448"/>
         </scene>
         <!--Friend Profile View Controller-->
         <scene sceneID="IYH-tF-8i4">
@@ -740,7 +776,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="k4s-JZ-a2B" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1398" y="2095"/>
+            <point key="canvasLocation" x="744" y="2889"/>
         </scene>
         <!--Friend Full Size Profile Image View Controller-->
         <scene sceneID="VV6-it-n7r">
@@ -778,7 +814,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iCK-2V-GTX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="651" y="1854"/>
+            <point key="canvasLocation" x="719" y="2204"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="8EA-3a-6FZ">
@@ -796,7 +832,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7hk-pQ-Gze" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-330" y="1760"/>
+            <point key="canvasLocation" x="-266" y="2412"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="EYm-JU-T7i">

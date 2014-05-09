@@ -8,6 +8,7 @@
 
 #import "EventPageViewController.h"
 #import "EditEventViewController.h"
+#import "AddRemoveFriendsFromEventTableViewController.h"
 #import "Event.h"
 
 @interface EventPageViewController ()
@@ -20,6 +21,8 @@
 
 @property (nonatomic, strong) EditEventViewController *editEventViewController;
 @property (nonatomic, assign) BOOL showingEditPage;
+
+@property (nonatomic, strong) AddRemoveFriendsFromEventTableViewController *addRemoveFriendsFromEventTableViewController;
 
 @end
 
@@ -37,15 +40,25 @@
     // remove user from event
 }
 
-- (void) openEditEventViewController
+- (void) openEditEventPage
 {
-    
     UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"CenterStoryboard" bundle:nil];
     _editEventViewController = (EditEventViewController *)[storyboard instantiateViewControllerWithIdentifier:@"editEvent"];
     
     UINavigationController *navigation = [[UINavigationController alloc]initWithRootViewController:_editEventViewController];
     [_editEventViewController setDelegate:self];
     _editEventViewController.currentEvent = _currentEvent;
+    [self presentViewController:navigation animated:YES completion:nil];
+}
+
+- (void) openAddRemoveFriendsPage
+{
+    UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"CenterStoryboard" bundle:nil];
+    _addRemoveFriendsFromEventTableViewController = (AddRemoveFriendsFromEventTableViewController *)[storyboard instantiateViewControllerWithIdentifier:@"addRemoveFriendsFromEvent"];
+    
+    UINavigationController *navigation = [[UINavigationController alloc]initWithRootViewController:_addRemoveFriendsFromEventTableViewController];
+    [_addRemoveFriendsFromEventTableViewController setDelegate:self];
+    _addRemoveFriendsFromEventTableViewController.invitedFriends = _invitedFriends;
     [self presentViewController:navigation animated:YES completion:nil];
 }
 
@@ -60,7 +73,11 @@
                     break;
                 case 1:
                     NSLog(@"going to edit view page");
-                    [self openEditEventViewController];
+                    [self openEditEventPage];
+                    break;
+                case 2:
+                    NSLog(@"going to invite more friends page");
+                    [self openAddRemoveFriendsPage];
                 default:
                     break;
             }
@@ -74,7 +91,7 @@
 - (IBAction)openEventOptions:(id)sender {
     
     //if user is host
-    UIActionSheet *eventOptionsPopup = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Leave Event", @"Edit Event", @"Invite More Friends",nil];
+    UIActionSheet *eventOptionsPopup = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Leave Event", @"Edit Event", @"Add/Remove Friends",nil];
     //else
     //UIActionSheet *eventOptionsPopup = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Leave Event",nil];
     eventOptionsPopup.tag = 1;
