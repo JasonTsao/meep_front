@@ -33,7 +33,7 @@
         _datePrepositionArray = [[NSArray alloc] initWithObjects:@"about",@"after",@"around",@"at",@"before",@"by",@"from",@"in",@"past",@"since",@"till",@"until",@"within", nil];
         _locationPrepositionArray = [[NSArray alloc] initWithObjects:@"around",@"behind",@"below",@"beneath",@"beside",@"between",@"by",@"in",@"inside",@"near",@"of",@"on",@"to",@"within",nil];
         _timeIntRegex = [[NSRegularExpression alloc] initWithPattern:@"(0[1-9]|1[0-2]|[1-9])((:|.|\\s)?([0-5][0-9]))?\\s?(AM|am|PM|pm)?" options:NSRegularExpressionCaseInsensitive error:nil];
-        _timeExplicitRegex = [[NSRegularExpression alloc] initWithPattern:@"(one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|noon)\\s?(ten|fifteen|twenty|twenty\\s?five|thirty|forty\\s?five|fifty)?" options:NSRegularExpressionCaseInsensitive error:nil];
+        _timeExplicitRegex = [[NSRegularExpression alloc] initWithPattern:@"(one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|noon)\\s?(ten|fifteen|twenty|twenty\\s?five|thirty|forty\\s?five|fifty)?\\s?(AM|am|PM|pm)?" options:NSRegularExpressionCaseInsensitive error:nil];
         _dateIntRegex = [[NSRegularExpression alloc] initWithPattern:@"(0[1-9]|1[0-2]|[1-9])(/|-)([1-31])(/|-)([0-9]{4,4})?" options:NSRegularExpressionCaseInsensitive error:nil];
         _dateExplicitRegex = [[NSRegularExpression alloc] initWithPattern:@"(mon(day)?|tues?(day)?|wed(nesday)?|thu?r?s?(day)?|fri(day)?|sat(urday)?|sun(day)?)" options:NSRegularExpressionCaseInsensitive error:nil];
         _datePreceedingExpressions = [[NSArray alloc] initWithObjects:@"next",@"this",nil];
@@ -68,6 +68,9 @@
     NSMutableDictionary * contentDictionary = [[NSMutableDictionary alloc] init];
     int arraySize = [textArray count];
     _beginningOfExpression = 0;
+    if (![[text substringFromIndex:[text length] - 1] isEqualToString:@" "]) {
+        arraySize = arraySize - 1;
+    }
     for (int i = 0; i < arraySize; i++) {
         NSString * word = [textArray objectAtIndex:i];
         NSString * phrase = @"";
@@ -176,10 +179,6 @@
                 [returnDictionary setObject:[self createDateString:0] forKey:@"startDate"];
             }
         }
-        if ([_datePreceedingExpressions containsObject:[textArrayElement lowercaseString]]) {
-            searching = YES;
-            preceedingElement = [textArrayElement lowercaseString];
-        }
         if (searching) {
             if ([_dateKeywords containsObject:[textArrayElement lowercaseString]]) {
                 if ([preceedingElement isEqualToString:@"this"]) {
@@ -195,6 +194,10 @@
                 }
             }
             [returnDictionary setObject:[self evaluateExplicitDateString:[text substringWithRange:[[content objectAtIndex:0] range]] plusWeeks:weeks] forKey:@"startDate"];
+        }
+        if ([_datePreceedingExpressions containsObject:[textArrayElement lowercaseString]]) {
+            searching = YES;
+            preceedingElement = [textArrayElement lowercaseString];
         }
         if (searching && !stillSearching) {
             stillSearching = YES;
@@ -282,6 +285,15 @@
     NSDate * targetDate = [NSDate dateWithTimeInterval:secondsFromToday sinceDate:today];
     [dayStringFormat setDateFormat:@"MMM dd, yyyy"];
     return [dayStringFormat stringFromDate:targetDate];
+}
+
+- (NSString*) evaluteExplicitTimeString:(NSString*)timeText {
+    NSDate * today = [[NSDate alloc] init];
+    NSDateFormatter * hours = [[NSDateFormatter alloc] init];
+    NSDateFormatter * minutes = [[NSDateFormatter alloc] init];
+    [hours setDateFormat:@"HH"];
+    [minutes setDateFormat:@"mm"];
+    return @"";
 }
 
 @end
