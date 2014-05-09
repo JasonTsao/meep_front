@@ -89,6 +89,8 @@
     [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"friends_list"];
     [NSUserDefaults resetStandardUserDefaults];
     
+    [self.friendTable reloadData];
+    
 }
 
 

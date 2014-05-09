@@ -83,6 +83,8 @@
     [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"friends_list"];
     [NSUserDefaults resetStandardUserDefaults];
     
+    [self.friendTable reloadData];
+    
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
@@ -193,6 +195,7 @@
     if(!networkQueue){
         networkQueue = dispatch_queue_create("Network.Queue", NULL);
     }
+    [self getFriendsList];
     
     if(!user_friends_list){
         [self getFriendsList];
