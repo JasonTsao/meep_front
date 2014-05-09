@@ -23,7 +23,7 @@
 
 @end
 
-@interface EventPageViewController : UIViewController
+@interface EventPageViewController : UIViewController<UIActionSheetDelegate>
 @property (nonatomic) Event *currentEvent;
 @property (nonatomic) NSMutableArray *invitedFriends;
 @property(nonatomic, strong) NSMutableData * data;

@@ -56,6 +56,7 @@
 		968630371909FAB200CAE305 /* FriendProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 968630301909FAB200CAE305 /* FriendProfileViewController.m */; };
 		968630381909FAB200CAE305 /* FriendsListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 968630321909FAB200CAE305 /* FriendsListTableViewController.m */; };
 		968630391909FAB200CAE305 /* Photo.m in Sources */ = {isa = PBXBuildFile; fileRef = 968630341909FAB200CAE305 /* Photo.m */; };
+		96967E1D191D4887007613AF /* EditEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96967E1C191D4887007613AF /* EditEventViewController.m */; };
 		96B397CB191B4BB700FFA7BF /* SignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96B397CA191B4BB700FFA7BF /* SignUpViewController.m */; };
 		96E1D22B1913503600951DEB /* CreateMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E1D22A1913503600951DEB /* CreateMessageViewController.m */; };
 		96E1D22E1913645600951DEB /* GroupsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E1D22D1913645600951DEB /* GroupsViewController.m */; };
@@ -182,6 +183,8 @@
 		968630321909FAB200CAE305 /* FriendsListTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendsListTableViewController.m; sourceTree = "<group>"; };
 		968630331909FAB200CAE305 /* Photo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Photo.h; sourceTree = "<group>"; };
 		968630341909FAB200CAE305 /* Photo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Photo.m; sourceTree = "<group>"; };
+		96967E1B191D4887007613AF /* EditEventViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditEventViewController.h; sourceTree = "<group>"; };
+		96967E1C191D4887007613AF /* EditEventViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditEventViewController.m; sourceTree = "<group>"; };
 		96B397C9191B4BB700FFA7BF /* SignUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignUpViewController.h; sourceTree = "<group>"; };
 		96B397CA191B4BB700FFA7BF /* SignUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignUpViewController.m; sourceTree = "<group>"; };
 		96E1D2291913503600951DEB /* CreateMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateMessageViewController.h; sourceTree = "<group>"; };
@@ -400,6 +403,8 @@
 				3CCC513D1905A20D00EB0980 /* EventPageViewController.m */,
 				96E1D22F1915709300951DEB /* InvitedFriend.h */,
 				96E1D2301915709300951DEB /* InvitedFriend.m */,
+				96967E1B191D4887007613AF /* EditEventViewController.h */,
+				96967E1C191D4887007613AF /* EditEventViewController.m */,
 			);
 			name = "Event Pages";
 			sourceTree = "<group>";
@@ -663,6 +668,7 @@
 				9606E6AB1913174300D985A7 /* InviteFriendsViewController.m in Sources */,
 				3CE1C87719099BCB00E4375A /* AccountSettings.m in Sources */,
 				3CCC51641905A20D00EB0980 /* MEEPhttp.m in Sources */,
+				96967E1D191D4887007613AF /* EditEventViewController.m in Sources */,
 				3CCC51581905A20D00EB0980 /* Event.m in Sources */,
 				96B397CB191B4BB700FFA7BF /* SignUpViewController.m in Sources */,
 				96E1D22E1913645600951DEB /* GroupsViewController.m in Sources */,

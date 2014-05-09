@@ -7,6 +7,7 @@
 //
 
 #import "EventPageViewController.h"
+#import "EditEventViewController.h"
 #import "Event.h"
 
 @interface EventPageViewController ()
@@ -16,6 +17,9 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *description;
 @property (weak, nonatomic) IBOutlet UINavigationItem *eventNavBar;
+
+@property (nonatomic, strong) EditEventViewController *editEventViewController;
+@property (nonatomic, assign) BOOL showingEditPage;
 
 @end
 
@@ -27,6 +31,56 @@
 - (IBAction)backToCenterFromEventPage:(id)sender {
     [self.delegate backToCenterFromEventPage:self];
 }
+
+- (void) leaveEvent
+{
+    // remove user from event
+}
+
+- (void) openEditEventViewController
+{
+    
+    UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"CenterStoryboard" bundle:nil];
+    _editEventViewController = (EditEventViewController *)[storyboard instantiateViewControllerWithIdentifier:@"editEvent"];
+    
+    UINavigationController *navigation = [[UINavigationController alloc]initWithRootViewController:_editEventViewController];
+    [_editEventViewController setDelegate:self];
+    _editEventViewController.currentEvent = _currentEvent;
+    [self presentViewController:navigation animated:YES completion:nil];
+}
+
+- (void)actionSheet:(UIActionSheet *)popup clickedButtonAtIndex:(NSInteger)buttonIndex {
+    NSLog(@"clicked button at index: %i", buttonIndex);
+    switch (popup.tag) {
+        case 1: {
+            switch (buttonIndex) {
+                case 0:
+                    NSLog(@"Removing user from group");
+                    //[self logoutSelect];
+                    break;
+                case 1:
+                    NSLog(@"going to edit view page");
+                    [self openEditEventViewController];
+                default:
+                    break;
+            }
+            break;
+        }
+        default:
+            break;
+    }
+}
+
+- (IBAction)openEventOptions:(id)sender {
+    
+    //if user is host
+    UIActionSheet *eventOptionsPopup = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Leave Event", @"Edit Event", @"Invite More Friends",nil];
+    //else
+    //UIActionSheet *eventOptionsPopup = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Leave Event",nil];
+    eventOptionsPopup.tag = 1;
+    [eventOptionsPopup showInView:self.view];
+}
+
 
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil event:(Event*) event
@@ -100,6 +154,11 @@
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
     return 1;
+}
+
+- (void)backToEventPage:(EditEventViewController*)controller
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 -(void) aMethod
@@ -215,7 +274,7 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
+
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -224,6 +283,6 @@
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
 }
-*/
+
 
 @end

@@ -73,7 +73,9 @@
     EventPageViewController *eventPageViewController = (EventPageViewController *)[storyboard instantiateViewControllerWithIdentifier:@"EventViewController"];
     eventPageViewController.currentEvent = newEvent;
     [eventPageViewController setDelegate:self.delegate];
-    [self presentViewController:eventPageViewController animated:YES completion:nil];
+    UINavigationController *navigation = [[UINavigationController alloc]initWithRootViewController:eventPageViewController];
+    [self presentViewController:navigation animated:YES completion:nil];
+    //[self presentViewController:eventPageViewController animated:YES completion:nil];
 }
 
 

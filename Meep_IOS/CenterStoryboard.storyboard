@@ -212,6 +212,21 @@
             </objects>
             <point key="canvasLocation" x="-976" y="690"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="xNy-bD-hX2">
+            <objects>
+                <navigationController definesPresentationContext="YES" id="h0X-pN-Q3S" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="pqo-cd-h4a">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="WWX-Ck-xHx" kind="relationship" relationship="rootViewController" id="b6D-S2-dfo"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="RvS-4h-Jab" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-507" y="147"/>
+        </scene>
         <!--Event Page View Controller - EventViewController-->
         <scene sceneID="zQv-Uz-o4I">
             <objects>
@@ -236,7 +251,7 @@
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="invitedFriendCell" id="y0I-vB-MuK">
-                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                        <rect key="frame" x="0.0" y="64" width="50" height="50"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
@@ -252,36 +267,70 @@
                                 </connections>
                             </collectionView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QFb-HM-hYR">
-                                <rect key="frame" x="20" y="54" width="280" height="54"/>
+                                <rect key="frame" x="20" y="70" width="280" height="54"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hPR-mh-WNc">
-                                <rect key="frame" x="0.0" y="10" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                <items>
-                                    <navigationItem id="fk1-3p-2Ax">
-                                        <barButtonItem key="leftBarButtonItem" title="Back" id="aYO-WA-HxZ">
-                                            <connections>
-                                                <action selector="backToCenterFromEventPage:" destination="WWX-Ck-xHx" id="Fo8-Ut-Ca3"/>
-                                            </connections>
-                                        </barButtonItem>
-                                    </navigationItem>
-                                </items>
-                            </navigationBar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
+                    <navigationItem key="navigationItem" id="nbM-f8-YrH">
+                        <barButtonItem key="leftBarButtonItem" title="Back" id="fWW-1J-PZC">
+                            <connections>
+                                <action selector="backToCenterFromEventPage:" destination="WWX-Ck-xHx" id="r4G-vV-ult"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Options" id="ErR-40-vRH">
+                            <connections>
+                                <action selector="openEventOptions:" destination="WWX-Ck-xHx" id="1aD-6c-LMU"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="description" destination="QFb-HM-hYR" id="PX7-8Q-wSc"/>
-                        <outlet property="eventNavBar" destination="fk1-3p-2Ax" id="8zr-iZ-eOD"/>
                         <outlet property="friendsCollection" destination="XiU-Zp-Vw2" id="1az-Qc-lh9"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2D6-c2-k8f" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="106" y="135"/>
+            <point key="canvasLocation" x="-128" y="211"/>
+        </scene>
+        <!--Edit Event View Controller-->
+        <scene sceneID="91q-aU-Xuc">
+            <objects>
+                <viewController storyboardIdentifier="editEvent" id="GfB-7t-m8Q" customClass="EditEventViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="zrD-uo-Xvi"/>
+                        <viewControllerLayoutGuide type="bottom" id="1eI-ln-FAb"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="vFk-1v-bv3">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="S75-cr-Jpe">
+                                <rect key="frame" x="20" y="78" width="280" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="bI2-Dg-w5G">
+                                <rect key="frame" x="20" y="116" width="280" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <outlet property="descriptionField" destination="bI2-Dg-w5G" id="x2A-by-jdm"/>
+                        <outlet property="nameField" destination="S75-cr-Jpe" id="xIp-z5-TEh"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7B6-yH-r86" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="240" y="211"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="O3m-m1-daf">
