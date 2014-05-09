@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Event.h"
 
 @class AddRemoveFriendsFromEventTableViewController;
 
@@ -16,7 +17,10 @@
 
 
 @interface AddRemoveFriendsFromEventTableViewController : UITableViewController<UITableViewDataSource>
+@property (nonatomic) Event *currentEvent;
 @property (nonatomic) NSMutableArray *invitedFriends;
+@property (nonatomic) NSMutableArray *originalInvitedFriends;
+@property (nonatomic) NSMutableArray *removedFriends;
 @property (nonatomic) NSMutableArray *friends;
 @property(nonatomic, strong) NSMutableData * data;
 @property(nonatomic, strong) id <AddRemoveFriendsFromEventTableViewControllerDelegate> delegate;

@@ -8,6 +8,7 @@
 
 #import "AddRemoveFriendsFromEventTableViewController.h"
 #import "Friend.h"
+#import "InvitedFriend.h"
 #import "Group.h"
 #import "MEEPhttp.h"
 
@@ -60,19 +61,24 @@
     NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:_data options:0 error:&error];
     NSArray * friends = jsonResponse[@"friends"];
     _friends = [[NSMutableArray alloc]init];
+
     for( int i = 0; i< [friends count]; i++){
-        Friend *new_friend = [[Friend alloc]init];
+        //Friend *new_friend = [[Friend alloc]init];
+        InvitedFriend *new_friend = [[InvitedFriend alloc]init];
         
         NSDictionary * new_friend_dict = [NSJSONSerialization JSONObjectWithData: [friends[i] dataUsingEncoding:NSUTF8StringEncoding]
                                                                          options: NSJSONReadingMutableContainers
                                                                            error: &error];
         new_friend.name = new_friend_dict[@"name"];
-        new_friend.numTimesInvitedByMe = new_friend_dict[@"invited_count"];
-        new_friend.phoneNumber= new_friend_dict[@"phone_number"];
-        new_friend.imageFileName = new_friend_dict[@"pf_pic"];
-        new_friend.bio = new_friend_dict[@"bio"];
+        //new_friend.imageFileName = new_friend_dict[@"pf_pic"];
         new_friend.account_id = [new_friend_dict[@"account_id"] intValue];
         [_friends addObject:new_friend];
+        
+        for(int k = 0; k < [_originalInvitedFriends count]; k++){
+            if([_originalInvitedFriends[k] account_id] == new_friend.account_id){
+                [_invitedFriends addObject:new_friend];
+            }
+        }
     }
     
     /*NSData *data = [NSKeyedArchiver archivedDataWithRootObject:_friends];
@@ -86,6 +92,41 @@
 - (void)backToEventPage:(id)sender {
     
     // synchronous update of event
+    NSMutableArray *invitedFriendsToSend = [[NSMutableArray alloc] init];
+    NSMutableArray *removedFriendsToSend = [[NSMutableArray alloc] init];
+    
+    NSLog(@"removed friends: %@", _removedFriends);
+    NSLog(@"invited friends:%@", _invitedFriends);
+    NSLog(@"original invited friends: %@", _originalInvitedFriends);
+    
+    for (int i = 0; i < [_invitedFriends count]; i++){
+        NSString *user_id = [NSString stringWithFormat: @"%i", [_invitedFriends[i] account_id]];
+        NSDictionary *friend_dict = [[NSDictionary alloc] initWithObjectsAndKeys:user_id,@"user_id", @"false", @"can_invite_friends", nil];
+        [invitedFriendsToSend addObject:friend_dict];
+        NSLog(@"invited friend: %i", [_invitedFriends[i] account_id]);
+    }
+    
+    for (int k = 0; k < [_removedFriends count]; k++){
+        NSString *user_id = [NSString stringWithFormat: @"%i", [_removedFriends[k] account_id]];
+        NSDictionary *friend_dict = [[NSDictionary alloc] initWithObjectsAndKeys:user_id,@"user_id", @"false", @"can_invite_friends", nil];
+        [removedFriendsToSend addObject:friend_dict];
+        NSLog(@"invited friend: %i", [_removedFriends[k] account_id]);
+    }
+    
+    NSString * requestURL = [NSString stringWithFormat:@"%@add_remove_friends/%i",[MEEPhttp eventURL], _currentEvent.event_id];
+    //NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:@"2",@"user", messageText, @"description", invitedFriendsToSend, @"invited_friends", nil];
+    NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:removedFriendsToSend, @"removed_friends", invitedFriendsToSend, @"invited_friends", nil];
+    NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
+    NSURLResponse * response = nil;
+    NSError * error = nil;
+    NSData *return_data = [NSURLConnection sendSynchronousRequest:request
+                                                returningResponse:&response
+                                                            error:&error];
+    
+    NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:return_data options:0 error:&error];
+    NSLog(@"jsonResponse: %@", jsonResponse);
+
+    
     [_delegate backToEventPage:self];
 }
 
@@ -94,6 +135,8 @@
 {
     [super viewDidLoad];
     
+    _removedFriends = [[NSMutableArray alloc]init];
+    _invitedFriends = [[NSMutableArray alloc]init];
     UIBarButtonItem *customBarItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStyleBordered target:self action:@selector(backToEventPage:)];
     
     self.navigationItem.leftBarButtonItem = customBarItem;
@@ -120,6 +163,7 @@
         selectedFriend = _friends[indexPath.row];
         friend_name = selectedFriend.name;
         
+        
         if (![_invitedFriends containsObject:selectedFriend]){
             [tableView beginUpdates];
             [_invitedFriends addObject:selectedFriend];
@@ -128,6 +172,10 @@
             [tableView endUpdates];
         }
         else{
+            if(![_removedFriends containsObject:selectedFriend]){
+                [_removedFriends addObject:selectedFriend];
+            }
+            
             [tableView beginUpdates];
             NSInteger deleteRow = [_invitedFriends indexOfObject:selectedFriend];
             [_invitedFriends removeObjectAtIndex: deleteRow];
@@ -139,13 +187,22 @@
     else if(indexPath.section == 0){
         selectedFriend = _invitedFriends[indexPath.row];
         friend_name = selectedFriend.name;
+        
+        if ([_invitedFriends containsObject:selectedFriend]){
+            if(![_removedFriends containsObject:selectedFriend]){
+                [_removedFriends addObject:selectedFriend];
+            }
+        }
+        
         [tableView beginUpdates];
         [_invitedFriends removeObjectAtIndex: indexPath.row];
         [tableView deleteRowsAtIndexPaths: [NSArray arrayWithObject:[NSIndexPath indexPathForRow:indexPath.row inSection:0]]
                          withRowAnimation:UITableViewRowAnimationFade];
         
         [tableView endUpdates];
+        
     }
+    NSLog(@"removedFriends: %@", _removedFriends);
     
 }
 

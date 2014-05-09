@@ -58,7 +58,9 @@
     
     UINavigationController *navigation = [[UINavigationController alloc]initWithRootViewController:_addRemoveFriendsFromEventTableViewController];
     [_addRemoveFriendsFromEventTableViewController setDelegate:self];
-    _addRemoveFriendsFromEventTableViewController.invitedFriends = _invitedFriends;
+    //_addRemoveFriendsFromEventTableViewController.invitedFriends = _invitedFriends;
+    _addRemoveFriendsFromEventTableViewController.originalInvitedFriends = _invitedFriends;
+    _addRemoveFriendsFromEventTableViewController.currentEvent = _currentEvent;
     [self presentViewController:navigation animated:YES completion:nil];
 }
 
@@ -151,7 +153,7 @@
                                                                          options: NSJSONReadingMutableContainers
                                                                            error: &error];
         new_friend.name = new_friend_dict[@"name"];
-        
+        new_friend.account_id = [new_friend_dict[@"friend_id"] intValue];
         [_invitedFriends addObject:new_friend];
     }
     
