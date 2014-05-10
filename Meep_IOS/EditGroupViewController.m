@@ -7,8 +7,10 @@
 //
 
 #import "EditGroupViewController.h"
+#import "MEEPhttp.h"
 
 @interface EditGroupViewController ()
+@property (weak, nonatomic) IBOutlet UITextField *nameField;
 
 @end
 
@@ -28,6 +30,24 @@
     // synchronous update of event
     [_delegate backToGroupPage:self];
 }
+- (IBAction)saveChanges:(id)sender {
+    
+    if(![_nameField.text isEqualToString:_originalName]){
+        NSString * requestURL = [NSString stringWithFormat:@"%@group/%i/update",[MEEPhttp accountURL], _currentGroup.group_id];
+        NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:_nameField.text, @"new_name", nil];
+        NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
+        NSURLResponse * response = nil;
+        NSError * error = nil;
+        NSData *return_data = [NSURLConnection sendSynchronousRequest:request
+                                                    returningResponse:&response
+                                                                error:&error];
+        NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:return_data options:0 error:&error];
+        NSLog(@"json response: %@", jsonResponse);
+        _savedGroupName = _nameField.text;
+    }
+    
+    [_delegate backToGroupPage:self];
+}
 
 - (void)viewDidLoad
 {
@@ -35,6 +55,8 @@
     UIBarButtonItem *customBarItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStyleBordered target:self action:@selector(backToGroupPage:)];
     
     self.navigationItem.leftBarButtonItem = customBarItem;
+    self.title = @"Edit";
+    _nameField.text = _originalName;
     // Do any additional setup after loading the view.
 }
 

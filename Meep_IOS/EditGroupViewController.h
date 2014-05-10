@@ -18,5 +18,7 @@
 
 @interface EditGroupViewController : UIViewController
 @property (nonatomic) Group *currentGroup;
+@property(nonatomic) NSString *originalName;
+@property(nonatomic) NSString *savedGroupName;
 @property(nonatomic, strong) id <EditGroupViewControllerDelegate> delegate;
 @end

@@ -13,6 +13,7 @@
 
 @class GroupTableViewController;
 @protocol GroupTableViewControllerDelegate
+- (void)updatedGroupName:(id)sender;
 @end
 
 @interface GroupTableViewController : UITableViewController<UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate>
@@ -21,4 +22,6 @@
 @property (nonatomic) Group *group;
 @property(nonatomic, strong) id <GroupTableViewControllerDelegate> delegate;
 @property(nonatomic, strong) NSMutableData * data;
+
+
 @end

@@ -17,6 +17,8 @@
 @property (nonatomic, strong) AddRemoveFriendsFromGroupTableViewController *addRemoveFriendsFromGroupTableViewController;
 @property (nonatomic, assign) BOOL showingAddRemoveFriendsPage;
 
+@property(nonatomic) BOOL groupPropertyChanged;
+
 @end
 
 @implementation GroupTableViewController
@@ -37,6 +39,14 @@
 
 - (void)backToGroupPage:(EditGroupViewController*)controller
 {
+    NSLog(@"controller: %@", controller);
+    
+    if (controller.savedGroupName != nil){
+        self.title = controller.savedGroupName;
+        _group.name = controller.savedGroupName;
+        _groupPropertyChanged = YES;
+    }
+
     [self getGroupMembers];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -49,6 +59,7 @@
     UINavigationController *navigation = [[UINavigationController alloc]initWithRootViewController:_editGroupViewController];
     [_editGroupViewController setDelegate:self];
     _editGroupViewController.currentGroup = _group;
+    _editGroupViewController.originalName = _group.name;
     [self presentViewController:navigation animated:YES completion:nil];
 }
 
@@ -171,11 +182,25 @@
         [self getGroupMembers];
     }
     
+    _groupPropertyChanged = NO;
+    
+    //self.navigationItem
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    NSLog(@"group property changed %hhd", _groupPropertyChanged );
+    if(_groupPropertyChanged == YES){
+        [_delegate updatedGroupName:self];
+    }
+    [super viewWillDisappear:animated];
+    //[self.navigationController setNavigationBarHidden:YES animated:animated];
 }
 
 - (void)didReceiveMemoryWarning
@@ -218,7 +243,6 @@
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Return NO if you do not want the specified item to be editable.
-    NSLog(@"can edit index path : %@", indexPath);
     return YES;
 }
 

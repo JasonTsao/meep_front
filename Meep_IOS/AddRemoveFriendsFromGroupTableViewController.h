@@ -23,6 +23,7 @@
 @property (nonatomic) NSMutableArray *removedMembers;
 @property (nonatomic) NSMutableArray *members;
 @property (nonatomic) NSMutableArray *friends;
+@property(nonatomic) NSString *savedGroupName;
 @property(nonatomic, strong) NSMutableData * data;
 @property(nonatomic, strong) id <AddRemoveFriendsFromGroupTableViewControllerDelegate> delegate;
 @end
