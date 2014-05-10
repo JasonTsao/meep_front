@@ -7,9 +7,15 @@
 //
 
 #import "GroupTableViewController.h"
+#import "EditGroupViewController.h"
+#import "AddRemoveFriendsFromGroupTableViewController.h"
 
 @interface GroupTableViewController ()
+@property (nonatomic, strong) EditGroupViewController *editGroupViewController;
+@property (nonatomic, assign) BOOL showingEditPage;
 
+@property (nonatomic, strong) AddRemoveFriendsFromGroupTableViewController *addRemoveFriendsFromGroupTableViewController;
+@property (nonatomic, assign) BOOL showingAddRemoveFriendsPage;
 
 @end
 
@@ -23,6 +29,77 @@
     }
     return self;
 }
+
+- (void) leaveEvent
+{
+    // remove user from event
+}
+
+- (void)backToGroupPage:(EditGroupViewController*)controller
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void) openEditGroupPage
+{
+    UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"CenterStoryboard" bundle:nil];
+    _editGroupViewController = (EditGroupViewController *)[storyboard instantiateViewControllerWithIdentifier:@"editGroup"];
+    
+    UINavigationController *navigation = [[UINavigationController alloc]initWithRootViewController:_editGroupViewController];
+    [_editGroupViewController setDelegate:self];
+    _editGroupViewController.currentGroup = _group;
+    [self presentViewController:navigation animated:YES completion:nil];
+}
+
+- (void) openAddRemoveFriendsPage
+{
+    UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"CenterStoryboard" bundle:nil];
+    _addRemoveFriendsFromGroupTableViewController = (AddRemoveFriendsFromGroupTableViewController *)[storyboard instantiateViewControllerWithIdentifier:@"addRemoveFriendsFromGroup"];
+    
+    UINavigationController *navigation = [[UINavigationController alloc]initWithRootViewController:_addRemoveFriendsFromGroupTableViewController];
+    [_addRemoveFriendsFromGroupTableViewController setDelegate:self];
+    //_addRemoveFriendsFromEventTableViewController.invitedFriends = _invitedFriends;
+    _addRemoveFriendsFromGroupTableViewController.originalMembers = _groupMembers;
+    _addRemoveFriendsFromGroupTableViewController.currentGroup = _group;
+    [self presentViewController:navigation animated:YES completion:nil];
+}
+
+- (void)actionSheet:(UIActionSheet *)popup clickedButtonAtIndex:(NSInteger)buttonIndex {
+    NSLog(@"clicked button at index: %i", buttonIndex);
+    switch (popup.tag) {
+        case 1: {
+            switch (buttonIndex) {
+                case 0:
+                    NSLog(@"Removing user from group");
+                    //[self logoutSelect];
+                    break;
+                case 1:
+                    NSLog(@"going to edit view page");
+                    [self openEditGroupPage];
+                    break;
+                case 2:
+                    NSLog(@"going to invite more friends page");
+                    [self openAddRemoveFriendsPage];
+                default:
+                    break;
+            }
+            break;
+        }
+        default:
+            break;
+    }
+}
+
+
+- (IBAction)groupOptions:(id)sender {
+    
+    UIActionSheet *groupOptionsPopup = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Leave Group", @"Edit Group Name", @"Add/Remove Friends",nil];
+    //else
+    //UIActionSheet *eventOptionsPopup = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Leave Event",nil];
+    groupOptionsPopup.tag = 1;
+    [groupOptionsPopup showInView:self.view];
+}
+
 
 - (void)getGroupMembers
 {

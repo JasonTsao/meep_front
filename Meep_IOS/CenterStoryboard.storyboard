@@ -580,11 +580,63 @@
                             <outlet property="delegate" destination="Cwt-hU-gBG" id="zmb-Yp-4om"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="qOH-Jb-fGb"/>
+                    <navigationItem key="navigationItem" id="qOH-Jb-fGb">
+                        <barButtonItem key="rightBarButtonItem" title="Options" id="BZW-gm-Cdb">
+                            <connections>
+                                <action selector="groupOptions:" destination="Cwt-hU-gBG" id="EMJ-ag-vuQ"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fsQ-0N-qeg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1010" y="1636"/>
+        </scene>
+        <!--Add Remove Friends From Group Table View Controller-->
+        <scene sceneID="SWg-ta-BOQ">
+            <objects>
+                <tableViewController storyboardIdentifier="addRemoveFriendsFromGroup" id="oDL-Jd-Ll0" customClass="AddRemoveFriendsFromGroupTableViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="Z9b-b4-eG0">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="bm1-2E-pk1">
+                                <rect key="frame" x="0.0" y="22" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="bm1-2E-pk1" id="xIs-S8-pyZ">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="oDL-Jd-Ll0" id="d8G-cu-koM"/>
+                            <outlet property="delegate" destination="oDL-Jd-Ll0" id="oFR-Dz-rpU"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="eIm-tV-fdr" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1483" y="1989"/>
+        </scene>
+        <!--Edit Group View Controller-->
+        <scene sceneID="cKc-mU-UTl">
+            <objects>
+                <viewController storyboardIdentifier="editGroup" id="wrc-kb-2hX" customClass="EditGroupViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="ebu-VE-XLW"/>
+                        <viewControllerLayoutGuide type="bottom" id="diD-9Y-IKI"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Gfh-X4-9h4">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ktf-00-Ifn" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1483" y="1349"/>
         </scene>
         <!--Groups View Controller - Groups-->
         <scene sceneID="hML-6j-WG7">

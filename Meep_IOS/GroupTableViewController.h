@@ -15,7 +15,7 @@
 @protocol GroupTableViewControllerDelegate
 @end
 
-@interface GroupTableViewController : UITableViewController<UITableViewDataSource, UITableViewDelegate>
+@interface GroupTableViewController : UITableViewController<UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate>
 //@property (nonatomic) Group *selectedGroup;
 @property (nonatomic) NSMutableArray *groupMembers;
 @property (nonatomic) Group *group;
