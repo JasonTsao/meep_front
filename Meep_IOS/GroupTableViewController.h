@@ -16,7 +16,7 @@
 - (void)updatedGroupName:(id)sender;
 @end
 
-@interface GroupTableViewController : UITableViewController<UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate>
+@interface GroupTableViewController : UITableViewController<UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, UIAlertViewDelegate>
 //@property (nonatomic) Group *selectedGroup;
 @property (nonatomic) NSMutableArray *groupMembers;
 @property (nonatomic) Group *group;

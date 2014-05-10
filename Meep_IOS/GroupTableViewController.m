@@ -51,6 +51,35 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if(buttonIndex == 1){
+        NSString * requestURL = [NSString stringWithFormat:@"%@group/%i/remove_self",[MEEPhttp accountURL], _group.group_id];
+        NSDictionary * postDict = [[NSDictionary alloc] init];
+        NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
+        NSURLResponse * response = nil;
+        NSError * error = nil;
+        NSData *return_data = [NSURLConnection sendSynchronousRequest:request
+                                                    returningResponse:&response
+                                                                error:&error];
+        
+        //[_delegate backToGroupsPage:self];
+        _groupPropertyChanged = YES;
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+}
+
+- (void) removeSelfFromGroup
+{
+    UIAlertView *alert = [[UIAlertView alloc]
+                          initWithTitle:@"Leave Group"
+                          message:@"Are you sure you want to leave group?"
+                          delegate:self
+                          cancelButtonTitle:@"Cancel"
+                          otherButtonTitles:@"OK",nil];
+    [alert show];
+}
+
 - (void) openEditGroupPage
 {
     UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"CenterStoryboard" bundle:nil];
@@ -83,7 +112,7 @@
             switch (buttonIndex) {
                 case 0:
                     NSLog(@"Removing user from group");
-                    //[self logoutSelect];
+                    [self removeSelfFromGroup];
                     break;
                 case 1:
                     NSLog(@"going to edit view page");
