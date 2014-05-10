@@ -165,6 +165,10 @@
         
         
         if (![_invitedFriends containsObject:selectedFriend]){
+            
+            if([_removedFriends containsObject:selectedFriend]){
+                [_removedFriends removeObject:selectedFriend];
+            }
             [tableView beginUpdates];
             [_invitedFriends addObject:selectedFriend];
             [tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:([_invitedFriends count] -1) inSection:0]]

@@ -177,6 +177,7 @@
 
 - (void)backToEventPage:(EditEventViewController*)controller
 {
+    [self getInvitedFriends];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
