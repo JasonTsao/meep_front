@@ -91,6 +91,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.title = @"Extra boner time!!";
     // Do any additional setup after loading the view.
 }
 

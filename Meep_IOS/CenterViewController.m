@@ -97,7 +97,9 @@
     return _cellMain;*/
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"upcomingEvent" forIndexPath:indexPath];
     Event *upcomingEvent = [_eventArray objectAtIndex:indexPath.row];
+    NSLog(@"upcomingEvent: %@", upcomingEvent);
     cell.textLabel.text = upcomingEvent.description;
+    //cell.detailTextLabel.text = upcomingEvent.start_time;
     
     return cell;
 }
@@ -313,6 +315,7 @@
     NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:_data options:0 error:&error];
     NSArray * upcoming = jsonResponse[@"upcoming_events"];
     NSArray * owned = jsonResponse[@"owned_upcoming_events"];
+    //NSLog(@"upcoming: %@", upcoming);
     for(NSDictionary *eventObj in upcoming) {
         Event * event = [[Event alloc] initWithDescription:eventObj[@"description"] withName:eventObj[@"name"] startTime:eventObj[@"start_time"] eventId:[eventObj[@"id"] integerValue]] ;
         [_eventArray addObject:event];

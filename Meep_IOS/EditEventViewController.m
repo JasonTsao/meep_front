@@ -11,6 +11,8 @@
 @interface EditEventViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *nameField;
 @property (weak, nonatomic) IBOutlet UITextField *descriptionField;
+@property (weak, nonatomic) IBOutlet UIDatePicker *startTimeField;
+@property (weak, nonatomic) IBOutlet UITextField *locationField;
 
 @end
 
@@ -37,8 +39,25 @@
 }
 
 - (void)backToEventPage:(id)sender {
-    
+    [_delegate backToEventPage:self];
+}
+- (IBAction)updateEvent:(id)sender {
     // synchronous update of event
+    NSString * requestURL = [NSString stringWithFormat:@"%@update/%i",[MEEPhttp eventURL], _currentEvent.event_id];
+    //NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:@"2",@"user", messageText, @"description", invitedFriendsToSend, @"invited_friends", nil];
+    NSMutableDictionary *postDict = [[NSMutableDictionary alloc]init];
+    
+    [postDict setObject:_descriptionField.text forKey:@"description"];
+    [postDict setObject:_nameField.text forKey:@"name"];
+    [postDict setObject:_locationField.text forKey:@"location_name"];
+    [postDict setObject:_startTimeField.date.description forKey:@"start_time"];
+    //NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:removedFriendsToSend, @"removed_friends", invitedFriendsToSend, @"invited_friends", nil];
+    NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
+    NSURLResponse * response = nil;
+    NSError * error = nil;
+    /*NSData *return_data = [NSURLConnection sendSynchronousRequest:request
+     returningResponse:&response
+     error:&error];*/
     [_delegate backToEventPage:self];
 }
 
