@@ -169,7 +169,14 @@
 {
     NSString *header;
     if (section == 0){
-        header = @"Invited";
+        
+        if( _selectedGroup != nil){
+            header = _selectedGroup.name;
+        }
+        else{
+            header = @"Invited";
+        }
+        
     }
     
     return header;
