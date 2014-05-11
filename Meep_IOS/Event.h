@@ -17,6 +17,7 @@
 @property NSString * locationCoord;
 @property NSString * meetUpSpot;
 @property NSString * start_time;
+@property double createdUTC;
 
 -(id) initWithDescription:(NSString*) evdescription
                  withName:(NSString*) evname

@@ -44,20 +44,29 @@
 - (IBAction)updateEvent:(id)sender {
     // synchronous update of event
     NSString * requestURL = [NSString stringWithFormat:@"%@update/%i",[MEEPhttp eventURL], _currentEvent.event_id];
+    NSLog(@"update event request url: %@", requestURL);
     //NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:@"2",@"user", messageText, @"description", invitedFriendsToSend, @"invited_friends", nil];
-    NSMutableDictionary *postDict = [[NSMutableDictionary alloc]init];
+    NSMutableDictionary *prepareDict = [[NSMutableDictionary alloc]init];
     
-    [postDict setObject:_descriptionField.text forKey:@"description"];
-    [postDict setObject:_nameField.text forKey:@"name"];
-    [postDict setObject:_locationField.text forKey:@"location_name"];
-    [postDict setObject:_startTimeField.date.description forKey:@"start_time"];
+    [prepareDict setObject:_descriptionField.text forKey:@"description"];
+    [prepareDict setObject:_nameField.text forKey:@"name"];
+    [prepareDict setObject:_locationField.text forKey:@"location_name"];
+    [prepareDict setObject:_startTimeField.date.description forKey:@"start_time"];
+    
+    NSDictionary *postDict = [[NSDictionary alloc] initWithDictionary:prepareDict];
+    NSLog(@"post dict: %@", postDict);
     //NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:removedFriendsToSend, @"removed_friends", invitedFriendsToSend, @"invited_friends", nil];
     NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
     NSURLResponse * response = nil;
     NSError * error = nil;
-    /*NSData *return_data = [NSURLConnection sendSynchronousRequest:request
+    NSData *return_data = [NSURLConnection sendSynchronousRequest:request
      returningResponse:&response
-     error:&error];*/
+     error:&error];
+    
+    NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:return_data options:0 error:&error];
+    NSLog(@"updating event response: %@", jsonResponse);
+    
+    
     [_delegate backToEventPage:self];
 }
 
@@ -67,6 +76,10 @@
     self.title = _currentEvent.name;
     _nameField.text = _currentEvent.name;
     _descriptionField.text = _currentEvent.description;
+    
+    NSTimeInterval createdTime = _currentEvent.createdUTC;
+    NSDate *createdDate = [[NSDate alloc] initWithTimeIntervalSince1970:createdTime];
+    _startTimeField.date = createdDate;
     UIBarButtonItem *customBarItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStyleBordered target:self action:@selector(backToEventPage:)];
     
     self.navigationItem.leftBarButtonItem = customBarItem;

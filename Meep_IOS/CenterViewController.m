@@ -97,9 +97,11 @@
     return _cellMain;*/
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"upcomingEvent" forIndexPath:indexPath];
     Event *upcomingEvent = [_eventArray objectAtIndex:indexPath.row];
-    NSLog(@"upcomingEvent: %@", upcomingEvent);
     cell.textLabel.text = upcomingEvent.description;
-    //cell.detailTextLabel.text = upcomingEvent.start_time;
+    
+    NSTimeInterval createdTime = upcomingEvent.createdUTC;
+    NSDate *createdDate = [[NSDate alloc] initWithTimeIntervalSince1970:createdTime];
+    cell.detailTextLabel.text = createdDate.description;
     
     return cell;
 }
@@ -318,6 +320,7 @@
     //NSLog(@"upcoming: %@", upcoming);
     for(NSDictionary *eventObj in upcoming) {
         Event * event = [[Event alloc] initWithDescription:eventObj[@"description"] withName:eventObj[@"name"] startTime:eventObj[@"start_time"] eventId:[eventObj[@"id"] integerValue]] ;
+        event.createdUTC = [eventObj[@"created"] doubleValue];
         [_eventArray addObject:event];
     }
     /*for(NSString *eventStr in owned) {
