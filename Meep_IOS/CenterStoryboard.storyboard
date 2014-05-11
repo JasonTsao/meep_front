@@ -393,7 +393,7 @@
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Next" id="XKl-po-h8O">
                             <connections>
-                                <segue destination="zg3-sd-w2B" kind="push" id="eiG-Xe-llH"/>
+                                <segue destination="zg3-sd-w2B" kind="push" identifier="inviteFriendsToCreateMessage" id="eiG-Xe-llH"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>

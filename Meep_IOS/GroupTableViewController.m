@@ -32,11 +32,6 @@
     return self;
 }
 
-- (void) leaveEvent
-{
-    // remove user from event
-}
-
 - (void)backToGroupPage:(EditGroupViewController*)controller
 {
     NSLog(@"controller: %@", controller);

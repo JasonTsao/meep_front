@@ -8,16 +8,18 @@
 
 #import "InviteFriendsViewController.h"
 #import "MEEPhttp.h"
+#import "Group.h"
 #import "Friend.h"
 
 @interface InviteFriendsViewController ()
 @property (weak, nonatomic) IBOutlet UITableView *friendTable;
-
 @end
 
 @implementation InviteFriendsViewController{
     NSMutableArray *friends_list;
     NSMutableArray *selected_friends_list;
+    NSMutableArray *groups_list;
+    Group * selectedGroup;
     dispatch_queue_t networkQueue;
     
 }
@@ -33,6 +35,16 @@
 
 - (IBAction)backToMain:(id)sender {
     [self.delegate backToCenterFromCreateEvent:self];
+}
+
+
+- (void)getGroupList
+{
+    NSString * requestURL = [NSString stringWithFormat:@"%@group/list",[MEEPhttp accountURL]];
+    NSDictionary * postDict = [[NSDictionary alloc] init];
+    NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
+    NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    [conn start];
 }
 
 
@@ -68,26 +80,48 @@
 -(void)handleData{
     NSError* error;
     NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:_data options:0 error:&error];
-    NSArray * friends = jsonResponse[@"friends"];
-    friends_list = [[NSMutableArray alloc]init];
-    for( int i = 0; i< [friends count]; i++){
-        Friend *new_friend = [[Friend alloc]init];
-        
-        NSDictionary * new_friend_dict = [NSJSONSerialization JSONObjectWithData: [friends[i] dataUsingEncoding:NSUTF8StringEncoding]
-                                                                         options: NSJSONReadingMutableContainers
-                                                                           error: &error];
-        new_friend.name = new_friend_dict[@"name"];
-        new_friend.numTimesInvitedByMe = new_friend_dict[@"invited_count"];
-        new_friend.phoneNumber= new_friend_dict[@"phone_number"];
-        new_friend.imageFileName = new_friend_dict[@"pf_pic"];
-        new_friend.bio = new_friend_dict[@"bio"];
-        new_friend.account_id = [new_friend_dict[@"account_id"] intValue];
-        [friends_list addObject:new_friend];
-    }
     
-    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:friends_list];
-    [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"friends_list"];
-    [NSUserDefaults resetStandardUserDefaults];
+    if ([jsonResponse objectForKey:@"groups"] != nil){
+        NSArray * groups = jsonResponse[@"groups"];
+        groups_list = [[NSMutableArray alloc]init];
+        for( int i = 0; i< [groups count]; i++){
+            Group *new_group = [[Group alloc]init];
+            
+            NSDictionary * new_group_dict = groups[i];
+            new_group.name = new_group_dict[@"name"];
+            new_group.group_id = [new_group_dict[@"id"] integerValue];
+            
+            /*NSURL *url = [[NSURL alloc] initWithString:new_friend_dict[@"group_pic_url"]];
+             NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url];
+             NSData *urlData = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:nil error:nil];
+             UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
+             new_friend.profilePic = image;
+             NSLog(@"new friend pf pic %@", new_friend.profilePic);*/
+            [groups_list addObject:new_group];
+        }
+    }
+    else{
+        NSArray * friends = jsonResponse[@"friends"];
+        friends_list = [[NSMutableArray alloc]init];
+        for( int i = 0; i< [friends count]; i++){
+            Friend *new_friend = [[Friend alloc]init];
+            
+            NSDictionary * new_friend_dict = [NSJSONSerialization JSONObjectWithData: [friends[i] dataUsingEncoding:NSUTF8StringEncoding]
+                                                                             options: NSJSONReadingMutableContainers
+                                                                               error: &error];
+            new_friend.name = new_friend_dict[@"name"];
+            new_friend.numTimesInvitedByMe = new_friend_dict[@"invited_count"];
+            new_friend.phoneNumber= new_friend_dict[@"phone_number"];
+            new_friend.imageFileName = new_friend_dict[@"pf_pic"];
+            new_friend.bio = new_friend_dict[@"bio"];
+            new_friend.account_id = [new_friend_dict[@"account_id"] intValue];
+            [friends_list addObject:new_friend];
+        }
+        
+        NSData *data = [NSKeyedArchiver archivedDataWithRootObject:friends_list];
+        [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"friends_list"];
+        [NSUserDefaults resetStandardUserDefaults];
+    }
     
     [self.friendTable reloadData];
     
@@ -98,7 +132,7 @@
     NSString *friend_name;
     Friend *selectedFriend;
 
-    if (indexPath.section == 1){
+    if (indexPath.section == 2){
         selectedFriend = friends_list[indexPath.row];
         friend_name = selectedFriend.name;
         
@@ -118,6 +152,10 @@
             [tableView endUpdates];
         }
     }
+    else if(indexPath.section == 1){
+        selectedGroup = groups_list[indexPath.row];
+        [self performSegueWithIdentifier:@"inviteFriendsToCreateMessage" sender:self];
+    }
     else if(indexPath.section == 0){
         selectedFriend = selected_friends_list[indexPath.row];
         friend_name = selectedFriend.name;
@@ -133,7 +171,7 @@
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 2;
+    return 3;
 }
 
 -(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
@@ -143,6 +181,9 @@
         header = @"Selected";
     }
     else if(section == 1){
+        header = @"Groups";
+    }
+    else if(section == 2){
         header = @"Friends";
     }
     
@@ -156,6 +197,9 @@
         numRows = [selected_friends_list count];
     }
     else if(section == 1){
+        numRows = [groups_list count];
+    }
+    else if(section == 2){
         numRows = [friends_list count];
     }
     return numRows;
@@ -170,6 +214,10 @@
         cell.textLabel.text = currentFriend.name;
     }
     else if (indexPath.section == 1){
+        Group *currentGroup = groups_list[indexPath.row];
+        cell.textLabel.text = currentGroup.name;
+    }
+    else if (indexPath.section == 2){
         Friend *currentFriend = friends_list[indexPath.row];
         cell.textLabel.text = currentFriend.name;
     }
@@ -190,12 +238,13 @@
         networkQueue = dispatch_queue_create("Network.Queue", NULL);
     }
     [self getFriendsList];
+    [self getGroupList];
     if(!user_friends_list){
         //[self getFriendsList];
         //dispatch_async(networkQueue, ^{[self getFriendsList];});
     }
     else{
-        [self getFriendsList];
+        //[self getFriendsList];
         //friends_list = user_friends_list;
     }
     friends_list = user_friends_list;
@@ -219,6 +268,7 @@
     // Pass the selected object to the new view controller.
     CreateMessageViewController * createMessage = [segue destinationViewController];
     createMessage.invited_friends_list = selected_friends_list;
+    createMessage.selectedGroup = selectedGroup;
     [createMessage setDelegate:self.delegate];
 }
 
