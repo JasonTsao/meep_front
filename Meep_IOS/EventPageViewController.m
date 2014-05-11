@@ -271,7 +271,10 @@
 {
     [super viewDidLoad];
     if ([_currentEvent.description length] > 15){
-        self.eventNavBar.title = [_currentEvent.description substringToIndex:15];
+        self.title = [_currentEvent.description substringToIndex:15];
+    }
+    else{
+        self.title = _currentEvent.description;
     }
     [self getInvitedFriends];
     _eventDescription.text = _currentEvent.description;
