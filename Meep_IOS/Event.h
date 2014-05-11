@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Group.h"
 
 @interface Event : NSObject
 @property NSInteger * event_id;
@@ -17,6 +18,7 @@
 @property NSString * locationCoord;
 @property NSString * meetUpSpot;
 @property NSString * start_time;
+@property Group * eventGroup;
 @property double createdUTC;
 
 -(id) initWithDescription:(NSString*) evdescription
