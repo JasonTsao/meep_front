@@ -84,16 +84,15 @@
     _locationField.text = _currentEvent.locationName;
     
     
-    if( _currentEvent.start_time == nil){
+    if( [_currentEvent.start_time isEqual:[NSNull null]]){
         NSTimeInterval createdTime = _currentEvent.createdUTC;
         NSDate *createdDate = [[NSDate alloc] initWithTimeIntervalSince1970:createdTime];
         _startTimeField.date = createdDate;
     }
     else{
-        NSLog(@"start time: %@", _currentEvent.start_time);
-        /*NSTimeInterval startedTime = _currentEvent.start_time;
-        NSDate *startedDate = [NSDate alloc] initWithTimeInterval
-        _startTimeField.date = startedDate;*/
+        NSTimeInterval startedTime = [_currentEvent.start_time doubleValue];
+        NSDate *startedDate = [[NSDate alloc] initWithTimeIntervalSince1970:startedTime];
+        _startTimeField.date = startedDate;
     }
     
     UIBarButtonItem *customBarItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStyleBordered target:self action:@selector(backToEventPage:)];
