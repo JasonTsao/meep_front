@@ -46,14 +46,19 @@
     NSString * requestURL = [NSString stringWithFormat:@"%@update/%i",[MEEPhttp eventURL], _currentEvent.event_id];
     NSLog(@"update event request url: %@", requestURL);
     //NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:@"2",@"user", messageText, @"description", invitedFriendsToSend, @"invited_friends", nil];
-    NSMutableDictionary *prepareDict = [[NSMutableDictionary alloc]init];
+    /*NSMutableDictionary *prepareDict = [[NSMutableDictionary alloc]init];
     
     [prepareDict setObject:_descriptionField.text forKey:@"description"];
     [prepareDict setObject:_nameField.text forKey:@"name"];
     [prepareDict setObject:_locationField.text forKey:@"location_name"];
     [prepareDict setObject:_startTimeField.date.description forKey:@"start_time"];
+    NSDictionary *postDict = [[NSDictionary alloc] initWithDictionary:prepareDict];*/
     
-    NSDictionary *postDict = [[NSDictionary alloc] initWithDictionary:prepareDict];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    NSString * eventDate = [dateFormatter stringFromDate:_startTimeField.date];
+    NSLog(@"event date: %@", eventDate);
+    NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys: _descriptionField.text, @"description", _nameField.text, @"name", _locationField.text, @"location_name",eventDate, @"start_time",nil];
     NSLog(@"post dict: %@", postDict);
     //NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:removedFriendsToSend, @"removed_friends", invitedFriendsToSend, @"invited_friends", nil];
     NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
@@ -76,10 +81,21 @@
     self.title = _currentEvent.name;
     _nameField.text = _currentEvent.name;
     _descriptionField.text = _currentEvent.description;
+    _locationField.text = _currentEvent.locationName;
     
-    NSTimeInterval createdTime = _currentEvent.createdUTC;
-    NSDate *createdDate = [[NSDate alloc] initWithTimeIntervalSince1970:createdTime];
-    _startTimeField.date = createdDate;
+    
+    if( _currentEvent.start_time == nil){
+        NSTimeInterval createdTime = _currentEvent.createdUTC;
+        NSDate *createdDate = [[NSDate alloc] initWithTimeIntervalSince1970:createdTime];
+        _startTimeField.date = createdDate;
+    }
+    else{
+        NSLog(@"start time: %@", _currentEvent.start_time);
+        /*NSTimeInterval startedTime = _currentEvent.start_time;
+        NSDate *startedDate = [NSDate alloc] initWithTimeInterval
+        _startTimeField.date = startedDate;*/
+    }
+    
     UIBarButtonItem *customBarItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStyleBordered target:self action:@selector(backToEventPage:)];
     
     self.navigationItem.leftBarButtonItem = customBarItem;
