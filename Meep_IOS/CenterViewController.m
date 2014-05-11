@@ -108,7 +108,7 @@
     NSTimeInterval startedTime = [upcomingEvent.start_time doubleValue];
     NSDate *startedDate = [[NSDate alloc] initWithTimeIntervalSince1970:startedTime];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"hh:mm a"];
+    [dateFormatter setDateFormat:@"h:mm a"];
     NSString * eventDate = [dateFormatter stringFromDate:startedDate];
     cell.detailTextLabel.text = eventDate;
     
@@ -156,9 +156,11 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    Event *currentRecord = [self.eventArray objectAtIndex:indexPath.row];
+    NSString *dateString = _datesArray[indexPath.section];
+    NSMutableArray *eventArray = [_dateEventsDictionary objectForKey:dateString];
+    Event *currentRecord = eventArray[indexPath.row];
+    //Event *currentRecord = [self.eventArray objectAtIndex:indexPath.row];
 
-    NSLog(@"displaying event: %@", currentRecord);
     [_delegate displayEventPage:currentRecord];
 }
 
