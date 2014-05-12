@@ -18,6 +18,9 @@
 @property (nonatomic, strong) MEPTextParse *parser;
 @property (nonatomic, strong) NSMutableData * data;
 @property (nonatomic, strong) NSMutableDictionary * parsedData;
+@property (nonatomic, assign) BOOL timeFieldEditable;
+@property (nonatomic, assign) BOOL dateFieldEditable;
+@property (nonatomic, assign) BOOL locationFieldEditable;
 
 @end
 
@@ -135,19 +138,43 @@
 
 - (void) textFieldDidChange {
     NSDictionary * contentDetails = [_parser parseText:[_messageField text]];
-    if ([contentDetails objectForKey:@"startDate"]) {
-        [self.dateField setText:[contentDetails objectForKey:@"startDate"]];
+    if (_dateFieldEditable) {
+        if ([contentDetails objectForKey:@"startDate"]) {
+            [self.dateField setText:[contentDetails objectForKey:@"startDate"]];
+        }
+        else {
+            [self.dateField setText:@""];
+        }
     }
-    else {
-        [self.dateField setText:@""];
+    if (_timeFieldEditable) {
+        if ([contentDetails objectForKey:@"startTime"]) {
+            [self.timeField setText:[contentDetails objectForKey:@"startTime"]];
+        }
+        else {
+            [self.timeField setText:@""];
+        }
     }
-    if ([contentDetails objectForKey:@"startTime"]) {
-        [self.timeField setText:[contentDetails objectForKey:@"startTime"]];
-    }
-    else {
-        [self.timeField setText:@""];
+    if (_locationFieldEditable) {
+        if ([contentDetails objectForKey:@"location"]) {
+            [self.locationField setText:[contentDetails objectForKey:@"location"]];
+        }
+        else {
+            [self.locationField setText:@""];
+        }
     }
     NSLog(@"%@",contentDetails);
+}
+
+- (void) dateFieldDidChange {
+    self.dateFieldEditable = NO;
+}
+
+- (void) timeFieldDidChange {
+    self.timeFieldEditable = NO;
+}
+
+- (void) locationFieldDidChange {
+    self.locationFieldEditable = NO;
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
@@ -168,7 +195,13 @@
     // Do any additional setup after loading the view.
     self.parser = [[MEPTextParse alloc] init];
     [self.messageField addTarget:self action:@selector(textFieldDidChange) forControlEvents:UIControlEventEditingChanged];
+    [self.dateField addTarget:self action:@selector(dateFieldDidChange) forControlEvents:UIControlEventAllEditingEvents];
+    [self.timeField addTarget:self action:@selector(timeFieldDidChange) forControlEvents:UIControlEventAllEditingEvents];
+    [self.locationField addTarget:self action:@selector(locationFieldDidChange) forControlEvents:UIControlEventAllEditingEvents];
     self.parsedData = [[NSMutableDictionary alloc] init];
+    self.locationFieldEditable = YES;
+    self.timeFieldEditable = YES;
+    self.dateFieldEditable = YES;
 }
 
 - (void)didReceiveMemoryWarning

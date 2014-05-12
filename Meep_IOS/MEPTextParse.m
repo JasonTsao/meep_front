@@ -21,17 +21,16 @@
 @property (nonatomic, strong) NSRegularExpression * timeExplicitRegex;
 @property (nonatomic, strong) NSRegularExpression * dateIntRegex;
 @property (nonatomic, strong) NSRegularExpression * dateExplicitRegex;
-@property (nonatomic, assign) int beginningOfExpression;
 @end
 
 @implementation MEPTextParse
 
 - (id) init {
     if((self = [super init])) {
-        _beginningOfExpression = 0;
         _timePrepositionArray = [[NSArray alloc] initWithObjects:@"about",@"after",@"around",@"at",@"before",@"by",@"from",@"in",@"past",@"since",@"till",@"until",@"within", nil];
         _datePrepositionArray = [[NSArray alloc] initWithObjects:@"about",@"after",@"around",@"at",@"before",@"by",@"from",@"in",@"past",@"since",@"till",@"until",@"within", nil];
-        _locationPrepositionArray = [[NSArray alloc] initWithObjects:@"around",@"behind",@"below",@"beneath",@"beside",@"between",@"by",@"in",@"inside",@"near",@"of",@"on",@"to",@"within",nil];
+        // _locationPrepositionArray = [[NSArray alloc] initWithObjects:@"around",@"behind",@"below",@"beneath",@"beside",@"between",@"by",@"in",@"inside",@"near",@"of",@"on",@"to",@"within",nil];
+        _locationPrepositionArray = [[NSArray alloc] initWithObjects:@"at",@"near", nil];
         _timeIntRegex = [[NSRegularExpression alloc] initWithPattern:@"(0[1-9]|1[0-2]|[1-9])((:|.|\\s)?([0-5][0-9]))?\\s?(AM|am|PM|pm)?" options:NSRegularExpressionCaseInsensitive error:nil];
         _timeExplicitRegex = [[NSRegularExpression alloc] initWithPattern:@"(one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|noon)\\s?(ten|fifteen|twenty|twenty\\s?five|thirty|forty\\s?five|fifty)?\\s?(AM|am|PM|pm)?" options:NSRegularExpressionCaseInsensitive error:nil];
         _dateIntRegex = [[NSRegularExpression alloc] initWithPattern:@"(0[1-9]|1[0-2]|[1-9])(/|-)([1-31])(/|-)([0-9]{4,4})?" options:NSRegularExpressionCaseInsensitive error:nil];
@@ -45,6 +44,7 @@
 
 - (NSDictionary*) parseText:(NSString*)text {
     NSString * newText = @"";
+    NSString * locationText = @"";
     for (int i = 0; i < [text length]; i++) {
         NSString * nextChar = [NSString stringWithFormat:@"%c",[text characterAtIndex:i]];
         if ([newText length] == 0) {
@@ -67,17 +67,17 @@
     NSArray * textArray = [text componentsSeparatedByString:@" "];
     NSMutableDictionary * contentDictionary = [[NSMutableDictionary alloc] init];
     int arraySize = [textArray count];
-    _beginningOfExpression = 0;
+    int beginningOfExpression = 0;
     if (![[text substringFromIndex:[text length] - 1] isEqualToString:@" "]) {
         arraySize = arraySize - 1;
     }
+    int previousBeginningOfExpression = 0;
     for (int i = 0; i < arraySize; i++) {
         NSString * word = [textArray objectAtIndex:i];
         NSString * phrase = @"";
-        for (int j = _beginningOfExpression; j < i + 1; j++) {
+        for (int j = beginningOfExpression; j < i + 1; j++) {
             NSString * currentWord = [textArray objectAtIndex:j];
             int beginningOfPunctuation = [self identifyPunctuation:currentWord];
-            NSLog(@"%i",beginningOfPunctuation);
             if (beginningOfPunctuation != -1 && beginningOfPunctuation != 0) {
                 currentWord = [currentWord substringToIndex:beginningOfPunctuation];
             }
@@ -90,15 +90,37 @@
         if ([content objectForKey:@"startDate"]) {
             [contentDictionary setValue:[content objectForKey:@"startDate"] forKey:@"startDate"];
         }
+        if (previousBeginningOfExpression != 0 && [locationText isEqualToString:@""]) {
+            if ([_locationPrepositionArray containsObject:[textArray objectAtIndex:previousBeginningOfExpression]]) {
+                for (int n = previousBeginningOfExpression + 1; n < beginningOfExpression; n++) {
+                    if ([self.dateIdentifiers containsObject:[textArray objectAtIndex:n]] |
+                        [self.dateKeywords containsObject:[textArray objectAtIndex:n]] |
+                        [[self.timeIntRegex matchesInString:[textArray objectAtIndex:n] options:0 range:NSMakeRange(0, [[textArray objectAtIndex:n] length])] count] > 0 |
+                        [[self.timeExplicitRegex matchesInString:[textArray objectAtIndex:n] options:0 range:NSMakeRange(0, [[textArray objectAtIndex:n] length])] count] > 0 |
+                        [[self.dateExplicitRegex matchesInString:[textArray objectAtIndex:n] options:0 range:NSMakeRange(0, [[textArray objectAtIndex:n] length])] count] > 0 |
+                        [[self.dateIntRegex matchesInString:[textArray objectAtIndex:n] options:0 range:NSMakeRange(0, [[textArray objectAtIndex:n] length])] count] > 0) {
+                        break;
+                    }
+                    locationText = [NSString stringWithFormat:@"%@ %@",locationText,[textArray objectAtIndex:n]];
+                }
+                if (![locationText length] < 1) {
+                    [contentDictionary setValue:[locationText substringFromIndex:1] forKey:@"location"];
+                }
+            }
+        }
         BOOL override = NO;
         if (i == arraySize - 1) {
             override = YES;
         }
         if ([self isTimePreposition:[textArray objectAtIndex:i]] |
             [self isDatePreposition:[textArray objectAtIndex:i]] |
-            [self isLocationPreposition:[textArray objectAtIndex:i]] |
-            [self breakPointPunctuation:word elseOverride:override]) {
-            _beginningOfExpression = i + 1;
+            [self isLocationPreposition:[textArray objectAtIndex:i]]) {
+            previousBeginningOfExpression = beginningOfExpression;
+            beginningOfExpression = i;
+        }
+        else if ([self breakPointPunctuation:word elseOverride:override]) {
+            previousBeginningOfExpression = beginningOfExpression;
+            beginningOfExpression = i + 1;
         }
     }
     return contentDictionary;
@@ -145,7 +167,6 @@
 }
 
 - (NSDictionary*) checkContent:(NSString*)text {
-    NSLog(@"%@",text);
     NSArray *content;
     NSMutableDictionary * returnDictionary = [[NSMutableDictionary alloc] init];
     content = [_timeIntRegex matchesInString:text options:0 range:NSMakeRange(0, [text length])];
@@ -225,10 +246,8 @@
     [dayStringFormat setDateFormat:@"c"];
     NSString * text = [dateText lowercaseString];
     NSString * writtenDay = [dayStringFormat stringFromDate:today];
-    NSLog(@"DATE INT :: %@",writtenDay);
     int currentDay = [writtenDay intValue];
     int daysFromToday = 0;
-    NSLog(@"%i",currentDay);
     if ([text isEqualToString:@"sun"] | [text isEqualToString:@"sunday"]) {
         if (currentDay < 2) {
             daysFromToday = 0;
@@ -281,7 +300,6 @@
         daysFromToday = 7 - currentDay;
     }
     int secondsFromToday = (daysFromToday + (weeks * 7)) * 24 * 60 * 60;
-    NSLog(@"%i",secondsFromToday);
     NSDate * targetDate = [NSDate dateWithTimeInterval:secondsFromToday sinceDate:today];
     [dayStringFormat setDateFormat:@"MMM dd, yyyy"];
     return [dayStringFormat stringFromDate:targetDate];
