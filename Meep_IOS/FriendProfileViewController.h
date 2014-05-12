@@ -10,9 +10,13 @@
 #import "Friend.h"
 #import "FriendFullSizeProfileImageViewController.h"
 #import "Photo.h"
+@class FriendProfileViewController;
 
+@protocol FriendProfileViewControllerDelegate
+- (void) backToEventPage:(FriendProfileViewController *)controller;
+@end
 @interface FriendProfileViewController : UIViewController
 
 @property (nonatomic) Friend *currentFriend;
-
+@property(nonatomic, strong) id <FriendProfileViewControllerDelegate> delegate;
 @end

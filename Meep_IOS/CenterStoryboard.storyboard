@@ -282,12 +282,21 @@
                                     <outlet property="delegate" destination="WWX-Ck-xHx" id="9Cc-WM-SdS"/>
                                 </connections>
                             </collectionView>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QFb-HM-hYR">
-                                <rect key="frame" x="20" y="70" width="280" height="54"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="ogq-Dt-hcW">
+                                <rect key="frame" x="0.0" y="64" width="320" height="267"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="eventInfoCell" id="l2d-3R-Ysl">
+                                        <rect key="frame" x="0.0" y="22" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="l2d-3R-Ysl" id="bho-fw-e6r">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -304,7 +313,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="description" destination="QFb-HM-hYR" id="PX7-8Q-wSc"/>
+                        <outlet property="eventInfoTable" destination="ogq-Dt-hcW" id="mWY-Ib-Yhx"/>
                         <outlet property="friendsCollection" destination="XiU-Zp-Vw2" id="1az-Qc-lh9"/>
                     </connections>
                 </viewController>
@@ -869,7 +878,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <!--Friend Profile View Controller-->
         <scene sceneID="IYH-tF-8i4">
             <objects>
-                <viewController id="y3l-cT-LGs" customClass="FriendProfileViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="friendProfile" id="y3l-cT-LGs" customClass="FriendProfileViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="7bJ-g4-slO"/>
                         <viewControllerLayoutGuide type="bottom" id="AeK-Fe-Lt7"/>

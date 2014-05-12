@@ -310,6 +310,11 @@
         }
         
         Event * event = [[Event alloc] initWithDescription:eventObj[@"description"] withName:eventObj[@"name"] startTime:startTime eventId:[eventObj[@"id"] integerValue]] ;
+        event.locationName = eventObj[@"location_name"];
+        event.locationAddress = eventObj[@"location_address"];
+        event.end_time = eventObj[@"end_time"];
+        //event.group = eventObj[@"group"];
+        
         //getting number of differnt days
         NSTimeInterval startedTime = [startTime doubleValue];
         NSDate *startedDate = [[NSDate alloc] initWithTimeIntervalSince1970:startedTime];

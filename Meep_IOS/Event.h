@@ -18,6 +18,9 @@
 @property NSString * locationCoord;
 @property NSString * meetUpSpot;
 @property NSString * start_time;
+@property NSString * end_time;
+@property NSString * yelpLink;
+@property NSString * uberLink;
 @property Group * eventGroup;
 @property double createdUTC;
 
