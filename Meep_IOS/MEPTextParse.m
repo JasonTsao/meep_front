@@ -30,12 +30,12 @@
     if((self = [super init])) {
         _beginningOfExpression = 0;
         _timePrepositionArray = [[NSArray alloc] initWithObjects:@"about",@"after",@"around",@"at",@"before",@"by",@"from",@"in",@"past",@"since",@"till",@"until",@"within", nil];
-        _datePrepositionArray = [[NSArray alloc] initWithObjects:@"about",@"after",@"around",@"at",@"before",@"by",@"from",@"in",@"past",@"since",@"till",@"until",@"within", nil];
+        _datePrepositionArray = [[NSArray alloc] initWithObjects:@"after",@"before",@"by",@"on",@"till",@"until",@"within", nil];
         _locationPrepositionArray = [[NSArray alloc] initWithObjects:@"around",@"behind",@"below",@"beneath",@"beside",@"between",@"by",@"in",@"inside",@"near",@"of",@"on",@"to",@"within",nil];
         _timeIntRegex = [[NSRegularExpression alloc] initWithPattern:@"[@]?\\s?(0[1-9]|1[0-2]|[1-9])(:|.|\\s)?([0-5][0-9])?\\s?(AM|am|PM|pm)?" options:NSRegularExpressionCaseInsensitive error:nil];
         _timeExplicitRegex = [[NSRegularExpression alloc] initWithPattern:@"[@]?(one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|noon)\\s?(ten|fifteen|twenty|twenty\\s?five|thirty|forty\\s?five|fifty)?" options:NSRegularExpressionCaseInsensitive error:nil];
         _dateIntRegex = [[NSRegularExpression alloc] initWithPattern:@"(0[1-9]|1[0-2]|[1-9])(/|-)([1-31])(/|-)([0-9]{4,4})?" options:NSRegularExpressionCaseInsensitive error:nil];
-        _dateExplicitRegex = [[NSRegularExpression alloc] initWithPattern:@"(next\\s)?(mon(day)?|tues?(day)?|wed(nesday)?|thu?r?s?(day)?|fri(day)?|sat(urday)?|sun(day)?)\\s" options:NSRegularExpressionCaseInsensitive error:nil];
+        _dateExplicitRegex = [[NSRegularExpression alloc] initWithPattern:@"(mon(day)?|tues?(day)?|wed(nesday)?|thu?r?s?(day)?|fri(day)?|sat(urday)?|sun(day)?)" options:NSRegularExpressionCaseInsensitive error:nil];
         _datePreceedingExpressions = [[NSArray alloc] initWithObjects:@"next",@"this",nil];
         _dateKeywords = [[NSArray alloc] initWithObjects:@"week",@"afternoon",@"evening",@"day",@"month",@"morning",nil];
         _dateIdentifiers = [[NSArray alloc] initWithObjects:@"tomorrow",@"today",@"tonight",nil];
@@ -74,7 +74,6 @@
         for (int j = _beginningOfExpression; j < i + 1; j++) {
             NSString * currentWord = [textArray objectAtIndex:j];
             int beginningOfPunctuation = [self identifyPunctuation:currentWord];
-            NSLog(@"%i",beginningOfPunctuation);
             if (beginningOfPunctuation != -1 && beginningOfPunctuation != 0) {
                 currentWord = [currentWord substringToIndex:beginningOfPunctuation];
             }
@@ -157,10 +156,12 @@
     if ([content count] > 0) {
         [returnDictionary setObject:[text substringWithRange:[[content objectAtIndex:0] range]] forKey:@"startDate"];
     }
+    /*
     content = [_dateExplicitRegex matchesInString:text options:0 range:NSMakeRange(0, [text length])];
     if ([content count] > 0) {
         [returnDictionary setObject:[text substringWithRange:[[content objectAtIndex:0] range]] forKey:@"startDate"];
     }
+     */
     NSArray * textArray = [text componentsSeparatedByString:@" "];
     BOOL searching = NO;
     NSString * preceedingElement;
@@ -177,6 +178,20 @@
             searching = YES;
             preceedingElement = [textArrayElement lowercaseString];
         }
+        if ([_dateExplicitRegex matchesInString:textArrayElement options:0 range:NSMakeRange(0, [textArrayElement length])]) {
+            NSLog(@"MATCH :: %@",textArrayElement);
+            if (searching) {
+                if ([preceedingElement isEqualToString:@"next"]) {
+                    [returnDictionary setObject:[self createDateStringForDayOfTheWeek:textArrayElement inNumberOfWeeks:1] forKey:@"startdate"];
+                }
+                else {
+                    [returnDictionary setObject:[self createDateStringForDayOfTheWeek:textArrayElement inNumberOfWeeks:0] forKey:@"startdate"];
+                }
+            }
+            else {
+                [returnDictionary setObject:[self createDateStringForDayOfTheWeek:textArrayElement inNumberOfWeeks:0] forKey:@"startdate"];
+            }
+        }
         if (searching) {
             if ([_dateKeywords containsObject:[textArrayElement lowercaseString]]) {
                 if ([preceedingElement isEqualToString:@"this"]) {
@@ -192,6 +207,78 @@
     NSDate * today = [NSDate date];
     int intervalInSeconds = daysFromToday * 60 * 60 * 24;
     NSDate * targetDate = [NSDate dateWithTimeInterval:intervalInSeconds sinceDate:today];
+    NSDateFormatter * df = [[NSDateFormatter alloc] init];
+    [df setDateFormat:@"MMM dd, yyyy"];
+    return [df stringFromDate:targetDate];
+}
+
+- (NSString*) createDateStringForDayOfTheWeek:(NSString*)dayString inNumberOfWeeks:(int)weeks {
+    NSString * lowerCaseDayString = [dayString lowercaseString];
+    NSDateFormatter * day = [[NSDateFormatter alloc] init];
+    [day setDateFormat: @"EEEE"];
+    NSDate * today = [[NSDate alloc] init];
+    NSDictionary * daysOfTheWeek = [[NSDictionary alloc] initWithObjectsAndKeys:0,@"Sunday",
+                                                                                1,@"Monday",
+                                                                                2,@"Tuesday",
+                                                                                3,@"Wednesday",
+                                                                                4,@"Thursday",
+                                                                                5,@"Friday",
+                                                                                6,@"Saturday",nil];
+    int dayDiff = (int) [daysOfTheWeek objectForKey:[day stringFromDate:today]];
+    int outputDay = 0;
+    if ([lowerCaseDayString isEqualToString:@"sun"] | [lowerCaseDayString isEqualToString:@"sunday"]) {
+        outputDay = dayDiff;
+    }
+    if ([lowerCaseDayString isEqualToString:@"mon"] | [lowerCaseDayString isEqualToString:@"monday"]) {
+        if (dayDiff < 1) {
+            outputDay = 6 + dayDiff;
+        }
+        else {
+            outputDay = dayDiff - 1;
+        }
+    }
+    if ([lowerCaseDayString isEqualToString:@"tue"] | [lowerCaseDayString isEqualToString:@"tues"] | [lowerCaseDayString isEqualToString:@"tuesday"]) {
+        if (dayDiff < 2) {
+            outputDay = 5 + dayDiff;
+        }
+        else {
+            outputDay = dayDiff - 2;
+        }
+    }
+    if ([lowerCaseDayString isEqualToString:@"wed"] | [lowerCaseDayString isEqualToString:@"wednesday"]) {
+        if (dayDiff < 3) {
+            outputDay = 4 + dayDiff;
+        }
+        else {
+            outputDay = dayDiff - 3;
+        }
+    }
+    if ([lowerCaseDayString isEqualToString:@"thurs"] | [lowerCaseDayString isEqualToString:@"thursday"]) {
+        if (dayDiff < 4) {
+            outputDay = 3 + dayDiff;
+        }
+        else {
+            outputDay = dayDiff - 4;
+        }
+    }
+    if ([lowerCaseDayString isEqualToString:@"fri"] | [lowerCaseDayString isEqualToString:@"friday"]) {
+        if (dayDiff < 5) {
+            outputDay = 2 + dayDiff;
+        }
+        else {
+            outputDay = dayDiff - 5;
+        }
+    }
+    if ([lowerCaseDayString isEqualToString:@"sat"] | [lowerCaseDayString isEqualToString:@"saturday"]) {
+        if (dayDiff < 6) {
+            outputDay = 1 + dayDiff;
+        }
+        else {
+            outputDay = dayDiff - 6;
+        }
+    }
+    int timeSinceToday = (outputDay + (7 * weeks)) * 24 * 60 * 60;
+    NSDate * targetDate = [NSDate dateWithTimeInterval:timeSinceToday sinceDate:today];
     NSDateFormatter * df = [[NSDateFormatter alloc] init];
     [df setDateFormat:@"MMM dd, yyyy"];
     return [df stringFromDate:targetDate];
