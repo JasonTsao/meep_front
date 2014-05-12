@@ -80,6 +80,7 @@
 		96E1D2731918549400951DEB /* DjangoAuthClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E1D2701918549400951DEB /* DjangoAuthClient.m */; };
 		96E1D2741918549400951DEB /* DjangoAuthLoginResultObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E1D2721918549400951DEB /* DjangoAuthLoginResultObject.m */; };
 		96E1D277191854D900951DEB /* AuthenticationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E1D276191854D900951DEB /* AuthenticationViewController.m */; };
+		96FD569A19218C110085B364 /* GroupEventsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96FD569919218C110085B364 /* GroupEventsTableViewController.m */; };
 		DAF700821917209A004EDC66 /* ABIGBOOB.m in Sources */ = {isa = PBXBuildFile; fileRef = DAF700811917209A004EDC66 /* ABIGBOOB.m */; };
 /* End PBXBuildFile section */
 
@@ -224,6 +225,8 @@
 		96E1D2721918549400951DEB /* DjangoAuthLoginResultObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DjangoAuthLoginResultObject.m; sourceTree = "<group>"; };
 		96E1D275191854D900951DEB /* AuthenticationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthenticationViewController.h; sourceTree = "<group>"; };
 		96E1D276191854D900951DEB /* AuthenticationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthenticationViewController.m; sourceTree = "<group>"; };
+		96FD569819218C110085B364 /* GroupEventsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupEventsTableViewController.h; sourceTree = "<group>"; };
+		96FD569919218C110085B364 /* GroupEventsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupEventsTableViewController.m; sourceTree = "<group>"; };
 		DAF700801917209A004EDC66 /* ABIGBOOB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABIGBOOB.h; sourceTree = "<group>"; };
 		DAF700811917209A004EDC66 /* ABIGBOOB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABIGBOOB.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -473,6 +476,8 @@
 				968466D2191E9DC600E56901 /* AddRemoveFriendsFromGroupTableViewController.m */,
 				968466D4191E9DE200E56901 /* EditGroupViewController.h */,
 				968466D5191E9DE200E56901 /* EditGroupViewController.m */,
+				96FD569819218C110085B364 /* GroupEventsTableViewController.h */,
+				96FD569919218C110085B364 /* GroupEventsTableViewController.m */,
 			);
 			name = "Group Pages";
 			sourceTree = "<group>";
@@ -709,6 +714,7 @@
 				3CCF971B190827CE005FA454 /* AccountViewController.m in Sources */,
 				968466D3191E9DC600E56901 /* AddRemoveFriendsFromGroupTableViewController.m in Sources */,
 				9606E6A6191308EA00D985A7 /* CreateGroupViewController.m in Sources */,
+				96FD569A19218C110085B364 /* GroupEventsTableViewController.m in Sources */,
 				3CCC515B1905A20D00EB0980 /* EventPageViewController.m in Sources */,
 				DAF700821917209A004EDC66 /* ABIGBOOB.m in Sources */,
 				96E1D26D19174EA000951DEB /* AddFriendsFromTableViewController.m in Sources */,

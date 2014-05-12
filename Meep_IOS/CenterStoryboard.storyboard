@@ -661,7 +661,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fsQ-0N-qeg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1010" y="1636"/>
+            <point key="canvasLocation" x="1090" y="1618"/>
         </scene>
         <!--Add Remove Friends From Group Table View Controller-->
         <scene sceneID="SWg-ta-BOQ">
@@ -755,7 +755,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <segue destination="Cwt-hU-gBG" kind="push" identifier="goToGroupPage" id="rfP-2y-nTN"/>
+                                    <segue destination="vDl-RO-5ga" kind="push" identifier="goToGroupEventsPage" id="L5U-0i-etr"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -780,6 +780,57 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                 <placeholder placeholderIdentifier="IBFirstResponder" id="n4r-RE-D1Q" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="237" y="1697"/>
+        </scene>
+        <!--Group Events Table View Controller-->
+        <scene sceneID="fyF-zN-wNk">
+            <objects>
+                <tableViewController storyboardIdentifier="groupEvents" id="vDl-RO-5ga" customClass="GroupEventsTableViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="3fD-iQ-Lbl">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="groupEvent" textLabel="iUA-yx-vlS" detailTextLabel="2CN-wN-yEX" style="IBUITableViewCellStyleSubtitle" id="Wey-aa-FKF">
+                                <rect key="frame" x="0.0" y="86" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Wey-aa-FKF" id="bYl-NW-DSl">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="iUA-yx-vlS">
+                                            <rect key="frame" x="15" y="3" width="34" height="22"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Subtitle" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="2CN-wN-yEX">
+                                            <rect key="frame" x="15" y="25" width="43" height="15"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="vDl-RO-5ga" id="b4j-Kx-HLJ"/>
+                            <outlet property="delegate" destination="vDl-RO-5ga" id="rln-gc-5TD"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="Oa2-Lz-Wp3">
+                        <barButtonItem key="rightBarButtonItem" title="Members" id="ACE-8W-fPa">
+                            <connections>
+                                <segue destination="Cwt-hU-gBG" kind="push" identifier="goToGroupMembersPage" id="YiY-jR-MUp"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="USf-6t-U25" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="675" y="2033"/>
         </scene>
         <!--Create Group View Controller-->
         <scene sceneID="KOD-NQ-wwc">
@@ -966,7 +1017,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iCK-2V-GTX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="719" y="2204"/>
+            <point key="canvasLocation" x="1195" y="2866"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="8EA-3a-6FZ">
