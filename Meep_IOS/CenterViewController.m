@@ -16,8 +16,13 @@
 @property (weak, nonatomic) IBOutlet UITableView *upcomingEventsTable;
 @property (weak, nonatomic) IBOutlet UITableViewCell *cellMain;
 @property (weak, nonatomic) IBOutlet UITableView *upcomingEvents;
+@property(nonatomic) NSInteger numDates;
+@property(nonatomic, strong) NSMutableArray *datesArray;
+@property(nonatomic, strong) NSMutableArray *datesSectionCountArray;
+@property(nonatomic, strong) NSMutableDictionary *datesSectionCountDictionary;
+@property(nonatomic, strong) NSMutableDictionary *dateEventsDictionary;
 
-@property(nonatomic, strong) NSMutableArray * eventArray;
+@property(nonatomic, strong) NSArray * eventArray;
 
 @property(nonatomic, strong) NSMutableData * data;
 
@@ -59,12 +64,29 @@
 #pragma mark View Did Load/Unload
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1;
+    return [_datesArray count];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [_eventArray count];
+    NSString *key = [_datesArray objectAtIndex:section];
+    NSInteger count = [[_datesSectionCountDictionary valueForKey:key] integerValue];
+    return count;
+    //return [_eventArray count];
+}
+
+-(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    NSString *dateString;
+    dateString = [_datesArray objectAtIndex:section];
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+    NSDate *startedDate = [dateFormatter dateFromString:dateString];
+    
+    [dateFormatter setDateFormat:@"MMM dd"];
+    NSString * header = [dateFormatter stringFromDate:startedDate];
+    return header;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -76,30 +98,19 @@
 {
 
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"upcomingEvent" forIndexPath:indexPath];
-    Event *upcomingEvent = [_eventArray objectAtIndex:indexPath.row];
+    NSString *dateString = _datesArray[indexPath.section];
+    
+    NSMutableArray *eventArray = [_dateEventsDictionary objectForKey:dateString];
+    Event *upcomingEvent = eventArray[indexPath.row];
+    
+    //Event *upcomingEvent = [_eventArray objectAtIndex:indexPath.row];
     cell.textLabel.text = upcomingEvent.description;
-    
-    if( [upcomingEvent.start_time isEqual:[NSNull null]]){
-        NSTimeInterval createdTime = upcomingEvent.createdUTC;
-        NSDate *createdDate = [[NSDate alloc] initWithTimeIntervalSince1970:createdTime];
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateFormat:@"yyyy-MM-dd"];
-        //[dateFormatter setDateFormat:@"hh:mm a"];
-        NSString * eventDate = [dateFormatter stringFromDate:createdDate];
-        cell.detailTextLabel.text = eventDate;
-    }
-    else{
-        NSLog(@"has start time!");
-        NSLog(@"%@", upcomingEvent.start_time);
-        NSTimeInterval startedTime = [upcomingEvent.start_time doubleValue];
-        NSDate *startedDate = [[NSDate alloc] initWithTimeIntervalSince1970:startedTime];
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        //[dateFormatter setDateFormat:@"hh:mm a"];
-        [dateFormatter setDateFormat:@"yyyy-MM-dd hh:mm a"];
-        NSString * eventDate = [dateFormatter stringFromDate:startedDate];
-        cell.detailTextLabel.text = eventDate;
-    }
-    
+    NSTimeInterval startedTime = [upcomingEvent.start_time doubleValue];
+    NSDate *startedDate = [[NSDate alloc] initWithTimeIntervalSince1970:startedTime];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"h:mm a"];
+    NSString * eventDate = [dateFormatter stringFromDate:startedDate];
+    cell.detailTextLabel.text = eventDate;
     
     return cell;
 }
@@ -145,9 +156,11 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    Event *currentRecord = [self.eventArray objectAtIndex:indexPath.row];
+    NSString *dateString = _datesArray[indexPath.section];
+    NSMutableArray *eventArray = [_dateEventsDictionary objectForKey:dateString];
+    Event *currentRecord = eventArray[indexPath.row];
+    //Event *currentRecord = [self.eventArray objectAtIndex:indexPath.row];
 
-    NSLog(@"displaying event: %@", currentRecord);
     [_delegate displayEventPage:currentRecord];
 }
 
@@ -155,7 +168,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.eventArray = [[NSMutableArray alloc] init];
+    //self.eventArray = [[NSMutableArray alloc] init];
+    self.eventArray = [[NSArray alloc] init];
+    self.datesSectionCountArray = [[NSMutableArray alloc]init];
+    self.datesSectionCountDictionary = [[NSMutableDictionary alloc] init];
+    self.dateEventsDictionary = [[NSMutableDictionary alloc] init];
+    self.numDates = 0;
     [self getUpcomingEvents];
     
 }
@@ -279,33 +297,53 @@
     NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:_data options:0 error:&error];
     NSArray * upcoming = jsonResponse[@"upcoming_events"];
     NSArray * owned = jsonResponse[@"owned_upcoming_events"];
-    //NSLog(@"upcoming: %@", upcoming);
+    NSString *startTime;
+    NSMutableArray *unsortedEventArray = [[NSMutableArray alloc] init];
+    NSInteger numRowsInSection = 0;
+    _datesArray = [[NSMutableArray alloc] init];
     for(NSDictionary *eventObj in upcoming) {
-        NSLog(@"json response starttime: %@", eventObj[@"start_time"]);
-        Event * event = [[Event alloc] initWithDescription:eventObj[@"description"] withName:eventObj[@"name"] startTime:eventObj[@"start_time"] eventId:[eventObj[@"id"] integerValue]] ;
-        event.createdUTC = [eventObj[@"created"] doubleValue];
-        [_eventArray addObject:event];
+        if( [eventObj[@"start_time"]  isEqual:[NSNull null]]){
+            startTime = eventObj[@"created"];
+        }
+        else{
+            startTime = eventObj[@"start_time"];
+        }
+        
+        Event * event = [[Event alloc] initWithDescription:eventObj[@"description"] withName:eventObj[@"name"] startTime:startTime eventId:[eventObj[@"id"] integerValue]] ;
+        //getting number of differnt days
+        NSTimeInterval startedTime = [startTime doubleValue];
+        NSDate *startedDate = [[NSDate alloc] initWithTimeIntervalSince1970:startedTime];
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+        NSString * eventDate = [dateFormatter stringFromDate:startedDate];
+        if (![_datesArray containsObject: eventDate]){
+            [_datesArray addObject:eventDate];
+            [_datesSectionCountDictionary setValue:@"1" forKey:eventDate];
+            
+            NSMutableArray *dateEventArray = [[NSMutableArray alloc] init];
+            [dateEventArray addObject:event];
+            [_dateEventsDictionary setObject:dateEventArray forKey:eventDate];
+            
+        }
+        else{
+            NSInteger currentCount = [[_datesSectionCountDictionary valueForKey:eventDate] integerValue];
+            currentCount++;
+            NSString *newCount = [NSString stringWithFormat:@"%i", currentCount];
+            
+            [_datesSectionCountDictionary setValue:newCount forKey:eventDate];
+            
+            [[_dateEventsDictionary valueForKey:eventDate] addObject:event];
+        }
+        
+        //Event * event = [[Event alloc] initWithDescription:eventObj[@"description"] withName:eventObj[@"name"] startTime:startTime eventId:[eventObj[@"id"] integerValue]] ;
+        //[unsortedEventArray addObject:event];
     }
-    /*for(NSString *eventStr in owned) {
-        NSString * description = @"empty";
-        NSString * name = @"Event";
-        NSDictionary * eventObj = [NSJSONSerialization JSONObjectWithData:[eventStr dataUsingEncoding:NSUTF8StringEncoding] options:0 error:nil];
-        if(![[eventObj valueForKey:@"name"] isEqualToString:@"\"\""]) {
-            name = [eventObj valueForKey:@"name"];
-            name = @"Event";
-        }
-        if(![[eventObj valueForKey:@"description"] isEqualToString:@"\"\""]) {
-            description = [eventObj valueForKey:@"description"];
-        }
-        Event * event = [[Event alloc] initWithDescription:description withName:name startTime:@""];
-        [self.eventArray addObject:event];
-    }*/
+    
+    NSSortDescriptor* nameSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"start_time" ascending:YES];
+    _eventArray = [unsortedEventArray sortedArrayUsingDescriptors:[NSArray arrayWithObject:nameSortDescriptor]];
     self.upcomingEvents.dataSource = self;
     self.upcomingEvents.delegate = self;
     [self.upcomingEvents reloadData];
-    /*self.upcomingEventsTable.dataSource = self;
-    self.upcomingEventsTable.delegate = self;
-    [self.upcomingEventsTable reloadData];*/
 }
 
 -(void)closeEventModal {
