@@ -74,42 +74,44 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    /*static NSString *cellMainNibID = @"EventCell";
-    NSLog(@"HI");
-    _cellMain = [_upcomingEventsTable dequeueReusableCellWithIdentifier:cellMainNibID];
-    
-    if (_cellMain == nil) {
-        [[NSBundle mainBundle] loadNibNamed:cellMainNibID owner:self options:nil];
-    }
-    
-    UILabel *title = (UILabel *)[_cellMain viewWithTag:1];
-    UILabel *description = (UILabel *)[_cellMain viewWithTag:2];
-    if ([_eventArray count] > 0)
-    {
-        Event *currentRecord = [self.eventArray objectAtIndex:indexPath.row];
-        NSLog(@"%@",currentRecord.description);
-        NSLog(@"%@",currentRecord.name);
-        
-        title.text = [NSString stringWithFormat:@"%@", currentRecord.name];
-        description.text = [NSString stringWithFormat:@"%@", currentRecord.description];
-    }
-    [self.upcomingEventsTable registerClass:[UITableViewCell class] forCellReuseIdentifier:cellMainNibID];
-    return _cellMain;*/
+
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"upcomingEvent" forIndexPath:indexPath];
     Event *upcomingEvent = [_eventArray objectAtIndex:indexPath.row];
     cell.textLabel.text = upcomingEvent.description;
     
+    if( [upcomingEvent.start_time isEqual:[NSNull null]]){
+        NSTimeInterval createdTime = upcomingEvent.createdUTC;
+        NSDate *createdDate = [[NSDate alloc] initWithTimeIntervalSince1970:createdTime];
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+        //[dateFormatter setDateFormat:@"hh:mm a"];
+        NSString * eventDate = [dateFormatter stringFromDate:createdDate];
+        cell.detailTextLabel.text = eventDate;
+    }
+    else{
+        NSLog(@"has start time!");
+        NSLog(@"%@", upcomingEvent.start_time);
+        NSTimeInterval startedTime = [upcomingEvent.start_time doubleValue];
+        NSDate *startedDate = [[NSDate alloc] initWithTimeIntervalSince1970:startedTime];
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        //[dateFormatter setDateFormat:@"hh:mm a"];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd hh:mm a"];
+        NSString * eventDate = [dateFormatter stringFromDate:startedDate];
+        cell.detailTextLabel.text = eventDate;
+    }
+    
+    
     return cell;
 }
 
-/*
+
  // Override to support conditional editing of the table view.
  - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
  {
  // Return NO if you do not want the specified item to be editable.
  return YES;
  }
- */
+
 
 /*
  // Override to support editing the table view.
@@ -155,42 +157,6 @@
     [super viewDidLoad];
     self.eventArray = [[NSMutableArray alloc] init];
     [self getUpcomingEvents];
-    
-    /*ABAddressBookRef addressBook = ABAddressBookCreate();
-    
-    // create 200 random contacts
-    for (int i = 0; i < 200; i++)
-    {
-        // create an ABRecordRef
-        ABRecordRef record = ABPersonCreate();
-        
-        ABMutableMultiValueRef multi = ABMultiValueCreateMutable(kABStringPropertyType);
-        
-        NSString *email = [NSString stringWithFormat:@"%i@%ifoo.com", i, i];
-        ABMultiValueAddValueAndLabel(multi, (__bridge CFTypeRef)(email), kABHomeLabel, NULL);
-        
-        NSString *fname = [NSString stringWithFormat:@"Name %i", i];
-        NSString *lname = [NSString stringWithFormat:@"Last %i", i];
-        
-        // add the first name
-        ABRecordSetValue(record, kABPersonFirstNameProperty, (__bridge CFTypeRef)(fname), NULL);
-        
-        // add the last name
-        ABRecordSetValue(record, kABPersonLastNameProperty, (__bridge CFTypeRef)(lname), NULL);
-        
-        // add the home email
-        ABRecordSetValue(record, kABPersonEmailProperty, multi, NULL);
-        
-        
-        // add the record
-        ABAddressBookAddRecord(addressBook, record, NULL);
-    }
-    
-    // save the address book
-    ABAddressBookSave(addressBook, NULL);
-    
-    // release
-    CFRelease(addressBook);*/
     
 }
 
@@ -301,7 +267,7 @@
 {
     // Handle the error properly
     NSLog(@"Call Failed");
-    // [self getUpcomingEvents];
+    [self getUpcomingEvents];
 }
 -(void)connectionDidFinishLoading:(NSURLConnection*)connection
 {
@@ -313,8 +279,11 @@
     NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:_data options:0 error:&error];
     NSArray * upcoming = jsonResponse[@"upcoming_events"];
     NSArray * owned = jsonResponse[@"owned_upcoming_events"];
+    //NSLog(@"upcoming: %@", upcoming);
     for(NSDictionary *eventObj in upcoming) {
+        NSLog(@"json response starttime: %@", eventObj[@"start_time"]);
         Event * event = [[Event alloc] initWithDescription:eventObj[@"description"] withName:eventObj[@"name"] startTime:eventObj[@"start_time"] eventId:[eventObj[@"id"] integerValue]] ;
+        event.createdUTC = [eventObj[@"created"] doubleValue];
         [_eventArray addObject:event];
     }
     /*for(NSString *eventStr in owned) {

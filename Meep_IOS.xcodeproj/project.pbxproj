@@ -51,6 +51,8 @@
 		3CE1C87719099BCB00E4375A /* AccountSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE1C87619099BCB00E4375A /* AccountSettings.m */; };
 		9606E6A6191308EA00D985A7 /* CreateGroupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9606E6A5191308EA00D985A7 /* CreateGroupViewController.m */; };
 		9606E6AB1913174300D985A7 /* InviteFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9606E6AA1913174300D985A7 /* InviteFriendsViewController.m */; };
+		968466D3191E9DC600E56901 /* AddRemoveFriendsFromGroupTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 968466D2191E9DC600E56901 /* AddRemoveFriendsFromGroupTableViewController.m */; };
+		968466D6191E9DE200E56901 /* EditGroupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 968466D5191E9DE200E56901 /* EditGroupViewController.m */; };
 		968630351909FAB200CAE305 /* Friend.m in Sources */ = {isa = PBXBuildFile; fileRef = 9686302C1909FAB200CAE305 /* Friend.m */; };
 		968630361909FAB200CAE305 /* FriendFullSizeProfileImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9686302E1909FAB200CAE305 /* FriendFullSizeProfileImageViewController.m */; };
 		968630371909FAB200CAE305 /* FriendProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 968630301909FAB200CAE305 /* FriendProfileViewController.m */; };
@@ -174,6 +176,10 @@
 		9606E6A5191308EA00D985A7 /* CreateGroupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateGroupViewController.m; sourceTree = "<group>"; };
 		9606E6A91913174300D985A7 /* InviteFriendsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InviteFriendsViewController.h; sourceTree = "<group>"; };
 		9606E6AA1913174300D985A7 /* InviteFriendsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InviteFriendsViewController.m; sourceTree = "<group>"; };
+		968466D1191E9DC600E56901 /* AddRemoveFriendsFromGroupTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddRemoveFriendsFromGroupTableViewController.h; sourceTree = "<group>"; };
+		968466D2191E9DC600E56901 /* AddRemoveFriendsFromGroupTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddRemoveFriendsFromGroupTableViewController.m; sourceTree = "<group>"; };
+		968466D4191E9DE200E56901 /* EditGroupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditGroupViewController.h; sourceTree = "<group>"; };
+		968466D5191E9DE200E56901 /* EditGroupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditGroupViewController.m; sourceTree = "<group>"; };
 		9686302B1909FAB200CAE305 /* Friend.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Friend.h; sourceTree = "<group>"; };
 		9686302C1909FAB200CAE305 /* Friend.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Friend.m; sourceTree = "<group>"; };
 		9686302D1909FAB200CAE305 /* FriendFullSizeProfileImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendFullSizeProfileImageViewController.h; sourceTree = "<group>"; };
@@ -458,6 +464,10 @@
 				96E1D2331915932100951DEB /* GroupTableViewController.m */,
 				96E1D2351915977400951DEB /* Group.h */,
 				96E1D2361915977400951DEB /* Group.m */,
+				968466D1191E9DC600E56901 /* AddRemoveFriendsFromGroupTableViewController.h */,
+				968466D2191E9DC600E56901 /* AddRemoveFriendsFromGroupTableViewController.m */,
+				968466D4191E9DE200E56901 /* EditGroupViewController.h */,
+				968466D5191E9DE200E56901 /* EditGroupViewController.m */,
 			);
 			name = "Group Pages";
 			sourceTree = "<group>";
@@ -686,10 +696,12 @@
 				3CCC51621905A20D00EB0980 /* MainViewController.m in Sources */,
 				96E1D2741918549400951DEB /* DjangoAuthLoginResultObject.m in Sources */,
 				3CCF3CE41912A70A00DED761 /* MEPTextParse.m in Sources */,
+				968466D6191E9DE200E56901 /* EditGroupViewController.m in Sources */,
 				96E1D2341915932100951DEB /* GroupTableViewController.m in Sources */,
 				968630351909FAB200CAE305 /* Friend.m in Sources */,
 				3CDDCDA419087D0000F851EE /* EventElementViewController.m in Sources */,
 				3CCF971B190827CE005FA454 /* AccountViewController.m in Sources */,
+				968466D3191E9DC600E56901 /* AddRemoveFriendsFromGroupTableViewController.m in Sources */,
 				9606E6A6191308EA00D985A7 /* CreateGroupViewController.m in Sources */,
 				3CCC515B1905A20D00EB0980 /* EventPageViewController.m in Sources */,
 				DAF700821917209A004EDC66 /* ABIGBOOB.m in Sources */,

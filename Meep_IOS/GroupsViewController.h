@@ -18,7 +18,7 @@
 - (void) backToCenterFromGroups:(GroupsViewController *)controller;
 
 @end
-@interface GroupsViewController : UITableViewController
+@interface GroupsViewController : UITableViewController<GroupTableViewControllerDelegate>
 
 @property(nonatomic, strong) id <GroupsViewControllerDelegate> delegate;
 @property(nonatomic, strong) NSMutableData * data;
