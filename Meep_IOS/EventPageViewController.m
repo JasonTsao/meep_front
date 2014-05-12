@@ -302,6 +302,11 @@
     else if([eventInfoType isEqualToString:@"name"]){
         height = 60.0;
     }
+    else if([eventInfoType isEqualToString:@"time"]){
+        if(![_currentEvent.end_time isEqual:[NSNull null]]){
+            height = 50;
+        }
+    }
     else{
         height= 20.0;
     }
@@ -327,8 +332,6 @@
 
             NSMutableString *timeString = [[NSMutableString alloc] init];
             
-            NSLog(@"end time: %@", _currentEvent.end_time);
-            
             NSTimeInterval startedTime = [_currentEvent.start_time doubleValue];
             NSDate *startedDate = [[NSDate alloc] initWithTimeIntervalSince1970:startedTime];
             NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -342,7 +345,7 @@
                 NSDate *endedDate = [[NSDate alloc] initWithTimeIntervalSince1970:endedTime];
                 NSString * endTime = [dateFormatter stringFromDate:endedDate];
                 [timeString appendString: @"\n"];
-                [timeString appendString: _currentEvent.description];
+                [timeString appendString: endTime];
                 cell.textLabel.numberOfLines = 2;
                 cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
             }
