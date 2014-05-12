@@ -17,6 +17,7 @@
 //#import "CreateGroupViewController.h"
 #import "InviteFriendsViewController.h"
 #import "Event.h"
+#import "MEPLocationService.h"
 
 #import <QuartzCore/QuartzCore.h>
 
@@ -54,6 +55,7 @@
 @property( nonatomic, strong) EventCreatorViewController *eventCreatorViewController;
 
 @property (nonatomic, strong) InviteFriendsViewController *inviteFriendsViewController;
+@property (nonatomic, strong) AuthenticationViewController *authenticationViewController;
 
 @property (nonatomic, strong) AddFriendsViewController *addFriendsViewController;
 @property (nonatomic, assign) BOOL showaddFriends;
@@ -62,7 +64,7 @@
 @property (nonatomic, strong) EventPageViewController *eventPageViewController;
 @property (nonatomic, assign) BOOL showEventPage;
 
-
+@property (nonatomic, strong) MEPLocationService *locationServiceManager;
 
 @end
 
@@ -74,8 +76,14 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
     [self setupView];
+    self.locationServiceManager = [[MEPLocationService alloc] init];
+    //if( user is authenticated){
+    //    [self setupView];
+    //}
+    //else{
+    //[self openAuthenticationPage];
+    //}
 }
 
 - (void)viewDidUnload
@@ -110,34 +118,30 @@
 	[super viewDidDisappear:animated];
 }
 
+- (void) logout:(AccountViewController *)controller{
+    NSLog(@"logging out in main view");
+    [self dismissViewControllerAnimated:YES completion:nil];
+    //[self dismissViewControllerAnimated:NO completion:^{[self openAuthenticationPage];}];
+    
+}
+
 #pragma mark -
 #pragma mark Setup View
 
 - (void)setupView
 {
     UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"CenterStoryboard" bundle:nil];
-    _centerViewController = (GroupsViewController *)[storyboard instantiateViewControllerWithIdentifier:@"centerView"];
     
-    //UINavigationController *navigation = [[UINavigationController alloc]initWithRootViewController:_centerViewController];
-    //[self presentViewController:navigation animated:YES completion:nil];
+    _centerViewController = (GroupsViewController *)[storyboard instantiateViewControllerWithIdentifier:@"centerView"];
     _centerViewController.delegate = self;
     
     [self.view addSubview:_centerViewController.view];
     [self addChildViewController:_centerViewController];
     
-    [_centerViewController didMoveToParentViewController:self];
-    
-    // setup center view
-    /*self.centerViewController = [[CenterViewController alloc] initWithNibName:@"CenterViewController" bundle:nil];
-    self.centerViewController.view.tag = CENTER_TAG;
-    
-    self.centerViewController.delegate = self;
-    
-    [self.view addSubview:self.centerViewController.view];
-    [self addChildViewController:_centerViewController];
-    
-    [_centerViewController didMoveToParentViewController:self];*/
     [self setupGestures];
+    
+    
+    //[self openAuthenticationPage];
 }
 
 - (void)showCenterViewWithShadow:(BOOL)value withOffset:(double)offset
@@ -230,6 +234,7 @@
 
 - (void)setupGestures
 {
+    NSLog(@"setting up gestures!!");
     UIPanGestureRecognizer * panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(movePanel:)];
     [panRecognizer setMinimumNumberOfTouches:1];
     [panRecognizer setMaximumNumberOfTouches:1];
@@ -342,6 +347,18 @@
                      }];
 }
 
+- (void) openAuthenticationPage
+{
+    NSLog(@"opening authentication page");
+    UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"CenterStoryboard" bundle:nil];
+    _authenticationViewController = (AuthenticationViewController *)[storyboard instantiateViewControllerWithIdentifier:@"authentication"];
+    
+    [self.view addSubview:_authenticationViewController.view];
+    [_authenticationViewController setDelegate:self];
+    [self addChildViewController:_authenticationViewController];
+
+}
+
 - (void) openAccountPage
 {
     UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"CenterStoryboard" bundle:nil];
@@ -395,6 +412,14 @@
     [self presentViewController:navigation animated:YES completion:nil];
 }
 
+- (void) loadMainViewAfterAuthentication
+{
+    
+    NSLog(@"loading main view after authentication");
+    [_authenticationViewController dismissViewControllerAnimated:YES completion:nil];
+    [self setupView];
+}
+
 - (void) backToCenterFromCreateEvent:(InviteFriendsViewController *)controller
 {
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -442,7 +467,9 @@
     self.eventPageViewController = (EventPageViewController *)[storyboard instantiateViewControllerWithIdentifier:@"EventViewController"];
     _eventPageViewController.currentEvent = event;
     [self.eventPageViewController setDelegate:self];
-    [self presentViewController:self.eventPageViewController animated:YES completion:nil];
+    UINavigationController *navigation = [[UINavigationController alloc]initWithRootViewController:_eventPageViewController];
+    [self presentViewController:navigation animated:YES completion:nil];
+    //[self presentViewController:self.eventPageViewController animated:YES completion:nil];
 }
 
 - (void) returnToMain {

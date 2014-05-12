@@ -13,7 +13,14 @@
 #import "GroupsViewController.h"
 #import "EventPageViewController.h"
 #import "AddFriendsViewController.h"
+#import "AuthenticationViewController.h"
+
+@class MainViewController;
+
+@protocol MainViewControllerDelegate
+- (void) logout:(AccountViewController *)controller;
+@end
 
 @interface MainViewController : UIViewController<AccountViewControllerDelegate, CreateGroupViewControllerDelegate, GroupsViewControllerDelegate, InviteFriendsViewControllerDelegate>
-
+@property (nonatomic, assign) id<MainViewControllerDelegate> delegate;
 @end

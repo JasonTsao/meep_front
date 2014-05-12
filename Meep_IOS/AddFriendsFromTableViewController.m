@@ -25,7 +25,7 @@
 
 - (void)getFriendsList
 {
-    NSString * requestURL = [NSString stringWithFormat:@"%@friends/list/1",[MEEPhttp accountURL]];
+    NSString * requestURL = [NSString stringWithFormat:@"%@friends/list",[MEEPhttp accountURL]];
     NSLog(@"request url : %@", requestURL);
     NSDictionary * postDict = [[NSDictionary alloc] init];
     NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
@@ -240,38 +240,6 @@
         NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
         [conn start];
     }
-    
-    
-}
-
-- (void)addFriend:(id)sender
-{
-    
-    UIButton *button = (UIButton*) sender;
-    NSLog(@"Add Friend tag: %i", button.tag);
-    NSLog(@"Add Friend description: %@", _buttonTagDictionary[[NSString stringWithFormat:@"%i", button.tag]]);
-    
-    NSString * requestURL = [NSString stringWithFormat:@"%@friends/add_by_phone",[MEEPhttp accountURL]];
-    NSLog(@"request url : %@", requestURL);
-    NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:@"2", @"user", _buttonTagDictionary[[NSString stringWithFormat:@"%i", button.tag]],@"phone_number", nil];
-    NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
-    NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
-    [conn start];
-    
-}
-
-- (void)unFriend:(id)sender
-{
-    UIButton *button = (UIButton*) sender;
-    NSLog(@"Add Friend tag: %i", button.tag);
-    NSLog(@"Add Friend description: %@", _buttonTagDictionary[[NSString stringWithFormat:@"%i", button.tag]]);
-    
-    NSString * requestURL = [NSString stringWithFormat:@"%@friends/unfriend",[MEEPhttp accountURL]];
-    NSLog(@"request url : %@", requestURL);
-    NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:@"2", @"user", _buttonTagDictionary[[NSString stringWithFormat:@"%i", button.tag]],@"phone_number", nil];
-    NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
-    NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
-    [conn start];
     
 }
 

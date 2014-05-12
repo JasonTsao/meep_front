@@ -28,9 +28,10 @@
     [self.delegate backToCenterFromGroups:self];
 }
 
+
 - (void)getGroupList
 {
-    NSString * requestURL = [NSString stringWithFormat:@"%@group/list/1",[MEEPhttp accountURL]];
+    NSString * requestURL = [NSString stringWithFormat:@"%@group/list",[MEEPhttp accountURL]];
     NSDictionary * postDict = [[NSDictionary alloc] init];
     NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
     NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
@@ -83,6 +84,11 @@
     
     [self.tableView reloadData];
 
+}
+
+- (void)updatedGroupName:(id)sender {
+    NSLog(@"updated group name in groupsviewcontroller");
+    [self getGroupList];
 }
 
 - (void)viewDidLoad
@@ -143,6 +149,8 @@
 
 
 
+
+
 // Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -183,6 +191,7 @@
     if (![[segue identifier] isEqualToString:@"createGroup"]){
         GroupTableViewController * groupPage = [segue destinationViewController];
         NSIndexPath *path = [self.tableView indexPathForSelectedRow];
+        [groupPage setDelegate:self];
         Group *selected_group = groups_list[path.row];
         groupPage.group = selected_group;
         

@@ -11,6 +11,7 @@
 #import "InvitedFriend.h"
 #import "MEEPhttp.h"
 #import "EventPageViewController.h"
+#import "Group.h"
 //#import "CenterViewController.h"
 //#import "MainViewController.h"
 @class CreateMessageViewController;
@@ -21,5 +22,6 @@
 @interface CreateMessageViewController : UIViewController<UITableViewDataSource, UITextFieldDelegate>
 @property(nonatomic, strong) id <CreateMessageViewControllerDelegate> delegate;
 @property (nonatomic) NSMutableArray *invited_friends_list;
+@property (nonatomic) Group *selectedGroup;
 -(void)textFieldDidChange;
 @end

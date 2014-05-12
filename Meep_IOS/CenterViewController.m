@@ -16,8 +16,13 @@
 @property (weak, nonatomic) IBOutlet UITableView *upcomingEventsTable;
 @property (weak, nonatomic) IBOutlet UITableViewCell *cellMain;
 @property (weak, nonatomic) IBOutlet UITableView *upcomingEvents;
+@property(nonatomic) NSInteger numDates;
+@property(nonatomic, strong) NSMutableArray *datesArray;
+@property(nonatomic, strong) NSMutableArray *datesSectionCountArray;
+@property(nonatomic, strong) NSMutableDictionary *datesSectionCountDictionary;
+@property(nonatomic, strong) NSMutableDictionary *dateEventsDictionary;
 
-@property(nonatomic, strong) NSMutableArray * eventArray;
+@property(nonatomic, strong) NSArray * eventArray;
 
 @property(nonatomic, strong) NSMutableData * data;
 
@@ -59,12 +64,29 @@
 #pragma mark View Did Load/Unload
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1;
+    return [_datesArray count];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [_eventArray count];
+    NSString *key = [_datesArray objectAtIndex:section];
+    NSInteger count = [[_datesSectionCountDictionary valueForKey:key] integerValue];
+    return count;
+    //return [_eventArray count];
+}
+
+-(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    NSString *dateString;
+    dateString = [_datesArray objectAtIndex:section];
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+    NSDate *startedDate = [dateFormatter dateFromString:dateString];
+    
+    [dateFormatter setDateFormat:@"MMM dd"];
+    NSString * header = [dateFormatter stringFromDate:startedDate];
+    return header;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -74,42 +96,33 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    /*static NSString *cellMainNibID = @"EventCell";
-    NSLog(@"HI");
-    _cellMain = [_upcomingEventsTable dequeueReusableCellWithIdentifier:cellMainNibID];
-    
-    if (_cellMain == nil) {
-        [[NSBundle mainBundle] loadNibNamed:cellMainNibID owner:self options:nil];
-    }
-    
-    UILabel *title = (UILabel *)[_cellMain viewWithTag:1];
-    UILabel *description = (UILabel *)[_cellMain viewWithTag:2];
-    if ([_eventArray count] > 0)
-    {
-        Event *currentRecord = [self.eventArray objectAtIndex:indexPath.row];
-        NSLog(@"%@",currentRecord.description);
-        NSLog(@"%@",currentRecord.name);
-        
-        title.text = [NSString stringWithFormat:@"%@", currentRecord.name];
-        description.text = [NSString stringWithFormat:@"%@", currentRecord.description];
-    }
-    [self.upcomingEventsTable registerClass:[UITableViewCell class] forCellReuseIdentifier:cellMainNibID];
-    return _cellMain;*/
+
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"upcomingEvent" forIndexPath:indexPath];
-    Event *upcomingEvent = [_eventArray objectAtIndex:indexPath.row];
+    NSString *dateString = _datesArray[indexPath.section];
+    
+    NSMutableArray *eventArray = [_dateEventsDictionary objectForKey:dateString];
+    Event *upcomingEvent = eventArray[indexPath.row];
+    
+    //Event *upcomingEvent = [_eventArray objectAtIndex:indexPath.row];
     cell.textLabel.text = upcomingEvent.description;
+    NSTimeInterval startedTime = [upcomingEvent.start_time doubleValue];
+    NSDate *startedDate = [[NSDate alloc] initWithTimeIntervalSince1970:startedTime];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"h:mm a"];
+    NSString * eventDate = [dateFormatter stringFromDate:startedDate];
+    cell.detailTextLabel.text = eventDate;
     
     return cell;
 }
 
-/*
+
  // Override to support conditional editing of the table view.
  - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
  {
  // Return NO if you do not want the specified item to be editable.
  return YES;
  }
- */
+
 
 /*
  // Override to support editing the table view.
@@ -143,9 +156,11 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    Event *currentRecord = [self.eventArray objectAtIndex:indexPath.row];
+    NSString *dateString = _datesArray[indexPath.section];
+    NSMutableArray *eventArray = [_dateEventsDictionary objectForKey:dateString];
+    Event *currentRecord = eventArray[indexPath.row];
+    //Event *currentRecord = [self.eventArray objectAtIndex:indexPath.row];
 
-    NSLog(@"displaying event: %@", currentRecord);
     [_delegate displayEventPage:currentRecord];
 }
 
@@ -153,50 +168,21 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.eventArray = [[NSMutableArray alloc] init];
+    //self.eventArray = [[NSMutableArray alloc] init];
+    self.eventArray = [[NSArray alloc] init];
+    self.datesSectionCountArray = [[NSMutableArray alloc]init];
+    self.datesSectionCountDictionary = [[NSMutableDictionary alloc] init];
+    self.dateEventsDictionary = [[NSMutableDictionary alloc] init];
+    self.numDates = 0;
     [self getUpcomingEvents];
-    
-    /*ABAddressBookRef addressBook = ABAddressBookCreate();
-    
-    // create 200 random contacts
-    for (int i = 0; i < 200; i++)
-    {
-        // create an ABRecordRef
-        ABRecordRef record = ABPersonCreate();
-        
-        ABMutableMultiValueRef multi = ABMultiValueCreateMutable(kABStringPropertyType);
-        
-        NSString *email = [NSString stringWithFormat:@"%i@%ifoo.com", i, i];
-        ABMultiValueAddValueAndLabel(multi, (__bridge CFTypeRef)(email), kABHomeLabel, NULL);
-        
-        NSString *fname = [NSString stringWithFormat:@"Name %i", i];
-        NSString *lname = [NSString stringWithFormat:@"Last %i", i];
-        
-        // add the first name
-        ABRecordSetValue(record, kABPersonFirstNameProperty, (__bridge CFTypeRef)(fname), NULL);
-        
-        // add the last name
-        ABRecordSetValue(record, kABPersonLastNameProperty, (__bridge CFTypeRef)(lname), NULL);
-        
-        // add the home email
-        ABRecordSetValue(record, kABPersonEmailProperty, multi, NULL);
-        
-        
-        // add the record
-        ABAddressBookAddRecord(addressBook, record, NULL);
-    }
-    
-    // save the address book
-    ABAddressBookSave(addressBook, NULL);
-    
-    // release
-    CFRelease(addressBook);*/
     
 }
 
 - (void) getUpcomingEvents {
-    NSString * requestURL = [NSString stringWithFormat:@"%@upcoming/1",[MEEPhttp eventURL]];
-    NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:@"1",@"user", nil];
+    //NSString * requestURL = [NSString stringWithFormat:@"%@upcoming/1",[MEEPhttp eventURL]];
+    //NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:@"1",@"user", nil];
+    NSString * requestURL = [NSString stringWithFormat:@"%@upcoming",[MEEPhttp eventURL]];
+    NSDictionary * postDict = [[NSDictionary alloc] init];
     NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
     NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
     [conn start];
@@ -299,7 +285,7 @@
 {
     // Handle the error properly
     NSLog(@"Call Failed");
-    // [self getUpcomingEvents];
+    [self getUpcomingEvents];
 }
 -(void)connectionDidFinishLoading:(NSURLConnection*)connection
 {
@@ -311,30 +297,58 @@
     NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:_data options:0 error:&error];
     NSArray * upcoming = jsonResponse[@"upcoming_events"];
     NSArray * owned = jsonResponse[@"owned_upcoming_events"];
+    NSString *startTime;
+    NSMutableArray *unsortedEventArray = [[NSMutableArray alloc] init];
+    NSInteger numRowsInSection = 0;
+    _datesArray = [[NSMutableArray alloc] init];
     for(NSDictionary *eventObj in upcoming) {
-        Event * event = [[Event alloc] initWithDescription:eventObj[@"description"] withName:eventObj[@"name"] startTime:eventObj[@"start_time"] eventId:[eventObj[@"id"] integerValue]] ;
-        [_eventArray addObject:event];
+        if( [eventObj[@"start_time"]  isEqual:[NSNull null]]){
+            startTime = eventObj[@"created"];
+        }
+        else{
+            startTime = eventObj[@"start_time"];
+        }
+        
+        Event * event = [[Event alloc] initWithDescription:eventObj[@"description"] withName:eventObj[@"name"] startTime:startTime eventId:[eventObj[@"id"] integerValue]] ;
+        event.locationName = eventObj[@"location_name"];
+        event.locationAddress = eventObj[@"location_address"];
+        event.end_time = eventObj[@"end_time"];
+        //event.group = eventObj[@"group"];
+        
+        //getting number of differnt days
+        NSTimeInterval startedTime = [startTime doubleValue];
+        NSDate *startedDate = [[NSDate alloc] initWithTimeIntervalSince1970:startedTime];
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+        NSString * eventDate = [dateFormatter stringFromDate:startedDate];
+        if (![_datesArray containsObject: eventDate]){
+            [_datesArray addObject:eventDate];
+            [_datesSectionCountDictionary setValue:@"1" forKey:eventDate];
+            
+            NSMutableArray *dateEventArray = [[NSMutableArray alloc] init];
+            [dateEventArray addObject:event];
+            [_dateEventsDictionary setObject:dateEventArray forKey:eventDate];
+            
+        }
+        else{
+            NSInteger currentCount = [[_datesSectionCountDictionary valueForKey:eventDate] integerValue];
+            currentCount++;
+            NSString *newCount = [NSString stringWithFormat:@"%i", currentCount];
+            
+            [_datesSectionCountDictionary setValue:newCount forKey:eventDate];
+            
+            [[_dateEventsDictionary valueForKey:eventDate] addObject:event];
+        }
+        
+        //Event * event = [[Event alloc] initWithDescription:eventObj[@"description"] withName:eventObj[@"name"] startTime:startTime eventId:[eventObj[@"id"] integerValue]] ;
+        //[unsortedEventArray addObject:event];
     }
-    /*for(NSString *eventStr in owned) {
-        NSString * description = @"empty";
-        NSString * name = @"Event";
-        NSDictionary * eventObj = [NSJSONSerialization JSONObjectWithData:[eventStr dataUsingEncoding:NSUTF8StringEncoding] options:0 error:nil];
-        if(![[eventObj valueForKey:@"name"] isEqualToString:@"\"\""]) {
-            name = [eventObj valueForKey:@"name"];
-            name = @"Event";
-        }
-        if(![[eventObj valueForKey:@"description"] isEqualToString:@"\"\""]) {
-            description = [eventObj valueForKey:@"description"];
-        }
-        Event * event = [[Event alloc] initWithDescription:description withName:name startTime:@""];
-        [self.eventArray addObject:event];
-    }*/
+    
+    NSSortDescriptor* nameSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"start_time" ascending:YES];
+    _eventArray = [unsortedEventArray sortedArrayUsingDescriptors:[NSArray arrayWithObject:nameSortDescriptor]];
     self.upcomingEvents.dataSource = self;
     self.upcomingEvents.delegate = self;
     [self.upcomingEvents reloadData];
-    /*self.upcomingEventsTable.dataSource = self;
-    self.upcomingEventsTable.delegate = self;
-    [self.upcomingEventsTable reloadData];*/
 }
 
 -(void)closeEventModal {

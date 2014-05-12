@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <MapKit/MapKit.h>
 #import "Event.h"
 #import "Friend.h"
 #import "InvitedFriend.h"
@@ -23,7 +24,7 @@
 
 @end
 
-@interface EventPageViewController : UIViewController
+@interface EventPageViewController : UIViewController<UIActionSheetDelegate, UITableViewDataSource,UITableViewDelegate, MKMapViewDelegate>
 @property (nonatomic) Event *currentEvent;
 @property (nonatomic) NSMutableArray *invitedFriends;
 @property(nonatomic, strong) NSMutableData * data;

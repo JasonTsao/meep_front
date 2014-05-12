@@ -12,5 +12,6 @@
 @property (nonatomic) NSInteger group_creator_id;
 @property (nonatomic) NSString *name;
 @property (nonatomic) NSInteger group_id;
+@property (nonatomic) NSMutableArray * group_members;
 -(id) initWithName:(NSString*) groupName;
 @end
