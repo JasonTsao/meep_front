@@ -17,6 +17,13 @@
 
 @implementation MEPLocationService
 
+- (id) init {
+    if (self = [super init]) {
+        [self startSignificantChangeUpdates];
+    }
+    return self;
+}
+
 - (void) startSignificantChangeUpdates {
     
     if (_locationManager == nil) {
@@ -44,7 +51,7 @@
 
 - (void) locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
     // do something
-    NSLog(@"Location services failed with an error");
+    NSLog(@"Location Services Failed with error :: %@",[error localizedDescription]);
 }
 
 @end

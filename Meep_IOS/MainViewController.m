@@ -17,6 +17,7 @@
 //#import "CreateGroupViewController.h"
 #import "InviteFriendsViewController.h"
 #import "Event.h"
+#import "MEPLocationService.h"
 
 #import <QuartzCore/QuartzCore.h>
 
@@ -63,7 +64,7 @@
 @property (nonatomic, strong) EventPageViewController *eventPageViewController;
 @property (nonatomic, assign) BOOL showEventPage;
 
-
+@property (nonatomic, strong) MEPLocationService *locationServiceManager;
 
 @end
 
@@ -76,6 +77,7 @@
 {
     [super viewDidLoad];
     [self setupView];
+    self.locationServiceManager = [[MEPLocationService alloc] init];
     //if( user is authenticated){
     //    [self setupView];
     //}
