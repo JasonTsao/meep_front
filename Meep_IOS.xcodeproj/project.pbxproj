@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3CB231FE192176B900684E1D /* MEPLocationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CB231FD192176B900684E1D /* MEPLocationService.m */; };
 		3CCC507919059F9500EB0980 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CCC507819059F9500EB0980 /* Foundation.framework */; };
 		3CCC507B19059F9500EB0980 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CCC507A19059F9500EB0980 /* CoreGraphics.framework */; };
 		3CCC507D19059F9500EB0980 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CCC507C19059F9500EB0980 /* UIKit.framework */; };
@@ -112,6 +113,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3CB231FC192176B900684E1D /* MEPLocationService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MEPLocationService.h; path = ../MEPLocationService.h; sourceTree = "<group>"; };
+		3CB231FD192176B900684E1D /* MEPLocationService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MEPLocationService.m; path = ../MEPLocationService.m; sourceTree = "<group>"; };
 		3CCC507519059F9500EB0980 /* Meep_IOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Meep_IOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3CCC507819059F9500EB0980 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		3CCC507A19059F9500EB0980 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -307,6 +310,8 @@
 		3CCC507E19059F9500EB0980 /* Meep_IOS */ = {
 			isa = PBXGroup;
 			children = (
+				3CB231FC192176B900684E1D /* MEPLocationService.h */,
+				3CB231FD192176B900684E1D /* MEPLocationService.m */,
 				96E1D26E1918545000951DEB /* Authentication */,
 				96E1D26419173E2900951DEB /* AddFriends */,
 				9686302A1909FA7700CAE305 /* Friend Pages */,
@@ -681,6 +686,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9606E6AB1913174300D985A7 /* InviteFriendsViewController.m in Sources */,
+				3CB231FE192176B900684E1D /* MEPLocationService.m in Sources */,
 				3CE1C87719099BCB00E4375A /* AccountSettings.m in Sources */,
 				3CCC51641905A20D00EB0980 /* MEEPhttp.m in Sources */,
 				96967E1D191D4887007613AF /* EditEventViewController.m in Sources */,
