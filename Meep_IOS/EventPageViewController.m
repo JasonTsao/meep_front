@@ -186,7 +186,6 @@
 
 - (void)backToEventPage:(EditEventViewController*)controller
 {
-    NSLog(@"just came back from : %@", controller);
     [self getInvitedFriends];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -281,7 +280,6 @@
         if([_currentEvent.locationAddress length] != 0){
             
             //MAKE MAP VIEW
-            NSLog(@"location address: %@", _currentEvent.locationAddress);
             [_eventInfoCellsToDisplay addObject:@"locationAddress"];
             [_locationInfoToDisplay addObject:@"locationAddress"];
             numRows++;
@@ -319,7 +317,6 @@
     
     height = 20.0;
     if (indexPath.section == 0){
-        NSLog(@"basic info to display: %@", _basicInfoToDisplay);
         eventInfoType = _basicInfoToDisplay[indexPath.row];
         if([eventInfoType isEqualToString:@"name"]){
             height = 60.0;
@@ -336,7 +333,6 @@
     }
     
     else if(indexPath.section == 1){
-        NSLog(@"location info to display: %@", _locationInfoToDisplay);
         eventInfoType = _locationInfoToDisplay[indexPath.row];
         if([eventInfoType isEqualToString:@"locationAddress"]){
             height = 200.0;
@@ -344,27 +340,9 @@
     }
     
     else if(indexPath.section == 2){
-        NSLog(@"third party info to display: %@", _thirdPartyInfoToDisplay);
         height = 20.0;
     }
-    
-    /*if([eventInfoType isEqualToString:@"locationAddress"]){
-        height = 200.0;
-    }
-    else if([eventInfoType isEqualToString:@"name"]){
-        height = 60.0;
-    }
-    else if([eventInfoType isEqualToString:@"time"]){
-        if(![_currentEvent.end_time isEqual:[NSNull null]]){
-            height = 50;
-        }
-        else{
-            height = 20.0;
-        }
-    }
-    else{
-        height= 20.0;
-    }*/
+
     return height;
 }
 
@@ -415,9 +393,9 @@
         eventInfoType = _locationInfoToDisplay[indexPath.row];
         if([eventInfoType isEqualToString:@"locationAddress"]){
             //DISPLAY MAP IF THIS IS TRUE
-            /*cell.textLabel.text = _currentEvent.locationAddress;
+            cell.textLabel.text = _currentEvent.locationAddress;
              
-             [cell.contentView addSubview:_mapView];*/
+             [cell.contentView addSubview:_mapView];
         }
         else if([eventInfoType isEqualToString:@"locationName"]){
             cell.textLabel.text = _currentEvent.locationName;
