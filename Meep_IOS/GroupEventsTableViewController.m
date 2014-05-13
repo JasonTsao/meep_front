@@ -38,7 +38,8 @@
 - (void) getUpcomingGroupEvents {
     //NSString * requestURL = [NSString stringWithFormat:@"%@upcoming/1",[MEEPhttp eventURL]];
     //NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:@"1",@"user", nil];
-    NSString * requestURL = [NSString stringWithFormat:@"%@/group/%i/upcoming",[MEEPhttp eventURL], _group.group_id];
+    NSString * requestURL = [NSString stringWithFormat:@"%@group/%i/upcoming",[MEEPhttp eventURL], _group.group_id];
+    NSLog(@"upcoming group evente url: %@", requestURL);
     NSDictionary * postDict = [[NSDictionary alloc] init];
     NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
     NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
@@ -67,6 +68,8 @@
 -(void)handleData{
     NSError* error;
     NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:_data options:0 error:&error];
+    
+    NSLog(@"upcoming group events jsonresponse: %@", jsonResponse);
     NSArray * upcoming = jsonResponse[@"upcoming_events"];
     NSArray * owned = jsonResponse[@"owned_upcoming_events"];
     NSString *startTime;
@@ -186,7 +189,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"upcomingEvent" forIndexPath:indexPath];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"groupEvent" forIndexPath:indexPath];
     NSString *dateString = _datesArray[indexPath.section];
     
     NSMutableArray *eventArray = [_dateEventsDictionary objectForKey:dateString];
