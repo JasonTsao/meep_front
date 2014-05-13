@@ -277,18 +277,18 @@
     }
     
     if(section == 1){
-        if([_currentEvent.locationAddress length] != 0){
+        /*if([_currentEvent.locationAddress length] != 0){
             
             //MAKE MAP VIEW
             [_eventInfoCellsToDisplay addObject:@"locationAddress"];
             [_locationInfoToDisplay addObject:@"locationAddress"];
             numRows++;
-        }
-        if( [_currentEvent.locationName length] != 0){
+        }*/
+        /*if( [_currentEvent.locationName length] != 0){
             [_eventInfoCellsToDisplay addObject:@"locationName"];
             [_locationInfoToDisplay addObject:@"locationName"];
             numRows++;
-        }
+        }*/
     }
     
     if(section == 2){
