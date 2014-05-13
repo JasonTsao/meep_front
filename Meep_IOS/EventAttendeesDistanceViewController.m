@@ -27,6 +27,9 @@
 {
     [super viewDidLoad];
     self.title = @"Distance";
+    NSLog(@"event distance page loaded!");
+    NSLog(@"invited friends: %@", _invitedFriends);
+    NSLog(@"current event: %@", _currentEvent);
     // Do any additional setup after loading the view.
 }
 

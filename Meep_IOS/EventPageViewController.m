@@ -12,6 +12,8 @@
 #import "FriendProfileViewController.h"
 #import "AddRemoveFriendsFromEventTableViewController.h"
 #import "EventAttendeeTabBarController.h"
+#import "EventAttendeesDistanceViewController.h"
+#import "EventAttendeesViewController.h"
 
 
 @interface EventPageViewController ()
@@ -29,6 +31,7 @@
 @property (nonatomic, strong) AddRemoveFriendsFromEventTableViewController *addRemoveFriendsFromEventTableViewController;
 
 @property (nonatomic, strong) EventAttendeeTabBarController *eventAttendeeTabBarController;
+@property (nonatomic, strong) EventAttendeesViewController *eventAttendeesViewController;
 
 @property(nonatomic, strong) NSMutableArray *basicInfoToDisplay;
 @property(nonatomic, strong) NSMutableArray *locationInfoToDisplay;
@@ -55,12 +58,17 @@
 {
     UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"CenterStoryboard" bundle:nil];
     _eventAttendeeTabBarController = (EventAttendeeTabBarController *)[storyboard instantiateViewControllerWithIdentifier:@"eventAttendeeTabController"];
+
+    [_eventAttendeeTabBarController.viewControllers[0] setInvitedFriends:_invitedFriends];
+    [_eventAttendeeTabBarController.viewControllers[0] setCurrentEvent:_currentEvent];
+    [_eventAttendeeTabBarController.viewControllers[1] setInvitedFriends:_invitedFriends];
+    [_eventAttendeeTabBarController.viewControllers[1] setCurrentEvent:_currentEvent];
     
     UINavigationController *navigation = [[UINavigationController alloc]initWithRootViewController:_eventAttendeeTabBarController];
     [_eventAttendeeTabBarController setDelegate:self];
-    //_addRemoveFriendsFromEventTableViewController.invitedFriends = _invitedFriends;
     _eventAttendeeTabBarController.invitedFriends = _invitedFriends;
     _eventAttendeeTabBarController.currentEvent = _currentEvent;
+    
     [self presentViewController:navigation animated:YES completion:nil];
 }
 

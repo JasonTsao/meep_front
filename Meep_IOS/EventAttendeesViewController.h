@@ -7,7 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Event.h"
+#import "InvitedFriend.h"
+#import "Friend.h"
 
 @interface EventAttendeesViewController : UICollectionViewController
-
+@property (nonatomic) Event *currentEvent;
+@property (nonatomic) NSMutableArray *invitedFriends;
+@property(nonatomic, strong) NSMutableData * data;
 @end

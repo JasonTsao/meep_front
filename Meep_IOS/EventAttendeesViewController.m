@@ -23,10 +23,55 @@
     return self;
 }
 
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+{
+    return [_invitedFriends count];
+}
+
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
+{
+    return 1;
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSLog(@"in collection view didselectitematindexpath: %@", [_invitedFriends[indexPath.row] name]);
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"invitedFriendCell" forIndexPath:indexPath];
+    //UIImage *cellImage = [[UIImage alloc] init];
+    UIButton *cellButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    NSString *user_name;
+    
+    if([[_invitedFriends[indexPath.row] name] length] >= 6){
+        user_name = [[_invitedFriends[indexPath.row] name] substringToIndex:6];
+    }
+    else{
+        user_name = [_invitedFriends[indexPath.row] name];
+    }
+    
+    [cellButton addTarget:self
+                   action:@selector(openFriendPage:)
+         forControlEvents:UIControlEventTouchUpInside];
+    [cellButton setTitle:user_name forState:UIControlStateNormal];
+    cellButton.frame = CGRectMake(0.0, 0.0, 50.0, 50.0);
+    [cell.contentView addSubview: cellButton];
+    return cell;
+}
+
+
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     self.title = @"Invited";
+    NSLog(@"event invited friends page loaded!");
+    NSLog(@"invited friends: %@", _invitedFriends);
+    NSLog(@"current event: %@", _currentEvent);
     // Do any additional setup after loading the view.
 }
 

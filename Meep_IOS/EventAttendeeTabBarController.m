@@ -7,8 +7,11 @@
 //
 
 #import "EventAttendeeTabBarController.h"
+#import "EventAttendeesViewController.h"
+#import "EventAttendeesDistanceViewController.h"
 
 @interface EventAttendeeTabBarController ()
+
 
 @end
 
@@ -29,6 +32,13 @@
     [self.delegate backToEventPage:self];
 }
 
+- (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController
+{
+    NSLog(@"in should select view controller");
+    NSLog(@"view controller:%@",viewController);
+    return YES;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -39,6 +49,13 @@
     
     self.navigationItem.leftBarButtonItem = customBarItem;
     self.navigationItem.rightBarButtonItem = optionsBarItem;
+    
+    EventAttendeesViewController *eventAttendeesViewController = [self.tabBarController.viewControllers objectAtIndex:0];
+    
+    NSLog(@"view controllers: %@", self.tabBarController.viewControllers);
+    NSLog(@"eventattendees view controller: %@", eventAttendeesViewController);
+    eventAttendeesViewController.invitedFriends = _invitedFriends;
+    eventAttendeesViewController.currentEvent = _currentEvent;
     // Do any additional setup after loading the view.
 }
 
@@ -48,7 +65,7 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
+
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -56,7 +73,9 @@
 {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
+    NSLog(@"seguing to : %@", segue);
+    NSLog(@"sender is: %@", sender);
 }
-*/
+
 
 @end
