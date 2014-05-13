@@ -98,6 +98,7 @@
     NSString *messageText = _messageField.text;
     NSLog(@"Message: %@", messageText);
     NSMutableArray *invitedFriendsToSend = [[NSMutableArray alloc] init];
+    NSDictionary * postDict;
     
     for (int i = 0; i < [_invited_friends_list count]; i++){
         NSString *user_id = [NSString stringWithFormat: @"%i", [_invited_friends_list[i] account_id]];
@@ -111,9 +112,14 @@
     
     if(_selectedGroup != nil){
         // send group id to create event as well
+        NSString *group_id = [NSString stringWithFormat:@"%i", _selectedGroup.group_id];
+        postDict = [[NSDictionary alloc] initWithObjectsAndKeys:messageText, @"description", invitedFriendsToSend, @"invited_friends", group_id,@"group_id", nil];
     }
+    else{
+        postDict = [[NSDictionary alloc] initWithObjectsAndKeys:messageText, @"description", invitedFriendsToSend, @"invited_friends", nil];
+    }
+
     
-    NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:messageText, @"description", invitedFriendsToSend, @"invited_friends", nil];
     NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
     NSURLResponse * response = nil;
     NSError * error = nil;
