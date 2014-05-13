@@ -11,6 +11,7 @@
 #import "EditEventViewController.h"
 #import "FriendProfileViewController.h"
 #import "AddRemoveFriendsFromEventTableViewController.h"
+#import "EventAttendeeTabBarController.h"
 
 
 @interface EventPageViewController ()
@@ -26,6 +27,8 @@
 @property (nonatomic, assign) BOOL showingFriendPage;
 
 @property (nonatomic, strong) AddRemoveFriendsFromEventTableViewController *addRemoveFriendsFromEventTableViewController;
+
+@property (nonatomic, strong) EventAttendeeTabBarController *eventAttendeeTabBarController;
 
 @property(nonatomic, strong) NSMutableArray *basicInfoToDisplay;
 @property(nonatomic, strong) NSMutableArray *locationInfoToDisplay;
@@ -46,6 +49,19 @@
 - (void) leaveEvent
 {
     // remove user from event
+}
+
+- (void) openEventAttendeesPage
+{
+    UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"CenterStoryboard" bundle:nil];
+    _eventAttendeeTabBarController = (EventAttendeeTabBarController *)[storyboard instantiateViewControllerWithIdentifier:@"eventAttendeeTabController"];
+    
+    UINavigationController *navigation = [[UINavigationController alloc]initWithRootViewController:_eventAttendeeTabBarController];
+    [_eventAttendeeTabBarController setDelegate:self];
+    //_addRemoveFriendsFromEventTableViewController.invitedFriends = _invitedFriends;
+    _eventAttendeeTabBarController.invitedFriends = _invitedFriends;
+    _eventAttendeeTabBarController.currentEvent = _currentEvent;
+    [self presentViewController:navigation animated:YES completion:nil];
 }
 
 - (void) openEditEventPage
@@ -238,6 +254,11 @@
     if(indexPath.section == 1){
         if(indexPath.row == 1){
             NSLog(@"Transfer to users map app!");
+        }
+    }
+    if(indexPath.section == 3){
+        if(indexPath.row == 0){
+            [self openEventAttendeesPage];
         }
     }
     

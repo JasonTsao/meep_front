@@ -80,6 +80,9 @@
 		96E1D2731918549400951DEB /* DjangoAuthClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E1D2701918549400951DEB /* DjangoAuthClient.m */; };
 		96E1D2741918549400951DEB /* DjangoAuthLoginResultObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E1D2721918549400951DEB /* DjangoAuthLoginResultObject.m */; };
 		96E1D277191854D900951DEB /* AuthenticationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E1D276191854D900951DEB /* AuthenticationViewController.m */; };
+		96F338EC1921F82A0031FB2E /* EventAttendeesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96F338EB1921F82A0031FB2E /* EventAttendeesViewController.m */; };
+		96F338EF1921F8430031FB2E /* EventAttendeesDistanceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96F338EE1921F8430031FB2E /* EventAttendeesDistanceViewController.m */; };
+		96F338F21921F87C0031FB2E /* EventAttendeeTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96F338F11921F87C0031FB2E /* EventAttendeeTabBarController.m */; };
 		96FD569A19218C110085B364 /* GroupEventsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96FD569919218C110085B364 /* GroupEventsTableViewController.m */; };
 		DAF700821917209A004EDC66 /* ABIGBOOB.m in Sources */ = {isa = PBXBuildFile; fileRef = DAF700811917209A004EDC66 /* ABIGBOOB.m */; };
 /* End PBXBuildFile section */
@@ -225,6 +228,12 @@
 		96E1D2721918549400951DEB /* DjangoAuthLoginResultObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DjangoAuthLoginResultObject.m; sourceTree = "<group>"; };
 		96E1D275191854D900951DEB /* AuthenticationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthenticationViewController.h; sourceTree = "<group>"; };
 		96E1D276191854D900951DEB /* AuthenticationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthenticationViewController.m; sourceTree = "<group>"; };
+		96F338EA1921F82A0031FB2E /* EventAttendeesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventAttendeesViewController.h; sourceTree = "<group>"; };
+		96F338EB1921F82A0031FB2E /* EventAttendeesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventAttendeesViewController.m; sourceTree = "<group>"; };
+		96F338ED1921F8430031FB2E /* EventAttendeesDistanceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventAttendeesDistanceViewController.h; sourceTree = "<group>"; };
+		96F338EE1921F8430031FB2E /* EventAttendeesDistanceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventAttendeesDistanceViewController.m; sourceTree = "<group>"; };
+		96F338F01921F87C0031FB2E /* EventAttendeeTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventAttendeeTabBarController.h; sourceTree = "<group>"; };
+		96F338F11921F87C0031FB2E /* EventAttendeeTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventAttendeeTabBarController.m; sourceTree = "<group>"; };
 		96FD569819218C110085B364 /* GroupEventsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupEventsTableViewController.h; sourceTree = "<group>"; };
 		96FD569919218C110085B364 /* GroupEventsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupEventsTableViewController.m; sourceTree = "<group>"; };
 		DAF700801917209A004EDC66 /* ABIGBOOB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABIGBOOB.h; sourceTree = "<group>"; };
@@ -424,6 +433,12 @@
 				96967E1C191D4887007613AF /* EditEventViewController.m */,
 				96967E1E191D5BF5007613AF /* AddRemoveFriendsFromEventTableViewController.h */,
 				96967E1F191D5BF5007613AF /* AddRemoveFriendsFromEventTableViewController.m */,
+				96F338EA1921F82A0031FB2E /* EventAttendeesViewController.h */,
+				96F338EB1921F82A0031FB2E /* EventAttendeesViewController.m */,
+				96F338ED1921F8430031FB2E /* EventAttendeesDistanceViewController.h */,
+				96F338EE1921F8430031FB2E /* EventAttendeesDistanceViewController.m */,
+				96F338F01921F87C0031FB2E /* EventAttendeeTabBarController.h */,
+				96F338F11921F87C0031FB2E /* EventAttendeeTabBarController.m */,
 			);
 			name = "Event Pages";
 			sourceTree = "<group>";
@@ -699,9 +714,11 @@
 				96B397CB191B4BB700FFA7BF /* SignUpViewController.m in Sources */,
 				96E1D22E1913645600951DEB /* GroupsViewController.m in Sources */,
 				96E1D22B1913503600951DEB /* CreateMessageViewController.m in Sources */,
+				96F338F21921F87C0031FB2E /* EventAttendeeTabBarController.m in Sources */,
 				968630391909FAB200CAE305 /* Photo.m in Sources */,
 				96E1D26719173E8D00951DEB /* AddFriendsViewController.m in Sources */,
 				3CCC508919059F9500EB0980 /* MEPAppDelegate.m in Sources */,
+				96F338EF1921F8430031FB2E /* EventAttendeesDistanceViewController.m in Sources */,
 				3CCC51591905A20D00EB0980 /* EventCreatorViewController.m in Sources */,
 				96E1D2371915977400951DEB /* Group.m in Sources */,
 				3CCC51621905A20D00EB0980 /* MainViewController.m in Sources */,
@@ -730,6 +747,7 @@
 				968630371909FAB200CAE305 /* FriendProfileViewController.m in Sources */,
 				968630361909FAB200CAE305 /* FriendFullSizeProfileImageViewController.m in Sources */,
 				3CCC51661905A20D00EB0980 /* RightPanelViewController.m in Sources */,
+				96F338EC1921F82A0031FB2E /* EventAttendeesViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
