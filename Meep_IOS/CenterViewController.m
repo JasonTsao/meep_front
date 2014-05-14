@@ -100,17 +100,30 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"upcomingEvent" forIndexPath:indexPath];
     NSString *dateString = _datesArray[indexPath.section];
     
+    // Insert event icon into the cell.
+    UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(6, 6, 44, 44)];
+    img.image = [UIImage imageNamed:@"glass16.png"];
+    [cell.contentView addSubview:img];
     NSMutableArray *eventArray = [_dateEventsDictionary objectForKey:dateString];
     Event *upcomingEvent = eventArray[indexPath.row];
     
     //Event *upcomingEvent = [_eventArray objectAtIndex:indexPath.row];
-    cell.textLabel.text = upcomingEvent.description;
+    UILabel *eventHeader = [[UILabel alloc] initWithFrame:CGRectMake(60, 15, 235, 21)];
+    eventHeader.text = upcomingEvent.description;
+    [eventHeader setFont:[UIFont systemFontOfSize:18]];
+    // cell.textLabel.text = upcomingEvent.description;
     NSTimeInterval startedTime = [upcomingEvent.start_time doubleValue];
     NSDate *startedDate = [[NSDate alloc] initWithTimeIntervalSince1970:startedTime];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"h:mm a"];
     NSString * eventDate = [dateFormatter stringFromDate:startedDate];
-    cell.detailTextLabel.text = eventDate;
+    // cell.detailTextLabel.text = eventDate;
+    UILabel * eventDetailLabel = [[UILabel alloc] initWithFrame:CGRectMake(60, 35, 235, 21)];
+    eventDetailLabel.text = eventDate;
+    [eventDetailLabel setFont:[UIFont systemFontOfSize:12]];
+    [cell.contentView addSubview:eventHeader];
+    [cell.contentView addSubview:eventDetailLabel];
+    
     
     return cell;
 }
@@ -296,10 +309,8 @@
     NSError* error;
     NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:_data options:0 error:&error];
     NSArray * upcoming = jsonResponse[@"upcoming_events"];
-    NSArray * owned = jsonResponse[@"owned_upcoming_events"];
     NSString *startTime;
     NSMutableArray *unsortedEventArray = [[NSMutableArray alloc] init];
-    NSInteger numRowsInSection = 0;
     _datesArray = [[NSMutableArray alloc] init];
     for(NSDictionary *eventObj in upcoming) {
         if( [eventObj[@"start_time"]  isEqual:[NSNull null]]){

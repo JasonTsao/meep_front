@@ -8,6 +8,25 @@
 
 /* Begin PBXBuildFile section */
 		3CB231FE192176B900684E1D /* MEPLocationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CB231FD192176B900684E1D /* MEPLocationService.m */; };
+		3CC11A341923F2FE003A6A57 /* cocktail6.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CC11A211923F2FE003A6A57 /* cocktail6.png */; };
+		3CC11A351923F2FE003A6A57 /* cocktail7.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CC11A221923F2FE003A6A57 /* cocktail7.png */; };
+		3CC11A361923F2FE003A6A57 /* communities.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CC11A231923F2FE003A6A57 /* communities.png */; };
+		3CC11A371923F2FE003A6A57 /* dumbbell20.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CC11A241923F2FE003A6A57 /* dumbbell20.png */; };
+		3CC11A381923F2FE003A6A57 /* fork.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CC11A251923F2FE003A6A57 /* fork.png */; };
+		3CC11A391923F2FE003A6A57 /* gears.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CC11A261923F2FE003A6A57 /* gears.png */; };
+		3CC11A3A1923F2FE003A6A57 /* glass16.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CC11A271923F2FE003A6A57 /* glass16.png */; };
+		3CC11A3B1923F2FE003A6A57 /* gps4.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CC11A281923F2FE003A6A57 /* gps4.png */; };
+		3CC11A3C1923F2FE003A6A57 /* left1.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CC11A291923F2FE003A6A57 /* left1.png */; };
+		3CC11A3D1923F2FE003A6A57 /* margarita.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CC11A2A1923F2FE003A6A57 /* margarita.png */; };
+		3CC11A3E1923F2FE003A6A57 /* planet5.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CC11A2B1923F2FE003A6A57 /* planet5.png */; };
+		3CC11A3F1923F2FE003A6A57 /* plate7.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CC11A2C1923F2FE003A6A57 /* plate7.png */; };
+		3CC11A401923F2FE003A6A57 /* pointer5.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CC11A2D1923F2FE003A6A57 /* pointer5.png */; };
+		3CC11A411923F2FE003A6A57 /* reset1.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CC11A2E1923F2FE003A6A57 /* reset1.png */; };
+		3CC11A421923F2FE003A6A57 /* small43.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CC11A2F1923F2FE003A6A57 /* small43.png */; };
+		3CC11A431923F2FE003A6A57 /* soccer19.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CC11A301923F2FE003A6A57 /* soccer19.png */; };
+		3CC11A441923F2FE003A6A57 /* sun23.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CC11A311923F2FE003A6A57 /* sun23.png */; };
+		3CC11A451923F2FE003A6A57 /* tree60.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CC11A321923F2FE003A6A57 /* tree60.png */; };
+		3CC11A461923F2FE003A6A57 /* wine47.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CC11A331923F2FE003A6A57 /* wine47.png */; };
 		3CCC507919059F9500EB0980 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CCC507819059F9500EB0980 /* Foundation.framework */; };
 		3CCC507B19059F9500EB0980 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CCC507A19059F9500EB0980 /* CoreGraphics.framework */; };
 		3CCC507D19059F9500EB0980 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CCC507C19059F9500EB0980 /* UIKit.framework */; };
@@ -119,6 +138,25 @@
 /* Begin PBXFileReference section */
 		3CB231FC192176B900684E1D /* MEPLocationService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MEPLocationService.h; path = ../MEPLocationService.h; sourceTree = "<group>"; };
 		3CB231FD192176B900684E1D /* MEPLocationService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MEPLocationService.m; path = ../MEPLocationService.m; sourceTree = "<group>"; };
+		3CC11A211923F2FE003A6A57 /* cocktail6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cocktail6.png; sourceTree = "<group>"; };
+		3CC11A221923F2FE003A6A57 /* cocktail7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cocktail7.png; sourceTree = "<group>"; };
+		3CC11A231923F2FE003A6A57 /* communities.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = communities.png; sourceTree = "<group>"; };
+		3CC11A241923F2FE003A6A57 /* dumbbell20.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dumbbell20.png; sourceTree = "<group>"; };
+		3CC11A251923F2FE003A6A57 /* fork.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fork.png; sourceTree = "<group>"; };
+		3CC11A261923F2FE003A6A57 /* gears.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gears.png; sourceTree = "<group>"; };
+		3CC11A271923F2FE003A6A57 /* glass16.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = glass16.png; sourceTree = "<group>"; };
+		3CC11A281923F2FE003A6A57 /* gps4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gps4.png; sourceTree = "<group>"; };
+		3CC11A291923F2FE003A6A57 /* left1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = left1.png; sourceTree = "<group>"; };
+		3CC11A2A1923F2FE003A6A57 /* margarita.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = margarita.png; sourceTree = "<group>"; };
+		3CC11A2B1923F2FE003A6A57 /* planet5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = planet5.png; sourceTree = "<group>"; };
+		3CC11A2C1923F2FE003A6A57 /* plate7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = plate7.png; sourceTree = "<group>"; };
+		3CC11A2D1923F2FE003A6A57 /* pointer5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pointer5.png; sourceTree = "<group>"; };
+		3CC11A2E1923F2FE003A6A57 /* reset1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = reset1.png; sourceTree = "<group>"; };
+		3CC11A2F1923F2FE003A6A57 /* small43.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = small43.png; sourceTree = "<group>"; };
+		3CC11A301923F2FE003A6A57 /* soccer19.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = soccer19.png; sourceTree = "<group>"; };
+		3CC11A311923F2FE003A6A57 /* sun23.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sun23.png; sourceTree = "<group>"; };
+		3CC11A321923F2FE003A6A57 /* tree60.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tree60.png; sourceTree = "<group>"; };
+		3CC11A331923F2FE003A6A57 /* wine47.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wine47.png; sourceTree = "<group>"; };
 		3CCC507519059F9500EB0980 /* Meep_IOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Meep_IOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3CCC507819059F9500EB0980 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		3CCC507A19059F9500EB0980 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -285,6 +323,40 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3CC119F91923E5E1003A6A57 /* icons */ = {
+			isa = PBXGroup;
+			children = (
+				3CC11A201923F2FE003A6A57 /* Icon Assets */,
+			);
+			name = icons;
+			sourceTree = "<group>";
+		};
+		3CC11A201923F2FE003A6A57 /* Icon Assets */ = {
+			isa = PBXGroup;
+			children = (
+				3CC11A211923F2FE003A6A57 /* cocktail6.png */,
+				3CC11A221923F2FE003A6A57 /* cocktail7.png */,
+				3CC11A231923F2FE003A6A57 /* communities.png */,
+				3CC11A241923F2FE003A6A57 /* dumbbell20.png */,
+				3CC11A251923F2FE003A6A57 /* fork.png */,
+				3CC11A261923F2FE003A6A57 /* gears.png */,
+				3CC11A271923F2FE003A6A57 /* glass16.png */,
+				3CC11A281923F2FE003A6A57 /* gps4.png */,
+				3CC11A291923F2FE003A6A57 /* left1.png */,
+				3CC11A2A1923F2FE003A6A57 /* margarita.png */,
+				3CC11A2B1923F2FE003A6A57 /* planet5.png */,
+				3CC11A2C1923F2FE003A6A57 /* plate7.png */,
+				3CC11A2D1923F2FE003A6A57 /* pointer5.png */,
+				3CC11A2E1923F2FE003A6A57 /* reset1.png */,
+				3CC11A2F1923F2FE003A6A57 /* small43.png */,
+				3CC11A301923F2FE003A6A57 /* soccer19.png */,
+				3CC11A311923F2FE003A6A57 /* sun23.png */,
+				3CC11A321923F2FE003A6A57 /* tree60.png */,
+				3CC11A331923F2FE003A6A57 /* wine47.png */,
+			);
+			path = "Icon Assets";
+			sourceTree = "<group>";
+		};
 		3CCC506C19059F9500EB0980 = {
 			isa = PBXGroup;
 			children = (
@@ -360,6 +432,7 @@
 		3CCC507F19059F9500EB0980 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				3CC119F91923E5E1003A6A57 /* icons */,
 				3CCC51721905A55F00EB0980 /* MeepIOS-Info.plist */,
 				3CCC516B1905A3B000EB0980 /* Meep_IOS-Info.plist */,
 				3CCC516C1905A3B000EB0980 /* Meep_IOS-Prefix.pch */,
@@ -660,26 +733,45 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3CC11A3C1923F2FE003A6A57 /* left1.png in Resources */,
+				3CC11A3E1923F2FE003A6A57 /* planet5.png in Resources */,
 				3CDDFFE01907343A006C91BD /* TagButtons.xib in Resources */,
 				3CCC51701905A46400EB0980 /* EventCell.xib in Resources */,
 				3CCE111F190AAA88004AD66E /* LocationSearch.xib in Resources */,
+				3CC11A421923F2FE003A6A57 /* small43.png in Resources */,
 				3CCC508319059F9500EB0980 /* InfoPlist.strings in Resources */,
 				3CCC51671905A20D00EB0980 /* RightPanelViewController.xib in Resources */,
+				3CC11A3D1923F2FE003A6A57 /* margarita.png in Resources */,
 				3CCC51601905A20D00EB0980 /* MainCellLeft.xib in Resources */,
+				3CC11A441923F2FE003A6A57 /* sun23.png in Resources */,
 				3CCC515C1905A20D00EB0980 /* Images.xcassets in Resources */,
+				3CC11A3F1923F2FE003A6A57 /* plate7.png in Resources */,
+				3CC11A431923F2FE003A6A57 /* soccer19.png in Resources */,
 				3CCC51561905A20D00EB0980 /* CreateEvent.xib in Resources */,
 				3CCC51631905A20D00EB0980 /* MainViewController.xib in Resources */,
+				3CC11A3B1923F2FE003A6A57 /* gps4.png in Resources */,
 				3CCC51731905A55F00EB0980 /* MeepIOS-Info.plist in Resources */,
+				3CC11A371923F2FE003A6A57 /* dumbbell20.png in Resources */,
+				3CC11A3A1923F2FE003A6A57 /* glass16.png in Resources */,
 				3CCC515A1905A20D00EB0980 /* EventPage.xib in Resources */,
+				3CC11A351923F2FE003A6A57 /* cocktail7.png in Resources */,
 				96E1D2391915CFE000951DEB /* CenterStoryboard.storyboard in Resources */,
+				3CC11A461923F2FE003A6A57 /* wine47.png in Resources */,
 				3CDDCDA1190872C600F851EE /* TimeSelect.xib in Resources */,
 				3CCC51551905A20D00EB0980 /* CenterViewController.xib in Resources */,
+				3CC11A451923F2FE003A6A57 /* tree60.png in Resources */,
+				3CC11A381923F2FE003A6A57 /* fork.png in Resources */,
+				3CC11A411923F2FE003A6A57 /* reset1.png in Resources */,
+				3CC11A341923F2FE003A6A57 /* cocktail6.png in Resources */,
 				3CCC51611905A20D00EB0980 /* MainCellRight.xib in Resources */,
 				3CCC51681905A20D00EB0980 /* SplashPage.xib in Resources */,
+				3CC11A391923F2FE003A6A57 /* gears.png in Resources */,
 				3CCC516D1905A3B000EB0980 /* Meep_IOS-Info.plist in Resources */,
 				3CCC515E1905A20D00EB0980 /* LeftPanelViewController.xib in Resources */,
 				3CCC51571905A20D00EB0980 /* InfoPlist.strings in Resources */,
+				3CC11A401923F2FE003A6A57 /* pointer5.png in Resources */,
 				3CCC51691905A20D00EB0980 /* UpcomingEventCell.storyboard in Resources */,
+				3CC11A361923F2FE003A6A57 /* communities.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

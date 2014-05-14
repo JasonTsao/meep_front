@@ -110,7 +110,7 @@
                                                                              options: NSJSONReadingMutableContainers
                                                                                error: &error];
             new_friend.name = new_friend_dict[@"name"];
-            new_friend.numTimesInvitedByMe = new_friend_dict[@"invited_count"];
+            new_friend.numTimesInvitedByMe = (int) new_friend_dict[@"invited_count"];
             new_friend.phoneNumber= new_friend_dict[@"phone_number"];
             new_friend.imageFileName = new_friend_dict[@"pf_pic"];
             new_friend.bio = new_friend_dict[@"bio"];
