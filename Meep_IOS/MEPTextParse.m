@@ -73,6 +73,9 @@
     }
     int previousBeginningOfExpression = 0;
     for (int i = 0; i < arraySize; i++) {
+        if (i == 0) {
+            [contentDictionary setValue:[MEPTextParse identifyCategory:[textArray objectAtIndex:i]] forKey:@"category"];
+        }
         NSString * word = [textArray objectAtIndex:i];
         NSString * phrase = @"";
         for (int j = beginningOfExpression; j < i + 1; j++) {
@@ -321,6 +324,34 @@
     [hours setDateFormat:@"HH"];
     [minutes setDateFormat:@"mm"];
     return @"";
+}
+
++ (NSString*) identifyCategory: (NSString*)text {
+    NSArray * textArray = [text componentsSeparatedByString:@" "];
+    NSString * firstWord = textArray[0];
+    NSArray * category;
+    NSString * first = [firstWord lowercaseString];
+    category = [[NSArray alloc] initWithObjects:@"dinner",@"lunch",@"breakfast", nil];
+    if ([category containsObject:first]) {
+        return @"meal";
+    }
+    category = [[NSArray alloc] initWithObjects:@"clubbing", nil];
+    if ([category containsObject:first]) {
+        return @"nightlife";
+    }
+    category = [[NSArray alloc] initWithObjects:@"drinks", nil];
+    if ([category containsObject:first]) {
+        return @"drinks";
+    }
+    category = [[NSArray alloc] initWithObjects:@"call",@"meeting",nil];
+    if ([category containsObject:first]) {
+        return @"meeting";
+    }
+    category = [[NSArray alloc] initWithObjects:@"hiking",@"beach",@"camping", nil];
+    if ([category containsObject:first]) {
+        return @"outdoors";
+    }
+    return @"generic";
 }
 
 @end

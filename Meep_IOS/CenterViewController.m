@@ -9,6 +9,7 @@
 #import "CenterViewController.h"
 #import "MEEPhttp.h"
 #import "Event.h"
+#import "MEPTextParse.h"
 
 
 @interface CenterViewController () <UITableViewDataSource>
@@ -99,11 +100,6 @@
 
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"upcomingEvent" forIndexPath:indexPath];
     NSString *dateString = _datesArray[indexPath.section];
-    
-    // Insert event icon into the cell.
-    UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(6, 6, 44, 44)];
-    img.image = [UIImage imageNamed:@"glass16.png"];
-    [cell.contentView addSubview:img];
     NSMutableArray *eventArray = [_dateEventsDictionary objectForKey:dateString];
     Event *upcomingEvent = eventArray[indexPath.row];
     
@@ -123,7 +119,28 @@
     [eventDetailLabel setFont:[UIFont systemFontOfSize:12]];
     [cell.contentView addSubview:eventHeader];
     [cell.contentView addSubview:eventDetailLabel];
-    
+    NSString * description = upcomingEvent.description;
+    NSString * category = [MEPTextParse identifyCategory:description];
+    NSString * imageFileName = @"tree60.png";
+    if ([category isEqualToString:@"meal"]) {
+        imageFileName = @"fork.png";
+    }
+    else if ([category isEqualToString:@"nightlife"]) {
+        imageFileName = @"jumping2.png";
+    }
+    else if ([category isEqualToString:@"drinks"]) {
+        imageFileName = @"glass16";
+    }
+    else if ([category isEqualToString:@"meeting"]) {
+        imageFileName = @"communities.png";
+    }
+    else if ([category isEqualToString:@"outdoors"]) {
+        imageFileName = @"sun23.png";
+    }
+    // Insert event icon into the cell.
+    UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(6, 6, 44, 44)];
+    img.image = [UIImage imageNamed:imageFileName];
+    [cell.contentView addSubview:img];
     
     return cell;
 }
