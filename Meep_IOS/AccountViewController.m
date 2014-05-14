@@ -167,12 +167,30 @@
     NSLog(@"selected logout");
     NSData *authenticated = [[NSUserDefaults standardUserDefaults] objectForKey:@"auth_client"];
     _authClient = [NSKeyedUnarchiver unarchiveObjectWithData:authenticated];
-
     _authClient.enc_serverDidAuthenticate = NO;
     NSData *data = [NSKeyedArchiver archivedDataWithRootObject:_authClient];
     [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"auth_client"];
     [NSUserDefaults resetStandardUserDefaults];
+    
 
+    NSString * requestURL = [NSString stringWithFormat:@"%@logout",[MEEPhttp accountURL]];
+    NSDictionary * postDict = [[NSDictionary alloc] init];
+    NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
+    NSURLResponse * response = nil;
+    NSError * error = nil;
+    NSData *return_data = [NSURLConnection sendSynchronousRequest:request
+                                                returningResponse:&response
+                                                            error:&error];
+    
+    NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:return_data options:0 error:&error];
+    
+    if(jsonResponse[@"success"]){
+        NSLog(@"successfully logged out");
+    }
+    else{
+        NSLog(@"did not successfully logged out");
+    }
+    
     //[_delegate logout:self];
 }
 
