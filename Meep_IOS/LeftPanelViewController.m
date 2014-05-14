@@ -50,8 +50,6 @@
     if(section == 0){
         NSData *authenticated = [[NSUserDefaults standardUserDefaults] objectForKey:@"auth_client"];
         _authClient = [NSKeyedUnarchiver unarchiveObjectWithData:authenticated];
-        NSLog(@"authclient is :%@", _authClient);
-        NSLog(@"username is: %@", _authClient.enc_username);
         header = _authClient.enc_username;
     }
     

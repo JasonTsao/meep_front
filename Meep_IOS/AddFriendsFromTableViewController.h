@@ -20,6 +20,9 @@
 @property(nonatomic, strong) NSMutableArray * phoneContacts;
 @property(nonatomic, strong) NSMutableArray * phoneContactNumbers;
 @property(nonatomic, strong) NSMutableArray * friendsList;
+
+@property(nonatomic, strong) NSMutableArray * searchResultFriendsList;
+
 @property(nonatomic, strong) NSMutableDictionary * buttonTagDictionary;
 @property(nonatomic) NSInteger buttonTagNumber;
 @property(nonatomic, strong) NSString * viewTitle;
