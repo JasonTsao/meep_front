@@ -25,17 +25,11 @@
 }
 
 - (void) startSignificantChangeUpdates {
-    
-    if (_locationManager == nil) {
+    if (nil == _locationManager) {
         _locationManager = [[CLLocationManager alloc] init];
     }
-    
-    // This code is using the general location manager...
     _locationManager.delegate = self;
-    _locationManager.desiredAccuracy = kCLLocationAccuracyKilometer;
-    
-    _locationManager.distanceFilter = 500; // meters
-    [_locationManager startUpdatingLocation];
+    [_locationManager startMonitoringSignificantLocationChanges];
 }
 
 - (void) locationManager:(CLLocationManager *) manager didUpdateLocations:(NSArray *)locations {
