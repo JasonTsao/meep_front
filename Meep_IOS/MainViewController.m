@@ -119,9 +119,8 @@
 }
 
 - (void) logout:(AccountViewController *)controller{
-    NSLog(@"logging out in main view");
-    [self dismissViewControllerAnimated:YES completion:nil];
-    //[self dismissViewControllerAnimated:NO completion:^{[self openAuthenticationPage];}];
+    //[self dismissViewControllerAnimated:YES completion:nil];
+    [self dismissViewControllerAnimated:NO completion:^{[self openAuthenticationPage];}];
     
 }
 
@@ -353,9 +352,10 @@
     UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"CenterStoryboard" bundle:nil];
     _authenticationViewController = (AuthenticationViewController *)[storyboard instantiateViewControllerWithIdentifier:@"authentication"];
     
-    [self.view addSubview:_authenticationViewController.view];
+    //[self.view addSubview:_authenticationViewController.view];
     [_authenticationViewController setDelegate:self];
-    [self addChildViewController:_authenticationViewController];
+    [self presentViewController:_authenticationViewController animated:YES completion:nil];
+    //[self addChildViewController:_authenticationViewController];
 
 }
 

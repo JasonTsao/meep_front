@@ -186,6 +186,7 @@
     
     if(jsonResponse[@"success"]){
         NSLog(@"successfully logged out");
+        [_delegate logout:self];
     }
     else{
         NSLog(@"did not successfully logged out");
