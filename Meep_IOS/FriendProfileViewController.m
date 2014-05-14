@@ -27,6 +27,12 @@
     }
     return self;
 }
+
+- (void) backToEventAttendeesPage:(id)sender {
+    [self.delegate backToEventAttendeesPage:self];
+}
+
+
 - (IBAction)callFriend:(id)sender {
     NSLog(@"Phone number of friend %@", _currentFriend.phoneNumber);
 }
