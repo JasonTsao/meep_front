@@ -10,6 +10,7 @@
 #import "MEEPhttp.h"
 #import "AccountSettings.h"
 #import "MEPAppDelegate.h"
+#import "DjangoAuthClient.h"
 
 @interface AccountViewController ()
 
@@ -18,7 +19,7 @@
 @property NSArray *notifications;
 @property(nonatomic, strong) NSMutableData * data;
 @property(nonatomic, strong) AccountSettings * user_account_settings;
-
+@property(nonatomic, strong) DjangoAuthClient * authClient;
 
 @property BOOL privacy_allowed;
 @property BOOL search_allowed;
@@ -164,7 +165,15 @@
 - (void) logoutSelect
 {
     NSLog(@"selected logout");
-    [_delegate logout:self];
+    NSData *authenticated = [[NSUserDefaults standardUserDefaults] objectForKey:@"auth_client"];
+    _authClient = [NSKeyedUnarchiver unarchiveObjectWithData:authenticated];
+
+    _authClient.enc_serverDidAuthenticate = NO;
+    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:_authClient];
+    [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"auth_client"];
+    [NSUserDefaults resetStandardUserDefaults];
+
+    //[_delegate logout:self];
 }
 
 - (void)actionSheet:(UIActionSheet *)popup clickedButtonAtIndex:(NSInteger)buttonIndex {

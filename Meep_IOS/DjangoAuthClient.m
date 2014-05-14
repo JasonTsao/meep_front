@@ -28,6 +28,32 @@ NSString *const kDjangoAuthClientLoginFailureInactiveAccount = @"kDjangoAuthClie
 
 @implementation DjangoAuthClient
 
+@synthesize enc_username;
+@synthesize enc_password;
+@synthesize enc_email;
+@synthesize enc_serverDidRespond;
+@synthesize enc_serverDidAuthenticate;
+
+- (id)initWithCoder:(NSCoder *)decoder {
+    if (self = [super init]) {
+        self.enc_username = [decoder decodeObjectForKey:@"username"];
+        self.enc_password = [decoder decodeObjectForKey:@"password"];
+        self.enc_email = [decoder decodeObjectForKey:@"email"];
+        self.enc_serverDidRespond = [decoder decodeBoolForKey:@"serverDidRespond"];
+        self.enc_serverDidAuthenticate = [decoder decodeBoolForKey:@"serverDidAuthenticate"];
+    }
+    return self;
+}
+
+
+- (void)encodeWithCoder:(NSCoder *)encoder {
+    [encoder encodeObject:enc_username forKey:@"username"];
+    [encoder encodeObject:enc_password forKey:@"password"];
+    [encoder encodeObject:enc_email forKey:@"email"];
+    [encoder encodeBool:enc_serverDidRespond forKey:@"reminders"];
+    [encoder encodeBool:enc_serverDidAuthenticate forKey:@"serverDidAuthenticate"];
+}
+
 - (id)initWithURL:(NSString *)loginURL forUsername:(NSString *)username andPassword:(NSString *)password {
     self = [super init];
     if (!self) {
@@ -40,6 +66,7 @@ NSString *const kDjangoAuthClientLoginFailureInactiveAccount = @"kDjangoAuthClie
     _responseData = [[NSMutableData alloc] initWithCapacity:512];
     _serverDidRespond = NO;
     _serverDidAuthenticate = NO;
+    self.enc_serverDidAuthenticate = NO;
     
     return self;
 }
@@ -57,6 +84,7 @@ NSString *const kDjangoAuthClientLoginFailureInactiveAccount = @"kDjangoAuthClie
     _responseData = [[NSMutableData alloc] initWithCapacity:512];
     _serverDidRespond = NO;
     _serverDidAuthenticate = NO;
+    self.enc_serverDidAuthenticate = NO;
     
     return self;
 }
@@ -125,6 +153,7 @@ NSString *const kDjangoAuthClientLoginFailureInactiveAccount = @"kDjangoAuthClie
         }
         [connection cancel];
         if ([_delegate respondsToSelector:@selector(loginSuccessful:)]) {
+            self.enc_serverDidAuthenticate = YES;
             [_delegate loginSuccessful:resultObject];
         }
         [[NSNotificationCenter defaultCenter] postNotificationName:DjangoAuthClientDidLoginSuccessfully object:resultObject];
