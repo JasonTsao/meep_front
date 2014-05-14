@@ -8,6 +8,7 @@
 
 #import "GroupEventsTableViewController.h"
 #import "GroupsViewController.h"
+#import "EventPageViewController.h"
 #import "Event.h"
 #import "MEEPhttp.h"
 
@@ -18,6 +19,8 @@
 @property(nonatomic, strong) NSMutableArray *datesSectionCountArray;
 @property(nonatomic, strong) NSMutableDictionary *datesSectionCountDictionary;
 @property(nonatomic, strong) NSMutableDictionary *dateEventsDictionary;
+
+@property (nonatomic, strong) EventPageViewController *eventPageViewController;
 
 
 @property(nonatomic, strong) NSArray * eventArray;
@@ -36,10 +39,8 @@
 }
 
 - (void) getUpcomingGroupEvents {
-    //NSString * requestURL = [NSString stringWithFormat:@"%@upcoming/1",[MEEPhttp eventURL]];
-    //NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:@"1",@"user", nil];
+
     NSString * requestURL = [NSString stringWithFormat:@"%@group/%i/upcoming",[MEEPhttp eventURL], _group.group_id];
-    NSLog(@"upcoming group evente url: %@", requestURL);
     NSDictionary * postDict = [[NSDictionary alloc] init];
     NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
     NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
@@ -69,7 +70,6 @@
     NSError* error;
     NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:_data options:0 error:&error];
     
-    NSLog(@"upcoming group events jsonresponse: %@", jsonResponse);
     NSArray * upcoming = jsonResponse[@"upcoming_events"];
     NSArray * owned = jsonResponse[@"owned_upcoming_events"];
     NSString *startTime;
@@ -114,9 +114,6 @@
             
             [[_dateEventsDictionary valueForKey:eventDate] addObject:event];
         }
-        
-        //Event * event = [[Event alloc] initWithDescription:eventObj[@"description"] withName:eventObj[@"name"] startTime:startTime eventId:[eventObj[@"id"] integerValue]] ;
-        //[unsortedEventArray addObject:event];
     }
     
     NSSortDescriptor* nameSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"start_time" ascending:YES];
@@ -154,6 +151,11 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void) backToCenterFromEventPage:(EventPageViewController *)controller
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return [_datesArray count];
@@ -184,6 +186,21 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return 60;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSString *dateString = _datesArray[indexPath.section];
+    NSMutableArray *eventArray = [_dateEventsDictionary objectForKey:dateString];
+    Event *currentRecord = eventArray[indexPath.row];
+    //Event *currentRecord = [self.eventArray objectAtIndex:indexPath.row];
+    
+    UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"CenterStoryboard" bundle:nil];
+    self.eventPageViewController = (EventPageViewController *)[storyboard instantiateViewControllerWithIdentifier:@"EventViewController"];
+    _eventPageViewController.currentEvent = currentRecord;
+    [self.eventPageViewController setDelegate:self];
+    UINavigationController *navigation = [[UINavigationController alloc]initWithRootViewController:_eventPageViewController];
+    [self presentViewController:navigation animated:YES completion:nil];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
