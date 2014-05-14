@@ -23,6 +23,28 @@
     return self;
 }
 
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
+            headerCellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    UICollectionViewCell *headerCell = (UICollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"eventAttendeesHeader"
+                                                                                                         forIndexPath:indexPath];
+    
+    
+    
+    UILabel *cellLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 40.0)];
+    
+    
+    if (indexPath.section == 0){
+        NSLog(@"Attending");
+        cellLabel.text = @"Attending";
+    }
+    else if (indexPath.section == 1){
+        NSLog(@"Not Attending");
+        cellLabel.text = @"Not Attending";
+    }
+    [headerCell.contentView addSubview: cellLabel];
+    return headerCell;
+}
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
@@ -31,7 +53,7 @@
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
-    return 1;
+    return 2;
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
@@ -47,19 +69,22 @@
     UIButton *cellButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     NSString *user_name;
     
-    if([[_invitedFriends[indexPath.row] name] length] >= 6){
-        user_name = [[_invitedFriends[indexPath.row] name] substringToIndex:6];
-    }
-    else{
-        user_name = [_invitedFriends[indexPath.row] name];
+    if(indexPath.section == 1){
+        if([[_invitedFriends[indexPath.row] name] length] >= 6){
+            user_name = [[_invitedFriends[indexPath.row] name] substringToIndex:6];
+        }
+        else{
+            user_name = [_invitedFriends[indexPath.row] name];
+        }
+        
+        [cellButton addTarget:self
+                       action:@selector(openFriendPage:)
+             forControlEvents:UIControlEventTouchUpInside];
+        [cellButton setTitle:user_name forState:UIControlStateNormal];
+        cellButton.frame = CGRectMake(0.0, 0.0, 50.0, 50.0);
+        [cell.contentView addSubview: cellButton];
     }
     
-    [cellButton addTarget:self
-                   action:@selector(openFriendPage:)
-         forControlEvents:UIControlEventTouchUpInside];
-    [cellButton setTitle:user_name forState:UIControlStateNormal];
-    cellButton.frame = CGRectMake(0.0, 0.0, 50.0, 50.0);
-    [cell.contentView addSubview: cellButton];
     return cell;
 }
 
@@ -68,10 +93,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.navigationController.title = @"Invited";
+    self.navigationItem.title = @"Invited";
     self.title = @"Invited";
-    NSLog(@"event invited friends page loaded!");
-    NSLog(@"invited friends: %@", _invitedFriends);
-    NSLog(@"current event: %@", _currentEvent);
+    //self.collectionView.backgroundColor = [UIColor whiteColor];
     // Do any additional setup after loading the view.
 }
 

@@ -11,7 +11,7 @@
 #import "InvitedFriend.h"
 #import "Friend.h"
 
-@interface EventAttendeesDistanceViewController : UICollectionViewController
+@interface EventAttendeesDistanceViewController : UICollectionViewController<UIActionSheetDelegate>
 @property (nonatomic) Event *currentEvent;
 @property (nonatomic) NSMutableArray *invitedFriends;
 @property(nonatomic, strong) NSMutableData * data;

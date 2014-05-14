@@ -9,9 +9,10 @@
 #import "EventAttendeeTabBarController.h"
 #import "EventAttendeesViewController.h"
 #import "EventAttendeesDistanceViewController.h"
+#import "AddRemoveFriendsFromEventTableViewController.h"
 
 @interface EventAttendeeTabBarController ()
-
+@property (nonatomic, strong) AddRemoveFriendsFromEventTableViewController *addRemoveFriendsFromEventTableViewController;
 
 @end
 
@@ -32,12 +33,51 @@
     [self.delegate backToEventPage:self];
 }
 
-- (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController
+
+- (void) openAddRemoveFriendsPage
 {
-    NSLog(@"in should select view controller");
-    NSLog(@"view controller:%@",viewController);
-    return YES;
+    UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"CenterStoryboard" bundle:nil];
+    _addRemoveFriendsFromEventTableViewController = (AddRemoveFriendsFromEventTableViewController *)[storyboard instantiateViewControllerWithIdentifier:@"addRemoveFriendsFromEvent"];
+    
+    UINavigationController *navigation = [[UINavigationController alloc]initWithRootViewController:_addRemoveFriendsFromEventTableViewController];
+    [_addRemoveFriendsFromEventTableViewController setDelegate:self];
+    //_addRemoveFriendsFromEventTableViewController.invitedFriends = _invitedFriends;
+    _addRemoveFriendsFromEventTableViewController.originalInvitedFriends = _invitedFriends;
+    _addRemoveFriendsFromEventTableViewController.currentEvent = _currentEvent;
+    [self presentViewController:navigation animated:YES completion:nil];
 }
+
+
+- (void)actionSheet:(UIActionSheet *)popup clickedButtonAtIndex:(NSInteger)buttonIndex {
+    NSLog(@"clicked button at index: %i", buttonIndex);
+    switch (popup.tag) {
+        case 1: {
+            switch (buttonIndex) {
+                case 0:
+                    NSLog(@"Add Remove users");
+                    //[self logoutSelect];
+                    [self openAddRemoveFriendsPage];
+                    break;
+                default:
+                    break;
+            }
+            break;
+        }
+        default:
+            break;
+    }
+}
+
+- (void)openAttendeeOptions:(id)sender {
+    //[self.delegate backToEventPage:self];
+    UIActionSheet *eventOptionsPopup = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Add/Remove Friends",nil];
+    //else
+    //UIActionSheet *eventOptionsPopup = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil  otherButtonTitles:@"Leave Event",nil];
+    eventOptionsPopup.tag = 1;
+    [eventOptionsPopup showInView:self.view];
+
+}
+
 
 - (void)viewDidLoad
 {
@@ -50,12 +90,6 @@
     self.navigationItem.leftBarButtonItem = customBarItem;
     self.navigationItem.rightBarButtonItem = optionsBarItem;
     
-    EventAttendeesViewController *eventAttendeesViewController = [self.tabBarController.viewControllers objectAtIndex:0];
-    
-    NSLog(@"view controllers: %@", self.tabBarController.viewControllers);
-    NSLog(@"eventattendees view controller: %@", eventAttendeesViewController);
-    eventAttendeesViewController.invitedFriends = _invitedFriends;
-    eventAttendeesViewController.currentEvent = _currentEvent;
     // Do any additional setup after loading the view.
 }
 

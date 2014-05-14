@@ -27,9 +27,8 @@
 {
     [super viewDidLoad];
     self.title = @"Distance";
-    NSLog(@"event distance page loaded!");
-    NSLog(@"invited friends: %@", _invitedFriends);
-    NSLog(@"current event: %@", _currentEvent);
+    self.collectionView.backgroundColor = [UIColor whiteColor];
+
     // Do any additional setup after loading the view.
 }
 
