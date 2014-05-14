@@ -67,6 +67,7 @@ NSString *const kDjangoAuthClientLoginFailureInactiveAccount = @"kDjangoAuthClie
     _serverDidRespond = NO;
     _serverDidAuthenticate = NO;
     self.enc_serverDidAuthenticate = NO;
+    self.enc_username = username;
     
     return self;
 }
@@ -85,6 +86,7 @@ NSString *const kDjangoAuthClientLoginFailureInactiveAccount = @"kDjangoAuthClie
     _serverDidRespond = NO;
     _serverDidAuthenticate = NO;
     self.enc_serverDidAuthenticate = NO;
+    self.enc_username = username;
     
     return self;
 }
