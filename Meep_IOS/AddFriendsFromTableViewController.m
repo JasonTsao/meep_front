@@ -150,6 +150,10 @@
     
 }
 
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{
+    NSLog(@"%@", searchText);
+}
 
 - (void)viewDidLoad
 {
@@ -185,12 +189,19 @@
 -(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     NSString *header;
-    if (section == 0){
-        header = @"Friends who have Meep";
+    if( [_viewTitle isEqualToString:@"From Contacts"] ){
+        if (section == 0){
+            header = @"Friends who have Meep";
+        }
+        else if(section == 1){
+            header = @"Invite";
+        }
+    }else if( [_viewTitle isEqualToString:@"From Everyone"] ){
+        if(section == 0){
+            header = @"Users";
+        }
     }
-    else if(section == 1){
-        header = @"Invite";
-    }
+    
     return header;
 }
 
@@ -198,7 +209,14 @@
 {
 #warning Potentially incomplete method implementation.
     // Return the number of sections.
-    return 2;
+    NSInteger numSections = 0;
+    if( [_viewTitle isEqualToString:@"From Contacts"] ||  [_viewTitle isEqualToString:@"From Facebook"] ){
+        numSections = 2;
+    }
+    else if( [_viewTitle isEqualToString:@"From Everyone"] ){
+        numSections = 1;
+    }
+    return numSections;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -226,7 +244,7 @@
         [button setSelected:NO];
         NSString * requestURL = [NSString stringWithFormat:@"%@friends/unfriend",[MEEPhttp accountURL]];
         NSLog(@"request url : %@", requestURL);
-        NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:@"2", @"user", _buttonTagDictionary[[NSString stringWithFormat:@"%i", button.tag]],@"phone_number", nil];
+        NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:_buttonTagDictionary[[NSString stringWithFormat:@"%i", button.tag]],@"phone_number", nil];
         NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
         NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
         [conn start];
@@ -235,7 +253,7 @@
         [button setSelected:YES];
         NSString * requestURL = [NSString stringWithFormat:@"%@friends/add_by_phone",[MEEPhttp accountURL]];
         NSLog(@"request url : %@", requestURL);
-        NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:@"2", @"user", _buttonTagDictionary[[NSString stringWithFormat:@"%i", button.tag]],@"phone_number", nil];
+        NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:_buttonTagDictionary[[NSString stringWithFormat:@"%i", button.tag]],@"phone_number", nil];
         NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
         NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
         [conn start];
