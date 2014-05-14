@@ -7,6 +7,7 @@
 //
 
 #import "MEPLocationService.h"
+#import "MEEPhttp.h"
 #import <CoreLocation/CoreLocation.h>
 
 @interface MEPLocationService() <CLLocationManagerDelegate>
@@ -41,6 +42,12 @@
               location.coordinate.latitude,
               location.coordinate.longitude);
     }
+    NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:location.coordinate.latitude,@"latitude",
+                               location.coordinate.longitude,@"longitude", nil];
+    NSString * requestUrl = [NSString stringWithFormat:@"%@updateLocation",[MEEPhttp accountURL]];
+    NSURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestUrl postDictionary:postDict];
+    NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:requestUrl delegate:self];
+    [conn start];
 }
 
 - (void) locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
