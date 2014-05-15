@@ -15,7 +15,7 @@
 - (void) backToCenterFromCreateEvent:(InviteFriendsViewController *)controller;
 @end
 
-@interface InviteFriendsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
+@interface InviteFriendsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UISearchDisplayDelegate>
 @property(nonatomic, strong) id <InviteFriendsViewControllerDelegate> delegate;
 @property(nonatomic, strong) NSMutableData * data;
 

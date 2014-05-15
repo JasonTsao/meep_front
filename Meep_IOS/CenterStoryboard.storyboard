@@ -395,9 +395,17 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                <searchBar key="tableHeaderView" contentMode="redraw" id="WLc-bF-bDa">
+                                    <rect key="frame" x="0.0" y="64" width="320" height="44"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                    <textInputTraits key="textInputTraits"/>
+                                    <connections>
+                                        <outlet property="delegate" destination="3fY-a2-DTS" id="hX6-7T-x5c"/>
+                                    </connections>
+                                </searchBar>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="selectFriendCell" id="aye-gR-Uoc">
-                                        <rect key="frame" x="0.0" y="119" width="320" height="44"/>
+                                        <rect key="frame" x="0.0" y="163" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="aye-gR-Uoc" id="zmd-n4-3QA">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
@@ -427,9 +435,20 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                     </navigationItem>
                     <connections>
                         <outlet property="friendTable" destination="pwb-b5-L6d" id="qfg-G0-LkD"/>
+                        <outlet property="searchBar" destination="WLc-bF-bDa" id="CTE-MY-eF9"/>
+                        <outlet property="searchDisplayController" destination="XQi-P2-YBX" id="R4W-V8-lzD"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iel-xN-kRs" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <searchDisplayController id="XQi-P2-YBX">
+                    <connections>
+                        <outlet property="delegate" destination="3fY-a2-DTS" id="CKm-L6-KTf"/>
+                        <outlet property="searchBar" destination="WLc-bF-bDa" id="lfY-Ai-boe"/>
+                        <outlet property="searchContentsController" destination="3fY-a2-DTS" id="q3z-JC-RfD"/>
+                        <outlet property="searchResultsDataSource" destination="3fY-a2-DTS" id="t8x-ak-Wmf"/>
+                        <outlet property="searchResultsDelegate" destination="3fY-a2-DTS" id="U1U-Et-q1o"/>
+                    </connections>
+                </searchDisplayController>
             </objects>
             <point key="canvasLocation" x="64" y="-541"/>
         </scene>
