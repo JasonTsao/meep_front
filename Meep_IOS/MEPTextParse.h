@@ -10,4 +10,5 @@
 
 @interface MEPTextParse : NSObject
 -(NSDictionary*)parseText:(NSString*)text;
++(NSString*)identifyCategory:(NSString*)text;
 @end

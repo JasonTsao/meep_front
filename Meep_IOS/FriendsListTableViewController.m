@@ -97,12 +97,19 @@
 
 }
 
+- (void)refresh:(UIRefreshControl *)refreshControl {
+    [self getFriendsList];
+    [refreshControl endRefreshing];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
     self.title = @"Friends";
-    
+    UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
+    [refreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];
+    [self.tableView addSubview:refreshControl];
     friends_list = [[NSMutableArray alloc]init];
     
     NSData *friendsListData = [[NSUserDefaults standardUserDefaults] objectForKey:@"friends_list"];

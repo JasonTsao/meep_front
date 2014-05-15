@@ -76,8 +76,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self setupView];
+    BOOL viewExists = [self setupView];
     self.locationServiceManager = [[MEPLocationService alloc] init];
+    
+    if( viewExists){
+        NSLog(@"view already exists");
+    }
     //if( user is authenticated){
     //    [self setupView];
     //}
@@ -119,28 +123,34 @@
 }
 
 - (void) logout:(AccountViewController *)controller{
-    NSLog(@"logging out in main view");
-    [self dismissViewControllerAnimated:YES completion:nil];
-    //[self dismissViewControllerAnimated:NO completion:^{[self openAuthenticationPage];}];
+    //[self dismissViewControllerAnimated:YES completion:nil];
+    [self dismissViewControllerAnimated:NO completion:^{[self openAuthenticationPage];}];
     
 }
 
 #pragma mark -
 #pragma mark Setup View
 
-- (void)setupView
+- (BOOL)setupView
 {
     UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"CenterStoryboard" bundle:nil];
     
-    _centerViewController = (GroupsViewController *)[storyboard instantiateViewControllerWithIdentifier:@"centerView"];
-    _centerViewController.delegate = self;
+    if(_centerViewController == nil){
+        _centerViewController = (GroupsViewController *)[storyboard instantiateViewControllerWithIdentifier:@"centerView"];
+        _centerViewController.delegate = self;
+        
+        [self.view addSubview:_centerViewController.view];
+        [self addChildViewController:_centerViewController];
+        
+        [self setupGestures];
+    }
+    else{
+        return YES;
+    }
+    //_centerViewController = (GroupsViewController *)[storyboard instantiateViewControllerWithIdentifier:@"centerView"];
     
-    [self.view addSubview:_centerViewController.view];
-    [self addChildViewController:_centerViewController];
     
-    [self setupGestures];
-    
-    
+    return NO;
     //[self openAuthenticationPage];
 }
 
@@ -353,9 +363,10 @@
     UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"CenterStoryboard" bundle:nil];
     _authenticationViewController = (AuthenticationViewController *)[storyboard instantiateViewControllerWithIdentifier:@"authentication"];
     
-    [self.view addSubview:_authenticationViewController.view];
+    //[self.view addSubview:_authenticationViewController.view];
     [_authenticationViewController setDelegate:self];
-    [self addChildViewController:_authenticationViewController];
+    [self presentViewController:_authenticationViewController animated:YES completion:nil];
+    //[self addChildViewController:_authenticationViewController];
 
 }
 

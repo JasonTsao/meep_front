@@ -9,6 +9,7 @@
 #import "CenterViewController.h"
 #import "MEEPhttp.h"
 #import "Event.h"
+#import "MEPTextParse.h"
 
 
 @interface CenterViewController () <UITableViewDataSource>
@@ -99,18 +100,47 @@
 
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"upcomingEvent" forIndexPath:indexPath];
     NSString *dateString = _datesArray[indexPath.section];
-    
     NSMutableArray *eventArray = [_dateEventsDictionary objectForKey:dateString];
     Event *upcomingEvent = eventArray[indexPath.row];
     
     //Event *upcomingEvent = [_eventArray objectAtIndex:indexPath.row];
-    cell.textLabel.text = upcomingEvent.description;
+    UILabel *eventHeader = [[UILabel alloc] initWithFrame:CGRectMake(60, 15, 235, 21)];
+    eventHeader.text = upcomingEvent.description;
+    [eventHeader setFont:[UIFont systemFontOfSize:18]];
+    // cell.textLabel.text = upcomingEvent.description;
     NSTimeInterval startedTime = [upcomingEvent.start_time doubleValue];
     NSDate *startedDate = [[NSDate alloc] initWithTimeIntervalSince1970:startedTime];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"h:mm a"];
     NSString * eventDate = [dateFormatter stringFromDate:startedDate];
-    cell.detailTextLabel.text = eventDate;
+    // cell.detailTextLabel.text = eventDate;
+    UILabel * eventDetailLabel = [[UILabel alloc] initWithFrame:CGRectMake(60, 35, 235, 21)];
+    eventDetailLabel.text = eventDate;
+    [eventDetailLabel setFont:[UIFont systemFontOfSize:12]];
+    [cell.contentView addSubview:eventHeader];
+    [cell.contentView addSubview:eventDetailLabel];
+    NSString * description = upcomingEvent.description;
+    NSString * category = [MEPTextParse identifyCategory:description];
+    NSString * imageFileName = @"tree60.png";
+    if ([category isEqualToString:@"meal"]) {
+        imageFileName = @"fork.png";
+    }
+    else if ([category isEqualToString:@"nightlife"]) {
+        imageFileName = @"jumping2.png";
+    }
+    else if ([category isEqualToString:@"drinks"]) {
+        imageFileName = @"glass16";
+    }
+    else if ([category isEqualToString:@"meeting"]) {
+        imageFileName = @"communities.png";
+    }
+    else if ([category isEqualToString:@"outdoors"]) {
+        imageFileName = @"sun23.png";
+    }
+    // Insert event icon into the cell.
+    UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(6, 6, 44, 44)];
+    img.image = [UIImage imageNamed:imageFileName];
+    [cell.contentView addSubview:img];
     
     return cell;
 }
@@ -164,10 +194,19 @@
     [_delegate displayEventPage:currentRecord];
 }
 
+- (void)refresh:(UIRefreshControl *)refreshControl {
+    [self getUpcomingEvents];
+    [refreshControl endRefreshing];
+}
+
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
+    [refreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];
+    [self.upcomingEvents addSubview:refreshControl];
     //self.eventArray = [[NSMutableArray alloc] init];
     self.eventArray = [[NSArray alloc] init];
     self.datesSectionCountArray = [[NSMutableArray alloc]init];
@@ -199,11 +238,14 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    NSLog(@"center view appeared");
+    //[self getUpcomingEvents];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
 	[super viewDidAppear:animated];
+    [_upcomingEvents reloadData];
 }
 
 #pragma mark -
@@ -296,10 +338,8 @@
     NSError* error;
     NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:_data options:0 error:&error];
     NSArray * upcoming = jsonResponse[@"upcoming_events"];
-    NSArray * owned = jsonResponse[@"owned_upcoming_events"];
     NSString *startTime;
     NSMutableArray *unsortedEventArray = [[NSMutableArray alloc] init];
-    NSInteger numRowsInSection = 0;
     _datesArray = [[NSMutableArray alloc] init];
     for(NSDictionary *eventObj in upcoming) {
         if( [eventObj[@"start_time"]  isEqual:[NSNull null]]){
@@ -346,8 +386,8 @@
     
     NSSortDescriptor* nameSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"start_time" ascending:YES];
     _eventArray = [unsortedEventArray sortedArrayUsingDescriptors:[NSArray arrayWithObject:nameSortDescriptor]];
-    self.upcomingEvents.dataSource = self;
-    self.upcomingEvents.delegate = self;
+    //self.upcomingEvents.dataSource = self;
+    //self.upcomingEvents.delegate = self;
     [self.upcomingEvents reloadData];
 }
 

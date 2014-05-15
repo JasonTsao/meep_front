@@ -7,6 +7,7 @@
 //
 
 #import "MEPLocationService.h"
+#import "MEEPhttp.h"
 #import <CoreLocation/CoreLocation.h>
 
 @interface MEPLocationService() <CLLocationManagerDelegate>
@@ -25,17 +26,11 @@
 }
 
 - (void) startSignificantChangeUpdates {
-    
-    if (_locationManager == nil) {
+    if (nil == _locationManager) {
         _locationManager = [[CLLocationManager alloc] init];
     }
-    
-    // This code is using the general location manager...
     _locationManager.delegate = self;
-    _locationManager.desiredAccuracy = kCLLocationAccuracyKilometer;
-    
-    _locationManager.distanceFilter = 500; // meters
-    [_locationManager startUpdatingLocation];
+    [_locationManager startMonitoringSignificantLocationChanges];
 }
 
 - (void) locationManager:(CLLocationManager *) manager didUpdateLocations:(NSArray *)locations {
@@ -47,6 +42,14 @@
               location.coordinate.latitude,
               location.coordinate.longitude);
     }
+    NSString *latitude = [NSString stringWithFormat:@"%f", location.coordinate.latitude];
+    NSString *longitude = [NSString stringWithFormat:@"%f", location.coordinate.longitude];
+    NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:latitude,@"latitude",
+                               longitude,@"longitude", nil];
+    NSString * requestUrl = [NSString stringWithFormat:@"%@updateLocation",[MEEPhttp accountURL]];
+    NSURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestUrl postDictionary:postDict];
+    NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    [conn start];
 }
 
 - (void) locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {

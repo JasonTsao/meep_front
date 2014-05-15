@@ -8,6 +8,7 @@
 
 #import "GroupTableViewController.h"
 #import "EditGroupViewController.h"
+#import "FriendProfileViewController.h"
 #import "AddRemoveFriendsFromGroupTableViewController.h"
 
 @interface GroupTableViewController ()
@@ -34,8 +35,6 @@
 
 - (void)backToGroupPage:(EditGroupViewController*)controller
 {
-    NSLog(@"controller: %@", controller);
-    
     if (controller.savedGroupName != nil){
         self.title = controller.savedGroupName;
         _group.name = controller.savedGroupName;
@@ -300,7 +299,7 @@
 }
 */
 
-/*
+
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -308,7 +307,11 @@
 {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
+    FriendProfileViewController * friend_profile = [segue destinationViewController];
+    NSIndexPath *path = [self.tableView indexPathForSelectedRow];
+    Friend *selected_friend = _groupMembers[path.row];
+    friend_profile.currentFriend = selected_friend;
 }
-*/
+
 
 @end

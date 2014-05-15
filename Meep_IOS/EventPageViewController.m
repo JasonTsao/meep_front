@@ -11,6 +11,9 @@
 #import "EditEventViewController.h"
 #import "FriendProfileViewController.h"
 #import "AddRemoveFriendsFromEventTableViewController.h"
+#import "EventAttendeeTabBarController.h"
+#import "EventAttendeesDistanceViewController.h"
+#import "EventAttendeesViewController.h"
 
 
 @interface EventPageViewController ()
@@ -27,7 +30,12 @@
 
 @property (nonatomic, strong) AddRemoveFriendsFromEventTableViewController *addRemoveFriendsFromEventTableViewController;
 
-@property(nonatomic, strong) NSMutableArray *eventInfoCellsToDisplay;
+@property (nonatomic, strong) EventAttendeeTabBarController *eventAttendeeTabBarController;
+@property (nonatomic, strong) EventAttendeesViewController *eventAttendeesViewController;
+
+@property(nonatomic, strong) NSMutableArray *basicInfoToDisplay;
+@property(nonatomic, strong) NSMutableArray *locationInfoToDisplay;
+@property(nonatomic, strong) NSMutableArray *thirdPartyInfoToDisplay;
 @property (nonatomic, strong)MKMapView * mapView;
 
 @end
@@ -44,6 +52,24 @@
 - (void) leaveEvent
 {
     // remove user from event
+}
+
+- (void) openEventAttendeesPage
+{
+    UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"CenterStoryboard" bundle:nil];
+    _eventAttendeeTabBarController = (EventAttendeeTabBarController *)[storyboard instantiateViewControllerWithIdentifier:@"eventAttendeeTabController"];
+
+    [_eventAttendeeTabBarController.viewControllers[0] setInvitedFriends:_invitedFriends];
+    [_eventAttendeeTabBarController.viewControllers[0] setCurrentEvent:_currentEvent];
+    [_eventAttendeeTabBarController.viewControllers[1] setInvitedFriends:_invitedFriends];
+    [_eventAttendeeTabBarController.viewControllers[1] setCurrentEvent:_currentEvent];
+    
+    UINavigationController *navigation = [[UINavigationController alloc]initWithRootViewController:_eventAttendeeTabBarController];
+    [_eventAttendeeTabBarController setDelegate:self];
+    _eventAttendeeTabBarController.invitedFriends = _invitedFriends;
+    _eventAttendeeTabBarController.currentEvent = _currentEvent;
+    
+    [self presentViewController:navigation animated:YES completion:nil];
 }
 
 - (void) openEditEventPage
@@ -183,7 +209,6 @@
 
 - (void)backToEventPage:(EditEventViewController*)controller
 {
-    NSLog(@"just came back from : %@", controller);
     [self getInvitedFriends];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -230,18 +255,26 @@
     return cell;
 }
 
-/*- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     NSString *friend_name;
     Friend *selectedFriend;
     
-    if(indexPath.section == 0){
+    if(indexPath.section == 1){
+        if(indexPath.row == 1){
+            NSLog(@"Transfer to users map app!");
+        }
+    }
+    if(indexPath.section == 3){
+        if(indexPath.row == 0){
+            [self openEventAttendeesPage];
+        }
     }
     
-}*/
+}
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1;
+    return 4;
 }
 
 /*-(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
@@ -253,71 +286,113 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     NSInteger numRows = 0;
-    NSLog(@"about to count up num rows!");
-    if( ![_currentEvent.name isEqual:[NSNull null]]){
-        [_eventInfoCellsToDisplay addObject:@"name"];
-        numRows++;
-    }
-    if( ![_currentEvent.description isEqual:[NSNull null]]){
-        [_eventInfoCellsToDisplay addObject:@"description"];
-        numRows++;
-        
-    }
-    if( ![_currentEvent.start_time isEqual:[NSNull null]]){
-        [_eventInfoCellsToDisplay addObject:@"time"];
-        numRows++;
-    }
-    //if( ![_currentEvent.locationAddress isEqual:[NSNull null]]){
-    if( _currentEvent.locationAddress != nil){
-        
-        //MAKE MAP VIEW
-        NSLog(@"location address: %@", _currentEvent.locationAddress);
-        [_eventInfoCellsToDisplay addObject:@"locationAddress"];
-        numRows++;
-    }
-    if( ![_currentEvent.locationName isEqual:[NSNull null]]){
-        [_eventInfoCellsToDisplay addObject:@"locationName"];
-        numRows++;
+    
+    if(section == 0){
+        if( [_currentEvent.name length] != 0){
+            [_basicInfoToDisplay addObject:@"name"];
+            numRows++;
+        }
+        if( [_currentEvent.description length] != 0){
+            [_basicInfoToDisplay addObject:@"description"];
+            numRows++;
+            
+        }
+        //if( [_currentEvent.start_time length] != 0){
+        if( ![_currentEvent.start_time isEqual:[NSNull null]]){
+            [_basicInfoToDisplay addObject:@"time"];
+            numRows++;
+        }
     }
     
-    if( ![_currentEvent.yelpLink isEqual:[NSNull null]] || YES){
-        [_eventInfoCellsToDisplay addObject:@"yelp"];
-        numRows++;
+    if(section == 1){
+        //if([_currentEvent.locationAddress length] != 0){
+        if(![_currentEvent.locationAddress isEqual:[NSNull null]]){
+            
+            if([_currentEvent.locationAddress length] != 0){
+                NSLog(@"location address is : %@", _currentEvent.locationAddress);
+                //MAKE MAP VIEW
+                [_locationInfoToDisplay addObject:@"locationAddress"];
+                numRows++;
+            }
+            
+        }
+        //if( [_currentEvent.locationName length] != 0){
+        if(![_currentEvent.locationName isEqual:[NSNull null]]){
+            if([_currentEvent.locationName length] != 0){
+                [_locationInfoToDisplay addObject:@"locationName"];
+                numRows++;
+            }
+        }
     }
-    if( ![_currentEvent.uberLink isEqual:[NSNull null]] || YES){
-        [_eventInfoCellsToDisplay addObject:@"uber"];
-        numRows++;
+    
+    if(section == 2){
+        if( [_currentEvent.yelpLink length] != 0 || YES){
+            [_thirdPartyInfoToDisplay addObject:@"yelp"];
+            numRows++;
+        }
+        if( [_currentEvent.uberLink length] != 0 || YES){
+            [_thirdPartyInfoToDisplay addObject:@"uber"];
+            numRows++;
+        }
     }
-    NSLog(@"_eventInfoCellsToDisplay: %@", _eventInfoCellsToDisplay);
+    
+    
+    if(section == 3){
+        numRows = 1;
+    }
+    
     return numRows;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     CGFloat height;
-    NSString *eventInfoType = _eventInfoCellsToDisplay[indexPath.row];
-    if([eventInfoType isEqualToString:@"locationAddress"]){
-        height = 200.0;
+    NSString *eventInfoType;
+    
+    height = 25.0;
+    if (indexPath.section == 0){
+        eventInfoType = _basicInfoToDisplay[indexPath.row];
+        if([eventInfoType isEqualToString:@"name"]){
+            height = 40.0;
+        }
+        else if([eventInfoType isEqualToString:@"time"]){
+            if(![_currentEvent.end_time isEqual:[NSNull null]]){
+                height = 55;
+            }
+            else{
+                height = 25.0;
+            }
+        }
+        
     }
-    else if([eventInfoType isEqualToString:@"name"]){
-        height = 60.0;
-    }
-    else if([eventInfoType isEqualToString:@"time"]){
-        if(![_currentEvent.end_time isEqual:[NSNull null]]){
-            height = 50;
+    
+    else if(indexPath.section == 1){
+        eventInfoType = _locationInfoToDisplay[indexPath.row];
+        if([eventInfoType isEqualToString:@"locationAddress"]){
+            height = 180.0;
+        }
+        else if ([eventInfoType isEqualToString:@"locationName"]){
+            height = 30.0;
         }
     }
-    else{
-        height= 20.0;
+    
+    else if(indexPath.section == 2){
+        height = 25.0;
     }
+    
+    else if(indexPath.section == 3){
+        height = 30.0;
+    }
+
     return height;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"eventInfoCell"];
+    NSString *eventInfoType;
     if (indexPath.section == 0){
-        NSString *eventInfoType = _eventInfoCellsToDisplay[indexPath.row];
+        eventInfoType = _basicInfoToDisplay[indexPath.row];
         cell.textLabel.font = [UIFont systemFontOfSize:14];
         
         if([eventInfoType isEqualToString:@"name"]){
@@ -352,23 +427,34 @@
             cell.textLabel.text = timeString;
             
         }
-        else if([eventInfoType isEqualToString:@"locationAddress"]){
+    }
+    
+    if(indexPath.section == 1){
+        eventInfoType = _locationInfoToDisplay[indexPath.row];
+        if([eventInfoType isEqualToString:@"locationAddress"]){
             //DISPLAY MAP IF THIS IS TRUE
-            cell.textLabel.text = _currentEvent.locationAddress;
-            
-            [cell.contentView addSubview:_mapView];
+            //cell.textLabel.text = _currentEvent.locationAddress;
+             
+             [cell.contentView addSubview:_mapView];
         }
         else if([eventInfoType isEqualToString:@"locationName"]){
             cell.textLabel.text = _currentEvent.locationName;
         }
-        
-        else if([eventInfoType isEqualToString:@"yelp"]){
+    }
+    
+    if(indexPath.section == 2){
+        eventInfoType = _thirdPartyInfoToDisplay[indexPath.row];
+        if([eventInfoType isEqualToString:@"yelp"]){
             cell.textLabel.text = @"yelp";
             
         }
         else if([eventInfoType isEqualToString:@"uber"]){
             cell.textLabel.text = @"uber";
         }
+    }
+    
+    if(indexPath.section == 3){
+        cell.textLabel.text = @"Attendees";
     }
     return cell;
 }
@@ -378,8 +464,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    _eventInfoCellsToDisplay = [[NSMutableArray alloc]init];
-    _mapView = [[MKMapView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 200.0)];
+    self.eventInfoTable.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    _basicInfoToDisplay = [[NSMutableArray alloc]init];
+    _locationInfoToDisplay = [[NSMutableArray alloc]init];
+    _thirdPartyInfoToDisplay = [[NSMutableArray alloc]init];
+    _mapView = [[MKMapView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 180.0)];
     if ([_currentEvent.description length] > 15){
         self.title = [_currentEvent.description substringToIndex:15];
     }
@@ -395,6 +484,13 @@
     UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
     [flowLayout setScrollDirection:UICollectionViewScrollDirectionVertical];
     [self.friendsCollection setCollectionViewLayout:flowLayout];
+    
+    UIBarButtonItem *customBarItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStyleBordered target:self action:@selector(backToCenterFromEventPage:)];
+    
+    UIBarButtonItem *optionsBarItem = [[UIBarButtonItem alloc] initWithTitle:@"Options" style:UIBarButtonItemStyleBordered target:self action:@selector(openEventOptions:)];
+    
+    self.navigationItem.leftBarButtonItem = customBarItem;
+    self.navigationItem.rightBarButtonItem = optionsBarItem;
     //[self.friendsCollection registerNib:[UINib nibWithNibName:@"EventPage" bundle:nil] forCellWithReuseIdentifier:@"5"];
     // Do any additional setup after loading the view.
 }

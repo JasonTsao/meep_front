@@ -14,6 +14,7 @@
 
 @protocol FriendProfileViewControllerDelegate
 - (void) backToEventPage:(FriendProfileViewController *)controller;
+- (void) backToEventAttendeesPage:(FriendProfileViewController *)controller;
 @end
 @interface FriendProfileViewController : UIViewController
 

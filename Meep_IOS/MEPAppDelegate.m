@@ -9,10 +9,11 @@
 #import "MEPAppDelegate.h"
 #import "MEEPhttp.h"
 #import "MainViewController.h"
-#import "AccountSettings.h"
+#import "DjangoAuthClient.h"
+
 
 @interface MEPAppDelegate()
-
+@property(nonatomic, strong) DjangoAuthClient * authClient;
 @end
 
 @implementation MEPAppDelegate
@@ -133,24 +134,29 @@
     
     UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"CenterStoryboard" bundle:nil];
     
-    _authenticationViewController  = (AuthenticationViewController *)[storyboard instantiateViewControllerWithIdentifier:@"authentication"];
-     _authenticationViewController.delegate = self;
-    UINavigationController *navigation = [[UINavigationController alloc]initWithRootViewController:_authenticationViewController];
+    NSData *authenticated = [[NSUserDefaults standardUserDefaults] objectForKey:@"auth_client"];
+    _authClient = [NSKeyedUnarchiver unarchiveObjectWithData:authenticated];
     
-    //self.window.rootViewController = _authenticationViewController;
-    self.window.rootViewController = navigation;
-    [self.window makeKeyAndVisible];
-   // [_authenticationViewController dismissViewControllerAnimated:YES completion:nil];
-    
-    /*self.viewController = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
-    self.window.rootViewController = self.viewController;
-    [self.window makeKeyAndVisible];*/
-
-    //[self.window.rootViewController.view addSubview:_authenticationViewController.view];
-    //[_authenticationViewController didMoveToParentViewController:self];
-    
-    // if user not logged in
-    
+    if(_authClient == nil){
+        NSLog(@"no auth client");
+        _authenticationViewController  = (AuthenticationViewController *)[storyboard instantiateViewControllerWithIdentifier:@"authentication"];
+        _authenticationViewController.delegate = self;
+        UINavigationController *navigation = [[UINavigationController alloc]initWithRootViewController:_authenticationViewController];
+        self.window.rootViewController = navigation;
+        [self.window makeKeyAndVisible];
+    }else{
+        if (_authClient.enc_serverDidAuthenticate){
+            [self loadMainViewAfterAuthentication];
+        }
+        else{
+            NSLog(@"user is not authenticated");
+            _authenticationViewController  = (AuthenticationViewController *)[storyboard instantiateViewControllerWithIdentifier:@"authentication"];
+            _authenticationViewController.delegate = self;
+            UINavigationController *navigation = [[UINavigationController alloc]initWithRootViewController:_authenticationViewController];
+            self.window.rootViewController = navigation;
+            [self.window makeKeyAndVisible];
+        }
+    }
     
     return YES;
 }

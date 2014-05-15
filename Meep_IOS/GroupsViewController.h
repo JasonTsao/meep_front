@@ -12,6 +12,7 @@
 #import "Group.h"
 #import "GroupTableViewController.h"
 #import "CreateGroupViewController.h"
+#import "GroupEventsTableViewController.h"
 
 @class GroupsViewController;
 @protocol GroupsViewControllerDelegate

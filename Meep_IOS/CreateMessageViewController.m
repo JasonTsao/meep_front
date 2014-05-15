@@ -98,6 +98,7 @@
     NSString *messageText = _messageField.text;
     NSLog(@"Message: %@", messageText);
     NSMutableArray *invitedFriendsToSend = [[NSMutableArray alloc] init];
+    NSDictionary * postDict;
     
     for (int i = 0; i < [_invited_friends_list count]; i++){
         NSString *user_id = [NSString stringWithFormat: @"%i", [_invited_friends_list[i] account_id]];
@@ -111,9 +112,14 @@
     
     if(_selectedGroup != nil){
         // send group id to create event as well
+        NSString *group_id = [NSString stringWithFormat:@"%i", _selectedGroup.group_id];
+        postDict = [[NSDictionary alloc] initWithObjectsAndKeys:messageText, @"description", invitedFriendsToSend, @"invited_friends", group_id,@"group_id", nil];
     }
+    else{
+        postDict = [[NSDictionary alloc] initWithObjectsAndKeys:messageText, @"description", invitedFriendsToSend, @"invited_friends", nil];
+    }
+
     
-    NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:messageText, @"description", invitedFriendsToSend, @"invited_friends", nil];
     NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
     NSURLResponse * response = nil;
     NSError * error = nil;
@@ -123,11 +129,12 @@
     
     NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:return_data options:0 error:&error];
     NSLog(@"jsonResponse: %@", jsonResponse);
+    /*
     NSArray * success = jsonResponse[@"success"];
     NSMutableArray * return_invited_friends = jsonResponse[@"invited_friends"];
     NSMutableArray * invitedFriendsList = [[NSMutableArray alloc]init];
     
-    /*for (int i = 0; i < [return_invited_friends count]; i++){
+    for (int i = 0; i < [return_invited_friends count]; i++){
      
      InvitedFriend * invited_friend = [[InvitedFriend alloc] initWithName:[_invited_friends_list[i] name] withAccountID:return_invited_friends[i][@"user"] withAttending:return_invited_friends[i][@"attending"] withCanInvite:return_invited_friends[i][@"can_invite_friends"]];
      [invitedFriendsList addObject: invited_friend];
