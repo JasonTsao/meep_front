@@ -123,10 +123,20 @@
     [self.tableView reloadData];
 }
 
+- (void)refresh:(UIRefreshControl *)refreshControl {
+    [self getUpcomingGroupEvents];
+    [refreshControl endRefreshing];
+}
+
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
+    [refreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];
+    [self.tableView addSubview:refreshControl];
+    
     NSMutableString *titleString = [[NSMutableString alloc] init];
     [titleString appendString: _group.name];
     [titleString appendString: @" Events"];
