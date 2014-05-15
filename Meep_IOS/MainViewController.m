@@ -76,8 +76,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self setupView];
+    BOOL viewExists = [self setupView];
     self.locationServiceManager = [[MEPLocationService alloc] init];
+    
+    if( viewExists){
+        NSLog(@"view already exists");
+    }
     //if( user is authenticated){
     //    [self setupView];
     //}
@@ -127,19 +131,26 @@
 #pragma mark -
 #pragma mark Setup View
 
-- (void)setupView
+- (BOOL)setupView
 {
     UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"CenterStoryboard" bundle:nil];
     
-    _centerViewController = (GroupsViewController *)[storyboard instantiateViewControllerWithIdentifier:@"centerView"];
-    _centerViewController.delegate = self;
+    if(_centerViewController == nil){
+        _centerViewController = (GroupsViewController *)[storyboard instantiateViewControllerWithIdentifier:@"centerView"];
+        _centerViewController.delegate = self;
+        
+        [self.view addSubview:_centerViewController.view];
+        [self addChildViewController:_centerViewController];
+        
+        [self setupGestures];
+    }
+    else{
+        return YES;
+    }
+    //_centerViewController = (GroupsViewController *)[storyboard instantiateViewControllerWithIdentifier:@"centerView"];
     
-    [self.view addSubview:_centerViewController.view];
-    [self addChildViewController:_centerViewController];
     
-    [self setupGestures];
-    
-    
+    return NO;
     //[self openAuthenticationPage];
 }
 

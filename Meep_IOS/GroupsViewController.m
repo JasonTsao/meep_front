@@ -91,9 +91,18 @@
     [self getGroupList];
 }
 
+- (void)refresh:(UIRefreshControl *)refreshControl {
+    [self getGroupList];
+    [refreshControl endRefreshing];
+}
+
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
+    [refreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];
+    [self.tableView addSubview:refreshControl];
     self.title = @"My Groups";
     [self getGroupList];
     // Uncomment the following line to preserve selection between presentations.

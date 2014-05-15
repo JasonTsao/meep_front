@@ -1252,7 +1252,9 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                     </tableView>
                     <navigationItem key="navigationItem" id="H85-OX-QqH"/>
                     <connections>
-                        <outlet property="searchDisplayController" destination="GpU-g5-n6k" id="tex-IY-a2e"/>
+                        <outlet property="searchBar" destination="qPA-y1-dWl" id="0cM-bK-z4M"/>
+                        <outlet property="searchDisplay" destination="GpU-g5-n6k" id="g0W-c7-Srr"/>
+                        <outlet property="searchDisplayController" destination="GpU-g5-n6k" id="xFC-8w-CP4"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1a6-eZ-YZv" userLabel="First Responder" sceneMemberID="firstResponder"/>

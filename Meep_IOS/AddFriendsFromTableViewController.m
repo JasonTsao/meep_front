@@ -9,6 +9,8 @@
 #import "AddFriendsFromTableViewController.h"
 
 @interface AddFriendsFromTableViewController ()
+@property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
+@property (strong, nonatomic) IBOutlet UISearchDisplayController *searchDisplay;
 
 @end
 
@@ -54,7 +56,6 @@
 -(void)getFriendsToInviteAndRegisteredUsers:(NSMutableArray*)nonFriends
 {
     NSString * requestURL = [NSString stringWithFormat:@"%@check_if_phone_users_registered",[MEEPhttp accountURL]];
-    NSLog(@"request url : %@", requestURL);
     NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:@"2", @"user",_phoneNonFriendUsersNumbers,@"phone_numbers", nil];
     NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
     NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
@@ -143,29 +144,63 @@
     }
     
     else if ([_viewTitle isEqualToString:@"From Everyone"]){
-        NSLog(@"time to feed response to search display table");
-        NSMutableArray *searchUsers = jsonResponse[@"users"];
         
-        for(int i = 0; i < [searchUsers count]; i++){
-            NSLog(@"search users: %@", searchUsers[i]);
-            Friend *newFriend = [[Friend alloc] init];
-            newFriend.account_id = searchUsers[i][@"id"];
-            newFriend.name = searchUsers[i][@"user_name"];
-            NSLog(@"adding friend: %@", newFriend);
-            [_searchResultFriendsList addObject:newFriend];
-        }
-        NSLog(@"reloading table data!");
+        if([jsonResponse objectForKey:@"friends"] != nil){
+            NSLog(@"friends: %@", jsonResponse[@"friends"]);
+            NSArray * friends = jsonResponse[@"friends"];
+            _friendsList = [[NSMutableArray alloc]init];
+            
+            for( int i = 0; i< [friends count]; i++){
+                NSDictionary * new_friend_dict = [NSJSONSerialization JSONObjectWithData: [friends[i] dataUsingEncoding:NSUTF8StringEncoding]
+                                                                                 options: NSJSONReadingMutableContainers
+                                                                                   error: &nserror];
+                NSString *friend_account_id = [NSString stringWithFormat:@"%i",[new_friend_dict[@"account_id"] integerValue]];
+                [_friendsList addObject:friend_account_id];
+            }
 
-        [self.tableView reloadData];
+            NSLog(@"frienst list is: %@", _friendsList);
+        }
+        else{
+            NSMutableArray *searchUsers = jsonResponse[@"users"];
+            _searchResultFriendsList = [[NSMutableArray alloc] init];
+            for(int i = 0; i < [searchUsers count]; i++){
+                Friend *newFriend = [[Friend alloc] init];
+                newFriend.account_id = [searchUsers[i][@"id"] integerValue];
+                newFriend.name = searchUsers[i][@"user_name"];
+                [_searchResultFriendsList addObject:newFriend];
+                
+            }
+            [self.searchDisplayController.searchResultsTableView reloadData];
+        }
     }
     
 }
+
+/*- (void)searchDisplayController:(UISearchDisplayController *)controller didLoadSearchResultsTableView:(UITableView *)tableView
+{
+    NSLog(@"cowabunga!!");
+}
+
+- (void)searchDisplayController:(UISearchDisplayController *)controller willUnloadSearchResultsTableView:(UITableView *)tableView
+{
+    NSLog(@"shell shock!!");
+}
+
+- (void)searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller
+{
+    NSLog(@"over 9000!!");
+}
+
+- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString
+{
+    NSLog(@"search string: %@", searchString);
+    return YES;
+}*/
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
     NSLog(@"%@", searchText);
     NSString * requestURL = [NSString stringWithFormat:@"%@search/username",[MEEPhttp accountURL]];
-    NSLog(@"request url : %@", requestURL);
     NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys: searchText, @"search_field" ,nil];
     NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
     NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
@@ -181,9 +216,10 @@
     
     _searchResultFriendsList = [[NSMutableArray alloc] init];
     
-    if( [_viewTitle isEqualToString:@"From Contacts"]){
-        [self getFriendsList];
-    }
+    [self getFriendsList];
+    /*if( [_viewTitle isEqualToString:@"From Contacts"]){
+        
+    }*/
     
     
     // Uncomment the following line to preserve selection between presentations.
@@ -253,7 +289,6 @@
     }
     else if([_viewTitle isEqualToString:@"From Everyone"]){
         if(section == 0){
-            NSLog(@"number of rows insearch!");
             return[_searchResultFriendsList count];
         }
     }
@@ -296,9 +331,20 @@
 
  - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
  {
-     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"friendToAdd" forIndexPath:indexPath];
+
+     NSString *classType = [NSString stringWithFormat:@"%@",[tableView class]];
+     
+     UITableViewCell *cell;
+     
+     if([classType isEqualToString:@"UISearchResultsTableView"] ){
+         cell = [[UITableViewCell alloc]init];
+     }
+     else{
+         cell = [tableView dequeueReusableCellWithIdentifier:@"friendToAdd" forIndexPath:indexPath];
+     }
      
      if( [_viewTitle isEqualToString:@"From Contacts"] ){
+         
          if (indexPath.section == 0){
              UIButton *newButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
              [newButton setFrame:CGRectMake(
@@ -346,29 +392,38 @@
          }
      }
      else if( [_viewTitle isEqualToString:@"From Everyone"] ){
+             UIButton *newButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+             [newButton setFrame:CGRectMake(
+                                            cell.bounds.size.width-(cell.bounds.size.width/5.0),
+                                            (cell.bounds.size.height/4.0),
+                                            50,
+                                            23)];
+             newButton.backgroundColor = [UIColor grayColor];
          
-         NSLog(@"adding search result users to table!");
-         UIButton *newButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-         [newButton setFrame:CGRectMake(
-                                        cell.bounds.size.width-(cell.bounds.size.width/5.0),
-                                        (cell.bounds.size.height/4.0),
-                                        50,
-                                        23)];
-         newButton.backgroundColor = [UIColor grayColor];
-         [newButton setTitle:@"add" forState:UIControlStateNormal];
+            NSString *friend_account_id = [NSString stringWithFormat:@"%i", [_searchResultFriendsList[indexPath.row] account_id]];
+            if( [_friendsList containsObject:friend_account_id]){
+                [newButton setTitle:@"block" forState:UIControlStateNormal];
+                [newButton setSelected:YES];
+            }
+            else{
+                [newButton setTitle:@"add" forState:UIControlStateNormal];
+            }
          
-         [newButton addTarget:self action:@selector(selectFriend:)
-             forControlEvents:UIControlEventTouchUpInside];
-         [newButton setTag: _buttonTagNumber];
-         NSString *key = [NSString stringWithFormat:@"%i", _buttonTagNumber];
-         [_buttonTagDictionary setObject:[_searchResultFriendsList[indexPath.row] name] forKey:key];
-         _buttonTagNumber++;
+             
+             [newButton addTarget:self action:@selector(selectFriend:)
+                 forControlEvents:UIControlEventTouchUpInside];
          
-         [cell addSubview:newButton];
          
-         NSMutableString *full_name = [[NSMutableString alloc] initWithString: [_searchResultFriendsList[indexPath.row] name]];
-         [full_name appendString: @" "];
-         cell.textLabel.text = full_name;
+             [newButton setTag: _buttonTagNumber];
+             NSString *key = [NSString stringWithFormat:@"%i", _buttonTagNumber];
+             [_buttonTagDictionary setObject:[_searchResultFriendsList[indexPath.row] name] forKey:key];
+             _buttonTagNumber++;
+             
+             [cell addSubview:newButton];
+             
+             NSMutableString *full_name = [[NSMutableString alloc] initWithString: [_searchResultFriendsList[indexPath.row] name]];
+             [full_name appendString: @" "];
+             cell.textLabel.text = full_name;
      }
      
      return cell;

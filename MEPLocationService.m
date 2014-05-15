@@ -13,6 +13,7 @@
 @interface MEPLocationService() <CLLocationManagerDelegate>
 
 @property (nonatomic, strong) CLLocationManager * locationManager;
+@property (nonatomic, strong) NSMutableData * data;
 
 @end
 
@@ -42,17 +43,42 @@
               location.coordinate.latitude,
               location.coordinate.longitude);
     }
-    NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:location.coordinate.latitude,@"latitude",
-                               location.coordinate.longitude,@"longitude", nil];
+    NSString *latitude = [NSString stringWithFormat:@"%f", location.coordinate.latitude];
+    NSString *longitude = [NSString stringWithFormat:@"%f", location.coordinate.longitude];
+    NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:latitude,@"latitude",
+                               longitude,@"longitude", nil];
     NSString * requestUrl = [NSString stringWithFormat:@"%@updateLocation",[MEEPhttp accountURL]];
     NSURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestUrl postDictionary:postDict];
-    NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:requestUrl delegate:self];
+    NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
     [conn start];
 }
 
 - (void) locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
     // do something
     NSLog(@"Location Services Failed with error :: %@",[error localizedDescription]);
+}
+
+-(void)connection:(NSURLConnection*)connection didReceiveResponse:(NSURLResponse*)response
+{
+    _data = [[NSMutableData alloc] init]; // _data being an ivar
+}
+-(void)connection:(NSURLConnection*)connection didReceiveData:(NSData*)data
+{
+    [_data appendData:data];
+}
+-(void)connection:(NSURLConnection*)connection didFailWithError:(NSError*)error
+{
+    // Handle the error properly
+    NSLog(@"Call Failed");
+}
+-(void)connectionDidFinishLoading:(NSURLConnection*)connection
+{
+    [self handleData]; // Deal with the data
+}
+
+-(void)handleData{
+    NSDictionary * recievedData = [NSJSONSerialization JSONObjectWithData:_data options:0 error:nil];
+    NSLog(@"%@",recievedData);
 }
 
 @end

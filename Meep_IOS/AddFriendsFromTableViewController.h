@@ -11,7 +11,7 @@
 #import "Friend.h"
 #import "MEEPhttp.h"
 
-@interface AddFriendsFromTableViewController : UITableViewController
+@interface AddFriendsFromTableViewController : UITableViewController<UISearchDisplayDelegate, UISearchBarDelegate>
 @property(nonatomic, strong) NSMutableData * data;
 @property(nonatomic, strong) NSMutableArray * phoneRegisteredUsers;
 @property(nonatomic, strong) NSMutableArray * phoneNonRegisteredUsers;

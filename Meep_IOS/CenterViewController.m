@@ -194,10 +194,19 @@
     [_delegate displayEventPage:currentRecord];
 }
 
+- (void)refresh:(UIRefreshControl *)refreshControl {
+    [self getUpcomingEvents];
+    [refreshControl endRefreshing];
+}
+
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
+    [refreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];
+    [self.upcomingEvents addSubview:refreshControl];
     //self.eventArray = [[NSMutableArray alloc] init];
     self.eventArray = [[NSArray alloc] init];
     self.datesSectionCountArray = [[NSMutableArray alloc]init];
@@ -229,11 +238,14 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    NSLog(@"center view appeared");
+    //[self getUpcomingEvents];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
 	[super viewDidAppear:animated];
+    [_upcomingEvents reloadData];
 }
 
 #pragma mark -
@@ -374,8 +386,8 @@
     
     NSSortDescriptor* nameSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"start_time" ascending:YES];
     _eventArray = [unsortedEventArray sortedArrayUsingDescriptors:[NSArray arrayWithObject:nameSortDescriptor]];
-    self.upcomingEvents.dataSource = self;
-    self.upcomingEvents.delegate = self;
+    //self.upcomingEvents.dataSource = self;
+    //self.upcomingEvents.delegate = self;
     [self.upcomingEvents reloadData];
 }
 
