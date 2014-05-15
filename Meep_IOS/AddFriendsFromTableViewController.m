@@ -144,23 +144,39 @@
     }
     
     else if ([_viewTitle isEqualToString:@"From Everyone"]){
-        NSLog(@"time to feed response to search display table");
-        NSMutableArray *searchUsers = jsonResponse[@"users"];
-        _searchResultFriendsList = [[NSMutableArray alloc] init];
-        for(int i = 0; i < [searchUsers count]; i++){
-            Friend *newFriend = [[Friend alloc] init];
-            newFriend.account_id = searchUsers[i][@"id"];
-            newFriend.name = searchUsers[i][@"user_name"];
-            [_searchResultFriendsList addObject:newFriend];
+        
+        if([jsonResponse objectForKey:@"friends"] != nil){
+            NSLog(@"friends: %@", jsonResponse[@"friends"]);
+            NSArray * friends = jsonResponse[@"friends"];
+            _friendsList = [[NSMutableArray alloc]init];
             
+            for( int i = 0; i< [friends count]; i++){
+                NSDictionary * new_friend_dict = [NSJSONSerialization JSONObjectWithData: [friends[i] dataUsingEncoding:NSUTF8StringEncoding]
+                                                                                 options: NSJSONReadingMutableContainers
+                                                                                   error: &nserror];
+                NSString *friend_account_id = [NSString stringWithFormat:@"%i",[new_friend_dict[@"account_id"] integerValue]];
+                [_friendsList addObject:friend_account_id];
+            }
+
+            NSLog(@"frienst list is: %@", _friendsList);
         }
-        [self.searchDisplayController.searchResultsTableView reloadData];
-        //[self.tableView reloadData];
+        else{
+            NSMutableArray *searchUsers = jsonResponse[@"users"];
+            _searchResultFriendsList = [[NSMutableArray alloc] init];
+            for(int i = 0; i < [searchUsers count]; i++){
+                Friend *newFriend = [[Friend alloc] init];
+                newFriend.account_id = [searchUsers[i][@"id"] integerValue];
+                newFriend.name = searchUsers[i][@"user_name"];
+                [_searchResultFriendsList addObject:newFriend];
+                
+            }
+            [self.searchDisplayController.searchResultsTableView reloadData];
+        }
     }
     
 }
 
-- (void)searchDisplayController:(UISearchDisplayController *)controller didLoadSearchResultsTableView:(UITableView *)tableView
+/*- (void)searchDisplayController:(UISearchDisplayController *)controller didLoadSearchResultsTableView:(UITableView *)tableView
 {
     NSLog(@"cowabunga!!");
 }
@@ -179,7 +195,7 @@
 {
     NSLog(@"search string: %@", searchString);
     return YES;
-}
+}*/
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
@@ -200,9 +216,10 @@
     
     _searchResultFriendsList = [[NSMutableArray alloc] init];
     
-    if( [_viewTitle isEqualToString:@"From Contacts"]){
-        [self getFriendsList];
-    }
+    [self getFriendsList];
+    /*if( [_viewTitle isEqualToString:@"From Contacts"]){
+        
+    }*/
     
     
     // Uncomment the following line to preserve selection between presentations.
@@ -382,10 +399,21 @@
                                             50,
                                             23)];
              newButton.backgroundColor = [UIColor grayColor];
-             [newButton setTitle:@"add" forState:UIControlStateNormal];
+         
+            NSString *friend_account_id = [NSString stringWithFormat:@"%i", [_searchResultFriendsList[indexPath.row] account_id]];
+            if( [_friendsList containsObject:friend_account_id]){
+                [newButton setTitle:@"block" forState:UIControlStateNormal];
+                [newButton setSelected:YES];
+            }
+            else{
+                [newButton setTitle:@"add" forState:UIControlStateNormal];
+            }
+         
              
              [newButton addTarget:self action:@selector(selectFriend:)
                  forControlEvents:UIControlEventTouchUpInside];
+         
+         
              [newButton setTag: _buttonTagNumber];
              NSString *key = [NSString stringWithFormat:@"%i", _buttonTagNumber];
              [_buttonTagDictionary setObject:[_searchResultFriendsList[indexPath.row] name] forKey:key];
