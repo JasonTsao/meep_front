@@ -13,6 +13,7 @@
 @interface MEPLocationService() <CLLocationManagerDelegate>
 
 @property (nonatomic, strong) CLLocationManager * locationManager;
+@property (nonatomic, strong) NSMutableData * data;
 
 @end
 
@@ -55,6 +56,28 @@
 - (void) locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
     // do something
     NSLog(@"Location Services Failed with error :: %@",[error localizedDescription]);
+}
+
+-(void)connection:(NSURLConnection*)connection didReceiveResponse:(NSURLResponse*)response
+{
+    _data = [[NSMutableData alloc] init]; // _data being an ivar
+}
+-(void)connection:(NSURLConnection*)connection didReceiveData:(NSData*)data
+{
+    [_data appendData:data];
+}
+-(void)connection:(NSURLConnection*)connection didFailWithError:(NSError*)error
+{
+    // Handle the error properly
+    NSLog(@"Call Failed");
+}
+-(void)connectionDidFinishLoading:(NSURLConnection*)connection
+{
+    [self handleData]; // Deal with the data
+}
+
+-(void)handleData{
+    NSDictionary * recievedData = [NSJSONSerialization JSONObjectWithData:_data options:0 error:nil];
 }
 
 @end
