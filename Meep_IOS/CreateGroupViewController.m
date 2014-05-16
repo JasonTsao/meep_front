@@ -11,13 +11,16 @@
 @interface CreateGroupViewController ()
 @property (weak, nonatomic) IBOutlet UITableView *friendTable;
 @property (weak, nonatomic) IBOutlet UITextField *nameField;
+@property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 
 @end
 
 @implementation CreateGroupViewController{
     NSMutableArray *friends_list;
     NSMutableArray *selected_friends_list;
+    NSMutableArray *search_friends_list;
     dispatch_queue_t networkQueue;
+    
 
 }
 
@@ -104,53 +107,96 @@
     Friend *selectedFriend;
     
     [_nameField resignFirstResponder];
-    if (indexPath.section == 1){
-        selectedFriend = friends_list[indexPath.row];
+    
+    NSString *classType = [NSString stringWithFormat:@"%@",[tableView class]];
+    
+    if([classType isEqualToString:@"UISearchResultsTableView"] ){
+        NSLog(@"selected friend: %@", search_friends_list[indexPath.row]);
+        selectedFriend = search_friends_list[indexPath.row];
         friend_name = selectedFriend.name;
-
+        
         if (![selected_friends_list containsObject:selectedFriend]){
-            [tableView beginUpdates];
+            [self.friendTable beginUpdates];
             [selected_friends_list addObject:selectedFriend];
-            [tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:([selected_friends_list count] -1) inSection:0]]
-                            withRowAnimation:UITableViewRowAnimationFade];
-            [tableView endUpdates];
+            [self.friendTable insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:([selected_friends_list count] -1) inSection:0]]
+                                    withRowAnimation:UITableViewRowAnimationFade];
+            [self.friendTable endUpdates];
         }
         else{
-            [tableView beginUpdates];
+            [self.friendTable beginUpdates];
             NSInteger deleteRow = [selected_friends_list indexOfObject:selectedFriend];
             [selected_friends_list removeObjectAtIndex: deleteRow];
-            [tableView deleteRowsAtIndexPaths: [NSArray arrayWithObject:[NSIndexPath indexPathForRow:deleteRow inSection:0]]
+            [self.friendTable deleteRowsAtIndexPaths: [NSArray arrayWithObject:[NSIndexPath indexPathForRow:deleteRow inSection:0]]
+                                    withRowAnimation:UITableViewRowAnimationFade];
+            [self.friendTable endUpdates];
+        }
+        
+        [self.searchDisplayController setActive:NO animated:YES];
+    }
+    else{
+        if (indexPath.section == 1){
+            selectedFriend = friends_list[indexPath.row];
+            friend_name = selectedFriend.name;
+            
+            if (![selected_friends_list containsObject:selectedFriend]){
+                [tableView beginUpdates];
+                [selected_friends_list addObject:selectedFriend];
+                [tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:([selected_friends_list count] -1) inSection:0]]
+                                 withRowAnimation:UITableViewRowAnimationFade];
+                [tableView endUpdates];
+            }
+            else{
+                [tableView beginUpdates];
+                NSInteger deleteRow = [selected_friends_list indexOfObject:selectedFriend];
+                [selected_friends_list removeObjectAtIndex: deleteRow];
+                [tableView deleteRowsAtIndexPaths: [NSArray arrayWithObject:[NSIndexPath indexPathForRow:deleteRow inSection:0]]
+                                 withRowAnimation:UITableViewRowAnimationFade];
+                [tableView endUpdates];
+            }
+        }
+        else if(indexPath.section == 0){
+            selectedFriend = selected_friends_list[indexPath.row];
+            friend_name = selectedFriend.name;
+            [tableView beginUpdates];
+            [selected_friends_list removeObjectAtIndex: indexPath.row];
+            [tableView deleteRowsAtIndexPaths: [NSArray arrayWithObject:[NSIndexPath indexPathForRow:indexPath.row inSection:0]]
                              withRowAnimation:UITableViewRowAnimationFade];
+            
             [tableView endUpdates];
         }
+        
     }
-    else if(indexPath.section == 0){
-        selectedFriend = selected_friends_list[indexPath.row];
-        friend_name = selectedFriend.name;
-        [tableView beginUpdates];
-        [selected_friends_list removeObjectAtIndex: indexPath.row];
-        [tableView deleteRowsAtIndexPaths: [NSArray arrayWithObject:[NSIndexPath indexPathForRow:indexPath.row inSection:0]]
-                         withRowAnimation:UITableViewRowAnimationFade];
-
-        [tableView endUpdates];
-    }
+    
 
 }
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
+    NSString *classType = [NSString stringWithFormat:@"%@",[tableView class]];
+    if([classType isEqualToString:@"UISearchResultsTableView"] ){
+        return 1;
+    }
     return 2;
 }
 
 -(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     NSString *header;
-    if (section == 0){
-        header = @"Selected";
-    }
-    else if(section == 1){
+    
+    NSString *classType = [NSString stringWithFormat:@"%@",[tableView class]];
+    
+    if([classType isEqualToString:@"UISearchResultsTableView"] ){
         header = @"Friends";
     }
+    else{
+        if (section == 0){
+            header = @"Selected";
+        }
+        else if(section == 1){
+            header = @"Friends";
+        }
+    }
+    
 
     return header;
 }
@@ -158,29 +204,62 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     NSInteger numRows = 1;
-    if (section == 0){
-        numRows = [selected_friends_list count];
+    
+    NSString *classType = [NSString stringWithFormat:@"%@",[tableView class]];
+    
+    if([classType isEqualToString:@"UISearchResultsTableView"] ){
+        numRows = [search_friends_list count];
     }
-    else if(section == 1){
-        numRows = [friends_list count];
+    else{
+        if (section == 0){
+            numRows = [selected_friends_list count];
+        }
+        else if(section == 1){
+            numRows = [friends_list count];
+        }
     }
+    
     return numRows;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"selectCell"];
-
-    if (indexPath.section == 0){
-        Friend *currentFriend = selected_friends_list[indexPath.row];
+    UITableViewCell *cell = [[UITableViewCell alloc]init];
+    
+    NSString *classType = [NSString stringWithFormat:@"%@",[tableView class]];
+    if([classType isEqualToString:@"UISearchResultsTableView"] ){
+        cell = [[UITableViewCell alloc]init];
+        Friend *currentFriend = search_friends_list[indexPath.row];
         cell.textLabel.text = currentFriend.name;
     }
-    else if (indexPath.section == 1){
-        Friend *currentFriend = friends_list[indexPath.row];
-        cell.textLabel.text = currentFriend.name;
+    else{
+        cell = [tableView dequeueReusableCellWithIdentifier:@"selectCell"];
+        
+        if (indexPath.section == 0){
+            Friend *currentFriend = selected_friends_list[indexPath.row];
+            cell.textLabel.text = currentFriend.name;
+        }
+        else if (indexPath.section == 1){
+            Friend *currentFriend = friends_list[indexPath.row];
+            cell.textLabel.text = currentFriend.name;
+        }
     }
+    
+    
 
     return cell;
+}
+
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{
+    search_friends_list = [[NSMutableArray alloc] init];
+    for( int i = 0; i < [friends_list count]; i++){
+        if([[friends_list[i] name] hasPrefix:searchText]){
+            [search_friends_list addObject:friends_list[i]];
+        }
+    }
+    
+    [self.searchDisplayController.searchResultsTableView reloadData];
 }
 
 - (void)viewDidLoad
@@ -192,11 +271,17 @@
     NSData *friendsListData = [[NSUserDefaults standardUserDefaults] objectForKey:@"friends_list"];
     NSMutableArray *user_friends_list = [NSKeyedUnarchiver unarchiveObjectWithData:friendsListData];
     self.friendTable.allowsMultipleSelectionDuringEditing=YES;
+    
+    CGRect viewBounds = self.view.bounds;
+    CGFloat topBarOffset = self.topLayoutGuide.length;
+    viewBounds.origin.y = topBarOffset * -1;
+    self.view.bounds = viewBounds;
+    
     if(!networkQueue){
         networkQueue = dispatch_queue_create("Network.Queue", NULL);
     }
     [self getFriendsList];
-    
+
     if(!user_friends_list){
         [self getFriendsList];
         //dispatch_async(networkQueue, ^{[self getFriendsList];});

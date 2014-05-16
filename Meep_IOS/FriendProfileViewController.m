@@ -44,10 +44,8 @@
     self.title = self.currentFriend.name;
     [_nameLabel setText:_currentFriend.name];
 
-    NSLog(@"friend bio is: %@", self.currentFriend.bio);
     if (![self.currentFriend.bio isKindOfClass:[NSNull class]]){
     //if (self.currentFriend.bio != NULL){
-        NSLog(@"bio is %@", self.currentFriend.bio);
         [_bioLabel setText:self.currentFriend.bio];
     }
     else{
@@ -55,7 +53,14 @@
         [_bioLabel setText:@""];
     }
     if (self.currentFriend.profilePic){
+        NSLog(@"curent friend profile pic: %@", self.currentFriend.profilePic);
+        //_currentProfileImage = [[UIImageView alloc] initWithImage:img.image];
+        
+        //_currentProfileImage = [[UIImageView alloc] initWithImage:self.currentFriend.profilePic];
         [_currentProfileImage setImage:self.currentFriend.profilePic];
+        
+        
+        //[_currentProfileImage setImage:self.currentFriend.profilePic];
     }
     // Do any additional setup after loading the view.
 }

@@ -298,14 +298,9 @@
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
-    NSLog(@"%@", searchText);
     search_friends_list = [[NSMutableArray alloc] init];
-    //
-    //  FIGURE OUT WHICH FRIENDS START WITH searchText
-    //
-    
     for( int i = 0; i < [friends_list count]; i++){
-        if([[friends_list[i] name] isEqualToString:searchText]){
+        if([[friends_list[i] name] hasPrefix:searchText]){
             [search_friends_list addObject:friends_list[i]];
         }
     }

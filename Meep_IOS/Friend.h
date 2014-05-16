@@ -26,7 +26,7 @@
 @property (nonatomic) NSString *phoneNumber;
 @property (nonatomic) NSInteger numFriends;
 @property (nonatomic) NSInteger numTimesInvitedByMe;
-@property (nonatomic) UIImage * profilePic;
+@property (nonatomic, strong) UIImage * profilePic;
 
 
 @end

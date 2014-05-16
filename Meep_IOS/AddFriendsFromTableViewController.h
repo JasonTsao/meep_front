@@ -22,8 +22,14 @@
 @property(nonatomic, strong) NSMutableArray * friendsList;
 
 @property(nonatomic, strong) NSMutableArray * searchResultFriendsList;
+@property(nonatomic, strong) NSMutableArray * searchResultRegistered;
+@property(nonatomic, strong) NSMutableArray * searchResultNonRegistered;
 
 @property(nonatomic, strong) NSMutableDictionary * buttonTagDictionary;
 @property(nonatomic) NSInteger buttonTagNumber;
+
+@property(nonatomic, strong) NSMutableDictionary * searchButtonTagDictionary;
+@property(nonatomic) NSInteger searchButtonTagNumber;
+
 @property(nonatomic, strong) NSString * viewTitle;
 @end
