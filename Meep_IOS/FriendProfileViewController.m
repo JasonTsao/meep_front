@@ -54,13 +54,7 @@
     }
     if (self.currentFriend.profilePic){
         NSLog(@"curent friend profile pic: %@", self.currentFriend.profilePic);
-        //_currentProfileImage = [[UIImageView alloc] initWithImage:img.image];
-        
-        //_currentProfileImage = [[UIImageView alloc] initWithImage:self.currentFriend.profilePic];
         [_currentProfileImage setImage:self.currentFriend.profilePic];
-        
-        
-        //[_currentProfileImage setImage:self.currentFriend.profilePic];
     }
     // Do any additional setup after loading the view.
 }

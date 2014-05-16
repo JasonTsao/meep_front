@@ -178,18 +178,12 @@
     
     cell = [self clearCell:cell];
     Friend *currentFriend = [friends_list objectAtIndex:indexPath.row];
-    ///cell.textLabel.text = currentFriend.name;
-    //UIImage *image = currentFriend.profilePic;
-    //[cell.imageView setImage: image];
     UILabel *friendHeader = [[UILabel alloc] initWithFrame:CGRectMake(60, 10, 235, 21)];
     friendHeader.text = currentFriend.name;
     [friendHeader setFont:[UIFont systemFontOfSize:18]];
     [cell.contentView addSubview:friendHeader];
     UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(8, 4, 40, 40)];
     img.image = currentFriend.profilePic;
-    //img.image = [UIImage imageNamed:@"ManSilhouette"];
-    //[cell.contentView addSubview:img];
-    //[cell.contentView addSubview:currentFriend.profilePic];
     [cell.contentView addSubview:img];
     
     return cell;
