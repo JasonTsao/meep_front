@@ -95,9 +95,7 @@
             new_group.name = new_group_dict[@"name"];
             new_group.group_id = [new_group_dict[@"id"] integerValue];
             
-            NSLog(@"existence of key: %@", [new_group_dict objectForKey:@"group_pic_url"]);
             if ([new_group_dict[@"group_pic_url"] length] == 0){
-                NSLog(@"adding silhouette picture!");
                 UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(8, 4, 40, 40)];
                 img.image = [UIImage imageNamed:@"ManSilhouette"];
                 //new_friend.profilePic = img;
@@ -109,9 +107,7 @@
                  NSData *urlData = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:nil error:nil];
                  UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
                  new_group.groupProfilePic = image;
-                 NSLog(@"new friend pf pic %@", new_group.groupProfilePic);
             }
-            
             [groups_list addObject:new_group];
         }
     }

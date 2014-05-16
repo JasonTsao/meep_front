@@ -186,6 +186,25 @@
                                                                            error: &error];
         new_friend.name = new_friend_dict[@"name"];
         new_friend.account_id = [new_friend_dict[@"friend_id"] intValue];
+        
+        if ([new_friend_dict[@"pf_pic"] length] == 0){
+            UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(8, 4, 40, 40)];
+            img.image = [UIImage imageNamed:@"ManSilhouette"];
+            //new_friend.profilePic = img;
+            new_friend.profilePic = img.image;
+        }
+        else{
+            NSURL *url = [[NSURL alloc] initWithString:new_friend_dict[@"fb_pfpic_url"]];
+            //NSURL *url = [[NSURL alloc] initWithString:@"https://graph.facebook.com/jason.s.tsao/picture"];
+            NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url];
+            //NSData *urlData = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:&response error:nil];
+            NSData *urlData = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:nil error:nil];
+            UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
+            new_friend.profilePic = image;
+        }
+
+        
+        
         [_invitedFriends addObject:new_friend];
     }
     

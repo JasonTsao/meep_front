@@ -69,6 +69,20 @@
         new_group.name = new_group_dict[@"name"];
         new_group.group_id = [new_group_dict[@"id"] integerValue];
         
+        if ([new_group_dict[@"group_pic_url"] length] == 0){
+            UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(8, 4, 40, 40)];
+            img.image = [UIImage imageNamed:@"ManSilhouette"];
+            //new_friend.profilePic = img;
+            new_group.groupProfilePic = img.image;
+        }
+        else{
+            NSURL *url = [[NSURL alloc] initWithString:new_group_dict[@"group_pic_url"]];
+            NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url];
+            NSData *urlData = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:nil error:nil];
+            UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
+            new_group.groupProfilePic = image;
+        }
+        
         /*NSURL *url = [[NSURL alloc] initWithString:new_friend_dict[@"group_pic_url"]];
         NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url];
         NSData *urlData = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:nil error:nil];
@@ -141,7 +155,14 @@
     
     // Configure the cell...
     Group *currentGroup = [groups_list objectAtIndex:indexPath.row];
-    cell.textLabel.text = currentGroup.name;
+    //cell.textLabel.text = currentGroup.name;
+    UILabel *groupHeader = [[UILabel alloc] initWithFrame:CGRectMake(60, 10, 235, 21)];
+    groupHeader.text = currentGroup.name;
+    [groupHeader setFont:[UIFont systemFontOfSize:18]];
+    [cell.contentView addSubview:groupHeader];
+    UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(8, 4, 40, 40)];
+    img.image = currentGroup.groupProfilePic;
+    [cell.contentView addSubview:img];
     /*UIImage *image = currentFriend.profilePic;
     [cell.imageView setImage: image];*/
     return cell;
