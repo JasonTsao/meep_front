@@ -82,13 +82,6 @@
             UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
             new_group.groupProfilePic = image;
         }
-        
-        /*NSURL *url = [[NSURL alloc] initWithString:new_friend_dict[@"group_pic_url"]];
-        NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url];
-        NSData *urlData = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:nil error:nil];
-        UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
-        new_friend.profilePic = image;
-        NSLog(@"new friend pf pic %@", new_friend.profilePic);*/
         [groups_list addObject:new_group];
     }
     
