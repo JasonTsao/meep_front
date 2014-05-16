@@ -482,6 +482,9 @@
 		3CCC516E1905A44400EB0980 /* Center Page */ = {
 			isa = PBXGroup;
 			children = (
+				3CCC513F1905A20D00EB0980 /* LeftPanelViewController.h */,
+				3CCC51401905A20D00EB0980 /* LeftPanelViewController.m */,
+				3CCC51411905A20D00EB0980 /* LeftPanelViewController.xib */,
 				3CCC51451905A20D00EB0980 /* MainViewController.h */,
 				3CCC51461905A20D00EB0980 /* MainViewController.m */,
 				3CCC51471905A20D00EB0980 /* MainViewController.xib */,
@@ -525,9 +528,6 @@
 				3CE1C87619099BCB00E4375A /* AccountSettings.m */,
 				3CCF9718190827CE005FA454 /* AccountViewController.h */,
 				3CCF9719190827CE005FA454 /* AccountViewController.m */,
-				3CCC513F1905A20D00EB0980 /* LeftPanelViewController.h */,
-				3CCC51401905A20D00EB0980 /* LeftPanelViewController.m */,
-				3CCC51411905A20D00EB0980 /* LeftPanelViewController.xib */,
 			);
 			name = "Account And Settings";
 			sourceTree = "<group>";

@@ -33,12 +33,14 @@ NSString *const kDjangoAuthClientLoginFailureInactiveAccount = @"kDjangoAuthClie
 @synthesize enc_email;
 @synthesize enc_serverDidRespond;
 @synthesize enc_serverDidAuthenticate;
+@synthesize enc_profile_pic;
 
 - (id)initWithCoder:(NSCoder *)decoder {
     if (self = [super init]) {
         self.enc_username = [decoder decodeObjectForKey:@"username"];
         self.enc_password = [decoder decodeObjectForKey:@"password"];
         self.enc_email = [decoder decodeObjectForKey:@"email"];
+        self.enc_profile_pic = [decoder decodeObjectForKey:@"profile_pic"];
         self.enc_serverDidRespond = [decoder decodeBoolForKey:@"serverDidRespond"];
         self.enc_serverDidAuthenticate = [decoder decodeBoolForKey:@"serverDidAuthenticate"];
     }
@@ -50,6 +52,7 @@ NSString *const kDjangoAuthClientLoginFailureInactiveAccount = @"kDjangoAuthClie
     [encoder encodeObject:enc_username forKey:@"username"];
     [encoder encodeObject:enc_password forKey:@"password"];
     [encoder encodeObject:enc_email forKey:@"email"];
+    [encoder encodeObject:enc_profile_pic forKey:@"profile_pic"];
     [encoder encodeBool:enc_serverDidRespond forKey:@"reminders"];
     [encoder encodeBool:enc_serverDidAuthenticate forKey:@"serverDidAuthenticate"];
 }

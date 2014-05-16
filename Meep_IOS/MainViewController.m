@@ -357,6 +357,18 @@
                      }];
 }
 
+- (void) openProfilePage
+{
+    NSLog(@"opening profile page");
+    /*UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"CenterStoryboard" bundle:nil];
+    _userProfileViewController = (UserProfileViewController *)[storyboard instantiateViewControllerWithIdentifier:@"profile"];
+    
+    UINavigationController *navigation = [[UINavigationController alloc]initWithRootViewController:_userProfileViewController];
+    [_userProfileViewController setDelegate:self];
+    [self presentViewController:_userProfileViewController animated:YES completion:nil];
+    */
+}
+
 - (void) openAuthenticationPage
 {
     NSLog(@"opening authentication page");
