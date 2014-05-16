@@ -488,20 +488,22 @@
     _locationInfoToDisplay = [[NSMutableArray alloc]init];
     _thirdPartyInfoToDisplay = [[NSMutableArray alloc]init];
     _mapView = [[MKMapView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 180.0)];
-    CLGeocoder * geocoder = [[CLGeocoder alloc] init];
-    [geocoder geocodeAddressString:_currentEvent.locationAddress completionHandler:^(NSArray * placemarks, NSError* error) {
-        if (placemarks && placemarks.count > 0) {
-            CLPlacemark * topResult = [placemarks objectAtIndex:0];
-            MKPlacemark * placemark = [[MKPlacemark alloc] initWithPlacemark:topResult];
-            
-            MKCoordinateRegion region = self.mapView.region;
-            region.center = placemark.region.center;
-            region.span.longitudeDelta /= 8.0;
-            region.span.latitudeDelta /= 8.0;
-            [self.mapView setRegion:region animated:YES];
-            [self.mapView addAnnotation:placemark];
-        }
-    }];
+    if (!(_currentEvent.locationAddress == (id)[NSNull null] || _currentEvent.locationAddress.length == 0)) {
+        CLGeocoder * geocoder = [[CLGeocoder alloc] init];
+        [geocoder geocodeAddressString:_currentEvent.locationAddress completionHandler:^(NSArray * placemarks, NSError* error) {
+            if (placemarks && placemarks.count > 0) {
+                CLPlacemark * topResult = [placemarks objectAtIndex:0];
+                MKPlacemark * placemark = [[MKPlacemark alloc] initWithPlacemark:topResult];
+                
+                MKCoordinateRegion region = self.mapView.region;
+                region.center = placemark.region.center;
+                region.span.longitudeDelta /= 8.0;
+                region.span.latitudeDelta /= 8.0;
+                [self.mapView setRegion:region animated:YES];
+                [self.mapView addAnnotation:placemark];
+            }
+        }];
+    }
     if ([_currentEvent.description length] > 15){
         self.title = [_currentEvent.description substringToIndex:15];
     }
