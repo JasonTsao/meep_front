@@ -78,6 +78,7 @@
 
 -(void)handleData{
     NSDictionary * recievedData = [NSJSONSerialization JSONObjectWithData:_data options:0 error:nil];
+    NSLog(@"%@",recievedData);
 }
 
 @end

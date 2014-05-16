@@ -56,7 +56,7 @@
 -(void)getFriendsToInviteAndRegisteredUsers:(NSMutableArray*)nonFriends
 {
     NSString * requestURL = [NSString stringWithFormat:@"%@check_if_phone_users_registered",[MEEPhttp accountURL]];
-    NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:@"2", @"user",_phoneNonFriendUsersNumbers,@"phone_numbers", nil];
+    NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:_phoneNonFriendUsersNumbers,@"phone_numbers", nil];
     NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
     NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
     [conn start];
@@ -199,12 +199,33 @@
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
-    NSLog(@"%@", searchText);
-    NSString * requestURL = [NSString stringWithFormat:@"%@search/username",[MEEPhttp accountURL]];
-    NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys: searchText, @"search_field" ,nil];
-    NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
-    NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
-    [conn start];
+    _searchResultRegistered = [[NSMutableArray alloc] init];
+    _searchResultNonRegistered = [[NSMutableArray alloc] init];
+    
+    // needs case insensitive searching!
+    
+    if([_viewTitle isEqualToString:@"From Contacts"]){
+        for( int i = 0; i < [_phoneRegisteredUsers count]; i++){
+            if([_phoneRegisteredUsers[i][@"first_name"] hasPrefix:searchText]){
+                [_searchResultRegistered addObject:_phoneRegisteredUsers[i]];
+            }
+        }
+        for( int i = 0; i < [_phoneNonRegisteredUsers count]; i++){
+            if([_phoneNonRegisteredUsers[i][@"first_name"] hasPrefix:searchText]){
+                [_searchResultNonRegistered addObject:_phoneNonRegisteredUsers[i]];
+            }
+        }
+
+        [self.searchDisplayController.searchResultsTableView reloadData];
+    }
+    else if([_viewTitle isEqualToString:@"From Everyone"]){
+        NSString * requestURL = [NSString stringWithFormat:@"%@search/username",[MEEPhttp accountURL]];
+        NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys: searchText, @"search_field" ,nil];
+        NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
+        NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+        [conn start];
+    }
+    
 }
 
 - (void)viewDidLoad
@@ -213,6 +234,8 @@
     self.title = _viewTitle;
     _buttonTagDictionary = [[NSMutableDictionary alloc] init];
     _buttonTagNumber = 0;
+    _searchButtonTagDictionary = [[NSMutableDictionary alloc] init];
+    _searchButtonTagNumber = 0;
     
     _searchResultFriendsList = [[NSMutableArray alloc] init];
     
@@ -245,12 +268,25 @@
 {
     NSString *header;
     if( [_viewTitle isEqualToString:@"From Contacts"] ){
-        if (section == 0){
-            header = @"Friends who have Meep";
+        NSString *classType = [NSString stringWithFormat:@"%@",[tableView class]];
+        
+        if([classType isEqualToString:@"UISearchResultsTableView"] ){
+            if (section == 0){
+                header = @"Friends who have Meep";
+            }
+            else if(section == 1){
+                header = @"Invite";
+            }
         }
-        else if(section == 1){
-            header = @"Invite";
+        else{
+            if (section == 0){
+                header = @"Friends who have Meep";
+            }
+            else if(section == 1){
+                header = @"Invite";
+            }
         }
+        
     }else if( [_viewTitle isEqualToString:@"From Everyone"] ){
         if(section == 0){
             header = @"Users";
@@ -266,7 +302,15 @@
     // Return the number of sections.
     NSInteger numSections = 0;
     if( [_viewTitle isEqualToString:@"From Contacts"] ||  [_viewTitle isEqualToString:@"From Facebook"] ){
-        numSections = 2;
+        NSString *classType = [NSString stringWithFormat:@"%@",[tableView class]];
+        
+        if([classType isEqualToString:@"UISearchResultsTableView"] ){
+            numSections = 2;
+        }
+        else{
+            numSections = 2;
+        }
+        
     }
     else if( [_viewTitle isEqualToString:@"From Everyone"] ){
         numSections = 1;
@@ -280,12 +324,27 @@
     // Return the number of rows in the section.
     if ([_viewTitle isEqualToString:@"From Contacts"]){
         
-        if( section == 0){
-            return [_phoneRegisteredUsers count];
+        NSString *classType = [NSString stringWithFormat:@"%@",[tableView class]];
+        
+        if([classType isEqualToString:@"UISearchResultsTableView"] ){
+            //return[_searchResultFriendsList count];
+            if( section == 0){
+                return [_searchResultRegistered count];
+            }
+            else if(section ==1){
+                return[_searchResultNonRegistered count];
+            }
         }
-        else if(section ==1){
-            return[_phoneNonRegisteredUsers count];
+        else{
+            if( section == 0){
+                return [_phoneRegisteredUsers count];
+            }
+            else if(section ==1){
+                return[_phoneNonRegisteredUsers count];
+            }
         }
+        
+        
     }
     else if([_viewTitle isEqualToString:@"From Everyone"]){
         if(section == 0){
@@ -321,12 +380,43 @@
     
 }
 
+- (void)selectFriendFromSearch:(id)sender
+{
+    UIButton *button = (UIButton*) sender;
+    
+    if([button isSelected]){
+        [button setSelected:NO];
+        NSString * requestURL = [NSString stringWithFormat:@"%@friends/unfriend",[MEEPhttp accountURL]];
+        NSLog(@"request url : %@", requestURL);
+        NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:_searchButtonTagDictionary[[NSString stringWithFormat:@"%i", button.tag]],@"phone_number", nil];
+        NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
+        NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+        [conn start];
+    }
+    else if( ![button isSelected]){
+        [button setSelected:YES];
+        NSString * requestURL = [NSString stringWithFormat:@"%@friends/add_by_phone",[MEEPhttp accountURL]];
+        NSLog(@"request url : %@", requestURL);
+        NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:_searchButtonTagDictionary[[NSString stringWithFormat:@"%i", button.tag]],@"phone_number", nil];
+        NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
+        NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+        [conn start];
+    }
+}
+
+
 - (void)inviteFriend:(id)sender
 {
-    
     UIButton *button = (UIButton*) sender;
     NSLog(@"Invite Friend tag: %i", button.tag);
     NSLog(@"Invite Friend description: %@", _buttonTagDictionary[[NSString stringWithFormat:@"%i", button.tag]]);
+}
+
+- (void)inviteFriendFromSearch:(id)sender
+{
+    UIButton *button = (UIButton*) sender;
+    NSLog(@"Invite Friend tag: %i", button.tag);
+    NSLog(@"Invite Friend description: %@", _searchButtonTagDictionary[[NSString stringWithFormat:@"%i", button.tag]]);
 }
 
  - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -345,50 +435,101 @@
      
      if( [_viewTitle isEqualToString:@"From Contacts"] ){
          
-         if (indexPath.section == 0){
-             UIButton *newButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-             [newButton setFrame:CGRectMake(
-                                            cell.bounds.size.width-(cell.bounds.size.width/5.0),
-                                            (cell.bounds.size.height/4.0),
-                                            50,
-                                            23)];
-             newButton.backgroundColor = [UIColor grayColor];
-             [newButton setTitle:@"add" forState:UIControlStateNormal];
-             
-             [newButton addTarget:self action:@selector(selectFriend:)
-                 forControlEvents:UIControlEventTouchUpInside];
-             [newButton setTag: _buttonTagNumber];
-             NSString *key = [NSString stringWithFormat:@"%i", _buttonTagNumber];
-             [_buttonTagDictionary setObject:_phoneRegisteredUsers[indexPath.row][@"phone_number"] forKey:key];
-             _buttonTagNumber++;
-             
-             [cell addSubview:newButton];
-             
-             NSMutableString *full_name = [[NSMutableString alloc] initWithString: _phoneRegisteredUsers[indexPath.row][@"first_name"]];
-             [full_name appendString: @" "];
-             cell.textLabel.text = full_name;
+         NSString *classType = [NSString stringWithFormat:@"%@",[tableView class]];
+         if([classType isEqualToString:@"UISearchResultsTableView"] ){
+             if (indexPath.section == 0){
+                 UIButton *newButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+                 [newButton setFrame:CGRectMake(
+                                                cell.bounds.size.width-(cell.bounds.size.width/5.0),
+                                                (cell.bounds.size.height/4.0),
+                                                50,
+                                                23)];
+                 newButton.backgroundColor = [UIColor grayColor];
+                 [newButton setTitle:@"add" forState:UIControlStateNormal];
+                 
+                 [newButton addTarget:self action:@selector(selectFriendFromSearch:)
+                     forControlEvents:UIControlEventTouchUpInside];
+                 [newButton setTag: _searchButtonTagNumber];
+                 NSString *key = [NSString stringWithFormat:@"%i", _searchButtonTagNumber];
+                 [_searchButtonTagDictionary setObject:_searchResultRegistered[indexPath.row][@"phone_number"] forKey:key];
+                 _searchButtonTagNumber++;
+                 
+                 [cell addSubview:newButton];
+                 
+                 NSMutableString *full_name = [[NSMutableString alloc] initWithString: _searchResultRegistered[indexPath.row][@"first_name"]];
+                 [full_name appendString: @" "];
+                 cell.textLabel.text = full_name;
+             }
+             else if(indexPath.section == 1){
+                 UIButton *newButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+                 [newButton setFrame:CGRectMake(
+                                                cell.bounds.size.width-(cell.bounds.size.width/5.0),
+                                                (cell.bounds.size.height/4.0),
+                                                50,
+                                                23)];
+                 newButton.backgroundColor = [UIColor grayColor];
+                 [newButton setTitle:@"Invite" forState:UIControlStateNormal];
+                 [newButton addTarget:self action:@selector(inviteFriendFromSearch:)
+                     forControlEvents:UIControlEventTouchUpInside];
+                 [newButton setTag: _searchButtonTagNumber];
+                 NSString *key = [NSString stringWithFormat:@"%i", _searchButtonTagNumber];
+                 [_searchButtonTagDictionary setObject:_searchResultNonRegistered[indexPath.row][@"phone_number"] forKey:key];
+                 _searchButtonTagNumber++;
+                 
+                 [cell addSubview:newButton];
+                 
+                 NSMutableString *full_name = [[NSMutableString alloc] initWithString: _searchResultNonRegistered[indexPath.row][@"first_name"]];
+                 [full_name appendString: @" "];
+                 cell.textLabel.text = full_name;
+             }
+
          }
-         else if(indexPath.section == 1){
-             UIButton *newButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-             [newButton setFrame:CGRectMake(
-                                            cell.bounds.size.width-(cell.bounds.size.width/5.0),
-                                            (cell.bounds.size.height/4.0),
-                                            50,
-                                            23)];
-             newButton.backgroundColor = [UIColor grayColor];
-             [newButton setTitle:@"Invite" forState:UIControlStateNormal];
-             [newButton addTarget:self action:@selector(inviteFriend:)
-                 forControlEvents:UIControlEventTouchUpInside];
-             [newButton setTag: _buttonTagNumber];
-             NSString *key = [NSString stringWithFormat:@"%i", _buttonTagNumber];
-             [_buttonTagDictionary setObject:_phoneNonRegisteredUsers[indexPath.row][@"phone_number"] forKey:key];
-             _buttonTagNumber++;
-             
-             [cell addSubview:newButton];
-             
-             NSMutableString *full_name = [[NSMutableString alloc] initWithString: _phoneNonRegisteredUsers[indexPath.row][@"first_name"]];
-             [full_name appendString: @" "];
-             cell.textLabel.text = full_name;
+         else{
+             if (indexPath.section == 0){
+                 UIButton *newButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+                 [newButton setFrame:CGRectMake(
+                                                cell.bounds.size.width-(cell.bounds.size.width/5.0),
+                                                (cell.bounds.size.height/4.0),
+                                                50,
+                                                23)];
+                 newButton.backgroundColor = [UIColor grayColor];
+                 [newButton setTitle:@"add" forState:UIControlStateNormal];
+                 
+                 [newButton addTarget:self action:@selector(selectFriend:)
+                     forControlEvents:UIControlEventTouchUpInside];
+                 [newButton setTag: _buttonTagNumber];
+                 NSString *key = [NSString stringWithFormat:@"%i", _buttonTagNumber];
+                 [_buttonTagDictionary setObject:_phoneRegisteredUsers[indexPath.row][@"phone_number"] forKey:key];
+                 _buttonTagNumber++;
+                 
+                 [cell addSubview:newButton];
+                 
+                 NSMutableString *full_name = [[NSMutableString alloc] initWithString: _phoneRegisteredUsers[indexPath.row][@"first_name"]];
+                 [full_name appendString: @" "];
+                 cell.textLabel.text = full_name;
+             }
+             else if(indexPath.section == 1){
+                 UIButton *newButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+                 [newButton setFrame:CGRectMake(
+                                                cell.bounds.size.width-(cell.bounds.size.width/5.0),
+                                                (cell.bounds.size.height/4.0),
+                                                50,
+                                                23)];
+                 newButton.backgroundColor = [UIColor grayColor];
+                 [newButton setTitle:@"Invite" forState:UIControlStateNormal];
+                 [newButton addTarget:self action:@selector(inviteFriend:)
+                     forControlEvents:UIControlEventTouchUpInside];
+                 [newButton setTag: _buttonTagNumber];
+                 NSString *key = [NSString stringWithFormat:@"%i", _buttonTagNumber];
+                 [_buttonTagDictionary setObject:_phoneNonRegisteredUsers[indexPath.row][@"phone_number"] forKey:key];
+                 _buttonTagNumber++;
+                 
+                 [cell addSubview:newButton];
+                 
+                 NSMutableString *full_name = [[NSMutableString alloc] initWithString: _phoneNonRegisteredUsers[indexPath.row][@"first_name"]];
+                 [full_name appendString: @" "];
+                 cell.textLabel.text = full_name;
+             }
          }
      }
      else if( [_viewTitle isEqualToString:@"From Everyone"] ){
