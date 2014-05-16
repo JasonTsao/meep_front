@@ -14,6 +14,7 @@
 #import "EventAttendeeTabBarController.h"
 #import "EventAttendeesDistanceViewController.h"
 #import "EventAttendeesViewController.h"
+#import <CoreLocation/CoreLocation.h>
 
 
 @interface EventPageViewController ()
@@ -37,6 +38,10 @@
 @property(nonatomic, strong) NSMutableArray *locationInfoToDisplay;
 @property(nonatomic, strong) NSMutableArray *thirdPartyInfoToDisplay;
 @property (nonatomic, strong)MKMapView * mapView;
+
+@property (nonatomic, assign) int YELP_SLOT;
+
+@property (nonatomic, strong) CLLocationManager * locationManager;
 
 @end
 
@@ -245,11 +250,6 @@
     NSLog(@"sender : %@", sender);
 }
 
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    NSLog(@"in collection view didselectitematindexpath: %@", [_invitedFriends[indexPath.row] name]);
-}
-
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
 
@@ -277,10 +277,22 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     NSString *friend_name;
     Friend *selectedFriend;
-    
     if(indexPath.section == 1){
         if(indexPath.row == 1){
             NSLog(@"Transfer to users map app!");
+            NSString* url = [NSString stringWithFormat:@"http://maps.google.com/maps?saddr=%f,%f&daddr=%@",_locationManager.location.coordinate.latitude, _locationManager.location.coordinate.longitude, [_currentEvent.locationAddress stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url]];
+        }
+    }
+    if (indexPath.section == 2) {
+        if (indexPath.row == 0) {
+            NSLog(@"Opening Yelp Link");
+            if ([self isYelpInstalled]) {
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:_currentEvent.yelpLink]];
+            }
+            else {
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:_currentEvent.yelpLink]];
+            }
         }
     }
     if(indexPath.section == 3){
@@ -289,6 +301,10 @@
         }
     }
     
+}
+
+- (BOOL) isYelpInstalled {
+    return [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"yelp:"]];
 }
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -345,11 +361,12 @@
     }
     
     if(section == 2){
-        if( [_currentEvent.yelpLink length] != 0 || YES){
+        if (!(_currentEvent.yelpLink == (id)[NSNull null] || _currentEvent.yelpLink.length == 0)){
             [_thirdPartyInfoToDisplay addObject:@"yelp"];
+            _YELP_SLOT = numRows;
             numRows++;
         }
-        if( [_currentEvent.uberLink length] != 0 || YES){
+        if (!(_currentEvent.uberLink == (id)[NSNull null] || _currentEvent.uberLink.length == 0)){
             [_thirdPartyInfoToDisplay addObject:@"uber"];
             numRows++;
         }
@@ -478,8 +495,6 @@
     return cell;
 }
 
-
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -528,6 +543,10 @@
     self.navigationItem.rightBarButtonItem = optionsBarItem;
     //[self.friendsCollection registerNib:[UINib nibWithNibName:@"EventPage" bundle:nil] forCellWithReuseIdentifier:@"5"];
     // Do any additional setup after loading the view.
+    _locationManager = [[CLLocationManager alloc] init];
+    _locationManager.distanceFilter = kCLDistanceFilterNone;
+    _locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters;
+    [_locationManager startUpdatingLocation];
 }
 
 

@@ -363,6 +363,7 @@
         event.locationName = eventObj[@"location_name"];
         event.locationAddress = eventObj[@"location_address"];
         event.end_time = eventObj[@"end_time"];
+        event.yelpLink = eventObj[@"yelp_url"];
         //event.group = eventObj[@"group"];
         
         //getting number of differnt days
