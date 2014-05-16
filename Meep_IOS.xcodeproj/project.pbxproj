@@ -400,13 +400,12 @@
 				3CB231FC192176B900684E1D /* MEPLocationService.h */,
 				3CB231FD192176B900684E1D /* MEPLocationService.m */,
 				96E1D26E1918545000951DEB /* Authentication */,
-				96E1D26419173E2900951DEB /* AddFriends */,
-				9686302A1909FA7700CAE305 /* Friend Pages */,
-				3CE1C87519099BCB00E4375A /* AccountSettings.h */,
-				3CE1C87619099BCB00E4375A /* AccountSettings.m */,
-				3CD313B21908A664002DDBF1 /* Event Creator */,
 				3CCF9716190827A9005FA454 /* Account And Settings */,
+				96E1D26419173E2900951DEB /* AddFriends */,
 				3CCC51711905A51D00EB0980 /* Event Pages */,
+				3CD313B21908A664002DDBF1 /* Event Creator */,
+				9686302A1909FA7700CAE305 /* Friend Pages */,
+				9606E6A3191308A300D985A7 /* Group Pages */,
 				3CCC516E1905A44400EB0980 /* Center Page */,
 				3CCC51341905A20D00EB0980 /* en.lproj */,
 				3CCC513E1905A20D00EB0980 /* Images.xcassets */,
@@ -522,6 +521,8 @@
 		3CCF9716190827A9005FA454 /* Account And Settings */ = {
 			isa = PBXGroup;
 			children = (
+				3CE1C87519099BCB00E4375A /* AccountSettings.h */,
+				3CE1C87619099BCB00E4375A /* AccountSettings.m */,
 				3CCF9718190827CE005FA454 /* AccountViewController.h */,
 				3CCF9719190827CE005FA454 /* AccountViewController.m */,
 				3CCC513F1905A20D00EB0980 /* LeftPanelViewController.h */,
@@ -597,7 +598,6 @@
 				96E1D26619173E8D00951DEB /* AddFriendsViewController.m */,
 				96E1D26B19174EA000951DEB /* AddFriendsFromTableViewController.h */,
 				96E1D26C19174EA000951DEB /* AddFriendsFromTableViewController.m */,
-				9606E6A3191308A300D985A7 /* Group Pages */,
 			);
 			name = AddFriends;
 			sourceTree = "<group>";

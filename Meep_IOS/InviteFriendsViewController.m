@@ -304,9 +304,10 @@
     
     NSString *classType = [NSString stringWithFormat:@"%@",[tableView class]];
     if([classType isEqualToString:@"UISearchResultsTableView"] ){
-        cell = [[UITableViewCell alloc]init];
+        //cell = [[UITableViewCell alloc]init];
+        cell = [self clearCell:cell];
         Friend *currentFriend = search_friends_list[indexPath.row];
-        cell.textLabel.text = currentFriend.name;
+        //cell.textLabel.text = currentFriend.name;
         UILabel *friendHeader = [[UILabel alloc] initWithFrame:CGRectMake(60, 10, 235, 21)];
         friendHeader.text = currentFriend.name;
         [friendHeader setFont:[UIFont systemFontOfSize:18]];
