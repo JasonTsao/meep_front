@@ -5,7 +5,7 @@
 //  Created by Jason Tsao on 5/4/14.
 //  Copyright (c) 2014 futoi. All rights reserved.
 //
-
+#import <FacebookSDK/FacebookSDK.h>
 #import "AddFriendsFromTableViewController.h"
 
 @interface AddFriendsFromTableViewController ()
@@ -241,8 +241,12 @@
     
     [self getFriendsList];
     /*if( [_viewTitle isEqualToString:@"From Contacts"]){
-        
     }*/
+    
+    if([_viewTitle isEqualToString:@"From Facebook"]){
+        FBLoginView *loginView = [[FBLoginView alloc] init];
+        [self.view addSubview:loginView];
+    }
     
     
     // Uncomment the following line to preserve selection between presentations.

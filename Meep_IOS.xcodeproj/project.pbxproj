@@ -83,6 +83,7 @@
 		96967E1D191D4887007613AF /* EditEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96967E1C191D4887007613AF /* EditEventViewController.m */; };
 		96967E20191D5BF5007613AF /* AddRemoveFriendsFromEventTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96967E1F191D5BF5007613AF /* AddRemoveFriendsFromEventTableViewController.m */; };
 		96B397CB191B4BB700FFA7BF /* SignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96B397CA191B4BB700FFA7BF /* SignUpViewController.m */; };
+		96DB11761926D2BC0096FEDE /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96DB11751926D2BC0096FEDE /* FacebookSDK.framework */; };
 		96E1D22B1913503600951DEB /* CreateMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E1D22A1913503600951DEB /* CreateMessageViewController.m */; };
 		96E1D22E1913645600951DEB /* GroupsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E1D22D1913645600951DEB /* GroupsViewController.m */; };
 		96E1D2311915709300951DEB /* InvitedFriend.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E1D2301915709300951DEB /* InvitedFriend.m */; };
@@ -246,6 +247,7 @@
 		96967E1F191D5BF5007613AF /* AddRemoveFriendsFromEventTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddRemoveFriendsFromEventTableViewController.m; sourceTree = "<group>"; };
 		96B397C9191B4BB700FFA7BF /* SignUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignUpViewController.h; sourceTree = "<group>"; };
 		96B397CA191B4BB700FFA7BF /* SignUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignUpViewController.m; sourceTree = "<group>"; };
+		96DB11751926D2BC0096FEDE /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
 		96E1D2291913503600951DEB /* CreateMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateMessageViewController.h; sourceTree = "<group>"; };
 		96E1D22A1913503600951DEB /* CreateMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateMessageViewController.m; sourceTree = "<group>"; };
 		96E1D22C1913645600951DEB /* GroupsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupsViewController.h; sourceTree = "<group>"; };
@@ -293,6 +295,7 @@
 				3CCC507B19059F9500EB0980 /* CoreGraphics.framework in Frameworks */,
 				3CCC507D19059F9500EB0980 /* UIKit.framework in Frameworks */,
 				3CCC507919059F9500EB0980 /* Foundation.framework in Frameworks */,
+				96DB11761926D2BC0096FEDE /* FacebookSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -387,6 +390,7 @@
 		3CCC507719059F9500EB0980 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				96DB11751926D2BC0096FEDE /* FacebookSDK.framework */,
 				96E1D26219172F3000951DEB /* AddressBookUI.framework */,
 				96E1D26019172F2A00951DEB /* AddressBook.framework */,
 				3CCC507819059F9500EB0980 /* Foundation.framework */,
@@ -1003,6 +1007,10 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Meep_IOS/Meep_IOS-Prefix.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/Meep_IOS/MeepIOS-Info.plist";
@@ -1019,6 +1027,10 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Meep_IOS/Meep_IOS-Prefix.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/Meep_IOS/MeepIOS-Info.plist";
