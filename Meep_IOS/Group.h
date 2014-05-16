@@ -13,5 +13,6 @@
 @property (nonatomic) NSString *name;
 @property (nonatomic) NSInteger group_id;
 @property (nonatomic) NSMutableArray * group_members;
+@property (nonatomic, strong) UIImage * groupProfilePic;
 -(id) initWithName:(NSString*) groupName;
 @end

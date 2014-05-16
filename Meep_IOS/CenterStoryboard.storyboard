@@ -950,6 +950,14 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
+                            <searchBar contentMode="redraw" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OpM-xB-QRy">
+                                <rect key="frame" x="0.0" y="120" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="jKX-Pg-oou" id="VBg-G0-6qW"/>
+                                </connections>
+                            </searchBar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -963,9 +971,20 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                     <connections>
                         <outlet property="friendTable" destination="j6B-Rn-v3y" id="PN7-i5-Hyn"/>
                         <outlet property="nameField" destination="nYo-5d-7T8" id="2Io-L3-Oyq"/>
+                        <outlet property="searchBar" destination="OpM-xB-QRy" id="Fjz-uF-mb3"/>
+                        <outlet property="searchDisplayController" destination="Xwm-MH-yAS" id="EGf-Mq-sOJ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0zW-IS-ljh" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <searchDisplayController id="Xwm-MH-yAS">
+                    <connections>
+                        <outlet property="delegate" destination="jKX-Pg-oou" id="ai7-z4-AWR"/>
+                        <outlet property="searchBar" destination="OpM-xB-QRy" id="ufb-dm-xa5"/>
+                        <outlet property="searchContentsController" destination="jKX-Pg-oou" id="kSH-Do-6PI"/>
+                        <outlet property="searchResultsDataSource" destination="jKX-Pg-oou" id="U2b-5g-DRQ"/>
+                        <outlet property="searchResultsDelegate" destination="jKX-Pg-oou" id="tFt-Oa-NnM"/>
+                    </connections>
+                </searchDisplayController>
             </objects>
             <point key="canvasLocation" x="988" y="963"/>
         </scene>
@@ -1296,6 +1315,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="5q4-5L-BtY"/>
+        <segue reference="SkQ-ts-ddb"/>
     </inferredMetricsTieBreakers>
 </document>
