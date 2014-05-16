@@ -40,10 +40,10 @@
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 2;
+    return 3;
 }
 
--(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+/*-(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     NSString *header;
     
@@ -52,15 +52,18 @@
         _authClient = [NSKeyedUnarchiver unarchiveObjectWithData:authenticated];
         header = _authClient.enc_username;
     }
-    
+    	
     return header;
-}
+}*/
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     NSInteger numRows = [_navItems count];
     
     if(section == 0){
+        numRows = 1;
+    }
+    else if(section == 1){
         numRows = numRows -1;
     }
     else{
@@ -71,8 +74,12 @@
 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    if( indexPath.section == 0){
+        [_delegate openProfilePage];
+    }
     
-    if (indexPath.section == 0){
+    if (indexPath.section == 1){
+        NSLog(@"cell was 1");
         if(indexPath.row == 1){
             [_delegate openGroupsPage];
         }
@@ -84,12 +91,18 @@
         }
     }
     
-    else if(indexPath.section == 1){
+    else if(indexPath.section == 2){
         if(indexPath.row == 0){
             [_delegate openAccountSettings];
         }
     }
     
+}
+
+
+-(void)openProfilePage:(id)sender{
+    NSLog(@"in openprofile page sender");
+    //[_delegate openProfilePage];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -101,9 +114,29 @@
     cell.textLabel.textColor = [UIColor lightGrayColor];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     if (indexPath.section == 0){
-        cell.textLabel.text = _navItems[indexPath.row];
+        NSString *name;
+        NSData *authenticated = [[NSUserDefaults standardUserDefaults] objectForKey:@"auth_client"];
+        _authClient = [NSKeyedUnarchiver unarchiveObjectWithData:authenticated];
+        name = _authClient.enc_username;
+        
+        //UILabel *userHeader = [[UILabel alloc] initWithFrame:CGRectMake(60, 10, 235, 21)];
+        UILabel *userHeader = [[UILabel alloc] initWithFrame:CGRectMake(60, 10, 50, 21)];
+        userHeader.text = name;
+        [userHeader setFont:[UIFont systemFontOfSize:18]];
+        userHeader.textColor = [UIColor lightGrayColor];
+
+        userHeader.tag = 1;
+        [cell.contentView addSubview:userHeader];
+        
+        //NEED TO ACTUALLY GET REAL PF PIC LATER!
+        UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(8, 4, 40, 40)];
+        img.image = [UIImage imageNamed:@"ManSilhouette"];
+        [cell.contentView addSubview:img];
     }
     else if(indexPath.section == 1){
+        cell.textLabel.text = _navItems[indexPath.row];
+    }
+    else if(indexPath.section == 2){
         NSInteger index = indexPath.row + 4;
         cell.textLabel.text = _navItems[index] ;
     }
@@ -113,7 +146,10 @@
 
 - (NSInteger)tableView:(UITableView *)tableView indentationLevelForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 1;
+    if(indexPath.section != 0){
+        return 1;
+    }
+    return 0;
 }
 
 

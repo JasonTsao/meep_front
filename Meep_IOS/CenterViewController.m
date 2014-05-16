@@ -36,6 +36,11 @@
     [_delegate movePanelToOriginalPosition];
 }
 
+- (void) openProfilePage
+{
+    [_delegate openProfilePage];
+}
+
 - (void)openAccountSettings
 {
     [_delegate openAccountPage];
