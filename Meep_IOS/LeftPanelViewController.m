@@ -79,6 +79,7 @@
     }
     
     if (indexPath.section == 1){
+        NSLog(@"cell was 1");
         if(indexPath.row == 1){
             [_delegate openGroupsPage];
         }
@@ -98,6 +99,12 @@
     
 }
 
+
+-(void)openProfilePage:(id)sender{
+    NSLog(@"in openprofile page sender");
+    //[_delegate openProfilePage];
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"navItem" forIndexPath:indexPath];
@@ -112,12 +119,14 @@
         _authClient = [NSKeyedUnarchiver unarchiveObjectWithData:authenticated];
         name = _authClient.enc_username;
         
-        UILabel *userHeader = [[UILabel alloc] initWithFrame:CGRectMake(60, 10, 235, 21)];
+        //UILabel *userHeader = [[UILabel alloc] initWithFrame:CGRectMake(60, 10, 235, 21)];
+        UILabel *userHeader = [[UILabel alloc] initWithFrame:CGRectMake(60, 10, 50, 21)];
         userHeader.text = name;
         [userHeader setFont:[UIFont systemFontOfSize:18]];
         userHeader.textColor = [UIColor lightGrayColor];
+
+        userHeader.tag = 1;
         [cell.contentView addSubview:userHeader];
-        
         
         //NEED TO ACTUALLY GET REAL PF PIC LATER!
         UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(8, 4, 40, 40)];
