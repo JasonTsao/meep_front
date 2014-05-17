@@ -96,6 +96,6 @@
     float a = (float) ((sin(dlat/2)*sin(dlat/2)) + (cos(lat1)*cos(lat2)*sin(dlng/2)*sin(dlng/2)));
     float c = (float) (2 * atan2(sqrt(a), sqrt(1-a)));
     float radiusOfEarthInMiles = 3961;
-    return radiusOfEarthInMiles * c;
+    return (radiusOfEarthInMiles * c)/66.3157;
 }
 @end

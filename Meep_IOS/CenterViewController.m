@@ -222,6 +222,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    // Get Location Data
+    _locationManager = [[CLLocationManager alloc] init];
+    _locationManager.distanceFilter = kCLDistanceFilterNone;
+    _locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters;
+    [_locationManager startUpdatingLocation];
     
     UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
     [refreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];
@@ -233,12 +238,6 @@
     self.dateEventsDictionary = [[NSMutableDictionary alloc] init];
     self.numDates = 0;
     [self getUpcomingEvents];
-    
-    // Get Location Data
-    _locationManager = [[CLLocationManager alloc] init];
-    _locationManager.distanceFilter = kCLDistanceFilterNone;
-    _locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters;
-    [_locationManager startUpdatingLocation];
 }
 
 - (void) getUpcomingEvents {
@@ -383,11 +382,17 @@
         event.locationLongitude = eventObj[@"location_longitude"];
         
         if (![event.locationLatitude isEqual:[NSNull null]] &&
-            ![event.locationLongitude isEqual:[NSNull null]]) {
+            ![event.locationLongitude isEqual:[NSNull null]] &&
+            [jsonResponse valueForKey:@"lat"] &&
+            [jsonResponse valueForKey:@"lng"]) {
             float locLat = [event.locationLatitude floatValue];
             float locLng = [event.locationLongitude floatValue];
             float currentLat = _locationManager.location.coordinate.latitude;
             float currentLng = _locationManager.location.coordinate.longitude;
+            if (currentLat < 0.001) {
+                currentLat = [[jsonResponse valueForKey:@"lat"] floatValue];
+                currentLng = [[jsonResponse valueForKey:@"lng"] floatValue];
+            }
             NSLog(@"%f",[MEPLocationService distanceBetweenCoordinatesWithLatitudeOne:locLat longitudeOne:locLng latitudeTwo:currentLat longitudeTwo:currentLng]);
         }
         //event.group = eventObj[@"group"];
