@@ -14,6 +14,7 @@
 
 @property (nonatomic, strong) CLLocationManager * locationManager;
 @property (nonatomic, strong) NSMutableData * data;
+@property (nonatomic, strong) CLLocation * currentLocation;
 
 @end
 
@@ -42,6 +43,7 @@
         NSLog(@"latitude %+.6f, longitutde %+.6f\n",
               location.coordinate.latitude,
               location.coordinate.longitude);
+        _currentLocation = location;
     }
     NSString *latitude = [NSString stringWithFormat:@"%f", location.coordinate.latitude];
     NSString *longitude = [NSString stringWithFormat:@"%f", location.coordinate.longitude];

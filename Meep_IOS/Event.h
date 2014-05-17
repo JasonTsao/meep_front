@@ -15,7 +15,8 @@
 @property NSString * description;
 @property NSString * locationName;
 @property NSString * locationAddress;
-@property NSString * locationCoord;
+@property NSString * locationLatitude;
+@property NSString * locationLongitude;
 @property NSString * meetUpSpot;
 @property NSString * start_time;
 @property NSString * end_time;
@@ -26,7 +27,7 @@
 
 -(id) initWithDescription:(NSString*) evdescription
                  withName:(NSString*) evname
-               startTime:(NSString*) evstarttime
-                  eventId:(NSInteger)evId;
+                startTime:(NSString*) evstarttime
+                  eventId:(NSInteger) evId;
 
 @end

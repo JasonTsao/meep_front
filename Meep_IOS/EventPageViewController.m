@@ -333,7 +333,7 @@
             
         }
         //if( [_currentEvent.start_time length] != 0){
-        if( ![_currentEvent.start_time isEqual:[NSNull null]]){
+        if (![_currentEvent.start_time isEqual:[NSNull null]]){
             [_basicInfoToDisplay addObject:@"time"];
             numRows++;
         }

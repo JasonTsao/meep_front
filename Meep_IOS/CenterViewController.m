@@ -10,6 +10,8 @@
 #import "MEEPhttp.h"
 #import "Event.h"
 #import "MEPTextParse.h"
+#import "MEPLocationService.h"
+#import <CoreLocation/CoreLocation.h>
 
 
 @interface CenterViewController () <UITableViewDataSource>
@@ -26,6 +28,8 @@
 @property(nonatomic, strong) NSArray * eventArray;
 
 @property(nonatomic, strong) NSMutableData * data;
+
+@property (nonatomic, strong) CLLocationManager * locationManager;
 
 @end
 
@@ -230,6 +234,11 @@
     self.numDates = 0;
     [self getUpcomingEvents];
     
+    // Get Location Data
+    _locationManager = [[CLLocationManager alloc] init];
+    _locationManager.distanceFilter = kCLDistanceFilterNone;
+    _locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters;
+    [_locationManager startUpdatingLocation];
 }
 
 - (void) getUpcomingEvents {
@@ -357,10 +366,10 @@
     NSMutableArray *unsortedEventArray = [[NSMutableArray alloc] init];
     _datesArray = [[NSMutableArray alloc] init];
     for(NSDictionary *eventObj in upcoming) {
-        if( [eventObj[@"start_time"]  isEqual:[NSNull null]]){
+        if ([eventObj[@"start_time"]  isEqual:[NSNull null]]){
             startTime = eventObj[@"created"];
         }
-        else{
+        else {
             startTime = eventObj[@"start_time"];
         }
         
@@ -369,6 +378,17 @@
         event.locationAddress = eventObj[@"location_address"];
         event.end_time = eventObj[@"end_time"];
         event.yelpLink = eventObj[@"yelp_url"];
+        event.locationLatitude = eventObj[@"location_latitude"];
+        event.locationLongitude = eventObj[@"location_longitude"];
+        
+        if (![event.locationLatitude isEqual:[NSNull null]] &&
+            ![event.locationLongitude isEqual:[NSNull null]]) {
+            float locLat = [event.locationLatitude floatValue];
+            float locLng = [event.locationLongitude floatValue];
+            float currentLat = _locationManager.location.coordinate.latitude;
+            float currentLng = _locationManager.location.coordinate.longitude;
+            NSLog(@"%f",[MEPLocationService distanceBetweenCoordinatesWithLatitudeOne:locLat longitudeOne:locLng latitudeTwo:currentLat longitudeTwo:currentLng]);
+        }
         //event.group = eventObj[@"group"];
         
         //getting number of differnt days
