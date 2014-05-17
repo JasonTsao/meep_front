@@ -243,10 +243,10 @@
     [conn start];
 }
 
--(void) syncFacebookFriends{
+-(void) syncFacebookFriends:(id)sender{
     NSString * accessToken = [[FBSession activeSession] accessToken];
     
-    NSString * requestURL = [NSString stringWithFormat:@"%@syncFacebookFriends/%@",[MEEPhttp accountURL], accessToken];
+    NSString * requestURL = [NSString stringWithFormat:@"%@syncFacebookFriends",[MEEPhttp accountURL]];
     //NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys: accessToken, @"access_token" ,nil];
     NSDictionary * postDict = [[NSDictionary alloc] init];
     NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
@@ -255,7 +255,18 @@
 }
 
 -(void) getFacebookFriendsList{
-    
+    [FBRequestConnection startWithGraphPath:@"1036380126/friends?limit=5000"
+                          completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+                              if (!error) {
+                                  // Success! Include your code to handle the results here
+                                  NSLog(@"got some friends!!");
+                                  NSLog(@"user friends: %@", result);
+                              } else {
+                                  // An error occurred, we need to handle the error
+                                  // Check out our error handling guide: https://developers.facebook.com/docs/ios/errors/
+                                  NSLog(@"error %@", error.description);
+                              }
+                          }];
 }
 
 - (void)viewDidLoad
@@ -274,6 +285,11 @@
     }*/
     
     if([_viewTitle isEqualToString:@"From Facebook"]){
+        
+        UIBarButtonItem *customBarItem = [[UIBarButtonItem alloc] initWithTitle:@"Sync All" style:UIBarButtonItemStyleBordered target:self action:@selector( syncFacebookFriends:)];
+        
+        self.navigationItem.rightBarButtonItem = customBarItem;
+        
         if (FBSession.activeSession.state == FBSessionStateOpen
             || FBSession.activeSession.state == FBSessionStateOpenTokenExtended) {
             NSLog(@"FBSessionStateOpen || FBSessionStateOpenTokenExtended");
@@ -282,7 +298,7 @@
             
             //[FBSession.activeSession closeAndClearTokenInformation];
             [self syncFacebookUser];
-            [self syncFacebookFriends];
+            [self getFacebookFriendsList];
             
             // If the session state is not any of the two "open" states when the button is clicked
         } else {
@@ -297,7 +313,7 @@
                  MEPAppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
                  // Call the app delegate's sessionStateChanged:state:error method to handle session state changes
                  [self syncFacebookUser];
-                 [self syncFacebookFriends];
+                 [self getFacebookFriendsList];
                  [appDelegate sessionStateChanged:session state:state error:error];
              }];
         }
