@@ -288,7 +288,7 @@
             // Open a session showing the user the login UI
             // You must ALWAYS ask for public_profile permissions when opening a session
             NSLog(@"about to open active session with read permissions");
-            [FBSession openActiveSessionWithReadPermissions:@[@"public_profile"]
+            [FBSession openActiveSessionWithReadPermissions:@[@"public_profile", @"user_friends", @"read_friendlists", @"email", @"user_birthday"]
                                                allowLoginUI:YES
                                           completionHandler:
              ^(FBSession *session, FBSessionState state, NSError *error) {
