@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <FacebookSDK/FacebookSDK.h>
 #import "AddFriendsFromTableViewController.h"
 
 
@@ -15,6 +16,6 @@
 - (void) backToCenterFromAddFriends:(AddFriendsViewController *)controller;
 
 @end
-@interface AddFriendsViewController : UITableViewController
+@interface AddFriendsViewController : UITableViewController<FBLoginViewDelegate>
 @property (nonatomic, assign) id <AddFriendsViewControllerDelegate> delegate;
 @end

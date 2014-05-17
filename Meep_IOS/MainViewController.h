@@ -23,4 +23,5 @@
 
 @interface MainViewController : UIViewController<AccountViewControllerDelegate, CreateGroupViewControllerDelegate, GroupsViewControllerDelegate, InviteFriendsViewControllerDelegate>
 @property (nonatomic, assign) id<MainViewControllerDelegate> delegate;
+@property(nonatomic, strong) DjangoAuthClient * authClient;
 @end

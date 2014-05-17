@@ -112,7 +112,12 @@
                        action:@selector(openFriendPage:)
              forControlEvents:UIControlEventTouchUpInside];
         [cellButton setTitle:user_name forState:UIControlStateNormal];
-        cellButton.frame = CGRectMake(0.0, 0.0, 50.0, 50.0);
+        cellButton.frame = CGRectMake(0.0, 15.0, 60.0, 60.0);
+        
+        UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(8, 1, 40, 40)];
+        img.image = [_invitedFriends[indexPath.row] profilePic];
+        [cell.contentView addSubview:img];
+        
         [cell.contentView addSubview: cellButton];
         
         // later when separating between attending and not, tag will be numAttending + indexPath.row

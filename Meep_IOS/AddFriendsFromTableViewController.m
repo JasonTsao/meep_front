@@ -5,8 +5,9 @@
 //  Created by Jason Tsao on 5/4/14.
 //  Copyright (c) 2014 futoi. All rights reserved.
 //
-
+#import <FacebookSDK/FacebookSDK.h>
 #import "AddFriendsFromTableViewController.h"
+#import "MEPAppDelegate.h"
 
 @interface AddFriendsFromTableViewController ()
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
@@ -143,6 +144,10 @@
         }
     }
     
+    else if ([_viewTitle isEqualToString:@"From Facebook"]){
+        NSLog(@"sync with fb friends response: %@", jsonResponse);
+    }
+    
     else if ([_viewTitle isEqualToString:@"From Everyone"]){
         
         if([jsonResponse objectForKey:@"friends"] != nil){
@@ -227,6 +232,31 @@
     }
     
 }
+-(void) syncFacebookUser{
+    NSString * accessToken = [[FBSession activeSession] accessToken];
+    
+    NSString * requestURL = [NSString stringWithFormat:@"%@syncFacebookUser/%@",[MEEPhttp accountURL], accessToken];
+    //NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys: accessToken, @"access_token" ,nil];
+    NSDictionary * postDict = [[NSDictionary alloc] init];
+    NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
+    NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    [conn start];
+}
+
+-(void) syncFacebookFriends{
+    NSString * accessToken = [[FBSession activeSession] accessToken];
+    
+    NSString * requestURL = [NSString stringWithFormat:@"%@syncFacebookFriends/%@",[MEEPhttp accountURL], accessToken];
+    //NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys: accessToken, @"access_token" ,nil];
+    NSDictionary * postDict = [[NSDictionary alloc] init];
+    NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
+    NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    [conn start];
+}
+
+-(void) getFacebookFriendsList{
+    
+}
 
 - (void)viewDidLoad
 {
@@ -241,8 +271,36 @@
     
     [self getFriendsList];
     /*if( [_viewTitle isEqualToString:@"From Contacts"]){
-        
     }*/
+    
+    if([_viewTitle isEqualToString:@"From Facebook"]){
+        if (FBSession.activeSession.state == FBSessionStateOpen
+            || FBSession.activeSession.state == FBSessionStateOpenTokenExtended) {
+            NSLog(@"FBSessionStateOpen || FBSessionStateOpenTokenExtended");
+            // Close the session and remove the access token from the cache
+            // The session state handler (in the app delegate) will be called automatically
+            
+            //[FBSession.activeSession closeAndClearTokenInformation];
+            [self syncFacebookFriends];
+            
+            // If the session state is not any of the two "open" states when the button is clicked
+        } else {
+            // Open a session showing the user the login UI
+            // You must ALWAYS ask for public_profile permissions when opening a session
+            NSLog(@"about to open active session with read permissions");
+            [FBSession openActiveSessionWithReadPermissions:@[@"public_profile", @"user_friends", @"read_friendlists", @"email", @"user_birthday"]
+                                               allowLoginUI:YES
+                                          completionHandler:
+             ^(FBSession *session, FBSessionState state, NSError *error) {
+                 // Retrieve the app delegate
+                 MEPAppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
+                 // Call the app delegate's sessionStateChanged:state:error method to handle session state changes
+                 [self syncFacebookFriends];
+                 [appDelegate sessionStateChanged:session state:state error:error];
+             }];
+        }
+
+    }
     
     
     // Uncomment the following line to preserve selection between presentations.

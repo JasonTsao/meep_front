@@ -31,9 +31,11 @@ extern NSString *const kDjangoAuthClientLoginFailureInactiveAccount;
 
 // Client class definition
 @interface DjangoAuthClient : NSObject <NSURLConnectionDelegate, NSCoding>{
+
 NSString *enc_username;
 NSString *enc_password;
 NSString *enc_email;
+UIImage *enc_profile_pic;
 BOOL enc_serverDidRespond;
 BOOL enc_serverDidAuthenticate;
 }
@@ -41,6 +43,7 @@ BOOL enc_serverDidAuthenticate;
 @property (nonatomic) NSString *enc_username;
 @property (nonatomic) NSString *enc_password;
 @property (nonatomic) NSString *enc_email;
+@property (nonatomic) UIImage *enc_profile_pic;
 @property (nonatomic) BOOL enc_serverDidRespond;
 @property (nonatomic) BOOL enc_serverDidAuthenticate;
 

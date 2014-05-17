@@ -14,6 +14,7 @@
 #import "EventAttendeeTabBarController.h"
 #import "EventAttendeesDistanceViewController.h"
 #import "EventAttendeesViewController.h"
+#import <CoreLocation/CoreLocation.h>
 
 
 @interface EventPageViewController ()
@@ -37,6 +38,10 @@
 @property(nonatomic, strong) NSMutableArray *locationInfoToDisplay;
 @property(nonatomic, strong) NSMutableArray *thirdPartyInfoToDisplay;
 @property (nonatomic, strong)MKMapView * mapView;
+
+@property (nonatomic, assign) int YELP_SLOT;
+
+@property (nonatomic, strong) CLLocationManager * locationManager;
 
 @end
 
@@ -186,6 +191,25 @@
                                                                            error: &error];
         new_friend.name = new_friend_dict[@"name"];
         new_friend.account_id = [new_friend_dict[@"friend_id"] intValue];
+        
+        if ([new_friend_dict[@"pf_pic"] length] == 0){
+            UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(8, 4, 40, 40)];
+            img.image = [UIImage imageNamed:@"ManSilhouette"];
+            //new_friend.profilePic = img;
+            new_friend.profilePic = img.image;
+        }
+        else{
+            NSURL *url = [[NSURL alloc] initWithString:new_friend_dict[@"fb_pfpic_url"]];
+            //NSURL *url = [[NSURL alloc] initWithString:@"https://graph.facebook.com/jason.s.tsao/picture"];
+            NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url];
+            //NSData *urlData = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:&response error:nil];
+            NSData *urlData = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:nil error:nil];
+            UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
+            new_friend.profilePic = image;
+        }
+
+        
+        
         [_invitedFriends addObject:new_friend];
     }
     
@@ -226,11 +250,6 @@
     NSLog(@"sender : %@", sender);
 }
 
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    NSLog(@"in collection view didselectitematindexpath: %@", [_invitedFriends[indexPath.row] name]);
-}
-
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
 
@@ -258,10 +277,22 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     NSString *friend_name;
     Friend *selectedFriend;
-    
     if(indexPath.section == 1){
         if(indexPath.row == 1){
             NSLog(@"Transfer to users map app!");
+            NSString* url = [NSString stringWithFormat:@"http://maps.google.com/maps?saddr=%f,%f&daddr=%@",_locationManager.location.coordinate.latitude, _locationManager.location.coordinate.longitude, [_currentEvent.locationAddress stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url]];
+        }
+    }
+    if (indexPath.section == 2) {
+        if (indexPath.row == 0) {
+            NSLog(@"Opening Yelp Link");
+            if ([self isYelpInstalled]) {
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:_currentEvent.yelpLink]];
+            }
+            else {
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:_currentEvent.yelpLink]];
+            }
         }
     }
     if(indexPath.section == 3){
@@ -270,6 +301,10 @@
         }
     }
     
+}
+
+- (BOOL) isYelpInstalled {
+    return [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"yelp:"]];
 }
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -326,11 +361,12 @@
     }
     
     if(section == 2){
-        if( [_currentEvent.yelpLink length] != 0 || YES){
+        if (!(_currentEvent.yelpLink == (id)[NSNull null] || _currentEvent.yelpLink.length == 0)){
             [_thirdPartyInfoToDisplay addObject:@"yelp"];
+            _YELP_SLOT = numRows;
             numRows++;
         }
-        if( [_currentEvent.uberLink length] != 0 || YES){
+        if (!(_currentEvent.uberLink == (id)[NSNull null] || _currentEvent.uberLink.length == 0)){
             [_thirdPartyInfoToDisplay addObject:@"uber"];
             numRows++;
         }
@@ -459,8 +495,6 @@
     return cell;
 }
 
-
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -469,6 +503,22 @@
     _locationInfoToDisplay = [[NSMutableArray alloc]init];
     _thirdPartyInfoToDisplay = [[NSMutableArray alloc]init];
     _mapView = [[MKMapView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 180.0)];
+    if (!(_currentEvent.locationAddress == (id)[NSNull null] || _currentEvent.locationAddress.length == 0)) {
+        CLGeocoder * geocoder = [[CLGeocoder alloc] init];
+        [geocoder geocodeAddressString:_currentEvent.locationAddress completionHandler:^(NSArray * placemarks, NSError* error) {
+            if (placemarks && placemarks.count > 0) {
+                CLPlacemark * topResult = [placemarks objectAtIndex:0];
+                MKPlacemark * placemark = [[MKPlacemark alloc] initWithPlacemark:topResult];
+                
+                MKCoordinateRegion region = self.mapView.region;
+                region.center = placemark.region.center;
+                region.span.longitudeDelta /= 200.0;
+                region.span.latitudeDelta /= 200.0;
+                [self.mapView setRegion:region animated:YES];
+                [self.mapView addAnnotation:placemark];
+            }
+        }];
+    }
     if ([_currentEvent.description length] > 15){
         self.title = [_currentEvent.description substringToIndex:15];
     }
@@ -493,6 +543,10 @@
     self.navigationItem.rightBarButtonItem = optionsBarItem;
     //[self.friendsCollection registerNib:[UINib nibWithNibName:@"EventPage" bundle:nil] forCellWithReuseIdentifier:@"5"];
     // Do any additional setup after loading the view.
+    _locationManager = [[CLLocationManager alloc] init];
+    _locationManager.distanceFilter = kCLDistanceFilterNone;
+    _locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters;
+    [_locationManager startUpdatingLocation];
 }
 
 

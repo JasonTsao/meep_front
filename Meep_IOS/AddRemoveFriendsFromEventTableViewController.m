@@ -72,6 +72,22 @@
         new_friend.name = new_friend_dict[@"name"];
         //new_friend.imageFileName = new_friend_dict[@"pf_pic"];
         new_friend.account_id = [new_friend_dict[@"account_id"] intValue];
+        
+        if ([new_friend_dict[@"pf_pic"] length] == 0){
+            UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(8, 4, 40, 40)];
+            img.image = [UIImage imageNamed:@"ManSilhouette"];
+            //new_friend.profilePic = img;
+            new_friend.profilePic = img.image;
+        }
+        else{
+            NSURL *url = [[NSURL alloc] initWithString:new_friend_dict[@"fb_pfpic_url"]];
+            //NSURL *url = [[NSURL alloc] initWithString:@"https://graph.facebook.com/jason.s.tsao/picture"];
+            NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url];
+            //NSData *urlData = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:&response error:nil];
+            NSData *urlData = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:nil error:nil];
+            UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
+            new_friend.profilePic = image;
+        }
         [_friends addObject:new_friend];
         
         for(int k = 0; k < [_originalInvitedFriends count]; k++){
@@ -80,6 +96,8 @@
             }
         }
     }
+    
+    
     
     /*NSData *data = [NSKeyedArchiver archivedDataWithRootObject:_friends];
     [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"friends_list"];
@@ -245,20 +263,35 @@
     return header;
 }
 
+- (UITableViewCell*)clearCell:(UITableViewCell *)cell{
+    for(UIView *view in cell.contentView.subviews){
+        if ([view isKindOfClass:[UIView class]]) {
+            [view removeFromSuperview];
+        }
+    }
+    return cell;
+}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"eventFriendCell" forIndexPath:indexPath];
-    
-    // Configure the cell...
+    Friend *currentFriend;
+    cell = [self clearCell:cell];
+
     if (indexPath.section == 0){
-        Friend *currentFriend = _invitedFriends[indexPath.row];
-        cell.textLabel.text = currentFriend.name;
+        currentFriend = _invitedFriends[indexPath.row];
     }
     else if (indexPath.section == 1){
-        Friend *currentFriend = _friends[indexPath.row];
-        cell.textLabel.text = currentFriend.name;
+        currentFriend = _friends[indexPath.row];
     }
+    
+    UILabel *friendHeader = [[UILabel alloc] initWithFrame:CGRectMake(60, 10, 235, 21)];
+    friendHeader.text = currentFriend.name;
+    [friendHeader setFont:[UIFont systemFontOfSize:18]];
+    [cell.contentView addSubview:friendHeader];
+    UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(8, 4, 40, 40)];
+    img.image = currentFriend.profilePic;
+    [cell.contentView addSubview:img];
     
     return cell;
 }

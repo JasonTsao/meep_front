@@ -36,6 +36,11 @@
     [_delegate movePanelToOriginalPosition];
 }
 
+- (void) openProfilePage
+{
+    [_delegate openProfilePage];
+}
+
 - (void)openAccountSettings
 {
     [_delegate openAccountPage];
@@ -95,10 +100,20 @@
     return 60;
 }
 
+- (UITableViewCell*)clearCell:(UITableViewCell *)cell{
+    for(UIView *view in cell.contentView.subviews){
+        if ([view isKindOfClass:[UIView class]]) {
+            [view removeFromSuperview];
+        }
+    }
+    return cell;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"upcomingEvent" forIndexPath:indexPath];
+    cell = [self clearCell:cell];
     NSString *dateString = _datesArray[indexPath.section];
     NSMutableArray *eventArray = [_dateEventsDictionary objectForKey:dateString];
     Event *upcomingEvent = eventArray[indexPath.row];
@@ -353,6 +368,7 @@
         event.locationName = eventObj[@"location_name"];
         event.locationAddress = eventObj[@"location_address"];
         event.end_time = eventObj[@"end_time"];
+        event.yelpLink = eventObj[@"yelp_url"];
         //event.group = eventObj[@"group"];
         
         //getting number of differnt days

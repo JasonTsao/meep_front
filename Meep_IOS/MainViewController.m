@@ -16,6 +16,7 @@
 #import "FriendsListTableViewController.h"
 //#import "CreateGroupViewController.h"
 #import "InviteFriendsViewController.h"
+#import "ProfileViewController.h"
 #import "Event.h"
 #import "MEPLocationService.h"
 
@@ -31,6 +32,8 @@
 @interface MainViewController () <CenterViewControllerDelegate,UIGestureRecognizerDelegate>
 
 @property (nonatomic, strong) CenterViewController *centerViewController;
+
+@property (nonatomic, strong) ProfileViewController *profileViewController;
 
 @property (nonatomic, strong) CreateGroupViewController *createGroupViewController;
 @property (nonatomic, assign) BOOL showGroupCreationPage;
@@ -357,6 +360,23 @@
                      }];
 }
 
+- (void) openProfilePage
+{
+    UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"CenterStoryboard" bundle:nil];
+    _profileViewController = (ProfileViewController *)[storyboard instantiateViewControllerWithIdentifier:@"profile"];
+    
+    NSString *name;
+    NSData *authenticated = [[NSUserDefaults standardUserDefaults] objectForKey:@"auth_client"];
+    _authClient = [NSKeyedUnarchiver unarchiveObjectWithData:authenticated];
+    _profileViewController.userName = _authClient.enc_username;
+    
+    
+    UINavigationController *navigation = [[UINavigationController alloc]initWithRootViewController:_profileViewController];
+    [_profileViewController setDelegate:self];
+    [self presentViewController:navigation animated:YES completion:nil];
+    
+}
+
 - (void) openAuthenticationPage
 {
     NSLog(@"opening authentication page");
@@ -429,6 +449,11 @@
     NSLog(@"loading main view after authentication");
     [_authenticationViewController dismissViewControllerAnimated:YES completion:nil];
     [self setupView];
+}
+
+- (void) backToMainFromProfilePage:(ProfileViewController *)controller
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void) backToCenterFromCreateEvent:(InviteFriendsViewController *)controller
