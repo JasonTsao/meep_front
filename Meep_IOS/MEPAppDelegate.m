@@ -228,6 +228,7 @@
     // Override point for customization after application launch.
     
     [FBLoginView class];
+    [FBProfilePictureView class];
 
     UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"CenterStoryboard" bundle:nil];
     
