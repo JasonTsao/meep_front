@@ -244,8 +244,57 @@
     }*/
     
     if([_viewTitle isEqualToString:@"From Facebook"]){
-        FBLoginView *loginView = [[FBLoginView alloc] init];
-        [self.view addSubview:loginView];
+        NSArray *permissionsNeeded = @[@"basic_info", @"user_birthday"];
+        
+        NSLog(@"permissions needed: %@", permissionsNeeded);
+        
+        // Request the permissions the user currently has
+        [FBRequestConnection startWithGraphPath:@"/me/permissions"
+                              completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+                                  if (!error){
+                                      // These are the current permissions the user has:
+                                      NSDictionary *currentPermissions= [(NSArray *)[result data] objectAtIndex:0];
+                                      
+                                      // We will store here the missing permissions that we will have to request
+                                      NSMutableArray *requestPermissions = [[NSMutableArray alloc] initWithArray:@[]];
+                                      
+                                      // Check if all the permissions we need are present in the user's current permissions
+                                      // If they are not present add them to the permissions to be requested
+                                      for (NSString *permission in permissionsNeeded){
+                                          if (![currentPermissions objectForKey:permission]){
+                                              [requestPermissions addObject:permission];
+                                          }
+                                      }
+                                      
+                                      // If we have permissions to request
+                                      if ([requestPermissions count] > 0){
+                                          // Ask for the missing permissions
+                                          [FBSession.activeSession
+                                           requestNewReadPermissions:requestPermissions
+                                           completionHandler:^(FBSession *session, NSError *error) {
+                                               if (!error) {
+                                                   // Permission granted
+                                                   NSLog(@"new permissions %@", [FBSession.activeSession permissions]);
+                                                   // We can request the user information
+                                                   //[self makeRequestForUserData];
+                                               } else {
+                                                   // An error occurred, we need to handle the error
+                                                   // See: https://developers.facebook.com/docs/ios/errors
+                                               }
+                                           }];
+                                      } else {
+                                          // Permissions are present
+                                          // We can request the user information
+                                          //[self makeRequestForUserData];
+                                      }
+                                      
+                                  } else {
+                                      // An error occurred, we need to handle the error
+                                      // See: https://developers.facebook.com/docs/ios/errors
+                                      NSLog(@"result: %@", result);
+                                      NSLog(@"error: %@", error);
+                                  }
+                              }];
     }
     
     

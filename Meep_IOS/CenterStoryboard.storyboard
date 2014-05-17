@@ -1287,6 +1287,11 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                 <action selector="backToCenterFromAddFriends:" destination="5FU-yS-c5b" id="z22-iF-EMH"/>
                             </connections>
                         </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="FB" id="d0j-Yb-vTF">
+                            <connections>
+                                <action selector="facebookSync:" destination="5FU-yS-c5b" id="llx-KW-e5T"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5et-b3-8LH" userLabel="First Responder" sceneMemberID="firstResponder"/>
