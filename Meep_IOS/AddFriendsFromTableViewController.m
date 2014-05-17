@@ -281,6 +281,7 @@
             // The session state handler (in the app delegate) will be called automatically
             
             //[FBSession.activeSession closeAndClearTokenInformation];
+            [self syncFacebookUser];
             [self syncFacebookFriends];
             
             // If the session state is not any of the two "open" states when the button is clicked
@@ -295,6 +296,7 @@
                  // Retrieve the app delegate
                  MEPAppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
                  // Call the app delegate's sessionStateChanged:state:error method to handle session state changes
+                 [self syncFacebookUser];
                  [self syncFacebookFriends];
                  [appDelegate sessionStateChanged:session state:state error:error];
              }];
