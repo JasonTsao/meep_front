@@ -7,6 +7,7 @@
 //
 #import <FacebookSDK/FacebookSDK.h>
 #import "AddFriendsFromTableViewController.h"
+#import "MEPAppDelegate.h"
 
 @interface AddFriendsFromTableViewController ()
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
@@ -143,6 +144,10 @@
         }
     }
     
+    else if ([_viewTitle isEqualToString:@"From Facebook"]){
+        NSLog(@"sync with fb friends response: %@", jsonResponse);
+    }
+    
     else if ([_viewTitle isEqualToString:@"From Everyone"]){
         
         if([jsonResponse objectForKey:@"friends"] != nil){
@@ -227,6 +232,31 @@
     }
     
 }
+-(void) syncFacebookUser{
+    NSString * accessToken = [[FBSession activeSession] accessToken];
+    
+    NSString * requestURL = [NSString stringWithFormat:@"%@syncFacebookUser/%@",[MEEPhttp accountURL], accessToken];
+    //NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys: accessToken, @"access_token" ,nil];
+    NSDictionary * postDict = [[NSDictionary alloc] init];
+    NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
+    NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    [conn start];
+}
+
+-(void) syncFacebookFriends{
+    NSString * accessToken = [[FBSession activeSession] accessToken];
+    
+    NSString * requestURL = [NSString stringWithFormat:@"%@syncFacebookFriends/%@",[MEEPhttp accountURL], accessToken];
+    //NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys: accessToken, @"access_token" ,nil];
+    NSDictionary * postDict = [[NSDictionary alloc] init];
+    NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
+    NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    [conn start];
+}
+
+-(void) getFacebookFriendsList{
+    
+}
 
 - (void)viewDidLoad
 {
@@ -244,57 +274,32 @@
     }*/
     
     if([_viewTitle isEqualToString:@"From Facebook"]){
-        NSArray *permissionsNeeded = @[@"basic_info", @"user_birthday"];
-        
-        NSLog(@"permissions needed: %@", permissionsNeeded);
-        
-        // Request the permissions the user currently has
-        [FBRequestConnection startWithGraphPath:@"/me/permissions"
-                              completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
-                                  if (!error){
-                                      // These are the current permissions the user has:
-                                      NSDictionary *currentPermissions= [(NSArray *)[result data] objectAtIndex:0];
-                                      
-                                      // We will store here the missing permissions that we will have to request
-                                      NSMutableArray *requestPermissions = [[NSMutableArray alloc] initWithArray:@[]];
-                                      
-                                      // Check if all the permissions we need are present in the user's current permissions
-                                      // If they are not present add them to the permissions to be requested
-                                      for (NSString *permission in permissionsNeeded){
-                                          if (![currentPermissions objectForKey:permission]){
-                                              [requestPermissions addObject:permission];
-                                          }
-                                      }
-                                      
-                                      // If we have permissions to request
-                                      if ([requestPermissions count] > 0){
-                                          // Ask for the missing permissions
-                                          [FBSession.activeSession
-                                           requestNewReadPermissions:requestPermissions
-                                           completionHandler:^(FBSession *session, NSError *error) {
-                                               if (!error) {
-                                                   // Permission granted
-                                                   NSLog(@"new permissions %@", [FBSession.activeSession permissions]);
-                                                   // We can request the user information
-                                                   //[self makeRequestForUserData];
-                                               } else {
-                                                   // An error occurred, we need to handle the error
-                                                   // See: https://developers.facebook.com/docs/ios/errors
-                                               }
-                                           }];
-                                      } else {
-                                          // Permissions are present
-                                          // We can request the user information
-                                          //[self makeRequestForUserData];
-                                      }
-                                      
-                                  } else {
-                                      // An error occurred, we need to handle the error
-                                      // See: https://developers.facebook.com/docs/ios/errors
-                                      NSLog(@"result: %@", result);
-                                      NSLog(@"error: %@", error);
-                                  }
-                              }];
+        if (FBSession.activeSession.state == FBSessionStateOpen
+            || FBSession.activeSession.state == FBSessionStateOpenTokenExtended) {
+            NSLog(@"FBSessionStateOpen || FBSessionStateOpenTokenExtended");
+            // Close the session and remove the access token from the cache
+            // The session state handler (in the app delegate) will be called automatically
+            
+            //[FBSession.activeSession closeAndClearTokenInformation];
+            [self syncFacebookFriends];
+            
+            // If the session state is not any of the two "open" states when the button is clicked
+        } else {
+            // Open a session showing the user the login UI
+            // You must ALWAYS ask for public_profile permissions when opening a session
+            NSLog(@"about to open active session with read permissions");
+            [FBSession openActiveSessionWithReadPermissions:@[@"public_profile"]
+                                               allowLoginUI:YES
+                                          completionHandler:
+             ^(FBSession *session, FBSessionState state, NSError *error) {
+                 // Retrieve the app delegate
+                 MEPAppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
+                 // Call the app delegate's sessionStateChanged:state:error method to handle session state changes
+                 [self syncFacebookFriends];
+                 [appDelegate sessionStateChanged:session state:state error:error];
+             }];
+        }
+
     }
     
     
