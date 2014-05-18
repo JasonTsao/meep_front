@@ -14,6 +14,7 @@
 #import "EventAttendeeTabBarController.h"
 #import "EventAttendeesDistanceViewController.h"
 #import "EventAttendeesViewController.h"
+#import "EventChatViewController.h"
 #import <CoreLocation/CoreLocation.h>
 
 
@@ -88,6 +89,11 @@
     [self presentViewController:navigation animated:YES completion:nil];
 }
 
+- (void) openChatPage
+{
+    [self performSegueWithIdentifier:@"toEventChat" sender:self];
+}
+
 - (void) openAddRemoveFriendsPage
 {
     UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"CenterStoryboard" bundle:nil];
@@ -107,14 +113,17 @@
         case 1: {
             switch (buttonIndex) {
                 case 0:
+                    [self openChatPage];
+                    break;
+                case 1:
                     NSLog(@"Removing user from group");
                     //[self logoutSelect];
                     break;
-                case 1:
+                case 2:
                     NSLog(@"going to edit view page");
                     [self openEditEventPage];
                     break;
-                case 2:
+                case 3:
                     NSLog(@"going to invite more friends page");
                     [self openAddRemoveFriendsPage];
                 default:
@@ -130,7 +139,7 @@
 - (IBAction)openEventOptions:(id)sender {
     
     //if user is host
-    UIActionSheet *eventOptionsPopup = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Leave Event", @"Edit Event", @"Add/Remove Friends",nil];
+    UIActionSheet *eventOptionsPopup = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Chat",@"Leave Event", @"Edit Event", @"Add/Remove Friends",nil];
     //else
     //UIActionSheet *eventOptionsPopup = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Leave Event",nil];
     eventOptionsPopup.tag = 1;
@@ -566,6 +575,10 @@
 {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
+    
+    EventChatViewController * chatView = [segue destinationViewController];
+    chatView.invitedFriends = _invitedFriends;
+    chatView.currentEvent = _currentEvent;
 }
 
 
