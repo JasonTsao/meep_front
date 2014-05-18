@@ -522,8 +522,8 @@
                 
                 MKCoordinateRegion region = self.mapView.region;
                 region.center = placemark.region.center;
-                region.span.longitudeDelta /= 200.0;
-                region.span.latitudeDelta /= 200.0;
+                region.span.longitudeDelta /= 1000.0;
+                region.span.latitudeDelta /= 1000.0;
                 [self.mapView setRegion:region animated:YES];
                 [self.mapView addAnnotation:placemark];
             }

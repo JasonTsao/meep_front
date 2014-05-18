@@ -328,6 +328,7 @@
     [contentView addSubview:eventHeader];
     
     [cell addSubview:contentView];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
 
