@@ -247,6 +247,7 @@
     }
     img.image = image;
     img.layer.cornerRadius = imageHeight/2;
+    img.layer.masksToBounds = YES;
     [cell addSubview:img];
     
     // This view creates the background for the content
@@ -499,7 +500,7 @@
         event.yelpLink = eventObj[@"yelp_url"];
         event.locationLatitude = eventObj[@"location_latitude"];
         event.locationLongitude = eventObj[@"location_longitude"];
-        
+        event.yelpImageLink = eventObj[@"yelp_img_url"];
         if (![event.locationLatitude isEqual:[NSNull null]] &&
             ![event.locationLongitude isEqual:[NSNull null]] &&
             [jsonResponse valueForKey:@"lat"] &&
@@ -512,7 +513,6 @@
                 currentLat = [[jsonResponse valueForKey:@"lat"] floatValue];
                 currentLng = [[jsonResponse valueForKey:@"lng"] floatValue];
             }
-            NSLog(@"%f",[MEPLocationService distanceBetweenCoordinatesWithLatitudeOne:locLat longitudeOne:locLng latitudeTwo:currentLat longitudeTwo:currentLng]);
         }
         //event.group = eventObj[@"group"];
         

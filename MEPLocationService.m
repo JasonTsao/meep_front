@@ -80,17 +80,12 @@
 
 -(void)handleData{
     NSDictionary * recievedData = [NSJSONSerialization JSONObjectWithData:_data options:0 error:nil];
-    NSLog(@"%@",recievedData);
 }
 
 +(float) distanceBetweenCoordinatesWithLatitudeOne:(float)lat1
                                       longitudeOne:(float)lng1
                                        latitudeTwo:(float)lat2
                                       longitudeTwo:(float)lng2 {
-    NSLog(@"%f",lat1);
-    NSLog(@"%f",lng1);
-    NSLog(@"%f",lat2);
-    NSLog(@"%f",lng2);
     float dlat = lat1 - lat2;
     float dlng = lng1 - lng2;
     float a = (float) ((sin(dlat/2)*sin(dlat/2)) + (cos(lat1)*cos(lat2)*sin(dlng/2)*sin(dlng/2)));
