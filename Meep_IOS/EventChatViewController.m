@@ -47,8 +47,9 @@
 - (IBAction)sendMessage:(id)sender {
     NSLog(@"%@", _chatMessageToSend.text);
     NSString *event_id = [NSString stringWithFormat:@"%i", _currentEvent.event_id];
-    NSString * requestURL = [NSString stringWithFormat:@"%@%@/chat_message/create",[MEEPhttp eventURL], event_id];
-    NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:_chatMessageToSend,@"message", nil];
+    NSString * requestURL = [NSString stringWithFormat:@"%@%@/chat_message/new",[MEEPhttp eventURL], event_id];
+    NSLog(@"create message request url:%@", requestURL);
+    NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:_chatMessageToSend.text,@"message", nil];
     NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
     NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
     [conn start];
@@ -94,6 +95,7 @@
             
             [_chatMessages addObject:message];
         }
+        [self.chatMessageTable reloadData];
     }
 }
 
