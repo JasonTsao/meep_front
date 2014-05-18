@@ -7,14 +7,26 @@
 //
 
 #import "InviteFriendsViewController.h"
+#import "CenterViewController.h"
 #import "MEEPhttp.h"
 #import "Group.h"
 #import "Friend.h"
 
+#define TABLE_BACKGROUND_COLOR "FFFFFF"
+
+#define TABLE_SECTION_HEADER_BACKGROUND_COLOR "FFFFFF"
+#define TABLE_SECTION_HEADER_TEXT_COLOR "019875"
+
+#define TABLE_DATA_BACKGROUND_COLOR "3FC380"
+#define TABLE_DATA_TEXT_COLOR "FFFFFF"
+
+#define CELL_SELECT_COLOR "89C4F4"
+
 @interface InviteFriendsViewController ()
 @property (weak, nonatomic) IBOutlet UITableView *friendTable;
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
-
+@property (nonatomic, assign) NSIndexPath* selectedIndex;
+@property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 
 @end
 
@@ -160,70 +172,43 @@
     Friend *selectedFriend;
     
     NSString *classType = [NSString stringWithFormat:@"%@",[tableView class]];
-    
     // if this is the search bar table
     if([classType isEqualToString:@"UISearchResultsTableView"] ){
         NSLog(@"selected friend: %@", search_friends_list[indexPath.row]);
         selectedFriend = search_friends_list[indexPath.row];
         friend_name = selectedFriend.name;
-        
         if (![selected_friends_list containsObject:selectedFriend]){
-            [self.friendTable beginUpdates];
             [selected_friends_list addObject:selectedFriend];
-            [self.friendTable insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:([selected_friends_list count] -1) inSection:0]]
-                             withRowAnimation:UITableViewRowAnimationFade];
-            [self.friendTable endUpdates];
         }
         else{
-            [self.friendTable beginUpdates];
             NSInteger deleteRow = [selected_friends_list indexOfObject:selectedFriend];
             [selected_friends_list removeObjectAtIndex: deleteRow];
-            [self.friendTable deleteRowsAtIndexPaths: [NSArray arrayWithObject:[NSIndexPath indexPathForRow:deleteRow inSection:0]]
-                             withRowAnimation:UITableViewRowAnimationFade];
-            [self.friendTable endUpdates];
         }
-        
+        [_collectionView reloadData];
+        [tableView reloadData];
         [self.searchDisplayController setActive:NO animated:YES];
     }
     else{
-        if (indexPath.section == 2){
+        if (indexPath.section == 1){
+            UITableViewCell * cell = [tableView cellForRowAtIndexPath:indexPath];
             selectedFriend = friends_list[indexPath.row];
             friend_name = selectedFriend.name;
-            
             if (![selected_friends_list containsObject:selectedFriend]){
-                [tableView beginUpdates];
                 [selected_friends_list addObject:selectedFriend];
-                [tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:([selected_friends_list count] -1) inSection:0]]
-                                 withRowAnimation:UITableViewRowAnimationFade];
-                [tableView endUpdates];
             }
             else{
-                [tableView beginUpdates];
                 NSInteger deleteRow = [selected_friends_list indexOfObject:selectedFriend];
                 [selected_friends_list removeObjectAtIndex: deleteRow];
-                [tableView deleteRowsAtIndexPaths: [NSArray arrayWithObject:[NSIndexPath indexPathForRow:deleteRow inSection:0]]
-                                 withRowAnimation:UITableViewRowAnimationFade];
-                [tableView endUpdates];
+                [cell viewWithTag:1].backgroundColor = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_DATA_BACKGROUND_COLOR]];
             }
         }
-        else if(indexPath.section == 1){
+        else if(indexPath.section == 0){
             selectedGroup = groups_list[indexPath.row];
             [self performSegueWithIdentifier:@"inviteFriendsToCreateMessage" sender:self];
         }
-        else if(indexPath.section == 0){
-            selectedFriend = selected_friends_list[indexPath.row];
-            friend_name = selectedFriend.name;
-            [tableView beginUpdates];
-            [selected_friends_list removeObjectAtIndex: indexPath.row];
-            [tableView deleteRowsAtIndexPaths: [NSArray arrayWithObject:[NSIndexPath indexPathForRow:indexPath.row inSection:0]]
-                             withRowAnimation:UITableViewRowAnimationFade];
-            
-            [tableView endUpdates];
-        }
+        [_collectionView reloadData];
+        [tableView reloadData];
     }
-
-    
-    
 }
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -235,33 +220,53 @@
         numSections = 1;
     }
     else{
-        numSections = 3;
+        numSections = 2;
     }
     return numSections;
+}
+
+-(UIView *) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    NSString *header;
+    NSString *classType = [NSString stringWithFormat:@"%@",[tableView class]];
+    if([classType isEqualToString:@"UISearchResultsTableView"] ){
+        header = @"Friends";
+    }
+    else{
+        if(section == 0){
+            header = @"Groups";
+        }
+        else if(section == 1){
+            header = @"Friends";
+        }
+    }
+    UIView * headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width - 6, tableView.sectionHeaderHeight * 4)];
+    headerView.backgroundColor = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_SECTION_HEADER_BACKGROUND_COLOR]];
+    UIView * lineSeparatorMask = [[UIView alloc] initWithFrame:CGRectMake(0, (tableView.sectionHeaderHeight * 4)-1, headerView.frame.size.width, 1)];
+    lineSeparatorMask.backgroundColor = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_BACKGROUND_COLOR]];
+    [headerView addSubview:lineSeparatorMask];
+    UILabel * headerTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width - 6, tableView.sectionHeaderHeight * 4)];
+    headerTitle.text = header;
+    headerTitle.textColor = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_SECTION_HEADER_TEXT_COLOR]];
+    headerTitle.textAlignment = NSTextAlignmentRight;
+    [headerView addSubview:headerTitle];
+    return headerView;
 }
 
 -(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     NSString *header;
-    
     NSString *classType = [NSString stringWithFormat:@"%@",[tableView class]];
-    
     if([classType isEqualToString:@"UISearchResultsTableView"] ){
         header = @"Friends";
     }
     else{
-        if (section == 0){
-            header = @"Selected";
-        }
-        else if(section == 1){
+        if(section == 0){
             header = @"Groups";
         }
-        else if(section == 2){
+        else if(section == 1){
             header = @"Friends";
         }
     }
-    
-    
     return header;
 }
 
@@ -275,13 +280,10 @@
         numRows = [search_friends_list count];
     }
     else{
-        if (section == 0){
-            numRows = [selected_friends_list count];
-        }
-        else if(section == 1){
+        if(section == 0){
             numRows = [groups_list count];
         }
-        else if(section == 2){
+        else if(section == 1){
             numRows = [friends_list count];
         }
     }
@@ -295,6 +297,41 @@
             [view removeFromSuperview];
         }
     }
+    return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 54;
+}
+
++ (UITableViewCell*) createCustomFriendCell:(Friend*)friend
+                                   forTable:(UITableView*)tableView
+                                   selected:(BOOL)sel {
+    UITableViewCell * cell = [[UITableViewCell alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 54)];
+    cell.backgroundColor = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_BACKGROUND_COLOR]];
+    UIView * lineMask = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 1)];
+    lineMask.backgroundColor = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_BACKGROUND_COLOR]];
+    [cell addSubview:lineMask];
+    UIView * cellContents = [[UIView alloc] initWithFrame:CGRectMake(3, 3, cell.frame.size.width + 3, cell.frame.size.height + 6)];
+    if (!sel) {
+        cellContents.backgroundColor = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_DATA_BACKGROUND_COLOR]];
+    }
+    else {
+        cellContents.backgroundColor = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",CELL_SELECT_COLOR]];
+    }
+    cellContents.layer.cornerRadius = 10;
+    UILabel *friendHeader = [[UILabel alloc] initWithFrame:CGRectMake(60, 14, 235, 21)];
+    friendHeader.text = friend.name;
+    friendHeader.textColor = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_DATA_TEXT_COLOR]];
+    [friendHeader setFont:[UIFont systemFontOfSize:18]];
+    [cellContents addSubview:friendHeader];
+    UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(8, 4, 40, 40)];
+    img.image = friend.profilePic;
+    img.layer.cornerRadius = img.frame.size.height/2;
+    img.layer.masksToBounds = YES;
+    [cellContents addSubview:img];
+    [cell addSubview:cellContents];
     return cell;
 }
 
@@ -315,49 +352,55 @@
         
         UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(8, 4, 40, 40)];
         img.image = currentFriend.profilePic;
+        img.layer.cornerRadius = img.frame.size.height/2;
+        img.layer.masksToBounds = YES;
         [cell.contentView addSubview:img];
     }
     else{
         cell = [tableView dequeueReusableCellWithIdentifier:@"selectFriendCell"];
-        
+        cell = [self clearCell:cell];
+        UIView * lineSeparatorMask = [[UIView alloc] initWithFrame:CGRectMake(0, cell.frame.size.height-1, cell.frame.size.width, 1)];
+        lineSeparatorMask.backgroundColor = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_BACKGROUND_COLOR]];
+        [cell addSubview:lineSeparatorMask];
+        UIView * contentView = [[UIView alloc] initWithFrame:CGRectMake(3, 3, tableView.frame.size.width - 6, cell.frame.size.height - 6)];
+        contentView.backgroundColor = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_DATA_BACKGROUND_COLOR]];
+        contentView.layer.cornerRadius = 10;
+        [contentView setTag:1];
         if (indexPath.section == 0){
-            Friend *currentFriend = selected_friends_list[indexPath.row];
-            cell = [self clearCell:cell];
-            //cell.textLabel.text = currentFriend.name;
-            UILabel *friendHeader = [[UILabel alloc] initWithFrame:CGRectMake(60, 10, 235, 21)];
-            friendHeader.text = currentFriend.name;
-            [friendHeader setFont:[UIFont systemFontOfSize:18]];
-            [cell.contentView addSubview:friendHeader];
-
-            UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(8, 4, 40, 40)];
-            img.image = currentFriend.profilePic;
-            [cell.contentView addSubview:img];
-        }
-        else if (indexPath.section == 1){
             Group *currentGroup = groups_list[indexPath.row];
-            cell = [self clearCell:cell];
-            UILabel *groupHeader = [[UILabel alloc] initWithFrame:CGRectMake(60, 10, 235, 21)];
+            UILabel *groupHeader = [[UILabel alloc] initWithFrame:CGRectMake(60, 14, 235, 21)];
             groupHeader.text = currentGroup.name;
+            groupHeader.textColor = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_DATA_TEXT_COLOR]];
             [groupHeader setFont:[UIFont systemFontOfSize:18]];
-            [cell.contentView addSubview:groupHeader];
+            [contentView addSubview:groupHeader];
             UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(8, 4, 40, 40)];
             img.image = currentGroup.groupProfilePic;
-            [cell.contentView addSubview:img];
-            //cell.textLabel.text = currentGroup.name;
+            img.layer.cornerRadius = img.frame.size.height/2;
+            img.layer.masksToBounds = YES;
+            [contentView addSubview:img];
+            [cell addSubview:contentView];
         }
-        else if (indexPath.section == 2){
+        else if (indexPath.section == 1){
             Friend *currentFriend = friends_list[indexPath.row];
-            cell = [self clearCell:cell];
-            //cell.textLabel.text = currentFriend.name;
-            UILabel *friendHeader = [[UILabel alloc] initWithFrame:CGRectMake(60, 10, 235, 21)];
+            UILabel *friendHeader = [[UILabel alloc] initWithFrame:CGRectMake(60, 14, 235, 21)];
             friendHeader.text = currentFriend.name;
+            friendHeader.textColor = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_DATA_TEXT_COLOR]];
             [friendHeader setFont:[UIFont systemFontOfSize:18]];
-            [cell.contentView addSubview:friendHeader];
+            [contentView addSubview:friendHeader];
 
             UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(8, 4, 40, 40)];
             img.image = currentFriend.profilePic;
-            [cell.contentView addSubview:img];
+            img.layer.cornerRadius = img.frame.size.height/2;
+            img.layer.masksToBounds = YES;
+            [contentView addSubview:img];
+            BOOL selected = NO;
+            if ([selected_friends_list containsObject:currentFriend]) {
+                selected = YES;
+            }
+            cell = [InviteFriendsViewController createCustomFriendCell:currentFriend forTable:tableView selected:selected];
         }
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        // [cell addSubview:contentView];
     }
         
     
@@ -424,5 +467,38 @@
     [createMessage setDelegate:self.delegate];
 }
 
+-(void) collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    [selected_friends_list removeObjectAtIndex:indexPath.row];
+    [_collectionView reloadData];
+}
+
+-(NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
+    return 1;
+}
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    return [selected_friends_list count];
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    // UICollectionViewCell *cell = [[UICollectionViewCell alloc] initWithFrame:CGRectMake(3, 3, collectionView.frame.size.height - 6, collectionView.frame.size.height - 6)];
+    UICollectionViewCell *cell = [_collectionView dequeueReusableCellWithReuseIdentifier:@"selectedFriendCollectionCell" forIndexPath:indexPath];
+    for (UIView * subView in cell.contentView.subviews) {
+        [subView removeFromSuperview];
+    }
+    Friend * selectedFriend = selected_friends_list[indexPath.row];
+    UIImageView * profilePicture = [[UIImageView alloc] initWithFrame:CGRectMake(4, 6, cell.frame.size.width - 8, cell.frame.size.width - 8)];
+    profilePicture.image = selectedFriend.profilePic;
+    profilePicture.layer.cornerRadius = profilePicture.frame.size.height/2;
+    profilePicture.layer.masksToBounds = YES;
+    [cell addSubview:profilePicture];
+    UILabel * name = [[UILabel alloc] initWithFrame:CGRectMake(0, cell.frame.size.width - 4, cell.frame.size.width, 10)];
+    name.text = selectedFriend.name;
+    name.textAlignment = NSTextAlignmentCenter;
+    name.backgroundColor = [CenterViewController colorWithHexString:@"FFFFFF"];
+    [name setFont:[UIFont systemFontOfSize:9]];
+    [cell addSubview:name];
+    return cell;
+}
 
 @end
