@@ -14,6 +14,7 @@
 #import "EventAttendeeTabBarController.h"
 #import "EventAttendeesDistanceViewController.h"
 #import "EventAttendeesViewController.h"
+#import "EventChatViewController.h"
 #import <CoreLocation/CoreLocation.h>
 
 
@@ -574,6 +575,10 @@
 {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
+    
+    EventChatViewController * chatView = [segue destinationViewController];
+    chatView.invitedFriends = _invitedFriends;
+    chatView.currentEvent = _currentEvent;
 }
 
 

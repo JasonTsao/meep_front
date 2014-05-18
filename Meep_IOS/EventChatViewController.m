@@ -7,6 +7,8 @@
 //
 
 #import "EventChatViewController.h"
+#import "EventChatMessage.h"
+#import "MEEPhttp.h"
 
 @interface EventChatViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *chatMessageToSend;
@@ -32,8 +34,67 @@
     }
     return self;
 }
+
+- (void) getPreviousChats{
+    NSString *event_id = [NSString stringWithFormat:@"%i", _currentEvent.event_id];
+    NSString * requestURL = [NSString stringWithFormat:@"%@%@/chat_messages",[MEEPhttp eventURL], event_id];
+    NSDictionary * postDict = [[NSDictionary alloc] init];
+    NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
+    NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    [conn start];
+}
+
 - (IBAction)sendMessage:(id)sender {
     NSLog(@"%@", _chatMessageToSend.text);
+    NSString *event_id = [NSString stringWithFormat:@"%i", _currentEvent.event_id];
+    NSString * requestURL = [NSString stringWithFormat:@"%@%@/chat_message/create",[MEEPhttp eventURL], event_id];
+    NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:_chatMessageToSend,@"message", nil];
+    NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
+    NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    [conn start];
+}
+
+-(void)connection:(NSURLConnection*)connection didReceiveResponse:(NSURLResponse*)response
+{
+    _data = [[NSMutableData alloc] init]; // _data being an ivar
+}
+-(void)connection:(NSURLConnection*)connection didReceiveData:(NSData*)data
+{
+    [_data appendData:data];
+}
+-(void)connection:(NSURLConnection*)connection didFailWithError:(NSError*)error
+{
+    // Handle the error properly
+    NSLog(@"Call Failed");
+}
+-(void)connectionDidFinishLoading:(NSURLConnection*)connection
+{
+    [self handleData]; // Deal with the data
+}
+
+-(void)handleData{
+    NSError* error;
+    NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:_data options:0 error:&error];
+    NSLog(@"%@",jsonResponse[@"success"] );
+    
+    if([jsonResponse objectForKey:@"chat_saved"] != nil){
+        [self.chatMessageTable reloadData];
+    }
+    else if([jsonResponse objectForKey:@"event_messages"] != nil){
+        NSArray *chatMessageArray = jsonResponse[@"event_messages"];
+        
+        for(int i = 0; i < [chatMessageArray count]; i++){
+            EventChatMessage * message = [[EventChatMessage alloc] init];
+            
+            message.event_id = _currentEvent.event_id;
+            message.creator_id = [chatMessageArray[i][@"creator_id"] integerValue];
+            message.creator_name = chatMessageArray[i][@"creator_name"];
+            message.message = chatMessageArray[i][@"description"];
+            message.time_stamp = chatMessageArray[i][@"created"];
+            
+            [_chatMessages addObject:message];
+        }
+    }
 }
 
 - (void) observeKeyboard {
@@ -101,9 +162,9 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"chatMessage" forIndexPath:indexPath];
-    
-    //cell = [self clearCell:cell];
 
+    //cell = [self clearCell:cell];
+    cell.textLabel.text = [_chatMessages[indexPath.row] message];
     return cell;
 }
 
@@ -114,6 +175,8 @@
     [self observeKeyboard];
     self.title = @"Chat";
     _chatMessages = [[NSMutableArray alloc] init];
+    
+    [self getPreviousChats];
     // Do any additional setup after loading the view.
 }
 
