@@ -14,13 +14,27 @@
 #import <CoreLocation/CoreLocation.h>
 
 #define BORDER_WIDTH 1
-#define BORDER_COLOR "D2D7D3"
-#define STATIC_IMAGE_COLOR "EFEFEF"
+
+// Color Settings (Green Context Background, White Table Background)
+#define BORDER_COLOR "3FC380"
+#define STATIC_IMAGE_COLOR "3FC380"
 #define TABLE_BACKGROUND_COLOR "FFFFFF"
-#define HEADER_TEXT_COLOR "2ECC71"
+#define HEADER_TEXT_COLOR "019875"
 #define CONTENT_BACKGROUND_COLOR "3FC380"
+#define ICON_BACKGROUND_COLOR "FFFFFF"
 #define MAIN_TEXT_COLOR "FFFFFF"
 
+/*
+ // Color Settings (White Context Background, Green Table Background)
+#define BORDER_COLOR "F5F5F5"
+#define STATIC_IMAGE_COLOR "FFFFFF"
+#define TABLE_BACKGROUND_COLOR "3FC380"
+#define HEADER_TEXT_COLOR "F5F5F5"
+#define CONTENT_BACKGROUND_COLOR "FFFFFF"
+#define ICON_BACKGROUND_COLOR "3FC380"
+#define MAIN_TEXT_COLOR "0F0F0F"
+*/
+ 
 @interface CenterViewController () <UITableViewDataSource>
 
 @property (weak, nonatomic) IBOutlet UITableView *upcomingEventsTable;
@@ -127,11 +141,11 @@
     UIView * verticalLine = [[UIView alloc] initWithFrame:CGRectMake(30 - BORDER_WIDTH, 0, BORDER_WIDTH, headerView.frame.size.height)];
     verticalLine.backgroundColor = framingColor;
     UIView * headerContainer = [[UIView alloc] initWithFrame:CGRectMake(0, 0, headerView.frame.size.width, headerView.frame.size.height)];
-    UILabel * headerTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, headerContainer.frame.size.width, headerContainer.frame.size.height)];
-    headerTitle.textAlignment = NSTextAlignmentCenter;
+    UILabel * headerTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, headerContainer.frame.size.width - 15, headerContainer.frame.size.height)];
+    headerTitle.textAlignment = NSTextAlignmentRight;
     // headerContainer.backgroundColor = [UIColor colorWithRed:1.f green:1.f blue:1.f alpha:1.f];
     headerTitle.text = header;
-    [headerTitle setFont:[UIFont fontWithName:@"Courier-BoldOblique" size:10]];
+    // [headerTitle setFont:[UIFont fontWithName:@"GurmukhiMN" size:10]];
     headerTitle.textColor = [self colorWithHexString:[NSString stringWithFormat:@"%s",HEADER_TEXT_COLOR]];
     [headerContainer addSubview:headerTitle];
     
@@ -227,6 +241,7 @@
     UIColor * staticImageColor = [self colorWithHexString:[NSString stringWithFormat:@"%s",STATIC_IMAGE_COLOR]];
     UIColor * backgroundColor = [self colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_BACKGROUND_COLOR]];
     UIColor * contentBackgroundColor = [self colorWithHexString:[NSString stringWithFormat:@"%s",CONTENT_BACKGROUND_COLOR]];
+    UIColor * iconBackgroundColor = [self colorWithHexString:[NSString stringWithFormat:@"%s",ICON_BACKGROUND_COLOR]];
     
     cell.backgroundColor = backgroundColor;
     
@@ -236,7 +251,7 @@
     [cell addSubview:separatorLineView];
     
     // This view creates the vertical line that lies behind the image.
-    UIView * verticalLine = [[UIView alloc] initWithFrame:CGRectMake(vertLineXCoord + 1 - (bgndImgScale/2), 0, bgndImgScale, cell.frame.size.height)];
+    UIView * verticalLine = [[UIView alloc] initWithFrame:CGRectMake(vertLineXCoord + 1, 0, bgndImgScale, cell.frame.size.height)];
     verticalLine.backgroundColor = framingColor;
     [cell addSubview:verticalLine];
     
@@ -249,18 +264,20 @@
     UIView * imageBackGround = [[UIView alloc] initWithFrame:CGRectMake(imageXCoord - bgndImgScale, imageYCoord - bgndImgScale, imageHeight + (bgndImgScale*2), imageHeight + (bgndImgScale*2))];
     imageBackGround.layer.cornerRadius = 21;
     imageBackGround.backgroundColor = framingColor;
-    // [cell addSubview:imageBackGround];
+    [cell addSubview:imageBackGround];
     
     // This view creates the white background for the image.
     UIView * imageBackMid = [[UIView alloc] initWithFrame:CGRectMake(imageXCoord, imageYCoord, imageHeight, imageHeight)];
-    imageBackMid.backgroundColor = contentBackgroundColor;
+    imageBackMid.backgroundColor = iconBackgroundColor;
     imageBackMid.layer.cornerRadius = 20;
     [cell addSubview:imageBackMid];
     
     // This view creates uses the image provided in the parameters to display the image on top of the background and midground
-    UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(imageXCoord, imageYCoord, imageHeight, imageHeight)];
-    if (![event.yelpImageLink isEqual:[NSNull null]] && [event.yelpImageLink length] > 1) {
+    UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(imageXCoord + 10, imageYCoord + 10, imageHeight - 20, imageHeight - 20)];
+    if (![event.yelpImageLink isEqual:[NSNull null]] && [event.yelpImageLink length] > 1 && YES) {
+        img = [[UIImageView alloc] initWithFrame:CGRectMake(imageXCoord, imageYCoord, imageHeight, imageHeight)];
         image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:event.yelpImageLink]]];
+        img.layer.masksToBounds = imageHeight/2;
     }
     else {
         CGRect rect = CGRectMake(0, 0, image.size.width, image.size.height);
@@ -276,7 +293,7 @@
     }
     img.image = image;
     img.layer.cornerRadius = imageHeight/2;
-    img.layer.masksToBounds = YES;
+    // img.layer.masksToBounds = YES;
     [cell addSubview:img];
     
     // This view creates the background for the content
@@ -298,7 +315,7 @@
     NSDate *startedDate = [[NSDate alloc] initWithTimeIntervalSince1970:startedTime];
     NSString * eventDateMessage = [MEPTextParse getTimeUntilDateTime:startedDate];
     eventDetailLabel.text = eventDateMessage;
-    eventDetailLabel.textColor = [UIColor grayColor];
+    eventDetailLabel.textColor = [self colorWithHexString:[NSString stringWithFormat:@"F4F4F4"]];
     [eventDetailLabel setFont:[UIFont systemFontOfSize:8.5]];
     [contentView addSubview:eventDetailLabel];
     
@@ -393,9 +410,9 @@
 }
 
 - (void) setTitleView {
-    UIView * titleBar = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 32, 32)];
-    titleBar.backgroundColor = [self colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_BACKGROUND_COLOR]];
-    self.navigationItem.titleView = titleBar;
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetFillColorWithColor(context, [[self colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_BACKGROUND_COLOR]] CGColor]);
+    CGContextFillRect(context, CGRectMake(0, 0, self.navigationController.navigationBar.frame.size.width, self.navigationController.navigationBar.frame.size.height));
 }
 
 - (void) getUpcomingEvents {

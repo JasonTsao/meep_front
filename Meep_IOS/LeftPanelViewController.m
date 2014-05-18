@@ -132,6 +132,8 @@
         //NEED TO ACTUALLY GET REAL PF PIC LATER!
         UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(8, 4, 40, 40)];
         img.image = [UIImage imageNamed:@"ManSilhouette"];
+        img.layer.cornerRadius = img.frame.size.height/2;
+        img.layer.masksToBounds = YES;
         [cell.contentView addSubview:img];
     }
     else if(indexPath.section == 1){

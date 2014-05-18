@@ -25,7 +25,7 @@
 #define CENTER_TAG 1
 #define LEFT_PANEL_TAG 2
 #define RIGHT_PANEL_TAG 3
-#define CORNER_RADIUS 4
+#define CORNER_RADIUS 0
 #define SLIDE_TIMING .25
 #define PANEL_WIDTH 60
 
