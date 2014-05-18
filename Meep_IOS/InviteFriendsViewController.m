@@ -27,6 +27,7 @@
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (nonatomic, assign) NSIndexPath* selectedIndex;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
+@property (weak, nonatomic) IBOutlet UIView *breakBar;
 
 @end
 
@@ -313,7 +314,7 @@
     UIView * lineMask = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 1)];
     lineMask.backgroundColor = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_BACKGROUND_COLOR]];
     [cell addSubview:lineMask];
-    UIView * cellContents = [[UIView alloc] initWithFrame:CGRectMake(3, 3, cell.frame.size.width + 3, cell.frame.size.height + 6)];
+    UIView * cellContents = [[UIView alloc] initWithFrame:CGRectMake(3, 3, cell.frame.size.width - 6, cell.frame.size.height + 6)];
     if (!sel) {
         cellContents.backgroundColor = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_DATA_BACKGROUND_COLOR]];
     }
@@ -382,17 +383,6 @@
         }
         else if (indexPath.section == 1){
             Friend *currentFriend = friends_list[indexPath.row];
-            UILabel *friendHeader = [[UILabel alloc] initWithFrame:CGRectMake(60, 14, 235, 21)];
-            friendHeader.text = currentFriend.name;
-            friendHeader.textColor = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_DATA_TEXT_COLOR]];
-            [friendHeader setFont:[UIFont systemFontOfSize:18]];
-            [contentView addSubview:friendHeader];
-
-            UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(8, 4, 40, 40)];
-            img.image = currentFriend.profilePic;
-            img.layer.cornerRadius = img.frame.size.height/2;
-            img.layer.masksToBounds = YES;
-            [contentView addSubview:img];
             BOOL selected = NO;
             if ([selected_friends_list containsObject:currentFriend]) {
                 selected = YES;
@@ -444,6 +434,7 @@
     }
     friends_list = user_friends_list;
     // Do any additional setup after loading the view.
+    _breakBar.backgroundColor = [CenterViewController colorWithHexString:@"049372"];
 }
 
 
@@ -470,6 +461,7 @@
 -(void) collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     [selected_friends_list removeObjectAtIndex:indexPath.row];
     [_collectionView reloadData];
+    [_friendTable reloadData];
 }
 
 -(NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
@@ -487,7 +479,7 @@
         [subView removeFromSuperview];
     }
     Friend * selectedFriend = selected_friends_list[indexPath.row];
-    UIImageView * profilePicture = [[UIImageView alloc] initWithFrame:CGRectMake(4, 6, cell.frame.size.width - 8, cell.frame.size.width - 8)];
+    UIImageView * profilePicture = [[UIImageView alloc] initWithFrame:CGRectMake(2, 0, cell.frame.size.width - 4, cell.frame.size.width - 4)];
     profilePicture.image = selectedFriend.profilePic;
     profilePicture.layer.cornerRadius = profilePicture.frame.size.height/2;
     profilePicture.layer.masksToBounds = YES;
