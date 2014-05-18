@@ -460,7 +460,7 @@
 - (void)viewDidAppear:(BOOL)animated
 {
 	[super viewDidAppear:animated];
-    [_upcomingEvents reloadData];
+    [self getUpcomingEvents];
 }
 
 #pragma mark -
