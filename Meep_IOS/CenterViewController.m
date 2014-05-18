@@ -129,12 +129,13 @@
     // cell.textLabel.text = upcomingEvent.description;
     NSTimeInterval startedTime = [upcomingEvent.start_time doubleValue];
     NSDate *startedDate = [[NSDate alloc] initWithTimeIntervalSince1970:startedTime];
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"h:mm a"];
-    NSString * eventDate = [dateFormatter stringFromDate:startedDate];
+    //NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    //[dateFormatter setDateFormat:@"h:mm a"];
+    //NSString * eventDate = [dateFormatter stringFromDate:startedDate];
+    NSString * eventDateMessage = [MEPTextParse getTimeUntilDateTime:startedDate];
     // cell.detailTextLabel.text = eventDate;
     UILabel * eventDetailLabel = [[UILabel alloc] initWithFrame:CGRectMake(60, 35, 235, 21)];
-    eventDetailLabel.text = eventDate;
+    eventDetailLabel.text = eventDateMessage;
     [eventDetailLabel setFont:[UIFont systemFontOfSize:12]];
     [cell.contentView addSubview:eventHeader];
     [cell.contentView addSubview:eventDetailLabel];

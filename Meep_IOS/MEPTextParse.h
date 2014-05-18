@@ -11,4 +11,5 @@
 @interface MEPTextParse : NSObject
 -(NSDictionary*)parseText:(NSString*)text;
 +(NSString*)identifyCategory:(NSString*)text;
++(NSString*)getTimeUntilDateTime:(NSDate*)date;
 @end
