@@ -437,13 +437,13 @@
     }
     else if (months > 0) {
         if (eventPassed) {
-            if (years == 1) {
+            if (months == 1) {
                 return timeDiffMessage = [NSString stringWithFormat:@"1 month ago"];
             }
             return timeDiffMessage = [NSString stringWithFormat:@"%i months ago",months];
         }
         else {
-            if (years == 1) {
+            if (months == 1) {
                 return timeDiffMessage = [NSString stringWithFormat:@"In 1 month"];
             }
             return timeDiffMessage = [NSString stringWithFormat:@"In %i months",months];
@@ -451,13 +451,13 @@
     }
     else if (days > 0) {
         if (eventPassed) {
-            if (years == 1) {
+            if (days == 1) {
                 return timeDiffMessage = [NSString stringWithFormat:@"1 day ago"];
             }
             return timeDiffMessage = [NSString stringWithFormat:@"%i days ago",days];
         }
         else {
-            if (years == 1) {
+            if (days == 1) {
                 return timeDiffMessage = [NSString stringWithFormat:@"In 1 day"];
             }
             return timeDiffMessage = [NSString stringWithFormat:@"In %i days",days];
@@ -465,13 +465,13 @@
     }
     else if (hours > 0) {
         if (eventPassed) {
-            if (years == 1) {
+            if (hours == 1) {
                 return timeDiffMessage = [NSString stringWithFormat:@"1 hour ago"];
             }
             return timeDiffMessage = [NSString stringWithFormat:@"%i hours ago",hours];
         }
         else {
-            if (years == 1) {
+            if (hours == 1) {
                 return timeDiffMessage = [NSString stringWithFormat:@"In 1 hour"];
             }
             return timeDiffMessage = [NSString stringWithFormat:@"In %i hours",hours];
@@ -479,13 +479,13 @@
     }
     else if (minutes >= 0) {
         if (eventPassed) {
-            if (years == 1) {
+            if (minutes == 1) {
                 return timeDiffMessage = [NSString stringWithFormat:@"On going"];
             }
             return timeDiffMessage = [NSString stringWithFormat:@"Started %i minutes ago",minutes];
         }
         else {
-            if (years == 1) {
+            if (minutes == 1) {
                 return timeDiffMessage = [NSString stringWithFormat:@"Starts in 1 minute"];
             }
             return timeDiffMessage = [NSString stringWithFormat:@"Starts in %i minutes",minutes];
