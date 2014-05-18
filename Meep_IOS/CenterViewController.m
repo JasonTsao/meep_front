@@ -225,7 +225,7 @@
     contentView.layer.cornerRadius = 5;
     
     float detailXCoord = 10;
-    float detailYCoord = contentView.frame.size.height * 6/8;
+    float detailYCoord = contentView.frame.size.height * 6/8 - 3;
     UILabel * eventDetailLabel = [[UILabel alloc] initWithFrame:CGRectMake(detailXCoord, detailYCoord, (contentView.frame.size.width/2 ) - 6, 21)];
     
     NSTimeInterval startedTime = [event.start_time doubleValue];
@@ -235,7 +235,7 @@
     [eventDetailLabel setFont:[UIFont systemFontOfSize:8]];
     [contentView addSubview:eventDetailLabel];
     
-    UILabel *eventHeader = [[UILabel alloc] initWithFrame:CGRectMake(6, 15, contentView.frame.size.width - 12, 30)];
+    UILabel *eventHeader = [[UILabel alloc] initWithFrame:CGRectMake(6, 3, contentView.frame.size.width - 12, 40)];
     eventHeader.text = event.description;
     [eventHeader setFont:[UIFont systemFontOfSize:14]];
     eventHeader.lineBreakMode = UILineBreakModeWordWrap;
