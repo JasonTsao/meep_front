@@ -426,13 +426,13 @@
             if (years == 1) {
                 return timeDiffMessage = [NSString stringWithFormat:@"1 year ago"];
             }
-            return timeDiffMessage = [NSString stringWithFormat:@"%i years ago",years];
+            return timeDiffMessage = [NSString stringWithFormat:@"%li years ago",(long)years];
         }
         else {
             if (years == 1) {
                 return timeDiffMessage = [NSString stringWithFormat:@"In 1 year"];
             }
-            return timeDiffMessage = [NSString stringWithFormat:@"In %i years",years];
+            return timeDiffMessage = [NSString stringWithFormat:@"In %ld years",(long)years];
         }
     }
     else if (months > 0) {
@@ -440,13 +440,13 @@
             if (months == 1) {
                 return timeDiffMessage = [NSString stringWithFormat:@"1 month ago"];
             }
-            return timeDiffMessage = [NSString stringWithFormat:@"%i months ago",months];
+            return timeDiffMessage = [NSString stringWithFormat:@"%li months ago",(long)months];
         }
         else {
             if (months == 1) {
                 return timeDiffMessage = [NSString stringWithFormat:@"In 1 month"];
             }
-            return timeDiffMessage = [NSString stringWithFormat:@"In %i months",months];
+            return timeDiffMessage = [NSString stringWithFormat:@"In %li months",(long)months];
         }
     }
     else if (days > 0) {
@@ -454,13 +454,13 @@
             if (days == 1) {
                 return timeDiffMessage = [NSString stringWithFormat:@"1 day ago"];
             }
-            return timeDiffMessage = [NSString stringWithFormat:@"%i days ago",days];
+            return timeDiffMessage = [NSString stringWithFormat:@"%li days ago",(long)days];
         }
         else {
             if (days == 1) {
                 return timeDiffMessage = [NSString stringWithFormat:@"In 1 day"];
             }
-            return timeDiffMessage = [NSString stringWithFormat:@"In %i days",days];
+            return timeDiffMessage = [NSString stringWithFormat:@"In %li days",(long)days];
         }
     }
     else if (hours > 0) {
@@ -468,13 +468,13 @@
             if (hours == 1) {
                 return timeDiffMessage = [NSString stringWithFormat:@"1 hour ago"];
             }
-            return timeDiffMessage = [NSString stringWithFormat:@"%i hours ago",hours];
+            return timeDiffMessage = [NSString stringWithFormat:@"%li hours ago",(long)hours];
         }
         else {
             if (hours == 1) {
                 return timeDiffMessage = [NSString stringWithFormat:@"In 1 hour"];
             }
-            return timeDiffMessage = [NSString stringWithFormat:@"In %i hours",hours];
+            return timeDiffMessage = [NSString stringWithFormat:@"In %li hours",(long)hours];
         }
     }
     else if (minutes >= 0) {
@@ -482,13 +482,13 @@
             if (minutes == 1) {
                 return timeDiffMessage = [NSString stringWithFormat:@"On going"];
             }
-            return timeDiffMessage = [NSString stringWithFormat:@"Started %i minutes ago",minutes];
+            return timeDiffMessage = [NSString stringWithFormat:@"Started %li minutes ago",(long)minutes];
         }
         else {
             if (minutes == 1) {
                 return timeDiffMessage = [NSString stringWithFormat:@"Starts in 1 minute"];
             }
-            return timeDiffMessage = [NSString stringWithFormat:@"Starts in %i minutes",minutes];
+            return timeDiffMessage = [NSString stringWithFormat:@"Starts in %li minutes",(long)minutes];
         }
     }
     return @"Data Unavailable";

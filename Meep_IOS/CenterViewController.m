@@ -85,6 +85,7 @@
     //return [_eventArray count];
 }
 
+/*
 -(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     NSString *dateString;
@@ -97,6 +98,38 @@
     [dateFormatter setDateFormat:@"MMM dd"];
     NSString * header = [dateFormatter stringFromDate:startedDate];
     return header;
+}
+ */
+
+-(UIView *) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    NSString *dateString;
+    dateString = [_datesArray objectAtIndex:section];
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+    NSDate *startedDate = [dateFormatter dateFromString:dateString];
+    
+    [dateFormatter setDateFormat:@"MMM dd"];
+    NSString * header = [dateFormatter stringFromDate:startedDate];
+    
+    UIView * headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, tableView.sectionHeaderHeight)];
+    
+    UIView * horizontalLine = [[UIView alloc] initWithFrame:CGRectMake(28, headerView.frame.size.height/2, tableView.frame.size
+                                                                       .width, 1)];
+    horizontalLine.backgroundColor = [UIColor blackColor];
+    UIView * verticalLine = [[UIView alloc] initWithFrame:CGRectMake(28, 0, 1, headerView.frame.size.height)];
+    verticalLine.backgroundColor = [UIColor blackColor];
+    UIView * headerContainer = [[UIView alloc] initWithFrame:CGRectMake(headerView.frame.size.width/5, 0, headerView.frame.size.width, headerView.frame.size.height)];
+    UILabel * headerTitle = [[UILabel alloc] initWithFrame:CGRectMake(5, 0, headerContainer.frame.size.width, headerContainer.frame.size.height)];
+    headerContainer.backgroundColor = [UIColor colorWithRed:1.f green:1.f blue:1.f alpha:1.f];
+    headerTitle.text = header;
+    [headerTitle setFont:[UIFont fontWithName:@"Courier-BoldOblique" size:10]];
+    [headerContainer addSubview:headerTitle];
+    
+    [headerView addSubview:verticalLine];
+    [headerView addSubview:horizontalLine];
+    [headerView addSubview:headerContainer];
+    return headerView;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -176,7 +209,7 @@
     float imageYCoord = (cell.frame.size.height/2) - (imageHeight/2);
     float vertLineXCoord = (imageHeight/2) + imageXCoord;
     float contentBoxXCoord = imageXCoord + imageHeight + 12;
-    float contentBoxYCoord = 9;
+    float contentBoxYCoord = 12;
     float contentBoxWidth = cell.frame.size.width - contentBoxXCoord - 30;
     float contentBoxHeight = cell.frame.size.height - (contentBoxYCoord * 2);
     
@@ -209,6 +242,9 @@
     
     // This view creates uses the image provided in the parameters to display the image on top of the background and midground
     UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(imageXCoord, imageYCoord, imageHeight, imageHeight)];
+    if (![event.yelpImageLink isEqual:[NSNull null]] && [event.yelpImageLink length] > 1) {
+        image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:event.yelpImageLink]]];
+    }
     img.image = image;
     img.layer.cornerRadius = imageHeight/2;
     [cell addSubview:img];
@@ -225,14 +261,15 @@
     contentView.layer.cornerRadius = 5;
     
     float detailXCoord = 10;
-    float detailYCoord = contentView.frame.size.height * 6/8 - 3;
+    float detailYCoord = contentView.frame.size.height * 6/8 - 5;
     UILabel * eventDetailLabel = [[UILabel alloc] initWithFrame:CGRectMake(detailXCoord, detailYCoord, (contentView.frame.size.width/2 ) - 6, 21)];
     
     NSTimeInterval startedTime = [event.start_time doubleValue];
     NSDate *startedDate = [[NSDate alloc] initWithTimeIntervalSince1970:startedTime];
     NSString * eventDateMessage = [MEPTextParse getTimeUntilDateTime:startedDate];
     eventDetailLabel.text = eventDateMessage;
-    [eventDetailLabel setFont:[UIFont systemFontOfSize:8]];
+    eventDetailLabel.textColor = [UIColor grayColor];
+    [eventDetailLabel setFont:[UIFont systemFontOfSize:8.5]];
     [contentView addSubview:eventDetailLabel];
     
     UILabel *eventHeader = [[UILabel alloc] initWithFrame:CGRectMake(6, 3, contentView.frame.size.width - 12, 40)];
