@@ -80,7 +80,7 @@
 {
     [super viewDidLoad];
     BOOL viewExists = [self setupView];
-    self.locationServiceManager = [[MEPLocationService alloc] init];
+    // self.locationServiceManager = [[MEPLocationService alloc] init];
     
     if( viewExists){
         NSLog(@"view already exists");

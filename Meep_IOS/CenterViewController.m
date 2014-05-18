@@ -404,15 +404,20 @@
     self.datesSectionCountDictionary = [[NSMutableDictionary alloc] init];
     self.dateEventsDictionary = [[NSMutableDictionary alloc] init];
     self.numDates = 0;
-    self.upcomingEventsTable.backgroundColor = [self colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_BACKGROUND_COLOR]];
+    // self.upcomingEventsTable.backgroundColor = [self colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_BACKGROUND_COLOR]];
     [self setTitleView];
     [self getUpcomingEvents];
 }
 
 - (void) setTitleView {
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextSetFillColorWithColor(context, [[self colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_BACKGROUND_COLOR]] CGColor]);
-    CGContextFillRect(context, CGRectMake(0, 0, self.navigationController.navigationBar.frame.size.width, self.navigationController.navigationBar.frame.size.height));
+    UIImage * pressedButton = [UIImage imageNamed:@"UIBarButtonAdd_2x.png"];
+    UIButton * customButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [customButton setImage:pressedButton forState:UIControlStateNormal];
+    customButton.frame = CGRectMake(0, 0, pressedButton.size.width, pressedButton.size.height);
+    UIView * container = [[UIView alloc] initWithFrame:CGRectMake(0, 0, pressedButton.size.width, pressedButton.size.height)];
+    container.backgroundColor = [UIColor clearColor];
+    [container addSubview:customButton];
+    UIBarButtonItem * customToolbarButton = [[UIBarButtonItem alloc] initWithCustomView:container];
 }
 
 - (void) getUpcomingEvents {

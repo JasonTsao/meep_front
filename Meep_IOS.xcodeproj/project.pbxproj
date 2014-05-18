@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3C1FD80A19287EC000AA4593 /* MEPGlossyUIView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C1FD80919287EC000AA4593 /* MEPGlossyUIView.m */; };
+		3C22DBFE1928A823006BCF7B /* UIBarButtonAdd_2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C22DBFD1928A823006BCF7B /* UIBarButtonAdd_2x.png */; };
 		3CB231FE192176B900684E1D /* MEPLocationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CB231FD192176B900684E1D /* MEPLocationService.m */; };
 		3CC11A341923F2FE003A6A57 /* cocktail6.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CC11A211923F2FE003A6A57 /* cocktail6.png */; };
 		3CC11A351923F2FE003A6A57 /* cocktail7.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CC11A221923F2FE003A6A57 /* cocktail7.png */; };
@@ -144,6 +145,7 @@
 /* Begin PBXFileReference section */
 		3C1FD80819287EC000AA4593 /* MEPGlossyUIView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MEPGlossyUIView.h; sourceTree = "<group>"; };
 		3C1FD80919287EC000AA4593 /* MEPGlossyUIView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MEPGlossyUIView.m; sourceTree = "<group>"; };
+		3C22DBFD1928A823006BCF7B /* UIBarButtonAdd_2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = UIBarButtonAdd_2x.png; sourceTree = "<group>"; };
 		3CB231FC192176B900684E1D /* MEPLocationService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MEPLocationService.h; path = ../MEPLocationService.h; sourceTree = "<group>"; };
 		3CB231FD192176B900684E1D /* MEPLocationService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MEPLocationService.m; path = ../MEPLocationService.m; sourceTree = "<group>"; };
 		3CC11A211923F2FE003A6A57 /* cocktail6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cocktail6.png; sourceTree = "<group>"; };
@@ -351,6 +353,7 @@
 		3CC11A201923F2FE003A6A57 /* Icon Assets */ = {
 			isa = PBXGroup;
 			children = (
+				3C22DBFD1928A823006BCF7B /* UIBarButtonAdd_2x.png */,
 				3CC11A471923FEB6003A6A57 /* jumping2.png */,
 				3CC11A211923F2FE003A6A57 /* cocktail6.png */,
 				3CC11A221923F2FE003A6A57 /* cocktail7.png */,
@@ -773,6 +776,7 @@
 				3CC11A441923F2FE003A6A57 /* sun23.png in Resources */,
 				3CCC515C1905A20D00EB0980 /* Images.xcassets in Resources */,
 				3CC11A3F1923F2FE003A6A57 /* plate7.png in Resources */,
+				3C22DBFE1928A823006BCF7B /* UIBarButtonAdd_2x.png in Resources */,
 				3CC11A431923F2FE003A6A57 /* soccer19.png in Resources */,
 				3CCC51561905A20D00EB0980 /* CreateEvent.xib in Resources */,
 				3CCC51631905A20D00EB0980 /* MainViewController.xib in Resources */,
