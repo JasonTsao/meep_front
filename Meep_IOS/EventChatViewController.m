@@ -8,6 +8,7 @@
 
 #import "EventChatViewController.h"
 #import "EventChatMessage.h"
+#import "Friend.h"
 #import "MEEPhttp.h"
 
 @interface EventChatViewController ()
@@ -163,10 +164,46 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"chatMessage" forIndexPath:indexPath];
+
+    cell = [self clearCell:cell];
+    //Friend *currentFriend = [friends_list objectAtIndex:indexPath.row];
+    CGRect cellFrameRect = cell.contentView.frame;
+    cellFrameRect.size.height = (cell.contentView.frame.size.height + 10 );
+    cell.contentView.frame = cellFrameRect;
+    
+    EventChatMessage *currentMessage = _chatMessages[indexPath.row];
+
+    if( [currentMessage creator_id] != 1){
+        
+        UILabel *currentMessageHeader = [[UILabel alloc] initWithFrame:CGRectMake(35, 10, 235, 21)];
+        currentMessageHeader.text = [currentMessage message];
+        [currentMessageHeader setFont:[UIFont systemFontOfSize:13]];
+        [cell.contentView addSubview:currentMessageHeader];
+        
+        UILabel *messageCreatorName = [[UILabel alloc] initWithFrame:CGRectMake(40, 0, 100, 21)];
+        messageCreatorName.text = [currentMessage creator_name];
+        [messageCreatorName setTextColor:[UIColor lightGrayColor]];
+        [messageCreatorName setFont:[UIFont systemFontOfSize:11]];
+        [cell.contentView addSubview:messageCreatorName];
+        
+        UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(8, 14, 25, 25)];
+        img.image = [UIImage imageNamed:@"ManSilhouette"];
+        //img.image = currentFriend.profilePic;
+        [cell.contentView addSubview:img];
+    }
+    else{
+        UILabel *currentMessageHeader = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.chatMessageTable.frame.size.width - 10, 21)];
+        currentMessageHeader.textAlignment = UITextAlignmentRight;
+        currentMessageHeader.text = [currentMessage message];
+        [currentMessageHeader setFont:[UIFont systemFontOfSize:13]];
+        [cell.contentView addSubview:currentMessageHeader];
+        
+    }
+    
     //UIView * lineRemoval = [[UIView alloc] initWithFrame:CGRectMake(0, cell.frame.size.height, cell.frame.size.width, 1)];
     //[cell addSubview:lineRemoval];
     //cell = [self clearCell:cell];
-    cell.textLabel.text = [_chatMessages[indexPath.row] message];
+    //cell.textLabel.text = [_chatMessages[indexPath.row] message];
     return cell;
 }
 
