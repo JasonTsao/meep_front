@@ -225,7 +225,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RvS-4h-Jab" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-609" y="-55"/>
+            <point key="canvasLocation" x="-827" y="-427"/>
         </scene>
         <!--Event Page View Controller - EventViewController-->
         <scene sceneID="zQv-Uz-o4I">
@@ -260,11 +260,63 @@
                     <navigationItem key="navigationItem" id="nbM-f8-YrH"/>
                     <connections>
                         <outlet property="eventInfoTable" destination="ogq-Dt-hcW" id="mWY-Ib-Yhx"/>
+                        <segue destination="Pl6-Hp-ROt" kind="push" identifier="toEventChat" id="2iQ-nm-2I8"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2D6-c2-k8f" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-194" y="197"/>
+            <point key="canvasLocation" x="-474" y="161"/>
+        </scene>
+        <!--Event Chat View Controller-->
+        <scene sceneID="4Aj-Ma-IIu">
+            <objects>
+                <viewController storyboardIdentifier="eventChat" id="Pl6-Hp-ROt" customClass="EventChatViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="FLG-Av-1OP"/>
+                        <viewControllerLayoutGuide type="bottom" id="C1B-mc-7Ko"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="H88-2d-WtP">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VVb-LU-rzV">
+                                <rect key="frame" x="0.0" y="518" width="320" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.85653023100000003" green="0.85653023100000003" blue="0.85653023100000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J9I-A2-dgu">
+                                <rect key="frame" x="264" y="528" width="46" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Send">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="0eM-C7-a7W">
+                                <rect key="frame" x="7" y="528" width="254" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="RNA-Dm-iXC">
+                                <rect key="frame" x="0.0" y="65" width="320" height="455"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="Pl6-Hp-ROt" id="3Hv-Ll-ytr"/>
+                                    <outlet property="delegate" destination="Pl6-Hp-ROt" id="D6e-U6-A5A"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="ews-Xg-SdE"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Rwx-rC-9ge" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-133" y="175"/>
         </scene>
         <!--Edit Event View Controller-->
         <scene sceneID="91q-aU-Xuc">

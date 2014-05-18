@@ -82,6 +82,7 @@
 		968630391909FAB200CAE305 /* Photo.m in Sources */ = {isa = PBXBuildFile; fileRef = 968630341909FAB200CAE305 /* Photo.m */; };
 		96967E1D191D4887007613AF /* EditEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96967E1C191D4887007613AF /* EditEventViewController.m */; };
 		96967E20191D5BF5007613AF /* AddRemoveFriendsFromEventTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96967E1F191D5BF5007613AF /* AddRemoveFriendsFromEventTableViewController.m */; };
+		96AFDA4819286FFC0055181C /* EventChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96AFDA4719286FFC0055181C /* EventChatViewController.m */; };
 		96B397CB191B4BB700FFA7BF /* SignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96B397CA191B4BB700FFA7BF /* SignUpViewController.m */; };
 		96DB11761926D2BC0096FEDE /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96DB11751926D2BC0096FEDE /* FacebookSDK.framework */; };
 		96E1D22B1913503600951DEB /* CreateMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E1D22A1913503600951DEB /* CreateMessageViewController.m */; };
@@ -245,6 +246,8 @@
 		96967E1C191D4887007613AF /* EditEventViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditEventViewController.m; sourceTree = "<group>"; };
 		96967E1E191D5BF5007613AF /* AddRemoveFriendsFromEventTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddRemoveFriendsFromEventTableViewController.h; sourceTree = "<group>"; };
 		96967E1F191D5BF5007613AF /* AddRemoveFriendsFromEventTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddRemoveFriendsFromEventTableViewController.m; sourceTree = "<group>"; };
+		96AFDA4619286FFC0055181C /* EventChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventChatViewController.h; sourceTree = "<group>"; };
+		96AFDA4719286FFC0055181C /* EventChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventChatViewController.m; sourceTree = "<group>"; };
 		96B397C9191B4BB700FFA7BF /* SignUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignUpViewController.h; sourceTree = "<group>"; };
 		96B397CA191B4BB700FFA7BF /* SignUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignUpViewController.m; sourceTree = "<group>"; };
 		96DB11751926D2BC0096FEDE /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
@@ -524,6 +527,8 @@
 				96F338EE1921F8430031FB2E /* EventAttendeesDistanceViewController.m */,
 				96F338F01921F87C0031FB2E /* EventAttendeeTabBarController.h */,
 				96F338F11921F87C0031FB2E /* EventAttendeeTabBarController.m */,
+				96AFDA4619286FFC0055181C /* EventChatViewController.h */,
+				96AFDA4719286FFC0055181C /* EventChatViewController.m */,
 			);
 			name = "Event Pages";
 			sourceTree = "<group>";
@@ -828,6 +833,7 @@
 				96E1D2371915977400951DEB /* Group.m in Sources */,
 				3CCC51621905A20D00EB0980 /* MainViewController.m in Sources */,
 				96E1D2741918549400951DEB /* DjangoAuthLoginResultObject.m in Sources */,
+				96AFDA4819286FFC0055181C /* EventChatViewController.m in Sources */,
 				3CCF3CE41912A70A00DED761 /* MEPTextParse.m in Sources */,
 				968466D6191E9DE200E56901 /* EditGroupViewController.m in Sources */,
 				96E1D2341915932100951DEB /* GroupTableViewController.m in Sources */,
