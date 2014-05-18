@@ -14,9 +14,11 @@
 #import <CoreLocation/CoreLocation.h>
 
 #define BORDER_WIDTH 2
-#define BORDER_COLOR "86CE9F"
-#define STATIC_IMAGE_COLOR "6BA57F"
-#define TABLE_BACKGROUND_COLOR "D9D9D9"
+#define BORDER_COLOR "141466"
+#define STATIC_IMAGE_COLOR "141466"
+#define TABLE_BACKGROUND_COLOR "F5F5F5"
+#define HEADER_TEXT_COLOR "141466"
+#define CONTENT_BACKGROUND_COLOR "F5F5F5"
 
 @interface CenterViewController () <UITableViewDataSource>
 
@@ -128,11 +130,13 @@
     // headerContainer.backgroundColor = [UIColor colorWithRed:1.f green:1.f blue:1.f alpha:1.f];
     headerTitle.text = header;
     [headerTitle setFont:[UIFont fontWithName:@"Courier-BoldOblique" size:10]];
+    headerTitle.textColor = [self colorWithHexString:[NSString stringWithFormat:@"%s",HEADER_TEXT_COLOR]];
     [headerContainer addSubview:headerTitle];
     
     [headerView addSubview:verticalLine];
     [headerView addSubview:horizontalLine];
     [headerView addSubview:headerContainer];
+    headerView.backgroundColor = [self colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_BACKGROUND_COLOR]];
     return headerView;
 }
 
@@ -219,10 +223,14 @@
     float bgndImgScale = BORDER_WIDTH;
     UIColor * framingColor = [self colorWithHexString:[NSString stringWithFormat:@"%s",BORDER_COLOR]];
     UIColor * staticImageColor = [self colorWithHexString:[NSString stringWithFormat:@"%s",STATIC_IMAGE_COLOR]];
+    UIColor * backgroundColor = [self colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_BACKGROUND_COLOR]];
+    UIColor * contentBackgroundColor = [self colorWithHexString:[NSString stringWithFormat:@"%s",CONTENT_BACKGROUND_COLOR]];
+    
+    cell.backgroundColor = backgroundColor;
     
     // This view covers the line separator between the cells.
     UIView* separatorLineView = [[UIView alloc] initWithFrame:CGRectMake(0, cell.frame.size.height - 1, cell.frame.size.width, 1)];
-    separatorLineView.backgroundColor = [UIColor colorWithRed:1.f green:1.f blue:1.f alpha:1.f];
+    separatorLineView.backgroundColor = backgroundColor;
     [cell addSubview:separatorLineView];
     
     // This view creates the vertical line that lies behind the image.
@@ -243,7 +251,7 @@
     
     // This view creates the white background for the image.
     UIView * imageBackMid = [[UIView alloc] initWithFrame:CGRectMake(imageXCoord, imageYCoord, imageHeight, imageHeight)];
-    imageBackMid.backgroundColor = [UIColor colorWithRed:1.f green:1.f blue:1.f alpha:1.f];
+    imageBackMid.backgroundColor = contentBackgroundColor;
     imageBackMid.layer.cornerRadius = 20;
     [cell addSubview:imageBackMid];
     
@@ -277,7 +285,7 @@
     
     // This view contains the data fields and is placed on top of the background view.
     UIView * contentView = [[UIView alloc] initWithFrame:CGRectMake(contentBoxXCoord, contentBoxYCoord, contentBoxWidth, contentBoxHeight)];
-    contentView.backgroundColor = [UIColor colorWithRed:1.f green:1.f blue:1.f alpha:1.f];
+    contentView.backgroundColor = contentBackgroundColor;
     contentView.layer.cornerRadius = 5;
     
     float detailXCoord = 10;
@@ -378,7 +386,14 @@
     self.dateEventsDictionary = [[NSMutableDictionary alloc] init];
     self.numDates = 0;
     self.upcomingEventsTable.backgroundColor = [self colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_BACKGROUND_COLOR]];
+    [self setTitleView];
     [self getUpcomingEvents];
+}
+
+- (void) setTitleView {
+    UIView * titleBar = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 32, 32)];
+    titleBar.backgroundColor = [self colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_BACKGROUND_COLOR]];
+    self.navigationItem.titleView = titleBar;
 }
 
 - (void) getUpcomingEvents {

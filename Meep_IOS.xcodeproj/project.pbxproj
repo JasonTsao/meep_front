@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3C1FD80A19287EC000AA4593 /* MEPGlossyUIView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C1FD80919287EC000AA4593 /* MEPGlossyUIView.m */; };
 		3CB231FE192176B900684E1D /* MEPLocationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CB231FD192176B900684E1D /* MEPLocationService.m */; };
 		3CC11A341923F2FE003A6A57 /* cocktail6.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CC11A211923F2FE003A6A57 /* cocktail6.png */; };
 		3CC11A351923F2FE003A6A57 /* cocktail7.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CC11A221923F2FE003A6A57 /* cocktail7.png */; };
@@ -140,6 +141,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3C1FD80819287EC000AA4593 /* MEPGlossyUIView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MEPGlossyUIView.h; sourceTree = "<group>"; };
+		3C1FD80919287EC000AA4593 /* MEPGlossyUIView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MEPGlossyUIView.m; sourceTree = "<group>"; };
 		3CB231FC192176B900684E1D /* MEPLocationService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MEPLocationService.h; path = ../MEPLocationService.h; sourceTree = "<group>"; };
 		3CB231FD192176B900684E1D /* MEPLocationService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MEPLocationService.m; path = ../MEPLocationService.m; sourceTree = "<group>"; };
 		3CC11A211923F2FE003A6A57 /* cocktail6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cocktail6.png; sourceTree = "<group>"; };
@@ -437,6 +440,8 @@
 				3CCC507F19059F9500EB0980 /* Supporting Files */,
 				DAF700801917209A004EDC66 /* ABIGBOOB.h */,
 				DAF700811917209A004EDC66 /* ABIGBOOB.m */,
+				3C1FD80819287EC000AA4593 /* MEPGlossyUIView.h */,
+				3C1FD80919287EC000AA4593 /* MEPGlossyUIView.m */,
 			);
 			path = Meep_IOS;
 			sourceTree = "<group>";
@@ -839,6 +844,7 @@
 				96E1D2341915932100951DEB /* GroupTableViewController.m in Sources */,
 				968630351909FAB200CAE305 /* Friend.m in Sources */,
 				3CDDCDA419087D0000F851EE /* EventElementViewController.m in Sources */,
+				3C1FD80A19287EC000AA4593 /* MEPGlossyUIView.m in Sources */,
 				3CCF971B190827CE005FA454 /* AccountViewController.m in Sources */,
 				968466D3191E9DC600E56901 /* AddRemoveFriendsFromGroupTableViewController.m in Sources */,
 				9606E6A6191308EA00D985A7 /* CreateGroupViewController.m in Sources */,
