@@ -313,29 +313,14 @@
     _searchResultFriendsList = [[NSMutableArray alloc] init];
     
     [self getFriendsList];
-    /*if( [_viewTitle isEqualToString:@"From Contacts"]){
-    }*/
-    
+
     if([_viewTitle isEqualToString:@"From Facebook"]){
         
         UIBarButtonItem *customBarItem = [[UIBarButtonItem alloc] initWithTitle:@"Sync All" style:UIBarButtonItemStyleBordered target:self action:@selector( syncFacebookFriends:)];
         
         self.navigationItem.rightBarButtonItem = customBarItem;
         
-        [FBSession openActiveSessionWithReadPermissions:@[@"public_profile", @"user_friends", @"read_friendlists", @"email", @"user_birthday"]
-                                           allowLoginUI:YES
-                                      completionHandler:
-         ^(FBSession *session, FBSessionState state, NSError *error) {
-             // Retrieve the app delegate
-             NSLog(@"in completion handler!!");
-             MEPAppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
-             // Call the app delegate's sessionStateChanged:state:error method to handle session state changes
-             [self syncFacebookUser];
-             [self getAllFacebookFriends];
-             [appDelegate sessionStateChanged:session state:state error:error];
-         }];
-        
-        /*if (FBSession.activeSession.state == FBSessionStateOpen
+        if (FBSession.activeSession.state == FBSessionStateOpen
             || FBSession.activeSession.state == FBSessionStateOpenTokenExtended) {
             NSLog(@"FBSessionStateOpen || FBSessionStateOpenTokenExtended");
             // Close the session and remove the access token from the cache
@@ -360,11 +345,9 @@
                  [self getAllFacebookFriends];
                  [appDelegate sessionStateChanged:session state:state error:error];
              }];
-        }*/
+        }
 
     }
-    
-    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -485,24 +468,27 @@
 {
     UIButton *button = (UIButton*) sender;
     
-    if([button isSelected]){
-        [button setSelected:NO];
-        NSString * requestURL = [NSString stringWithFormat:@"%@friends/unfriend",[MEEPhttp accountURL]];
-        NSLog(@"request url : %@", requestURL);
-        NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:_buttonTagDictionary[[NSString stringWithFormat:@"%i", button.tag]],@"phone_number", nil];
-        NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
-        NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
-        [conn start];
+    if([_viewTitle isEqualToString:@"From Contacts"] ){
+        if([button isSelected]){
+            [button setSelected:NO];
+            NSString * requestURL = [NSString stringWithFormat:@"%@friends/unfriend",[MEEPhttp accountURL]];
+            NSLog(@"request url : %@", requestURL);
+            NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:_buttonTagDictionary[[NSString stringWithFormat:@"%i", button.tag]],@"phone_number", nil];
+            NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
+            NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+            [conn start];
+        }
+        else if( ![button isSelected]){
+            [button setSelected:YES];
+            NSString * requestURL = [NSString stringWithFormat:@"%@friends/add_by_phone",[MEEPhttp accountURL]];
+            NSLog(@"request url : %@", requestURL);
+            NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:_buttonTagDictionary[[NSString stringWithFormat:@"%i", button.tag]],@"phone_number", nil];
+            NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
+            NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+            [conn start];
+        }
     }
-    else if( ![button isSelected]){
-        [button setSelected:YES];
-        NSString * requestURL = [NSString stringWithFormat:@"%@friends/add_by_phone",[MEEPhttp accountURL]];
-        NSLog(@"request url : %@", requestURL);
-        NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:_buttonTagDictionary[[NSString stringWithFormat:@"%i", button.tag]],@"phone_number", nil];
-        NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
-        NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
-        [conn start];
-    }
+    
     
 }
 
@@ -510,24 +496,27 @@
 {
     UIButton *button = (UIButton*) sender;
     
-    if([button isSelected]){
-        [button setSelected:NO];
-        NSString * requestURL = [NSString stringWithFormat:@"%@friends/unfriend",[MEEPhttp accountURL]];
-        NSLog(@"request url : %@", requestURL);
-        NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:_searchButtonTagDictionary[[NSString stringWithFormat:@"%i", button.tag]],@"phone_number", nil];
-        NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
-        NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
-        [conn start];
+    if([_viewTitle isEqualToString:@"From Contacts"] ){
+        if([button isSelected]){
+            [button setSelected:NO];
+            NSString * requestURL = [NSString stringWithFormat:@"%@friends/unfriend",[MEEPhttp accountURL]];
+            NSLog(@"request url : %@", requestURL);
+            NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:_searchButtonTagDictionary[[NSString stringWithFormat:@"%i", button.tag]],@"phone_number", nil];
+            NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
+            NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+            [conn start];
+        }
+        else if( ![button isSelected]){
+            [button setSelected:YES];
+            NSString * requestURL = [NSString stringWithFormat:@"%@friends/add_by_phone",[MEEPhttp accountURL]];
+            NSLog(@"request url : %@", requestURL);
+            NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:_searchButtonTagDictionary[[NSString stringWithFormat:@"%i", button.tag]],@"phone_number", nil];
+            NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
+            NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+            [conn start];
+        }
     }
-    else if( ![button isSelected]){
-        [button setSelected:YES];
-        NSString * requestURL = [NSString stringWithFormat:@"%@friends/add_by_phone",[MEEPhttp accountURL]];
-        NSLog(@"request url : %@", requestURL);
-        NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:_searchButtonTagDictionary[[NSString stringWithFormat:@"%i", button.tag]],@"phone_number", nil];
-        NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
-        NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
-        [conn start];
-    }
+    
 }
 
 
