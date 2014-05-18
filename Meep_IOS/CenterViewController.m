@@ -13,12 +13,13 @@
 #import "MEPLocationService.h"
 #import <CoreLocation/CoreLocation.h>
 
-#define BORDER_WIDTH 2
-#define BORDER_COLOR "141466"
-#define STATIC_IMAGE_COLOR "141466"
-#define TABLE_BACKGROUND_COLOR "F5F5F5"
-#define HEADER_TEXT_COLOR "141466"
-#define CONTENT_BACKGROUND_COLOR "F5F5F5"
+#define BORDER_WIDTH 1
+#define BORDER_COLOR "D2D7D3"
+#define STATIC_IMAGE_COLOR "EFEFEF"
+#define TABLE_BACKGROUND_COLOR "FFFFFF"
+#define HEADER_TEXT_COLOR "2ECC71"
+#define CONTENT_BACKGROUND_COLOR "3FC380"
+#define MAIN_TEXT_COLOR "FFFFFF"
 
 @interface CenterViewController () <UITableViewDataSource>
 
@@ -123,19 +124,20 @@
     
     UIView * horizontalLine = [[UIView alloc] initWithFrame:CGRectMake(28, headerView.frame.size.height/2 + 1 - (BORDER_WIDTH/2), headerView.frame.size.width/5 - 28, BORDER_WIDTH)];
     horizontalLine.backgroundColor = framingColor;
-    UIView * verticalLine = [[UIView alloc] initWithFrame:CGRectMake(29 - BORDER_WIDTH/2, 0, BORDER_WIDTH, headerView.frame.size.height)];
+    UIView * verticalLine = [[UIView alloc] initWithFrame:CGRectMake(30 - BORDER_WIDTH, 0, BORDER_WIDTH, headerView.frame.size.height)];
     verticalLine.backgroundColor = framingColor;
-    UIView * headerContainer = [[UIView alloc] initWithFrame:CGRectMake(headerView.frame.size.width/5, 0, headerView.frame.size.width, headerView.frame.size.height)];
-    UILabel * headerTitle = [[UILabel alloc] initWithFrame:CGRectMake(5, 0, headerContainer.frame.size.width, headerContainer.frame.size.height)];
+    UIView * headerContainer = [[UIView alloc] initWithFrame:CGRectMake(0, 0, headerView.frame.size.width, headerView.frame.size.height)];
+    UILabel * headerTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, headerContainer.frame.size.width, headerContainer.frame.size.height)];
+    headerTitle.textAlignment = NSTextAlignmentCenter;
     // headerContainer.backgroundColor = [UIColor colorWithRed:1.f green:1.f blue:1.f alpha:1.f];
     headerTitle.text = header;
     [headerTitle setFont:[UIFont fontWithName:@"Courier-BoldOblique" size:10]];
     headerTitle.textColor = [self colorWithHexString:[NSString stringWithFormat:@"%s",HEADER_TEXT_COLOR]];
     [headerContainer addSubview:headerTitle];
     
-    [headerView addSubview:verticalLine];
-    [headerView addSubview:horizontalLine];
     [headerView addSubview:headerContainer];
+    [headerView addSubview:verticalLine];
+    // [headerView addSubview:horizontalLine];
     headerView.backgroundColor = [self colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_BACKGROUND_COLOR]];
     return headerView;
 }
@@ -239,7 +241,7 @@
     [cell addSubview:verticalLine];
     
     // This view creates the horizontal line between the image and the content frames.
-    UIView * horizontalLine = [[UIView alloc] initWithFrame:CGRectMake(21 - (bgndImgScale/2), (cell.frame.size.height/2), (cell.frame.size.width/2), bgndImgScale)];
+    UIView * horizontalLine = [[UIView alloc] initWithFrame:CGRectMake(21, (cell.frame.size.height/2), (cell.frame.size.width/2), bgndImgScale)];
     horizontalLine.backgroundColor = framingColor;
     [cell addSubview:horizontalLine];
     
@@ -247,7 +249,7 @@
     UIView * imageBackGround = [[UIView alloc] initWithFrame:CGRectMake(imageXCoord - bgndImgScale, imageYCoord - bgndImgScale, imageHeight + (bgndImgScale*2), imageHeight + (bgndImgScale*2))];
     imageBackGround.layer.cornerRadius = 21;
     imageBackGround.backgroundColor = framingColor;
-    [cell addSubview:imageBackGround];
+    // [cell addSubview:imageBackGround];
     
     // This view creates the white background for the image.
     UIView * imageBackMid = [[UIView alloc] initWithFrame:CGRectMake(imageXCoord, imageYCoord, imageHeight, imageHeight)];
@@ -278,10 +280,10 @@
     [cell addSubview:img];
     
     // This view creates the background for the content
-    UIView * contentFrame = [[UIView alloc] initWithFrame:CGRectMake(contentBoxXCoord - bgndImgScale, contentBoxYCoord - bgndImgScale, contentBoxWidth + (bgndImgScale*2), contentBoxHeight + (bgndImgScale*2))];
+    UIView * contentFrame = [[UIView alloc] initWithFrame:CGRectMake(contentBoxXCoord - bgndImgScale + 1, contentBoxYCoord - bgndImgScale + 1, contentBoxWidth + (bgndImgScale*2) - 2, contentBoxHeight + (bgndImgScale*2) - 2)];
     contentFrame.layer.cornerRadius = 6;
     contentFrame.backgroundColor = framingColor;
-    [cell addSubview:contentFrame];
+    // [cell addSubview:contentFrame];
     
     // This view contains the data fields and is placed on top of the background view.
     UIView * contentView = [[UIView alloc] initWithFrame:CGRectMake(contentBoxXCoord, contentBoxYCoord, contentBoxWidth, contentBoxHeight)];
@@ -305,7 +307,7 @@
     [eventHeader setFont:[UIFont systemFontOfSize:14]];
     eventHeader.lineBreakMode = UILineBreakModeWordWrap;
     eventHeader.numberOfLines = 0;
-    eventHeader.textColor = [self colorWithHexString:@"222222"];
+    eventHeader.textColor = [self colorWithHexString:[NSString stringWithFormat:@"%s",MAIN_TEXT_COLOR]];
     [contentView addSubview:eventHeader];
     
     [cell addSubview:contentView];

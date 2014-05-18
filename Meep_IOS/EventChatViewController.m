@@ -113,12 +113,10 @@
     CGFloat height = keyboardFrame.size.height;
     _keyboardHeight.constant = height;
     CGRect frameRect = self.textAndButtonHolder.frame;
-    frameRect.size.height = (self.textAndButtonHolder.frame.size.height - height - 50);
-    frameRect.origin = self.textAndButtonHolder.frame.origin;
+    frameRect.origin.y = self.textAndButtonHolder.frame.origin.y - height;
     _textAndButtonHolder.frame = frameRect;
     
     CGRect textframeRect = self.chatMessageToSend.frame;
-    //textframeRect.size.height = (self.chatMessageToSend.frame.size.height - height);
     textframeRect.origin.y = self.chatMessageToSend.frame.origin.y - height;
     _chatMessageToSend.frame = textframeRect;
     
@@ -128,8 +126,8 @@
     _sendButton.frame = buttonframeRect;
     
     CGRect tableFrameRect = self.chatMessageTable.frame;
-    tableFrameRect.size.height = (self.chatMessageTable.frame.size.height - height - 50);
-    tableFrameRect.origin = self.chatMessageTable.frame.origin;
+    tableFrameRect.size.height = (self.chatMessageTable.frame.size.height - (height/2));
+    tableFrameRect.origin.y = self.chatMessageTable.frame.origin.y - (height/2);
     _chatMessageTable.frame = tableFrameRect;
     
     [UIView animateWithDuration:animationDuration animations:^{
@@ -164,7 +162,8 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"chatMessage" forIndexPath:indexPath];
-
+    UIView * lineRemoval = [[UIView alloc] initWithFrame:CGRectMake(0, cell.frame.size.height, cell.frame.size.width, 1)];
+    [cell addSubview:lineRemoval];
     //cell = [self clearCell:cell];
     cell.textLabel.text = [_chatMessages[indexPath.row] message];
     return cell;
