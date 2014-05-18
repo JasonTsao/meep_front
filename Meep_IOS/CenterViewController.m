@@ -51,6 +51,8 @@
 @property(nonatomic, strong) NSMutableData * data;
 
 @property (nonatomic, strong) CLLocationManager * locationManager;
+@property (nonatomic, assign) float lat;
+@property (nonatomic, assign) float lng;
 
 @end
 
@@ -309,7 +311,7 @@
     
     float detailXCoord = 10;
     float detailYCoord = contentView.frame.size.height * 6/8 - 5;
-    UILabel * eventDetailLabel = [[UILabel alloc] initWithFrame:CGRectMake(detailXCoord, detailYCoord, (contentView.frame.size.width/2 ) - 6, 21)];
+    UILabel * eventDetailLabel = [[UILabel alloc] initWithFrame:CGRectMake(detailXCoord, detailYCoord, (contentView.frame.size.width/2 ) - 20, 21)];
     
     NSTimeInterval startedTime = [event.start_time doubleValue];
     NSDate *startedDate = [[NSDate alloc] initWithTimeIntervalSince1970:startedTime];
@@ -327,6 +329,15 @@
     eventHeader.textColor = [self colorWithHexString:[NSString stringWithFormat:@"%s",MAIN_TEXT_COLOR]];
     [contentView addSubview:eventHeader];
     
+    if (![event.locationLongitude isEqual:[NSNull null]]) {
+        UILabel *distance = [[UILabel alloc] initWithFrame:CGRectMake(0, detailYCoord, (contentView.frame.size.width), 21)];
+        long distanceInMiles = [MEPLocationService distanceBetweenCoordinatesWithLatitudeOne:_lat longitudeOne:_lng latitudeTwo:[event.locationLatitude floatValue] longitudeTwo:[event.locationLongitude floatValue]];
+        distance.text = [NSString stringWithFormat:@"%.2Lf miles away",roundl(distanceInMiles*100.0)/100.0];
+        distance.textColor = [self colorWithHexString:[NSString stringWithFormat:@"F4F4F4"]];
+        [distance setFont:[UIFont systemFontOfSize:8.5]];
+        distance.textAlignment = NSTextAlignmentRight;
+        // [contentView addSubview:distance];
+    }
     [cell addSubview:contentView];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
@@ -563,16 +574,12 @@
         event.locationLongitude = eventObj[@"location_longitude"];
         event.yelpImageLink = eventObj[@"yelp_img_url"];
         if (![event.locationLatitude isEqual:[NSNull null]] &&
-            ![event.locationLongitude isEqual:[NSNull null]] &&
-            [jsonResponse valueForKey:@"lat"] &&
-            [jsonResponse valueForKey:@"lng"]) {
-            float locLat = [event.locationLatitude floatValue];
-            float locLng = [event.locationLongitude floatValue];
-            float currentLat = _locationManager.location.coordinate.latitude;
-            float currentLng = _locationManager.location.coordinate.longitude;
-            if (currentLat < 0.001) {
-                currentLat = [[jsonResponse valueForKey:@"lat"] floatValue];
-                currentLng = [[jsonResponse valueForKey:@"lng"] floatValue];
+            ![event.locationLongitude isEqual:[NSNull null]]) {
+            _lat = _locationManager.location.coordinate.latitude;
+            _lng = _locationManager.location.coordinate.longitude;
+            if (_lat < 0.001) {
+                _lat = [[jsonResponse valueForKey:@"lat"] floatValue];
+                _lng = [[jsonResponse valueForKey:@"lng"] floatValue];
             }
         }
         //event.group = eventObj[@"group"];
@@ -595,7 +602,7 @@
         else{
             NSInteger currentCount = [[_datesSectionCountDictionary valueForKey:eventDate] integerValue];
             currentCount++;
-            NSString *newCount = [NSString stringWithFormat:@"%i", currentCount];
+            NSString *newCount = [NSString stringWithFormat:@"%li", (long)currentCount];
             
             [_datesSectionCountDictionary setValue:newCount forKey:eventDate];
             

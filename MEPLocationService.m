@@ -82,15 +82,15 @@
     NSDictionary * recievedData = [NSJSONSerialization JSONObjectWithData:_data options:0 error:nil];
 }
 
-+(float) distanceBetweenCoordinatesWithLatitudeOne:(float)lat1
++(long) distanceBetweenCoordinatesWithLatitudeOne:(float)lat1
                                       longitudeOne:(float)lng1
                                        latitudeTwo:(float)lat2
                                       longitudeTwo:(float)lng2 {
-    float dlat = lat1 - lat2;
-    float dlng = lng1 - lng2;
-    float a = (float) ((sin(dlat/2)*sin(dlat/2)) + (cos(lat1)*cos(lat2)*sin(dlng/2)*sin(dlng/2)));
-    float c = (float) (2 * atan2(sqrt(a), sqrt(1-a)));
-    float radiusOfEarthInMiles = 3961;
+    long dlat = lat1 - lat2;
+    long dlng = lng1 - lng2;
+    long a = (long) ((sin(dlat/2)*sin(dlat/2)) + (cos(lat1)*cos(lat2)*sin(dlng/2)*sin(dlng/2)));
+    long c = (long) (2 * atan2(sqrt(a), sqrt(1-a)));
+    long radiusOfEarthInMiles = 3961;
     return (radiusOfEarthInMiles * c)/66.3157;
 }
 @end
