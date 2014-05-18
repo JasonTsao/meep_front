@@ -35,7 +35,7 @@
 #define MAIN_TEXT_COLOR "0F0F0F"
 */
  
-@interface CenterViewController () <UITableViewDataSource>
+@interface CenterViewController () <UITableViewDataSource, UICollectionViewDataSource>
 
 @property (weak, nonatomic) IBOutlet UITableView *upcomingEventsTable;
 @property (weak, nonatomic) IBOutlet UITableViewCell *cellMain;
@@ -127,7 +127,7 @@
 -(UIView *) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     NSString *dateString;
     dateString = [_datesArray objectAtIndex:section];
-    UIColor * framingColor = [self colorWithHexString:[NSString stringWithFormat:@"%s",BORDER_COLOR]];
+    UIColor * framingColor = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",BORDER_COLOR]];
     
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"yyyy-MM-dd"];
@@ -148,13 +148,13 @@
     // headerContainer.backgroundColor = [UIColor colorWithRed:1.f green:1.f blue:1.f alpha:1.f];
     headerTitle.text = header;
     // [headerTitle setFont:[UIFont fontWithName:@"GurmukhiMN" size:10]];
-    headerTitle.textColor = [self colorWithHexString:[NSString stringWithFormat:@"%s",HEADER_TEXT_COLOR]];
+    headerTitle.textColor = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",HEADER_TEXT_COLOR]];
     [headerContainer addSubview:headerTitle];
     
     [headerView addSubview:headerContainer];
     [headerView addSubview:verticalLine];
     // [headerView addSubview:horizontalLine];
-    headerView.backgroundColor = [self colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_BACKGROUND_COLOR]];
+    headerView.backgroundColor = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_BACKGROUND_COLOR]];
     return headerView;
 }
 
@@ -239,11 +239,11 @@
     float contentBoxWidth = cell.frame.size.width - contentBoxXCoord - 15;
     float contentBoxHeight = cell.frame.size.height - (contentBoxYCoord * 2);
     float bgndImgScale = BORDER_WIDTH;
-    UIColor * framingColor = [self colorWithHexString:[NSString stringWithFormat:@"%s",BORDER_COLOR]];
-    UIColor * staticImageColor = [self colorWithHexString:[NSString stringWithFormat:@"%s",STATIC_IMAGE_COLOR]];
-    UIColor * backgroundColor = [self colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_BACKGROUND_COLOR]];
-    UIColor * contentBackgroundColor = [self colorWithHexString:[NSString stringWithFormat:@"%s",CONTENT_BACKGROUND_COLOR]];
-    UIColor * iconBackgroundColor = [self colorWithHexString:[NSString stringWithFormat:@"%s",ICON_BACKGROUND_COLOR]];
+    UIColor * framingColor = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",BORDER_COLOR]];
+    UIColor * staticImageColor = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",STATIC_IMAGE_COLOR]];
+    UIColor * backgroundColor = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_BACKGROUND_COLOR]];
+    UIColor * contentBackgroundColor = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",CONTENT_BACKGROUND_COLOR]];
+    UIColor * iconBackgroundColor = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",ICON_BACKGROUND_COLOR]];
     
     cell.backgroundColor = backgroundColor;
     
@@ -317,7 +317,7 @@
     NSDate *startedDate = [[NSDate alloc] initWithTimeIntervalSince1970:startedTime];
     NSString * eventDateMessage = [MEPTextParse getTimeUntilDateTime:startedDate];
     eventDetailLabel.text = eventDateMessage;
-    eventDetailLabel.textColor = [self colorWithHexString:[NSString stringWithFormat:@"F4F4F4"]];
+    eventDetailLabel.textColor = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"F4F4F4"]];
     [eventDetailLabel setFont:[UIFont systemFontOfSize:8.5]];
     [contentView addSubview:eventDetailLabel];
     
@@ -326,14 +326,14 @@
     [eventHeader setFont:[UIFont systemFontOfSize:14]];
     eventHeader.lineBreakMode = UILineBreakModeWordWrap;
     eventHeader.numberOfLines = 0;
-    eventHeader.textColor = [self colorWithHexString:[NSString stringWithFormat:@"%s",MAIN_TEXT_COLOR]];
+    eventHeader.textColor = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",MAIN_TEXT_COLOR]];
     [contentView addSubview:eventHeader];
     
     if (![event.locationLongitude isEqual:[NSNull null]]) {
         UILabel *distance = [[UILabel alloc] initWithFrame:CGRectMake(0, detailYCoord, (contentView.frame.size.width) - 6, 21)];
         float distanceInMiles = [MEPLocationService distanceBetweenCoordinatesWithLatitudeOne:_lat longitudeOne:_lng latitudeTwo:[event.locationLatitude floatValue] longitudeTwo:[event.locationLongitude floatValue]];
         distance.text = [NSString stringWithFormat:@"%.2Lf miles away",roundl(distanceInMiles*100.0)/100.0];
-        distance.textColor = [self colorWithHexString:[NSString stringWithFormat:@"F4F4F4"]];
+        distance.textColor = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"F4F4F4"]];
         [distance setFont:[UIFont systemFontOfSize:8.5]];
         distance.textAlignment = NSTextAlignmentRight;
         [contentView addSubview:distance];
@@ -620,7 +620,7 @@
     [self.upcomingEvents reloadData];
 }
 
--(UIColor*)colorWithHexString:(NSString*)hex
++(UIColor*)colorWithHexString:(NSString*)hex
 {
     NSString *cString = [[hex stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] uppercaseString];
     

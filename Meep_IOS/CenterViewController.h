@@ -40,4 +40,6 @@
 @property (nonatomic, weak) IBOutlet UIButton *leftButton;
 @property (nonatomic, weak) IBOutlet UIButton *rightButton;
 
++(UIColor*)colorWithHexString:(NSString*)hex;
+
 @end
