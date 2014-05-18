@@ -22,6 +22,7 @@
 @property NSString * end_time;
 @property NSString * yelpLink;
 @property NSString * uberLink;
+@property NSString * yelpImageLink;
 @property Group * eventGroup;
 @property double createdUTC;
 

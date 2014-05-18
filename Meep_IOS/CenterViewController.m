@@ -101,7 +101,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 60;
+    return 80;
 }
 
 - (UITableViewCell*)clearCell:(UITableViewCell *)cell{
@@ -121,7 +121,7 @@
     NSString *dateString = _datesArray[indexPath.section];
     NSMutableArray *eventArray = [_dateEventsDictionary objectForKey:dateString];
     Event *upcomingEvent = eventArray[indexPath.row];
-    
+    /*
     //Event *upcomingEvent = [_eventArray objectAtIndex:indexPath.row];
     UILabel *eventHeader = [[UILabel alloc] initWithFrame:CGRectMake(60, 15, 235, 21)];
     eventHeader.text = upcomingEvent.description;
@@ -139,6 +139,7 @@
     [eventDetailLabel setFont:[UIFont systemFontOfSize:12]];
     [cell.contentView addSubview:eventHeader];
     [cell.contentView addSubview:eventDetailLabel];
+     */
     NSString * description = upcomingEvent.description;
     NSString * category = [MEPTextParse identifyCategory:description];
     NSString * imageFileName = @"tree60.png";
@@ -158,10 +159,90 @@
         imageFileName = @"sun23.png";
     }
     // Insert event icon into the cell.
-    UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(6, 6, 44, 44)];
-    img.image = [UIImage imageNamed:imageFileName];
-    [cell.contentView addSubview:img];
+    // UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(6, 6, 44, 44)];
+    // img.image = [UIImage imageNamed:imageFileName];
+    // [cell.contentView addSubview:img];
+    // return cell;
+    return [self createCustomCellView:cell forEvent:upcomingEvent withImage:[UIImage imageNamed:imageFileName]];
+}
+
+
+- (UITableViewCell *) createCustomCellView:(UITableViewCell*)cell
+                                  forEvent:(Event*)event
+                                 withImage:(UIImage*)image{
     
+    float imageHeight = 40;
+    float imageXCoord = 8;
+    float imageYCoord = (cell.frame.size.height/2) - (imageHeight/2);
+    float vertLineXCoord = (imageHeight/2) + imageXCoord;
+    float contentBoxXCoord = imageXCoord + imageHeight + 12;
+    float contentBoxYCoord = 9;
+    float contentBoxWidth = cell.frame.size.width - contentBoxXCoord - 30;
+    float contentBoxHeight = cell.frame.size.height - (contentBoxYCoord * 2);
+    
+    // This view covers the line separator between the cells.
+    UIView* separatorLineView = [[UIView alloc] initWithFrame:CGRectMake(0, cell.frame.size.height - 1, cell.frame.size.width, 1)];
+    separatorLineView.backgroundColor = [UIColor colorWithRed:1.f green:1.f blue:1.f alpha:1.f];
+    [cell addSubview:separatorLineView];
+    
+    // This view creates the vertical line that lies behind the image.
+    UIView * verticalLine = [[UIView alloc] initWithFrame:CGRectMake(vertLineXCoord, 0, 1, cell.frame.size.height)];
+    verticalLine.backgroundColor = [UIColor blackColor];
+    [cell addSubview:verticalLine];
+    
+    // This view creates the horizontal line between the image and the content frames.
+    UIView * horizontalLine = [[UIView alloc] initWithFrame:CGRectMake(20, (cell.frame.size.height/2), (cell.frame.size.width/2), 1)];
+    horizontalLine.backgroundColor = [UIColor blackColor];
+    [cell addSubview:horizontalLine];
+    
+    // This view creates the black background which the image and mid ground lie on top of.
+    UIView * imageBackGround = [[UIView alloc] initWithFrame:CGRectMake(imageXCoord - 1, imageYCoord - 1, imageHeight + 2, imageHeight + 2)];
+    imageBackGround.layer.cornerRadius = 21;
+    imageBackGround.backgroundColor = [UIColor blackColor];
+    [cell addSubview:imageBackGround];
+    
+    // This view creates the white background for the image.
+    UIView * imageBackMid = [[UIView alloc] initWithFrame:CGRectMake(imageXCoord, imageYCoord, imageHeight, imageHeight)];
+    imageBackMid.backgroundColor = [UIColor colorWithRed:1.f green:1.f blue:1.f alpha:1.f];
+    imageBackMid.layer.cornerRadius = 20;
+    [cell addSubview:imageBackMid];
+    
+    // This view creates uses the image provided in the parameters to display the image on top of the background and midground
+    UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(imageXCoord, imageYCoord, imageHeight, imageHeight)];
+    img.image = image;
+    img.layer.cornerRadius = imageHeight/2;
+    [cell addSubview:img];
+    
+    // This view creates the background for the content
+    UIView * contentFrame = [[UIView alloc] initWithFrame:CGRectMake(contentBoxXCoord - 1, contentBoxYCoord - 1, contentBoxWidth + 2, contentBoxHeight + 2)];
+    contentFrame.layer.cornerRadius = 6;
+    contentFrame.backgroundColor = [UIColor blackColor];
+    [cell addSubview:contentFrame];
+    
+    // This view contains the data fields and is placed on top of the background view.
+    UIView * contentView = [[UIView alloc] initWithFrame:CGRectMake(contentBoxXCoord, contentBoxYCoord, contentBoxWidth, contentBoxHeight)];
+    contentView.backgroundColor = [UIColor colorWithRed:1.f green:1.f blue:1.f alpha:1.f];
+    contentView.layer.cornerRadius = 5;
+    
+    float detailXCoord = 10;
+    float detailYCoord = contentView.frame.size.height * 6/8;
+    UILabel * eventDetailLabel = [[UILabel alloc] initWithFrame:CGRectMake(detailXCoord, detailYCoord, (contentView.frame.size.width/2 ) - 6, 21)];
+    
+    NSTimeInterval startedTime = [event.start_time doubleValue];
+    NSDate *startedDate = [[NSDate alloc] initWithTimeIntervalSince1970:startedTime];
+    NSString * eventDateMessage = [MEPTextParse getTimeUntilDateTime:startedDate];
+    eventDetailLabel.text = eventDateMessage;
+    [eventDetailLabel setFont:[UIFont systemFontOfSize:8]];
+    [contentView addSubview:eventDetailLabel];
+    
+    UILabel *eventHeader = [[UILabel alloc] initWithFrame:CGRectMake(6, 15, contentView.frame.size.width - 12, 30)];
+    eventHeader.text = event.description;
+    [eventHeader setFont:[UIFont systemFontOfSize:14]];
+    eventHeader.lineBreakMode = UILineBreakModeWordWrap;
+    eventHeader.numberOfLines = 0;
+    [contentView addSubview:eventHeader];
+    
+    [cell addSubview:contentView];
     return cell;
 }
 
