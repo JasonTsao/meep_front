@@ -114,14 +114,13 @@
     
     UIView * headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, tableView.sectionHeaderHeight)];
     
-    UIView * horizontalLine = [[UIView alloc] initWithFrame:CGRectMake(28, headerView.frame.size.height/2, tableView.frame.size
-                                                                       .width, 1)];
+    UIView * horizontalLine = [[UIView alloc] initWithFrame:CGRectMake(28, headerView.frame.size.height/2, headerView.frame.size.width/5 - 28, 1)];
     horizontalLine.backgroundColor = [UIColor blackColor];
     UIView * verticalLine = [[UIView alloc] initWithFrame:CGRectMake(28, 0, 1, headerView.frame.size.height)];
     verticalLine.backgroundColor = [UIColor blackColor];
     UIView * headerContainer = [[UIView alloc] initWithFrame:CGRectMake(headerView.frame.size.width/5, 0, headerView.frame.size.width, headerView.frame.size.height)];
     UILabel * headerTitle = [[UILabel alloc] initWithFrame:CGRectMake(5, 0, headerContainer.frame.size.width, headerContainer.frame.size.height)];
-    headerContainer.backgroundColor = [UIColor colorWithRed:1.f green:1.f blue:1.f alpha:1.f];
+    // headerContainer.backgroundColor = [UIColor colorWithRed:1.f green:1.f blue:1.f alpha:1.f];
     headerTitle.text = header;
     [headerTitle setFont:[UIFont fontWithName:@"Courier-BoldOblique" size:10]];
     [headerContainer addSubview:headerTitle];
@@ -278,6 +277,7 @@
     [eventHeader setFont:[UIFont systemFontOfSize:14]];
     eventHeader.lineBreakMode = UILineBreakModeWordWrap;
     eventHeader.numberOfLines = 0;
+    eventHeader.textColor = [self colorWithHexString:@"222222"];
     [contentView addSubview:eventHeader];
     
     [cell addSubview:contentView];
@@ -552,6 +552,42 @@
     [self.upcomingEvents reloadData];
 }
 
+-(UIColor*)colorWithHexString:(NSString*)hex
+{
+    NSString *cString = [[hex stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] uppercaseString];
+    
+    // String should be 6 or 8 characters
+    if ([cString length] < 6) return [UIColor grayColor];
+    
+    // strip 0X if it appears
+    if ([cString hasPrefix:@"0X"]) cString = [cString substringFromIndex:2];
+    
+    if ([cString length] != 6) return  [UIColor grayColor];
+    
+    // Separate into r, g, b substrings
+    NSRange range;
+    range.location = 0;
+    range.length = 2;
+    NSString *rString = [cString substringWithRange:range];
+    
+    range.location = 2;
+    NSString *gString = [cString substringWithRange:range];
+    
+    range.location = 4;
+    NSString *bString = [cString substringWithRange:range];
+    
+    // Scan values
+    unsigned int r, g, b;
+    [[NSScanner scannerWithString:rString] scanHexInt:&r];
+    [[NSScanner scannerWithString:gString] scanHexInt:&g];
+    [[NSScanner scannerWithString:bString] scanHexInt:&b];
+    
+    return [UIColor colorWithRed:((float) r / 255.0f)
+                           green:((float) g / 255.0f)
+                            blue:((float) b / 255.0f)
+                           alpha:1.0f];
+}
+
 -(void)closeEventModal {
     [_delegate returnToMain];
 }
@@ -578,8 +614,6 @@
     Event *selected_event = _eventArray[path.row];
     eventPage.currentEvent = selected_event;*/
 }
-
-
 
 - (void)didReceiveMemoryWarning
 {
