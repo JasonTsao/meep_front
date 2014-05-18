@@ -330,13 +330,13 @@
     [contentView addSubview:eventHeader];
     
     if (![event.locationLongitude isEqual:[NSNull null]]) {
-        UILabel *distance = [[UILabel alloc] initWithFrame:CGRectMake(0, detailYCoord, (contentView.frame.size.width), 21)];
-        long distanceInMiles = [MEPLocationService distanceBetweenCoordinatesWithLatitudeOne:_lat longitudeOne:_lng latitudeTwo:[event.locationLatitude floatValue] longitudeTwo:[event.locationLongitude floatValue]];
+        UILabel *distance = [[UILabel alloc] initWithFrame:CGRectMake(0, detailYCoord, (contentView.frame.size.width) - 6, 21)];
+        float distanceInMiles = [MEPLocationService distanceBetweenCoordinatesWithLatitudeOne:_lat longitudeOne:_lng latitudeTwo:[event.locationLatitude floatValue] longitudeTwo:[event.locationLongitude floatValue]];
         distance.text = [NSString stringWithFormat:@"%.2Lf miles away",roundl(distanceInMiles*100.0)/100.0];
         distance.textColor = [self colorWithHexString:[NSString stringWithFormat:@"F4F4F4"]];
         [distance setFont:[UIFont systemFontOfSize:8.5]];
         distance.textAlignment = NSTextAlignmentRight;
-        // [contentView addSubview:distance];
+        [contentView addSubview:distance];
     }
     [cell addSubview:contentView];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
