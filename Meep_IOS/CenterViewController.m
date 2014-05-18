@@ -13,6 +13,10 @@
 #import "MEPLocationService.h"
 #import <CoreLocation/CoreLocation.h>
 
+#define BORDER_WIDTH 2
+#define BORDER_COLOR "86CE9F"
+#define STATIC_IMAGE_COLOR "6BA57F"
+#define TABLE_BACKGROUND_COLOR "D9D9D9"
 
 @interface CenterViewController () <UITableViewDataSource>
 
@@ -104,6 +108,7 @@
 -(UIView *) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     NSString *dateString;
     dateString = [_datesArray objectAtIndex:section];
+    UIColor * framingColor = [self colorWithHexString:[NSString stringWithFormat:@"%s",BORDER_COLOR]];
     
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"yyyy-MM-dd"];
@@ -114,10 +119,10 @@
     
     UIView * headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, tableView.sectionHeaderHeight)];
     
-    UIView * horizontalLine = [[UIView alloc] initWithFrame:CGRectMake(28, headerView.frame.size.height/2, headerView.frame.size.width/5 - 28, 1)];
-    horizontalLine.backgroundColor = [UIColor blackColor];
-    UIView * verticalLine = [[UIView alloc] initWithFrame:CGRectMake(28, 0, 1, headerView.frame.size.height)];
-    verticalLine.backgroundColor = [UIColor blackColor];
+    UIView * horizontalLine = [[UIView alloc] initWithFrame:CGRectMake(28, headerView.frame.size.height/2 + 1 - (BORDER_WIDTH/2), headerView.frame.size.width/5 - 28, BORDER_WIDTH)];
+    horizontalLine.backgroundColor = framingColor;
+    UIView * verticalLine = [[UIView alloc] initWithFrame:CGRectMake(29 - BORDER_WIDTH/2, 0, BORDER_WIDTH, headerView.frame.size.height)];
+    verticalLine.backgroundColor = framingColor;
     UIView * headerContainer = [[UIView alloc] initWithFrame:CGRectMake(headerView.frame.size.width/5, 0, headerView.frame.size.width, headerView.frame.size.height)];
     UILabel * headerTitle = [[UILabel alloc] initWithFrame:CGRectMake(5, 0, headerContainer.frame.size.width, headerContainer.frame.size.height)];
     // headerContainer.backgroundColor = [UIColor colorWithRed:1.f green:1.f blue:1.f alpha:1.f];
@@ -209,8 +214,11 @@
     float vertLineXCoord = (imageHeight/2) + imageXCoord;
     float contentBoxXCoord = imageXCoord + imageHeight + 12;
     float contentBoxYCoord = 12;
-    float contentBoxWidth = cell.frame.size.width - contentBoxXCoord - 30;
+    float contentBoxWidth = cell.frame.size.width - contentBoxXCoord - 15;
     float contentBoxHeight = cell.frame.size.height - (contentBoxYCoord * 2);
+    float bgndImgScale = BORDER_WIDTH;
+    UIColor * framingColor = [self colorWithHexString:[NSString stringWithFormat:@"%s",BORDER_COLOR]];
+    UIColor * staticImageColor = [self colorWithHexString:[NSString stringWithFormat:@"%s",STATIC_IMAGE_COLOR]];
     
     // This view covers the line separator between the cells.
     UIView* separatorLineView = [[UIView alloc] initWithFrame:CGRectMake(0, cell.frame.size.height - 1, cell.frame.size.width, 1)];
@@ -218,19 +226,19 @@
     [cell addSubview:separatorLineView];
     
     // This view creates the vertical line that lies behind the image.
-    UIView * verticalLine = [[UIView alloc] initWithFrame:CGRectMake(vertLineXCoord, 0, 1, cell.frame.size.height)];
-    verticalLine.backgroundColor = [UIColor blackColor];
+    UIView * verticalLine = [[UIView alloc] initWithFrame:CGRectMake(vertLineXCoord + 1 - (bgndImgScale/2), 0, bgndImgScale, cell.frame.size.height)];
+    verticalLine.backgroundColor = framingColor;
     [cell addSubview:verticalLine];
     
     // This view creates the horizontal line between the image and the content frames.
-    UIView * horizontalLine = [[UIView alloc] initWithFrame:CGRectMake(20, (cell.frame.size.height/2), (cell.frame.size.width/2), 1)];
-    horizontalLine.backgroundColor = [UIColor blackColor];
+    UIView * horizontalLine = [[UIView alloc] initWithFrame:CGRectMake(21 - (bgndImgScale/2), (cell.frame.size.height/2), (cell.frame.size.width/2), bgndImgScale)];
+    horizontalLine.backgroundColor = framingColor;
     [cell addSubview:horizontalLine];
     
     // This view creates the black background which the image and mid ground lie on top of.
-    UIView * imageBackGround = [[UIView alloc] initWithFrame:CGRectMake(imageXCoord - 1, imageYCoord - 1, imageHeight + 2, imageHeight + 2)];
+    UIView * imageBackGround = [[UIView alloc] initWithFrame:CGRectMake(imageXCoord - bgndImgScale, imageYCoord - bgndImgScale, imageHeight + (bgndImgScale*2), imageHeight + (bgndImgScale*2))];
     imageBackGround.layer.cornerRadius = 21;
-    imageBackGround.backgroundColor = [UIColor blackColor];
+    imageBackGround.backgroundColor = framingColor;
     [cell addSubview:imageBackGround];
     
     // This view creates the white background for the image.
@@ -244,15 +252,27 @@
     if (![event.yelpImageLink isEqual:[NSNull null]] && [event.yelpImageLink length] > 1) {
         image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:event.yelpImageLink]]];
     }
+    else {
+        CGRect rect = CGRectMake(0, 0, image.size.width, image.size.height);
+        UIGraphicsBeginImageContext(rect.size);
+        CGContextRef context = UIGraphicsGetCurrentContext();
+        CGContextClipToMask(context, rect, image.CGImage);
+        CGContextSetFillColorWithColor(context, [staticImageColor CGColor]);
+        CGContextFillRect(context, rect);
+        UIImage *image2 = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+        
+        image = [UIImage imageWithCGImage:image2.CGImage scale:1.0 orientation: UIImageOrientationDownMirrored];
+    }
     img.image = image;
     img.layer.cornerRadius = imageHeight/2;
     img.layer.masksToBounds = YES;
     [cell addSubview:img];
     
     // This view creates the background for the content
-    UIView * contentFrame = [[UIView alloc] initWithFrame:CGRectMake(contentBoxXCoord - 1, contentBoxYCoord - 1, contentBoxWidth + 2, contentBoxHeight + 2)];
+    UIView * contentFrame = [[UIView alloc] initWithFrame:CGRectMake(contentBoxXCoord - bgndImgScale, contentBoxYCoord - bgndImgScale, contentBoxWidth + (bgndImgScale*2), contentBoxHeight + (bgndImgScale*2))];
     contentFrame.layer.cornerRadius = 6;
-    contentFrame.backgroundColor = [UIColor blackColor];
+    contentFrame.backgroundColor = framingColor;
     [cell addSubview:contentFrame];
     
     // This view contains the data fields and is placed on top of the background view.
@@ -357,6 +377,7 @@
     self.datesSectionCountDictionary = [[NSMutableDictionary alloc] init];
     self.dateEventsDictionary = [[NSMutableDictionary alloc] init];
     self.numDates = 0;
+    self.upcomingEventsTable.backgroundColor = [self colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_BACKGROUND_COLOR]];
     [self getUpcomingEvents];
 }
 
