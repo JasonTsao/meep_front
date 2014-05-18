@@ -24,6 +24,8 @@
 @property(nonatomic, strong) NSMutableArray * searchResultFriendsList;
 @property(nonatomic, strong) NSMutableArray * searchResultRegistered;
 @property(nonatomic, strong) NSMutableArray * searchResultNonRegistered;
+@property(nonatomic, strong) NSMutableArray * allFacebookFriends;
+@property(nonatomic, strong) NSMutableArray * facebookFriendsWhoHaveAccount;
 
 @property(nonatomic, strong) NSMutableDictionary * buttonTagDictionary;
 @property(nonatomic) NSInteger buttonTagNumber;

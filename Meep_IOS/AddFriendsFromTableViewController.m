@@ -48,6 +48,7 @@
 {
     // Handle the error properly
     NSLog(@"Call Failed");
+    NSLog(@"error: %@", error);
 }
 -(void)connectionDidFinishLoading:(NSURLConnection*)connection
 {
@@ -145,13 +146,24 @@
     }
     
     else if ([_viewTitle isEqualToString:@"From Facebook"]){
-        NSLog(@"sync with fb friends response: %@", jsonResponse);
+        if([jsonResponse objectForKey:@"all_facebook_friends"] != nil){
+            NSArray *all_fb_friends = jsonResponse[@"all_facebook_friends"];
+            for (int i = 0; i < [all_fb_friends count]; i++){
+                NSLog(@"fb friend: %@", all_fb_friends[i]);
+                NSDictionary *fb_friend_dict = all_fb_friends[i];
+                
+                NSDictionary *fb_friend = [[NSDictionary alloc] initWithObjectsAndKeys:all_fb_friends[i][@"name"], @"name", all_fb_friends[i][@"id"], @"id", nil];
+                [_allFacebookFriends addObject: fb_friend];
+            }
+            NSLog(@"all_fb_friends array:%@", _allFacebookFriends);
+            
+            [self.tableView reloadData];
+        }
     }
     
     else if ([_viewTitle isEqualToString:@"From Everyone"]){
         
         if([jsonResponse objectForKey:@"friends"] != nil){
-            NSLog(@"friends: %@", jsonResponse[@"friends"]);
             NSArray * friends = jsonResponse[@"friends"];
             _friendsList = [[NSMutableArray alloc]init];
             
@@ -162,8 +174,6 @@
                 NSString *friend_account_id = [NSString stringWithFormat:@"%i",[new_friend_dict[@"account_id"] integerValue]];
                 [_friendsList addObject:friend_account_id];
             }
-
-            NSLog(@"frienst list is: %@", _friendsList);
         }
         else{
             NSMutableArray *searchUsers = jsonResponse[@"users"];
@@ -244,8 +254,6 @@
 }
 
 -(void) syncFacebookFriends:(id)sender{
-    NSString * accessToken = [[FBSession activeSession] accessToken];
-    
     NSString * requestURL = [NSString stringWithFormat:@"%@syncFacebookFriends",[MEEPhttp accountURL]];
     //NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys: accessToken, @"access_token" ,nil];
     NSDictionary * postDict = [[NSDictionary alloc] init];
@@ -254,13 +262,28 @@
     [conn start];
 }
 
--(void) getFacebookFriendsList{
-    [FBRequestConnection startWithGraphPath:@"1036380126/friends?limit=5000"
+-(void) getAllFacebookFriends
+{
+    NSString * requestURL = [NSString stringWithFormat:@"%@friends/facebook/all",[MEEPhttp accountURL]];
+    //NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys: accessToken, @"access_token" ,nil];
+    NSDictionary * postDict = [[NSDictionary alloc] init];
+    NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
+    NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    [conn start];
+}
+
+
+// WILL ONLY RETURN FB USERS WHO ARE FRIENDS WHO HAVE SIGNED IN USING THIS APP
+-(void) getFacebookFriendsWithAppList{
+    [FBRequestConnection startWithGraphPath:@"me/friends?limit=500"
                           completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
                               if (!error) {
                                   // Success! Include your code to handle the results here
-                                  NSLog(@"got some friends!!");
-                                  NSLog(@"user friends: %@", result);
+                                  NSArray *results = result;
+                                  NSLog(@"results: %@", results);
+                                  for (int i = 0; i < [results count]; i++){
+                                      NSLog(@"friend: %@", results[i]);
+                                  }
                               } else {
                                   // An error occurred, we need to handle the error
                                   // Check out our error handling guide: https://developers.facebook.com/docs/ios/errors/
@@ -277,13 +300,12 @@
     _buttonTagNumber = 0;
     _searchButtonTagDictionary = [[NSMutableDictionary alloc] init];
     _searchButtonTagNumber = 0;
+    _allFacebookFriends = [[NSMutableArray alloc] init];
     
     _searchResultFriendsList = [[NSMutableArray alloc] init];
     
     [self getFriendsList];
-    /*if( [_viewTitle isEqualToString:@"From Contacts"]){
-    }*/
-    
+
     if([_viewTitle isEqualToString:@"From Facebook"]){
         
         UIBarButtonItem *customBarItem = [[UIBarButtonItem alloc] initWithTitle:@"Sync All" style:UIBarButtonItemStyleBordered target:self action:@selector( syncFacebookFriends:)];
@@ -297,9 +319,8 @@
             // The session state handler (in the app delegate) will be called automatically
             
             //[FBSession.activeSession closeAndClearTokenInformation];
-            [self syncFacebookUser];
-            [self getFacebookFriendsList];
-            
+            //[self syncFacebookUser];
+            [self getAllFacebookFriends];
             // If the session state is not any of the two "open" states when the button is clicked
         } else {
             // Open a session showing the user the login UI
@@ -313,14 +334,12 @@
                  MEPAppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
                  // Call the app delegate's sessionStateChanged:state:error method to handle session state changes
                  [self syncFacebookUser];
-                 [self getFacebookFriendsList];
+                 [self getAllFacebookFriends];
                  [appDelegate sessionStateChanged:session state:state error:error];
              }];
         }
 
     }
-    
-    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -377,7 +396,7 @@
 #warning Potentially incomplete method implementation.
     // Return the number of sections.
     NSInteger numSections = 0;
-    if( [_viewTitle isEqualToString:@"From Contacts"] ||  [_viewTitle isEqualToString:@"From Facebook"] ){
+    if( [_viewTitle isEqualToString:@"From Contacts"]){
         NSString *classType = [NSString stringWithFormat:@"%@",[tableView class]];
         
         if([classType isEqualToString:@"UISearchResultsTableView"] ){
@@ -387,6 +406,9 @@
             numSections = 2;
         }
         
+    }
+    else if([_viewTitle isEqualToString:@"From Facebook"]){
+        numSections = 1;
     }
     else if( [_viewTitle isEqualToString:@"From Everyone"] ){
         numSections = 1;
@@ -422,6 +444,9 @@
         
         
     }
+    else if([_viewTitle isEqualToString:@"From Facebook"]){
+        return [_allFacebookFriends count];
+    }
     else if([_viewTitle isEqualToString:@"From Everyone"]){
         if(section == 0){
             return[_searchResultFriendsList count];
@@ -435,24 +460,27 @@
 {
     UIButton *button = (UIButton*) sender;
     
-    if([button isSelected]){
-        [button setSelected:NO];
-        NSString * requestURL = [NSString stringWithFormat:@"%@friends/unfriend",[MEEPhttp accountURL]];
-        NSLog(@"request url : %@", requestURL);
-        NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:_buttonTagDictionary[[NSString stringWithFormat:@"%i", button.tag]],@"phone_number", nil];
-        NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
-        NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
-        [conn start];
+    if([_viewTitle isEqualToString:@"From Contacts"] ){
+        if([button isSelected]){
+            [button setSelected:NO];
+            NSString * requestURL = [NSString stringWithFormat:@"%@friends/unfriend",[MEEPhttp accountURL]];
+            NSLog(@"request url : %@", requestURL);
+            NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:_buttonTagDictionary[[NSString stringWithFormat:@"%i", button.tag]],@"phone_number", nil];
+            NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
+            NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+            [conn start];
+        }
+        else if( ![button isSelected]){
+            [button setSelected:YES];
+            NSString * requestURL = [NSString stringWithFormat:@"%@friends/add_by_phone",[MEEPhttp accountURL]];
+            NSLog(@"request url : %@", requestURL);
+            NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:_buttonTagDictionary[[NSString stringWithFormat:@"%i", button.tag]],@"phone_number", nil];
+            NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
+            NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+            [conn start];
+        }
     }
-    else if( ![button isSelected]){
-        [button setSelected:YES];
-        NSString * requestURL = [NSString stringWithFormat:@"%@friends/add_by_phone",[MEEPhttp accountURL]];
-        NSLog(@"request url : %@", requestURL);
-        NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:_buttonTagDictionary[[NSString stringWithFormat:@"%i", button.tag]],@"phone_number", nil];
-        NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
-        NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
-        [conn start];
-    }
+    
     
 }
 
@@ -460,23 +488,25 @@
 {
     UIButton *button = (UIButton*) sender;
     
-    if([button isSelected]){
-        [button setSelected:NO];
-        NSString * requestURL = [NSString stringWithFormat:@"%@friends/unfriend",[MEEPhttp accountURL]];
-        NSLog(@"request url : %@", requestURL);
-        NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:_searchButtonTagDictionary[[NSString stringWithFormat:@"%i", button.tag]],@"phone_number", nil];
-        NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
-        NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
-        [conn start];
-    }
-    else if( ![button isSelected]){
-        [button setSelected:YES];
-        NSString * requestURL = [NSString stringWithFormat:@"%@friends/add_by_phone",[MEEPhttp accountURL]];
-        NSLog(@"request url : %@", requestURL);
-        NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:_searchButtonTagDictionary[[NSString stringWithFormat:@"%i", button.tag]],@"phone_number", nil];
-        NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
-        NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
-        [conn start];
+    if([_viewTitle isEqualToString:@"From Contacts"] ){
+        if([button isSelected]){
+            [button setSelected:NO];
+            NSString * requestURL = [NSString stringWithFormat:@"%@friends/unfriend",[MEEPhttp accountURL]];
+            NSLog(@"request url : %@", requestURL);
+            NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:_searchButtonTagDictionary[[NSString stringWithFormat:@"%i", button.tag]],@"phone_number", nil];
+            NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
+            NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+            [conn start];
+        }
+        else if( ![button isSelected]){
+            [button setSelected:YES];
+            NSString * requestURL = [NSString stringWithFormat:@"%@friends/add_by_phone",[MEEPhttp accountURL]];
+            NSLog(@"request url : %@", requestURL);
+            NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:_searchButtonTagDictionary[[NSString stringWithFormat:@"%i", button.tag]],@"phone_number", nil];
+            NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
+            NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+            [conn start];
+        }
     }
 }
 
@@ -607,6 +637,16 @@
                  cell.textLabel.text = full_name;
              }
          }
+     }
+     else if([_viewTitle isEqualToString:@"From Facebook"]){
+         //cell.textLabel.text = _allFacebookFriends[indexPath.row][@"name"];
+         UILabel *friendHeader = [[UILabel alloc] initWithFrame:CGRectMake(60, 10, 235, 21)];
+         friendHeader.text =  _allFacebookFriends[indexPath.row][@"name"];
+         [friendHeader setFont:[UIFont systemFontOfSize:18]];
+         [cell.contentView addSubview:friendHeader];
+         UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(8, 4, 40, 40)];
+         img.image = [UIImage imageNamed:@"ManSilhouette"];
+         [cell.contentView addSubview:img];
      }
      else if( [_viewTitle isEqualToString:@"From Everyone"] ){
              UIButton *newButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
