@@ -48,6 +48,7 @@
 {
     // Handle the error properly
     NSLog(@"Call Failed");
+    NSLog(@"error: %@", error);
 }
 -(void)connectionDidFinishLoading:(NSURLConnection*)connection
 {
@@ -146,6 +147,21 @@
     
     else if ([_viewTitle isEqualToString:@"From Facebook"]){
         NSLog(@"sync with fb friends response: %@", jsonResponse);
+        
+        
+        if([jsonResponse objectForKey:@"all_facebook_friends"] != nil){
+            NSArray *all_fb_friends = jsonResponse[@"all_facebook_friends"];
+            for (int i = 0; i < [all_fb_friends count]; i++){
+                NSLog(@"fb friend: %@", all_fb_friends[i]);
+                NSDictionary *fb_friend_dict = all_fb_friends[i];
+                
+                NSDictionary *fb_friend = [[NSDictionary alloc] initWithObjectsAndKeys:all_fb_friends[i][@"name"], @"name", all_fb_friends[i][@"id"], @"id", nil];
+                [_allFacebookFriends addObject: fb_friend];
+            }
+            NSLog(@"all_fb_friends array:%@", _allFacebookFriends);
+            
+            [self.tableView reloadData];
+        }
     }
     
     else if ([_viewTitle isEqualToString:@"From Everyone"]){
@@ -244,8 +260,6 @@
 }
 
 -(void) syncFacebookFriends:(id)sender{
-    NSString * accessToken = [[FBSession activeSession] accessToken];
-    
     NSString * requestURL = [NSString stringWithFormat:@"%@syncFacebookFriends",[MEEPhttp accountURL]];
     //NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys: accessToken, @"access_token" ,nil];
     NSDictionary * postDict = [[NSDictionary alloc] init];
@@ -254,13 +268,30 @@
     [conn start];
 }
 
--(void) getFacebookFriendsList{
-    [FBRequestConnection startWithGraphPath:@"1036380126/friends?limit=5000"
+-(void) getAllFacebookFriends
+{
+    NSString * requestURL = [NSString stringWithFormat:@"%@friends/facebook/all",[MEEPhttp accountURL]];
+    //NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys: accessToken, @"access_token" ,nil];
+    NSDictionary * postDict = [[NSDictionary alloc] init];
+    NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
+    NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    [conn start];
+}
+
+
+// WILL ONLY RETURN FB USERS WHO ARE FRIENDS WHO HAVE SIGNED IN USING THIS APP
+-(void) getFacebookFriendsWithAppList{
+    [FBRequestConnection startWithGraphPath:@"me/friends?limit=500"
                           completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
                               if (!error) {
                                   // Success! Include your code to handle the results here
                                   NSLog(@"got some friends!!");
                                   NSLog(@"user friends: %@", result);
+                                  NSArray *results = result;
+                                  NSLog(@"results: %@", results);
+                                  for (int i = 0; i < [results count]; i++){
+                                      NSLog(@"friend: %@", results[i]);
+                                  }
                               } else {
                                   // An error occurred, we need to handle the error
                                   // Check out our error handling guide: https://developers.facebook.com/docs/ios/errors/
@@ -277,6 +308,7 @@
     _buttonTagNumber = 0;
     _searchButtonTagDictionary = [[NSMutableDictionary alloc] init];
     _searchButtonTagNumber = 0;
+    _allFacebookFriends = [[NSMutableArray alloc] init];
     
     _searchResultFriendsList = [[NSMutableArray alloc] init];
     
@@ -290,7 +322,20 @@
         
         self.navigationItem.rightBarButtonItem = customBarItem;
         
-        if (FBSession.activeSession.state == FBSessionStateOpen
+        [FBSession openActiveSessionWithReadPermissions:@[@"public_profile", @"user_friends", @"read_friendlists", @"email", @"user_birthday"]
+                                           allowLoginUI:YES
+                                      completionHandler:
+         ^(FBSession *session, FBSessionState state, NSError *error) {
+             // Retrieve the app delegate
+             NSLog(@"in completion handler!!");
+             MEPAppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
+             // Call the app delegate's sessionStateChanged:state:error method to handle session state changes
+             [self syncFacebookUser];
+             [self getAllFacebookFriends];
+             [appDelegate sessionStateChanged:session state:state error:error];
+         }];
+        
+        /*if (FBSession.activeSession.state == FBSessionStateOpen
             || FBSession.activeSession.state == FBSessionStateOpenTokenExtended) {
             NSLog(@"FBSessionStateOpen || FBSessionStateOpenTokenExtended");
             // Close the session and remove the access token from the cache
@@ -298,8 +343,7 @@
             
             //[FBSession.activeSession closeAndClearTokenInformation];
             [self syncFacebookUser];
-            [self getFacebookFriendsList];
-            
+            [self getAllFacebookFriends];
             // If the session state is not any of the two "open" states when the button is clicked
         } else {
             // Open a session showing the user the login UI
@@ -313,10 +357,10 @@
                  MEPAppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
                  // Call the app delegate's sessionStateChanged:state:error method to handle session state changes
                  [self syncFacebookUser];
-                 [self getFacebookFriendsList];
+                 [self getAllFacebookFriends];
                  [appDelegate sessionStateChanged:session state:state error:error];
              }];
-        }
+        }*/
 
     }
     
@@ -377,7 +421,7 @@
 #warning Potentially incomplete method implementation.
     // Return the number of sections.
     NSInteger numSections = 0;
-    if( [_viewTitle isEqualToString:@"From Contacts"] ||  [_viewTitle isEqualToString:@"From Facebook"] ){
+    if( [_viewTitle isEqualToString:@"From Contacts"]){
         NSString *classType = [NSString stringWithFormat:@"%@",[tableView class]];
         
         if([classType isEqualToString:@"UISearchResultsTableView"] ){
@@ -387,6 +431,9 @@
             numSections = 2;
         }
         
+    }
+    else if([_viewTitle isEqualToString:@"From Facebook"]){
+        numSections = 1;
     }
     else if( [_viewTitle isEqualToString:@"From Everyone"] ){
         numSections = 1;
@@ -421,6 +468,9 @@
         }
         
         
+    }
+    else if([_viewTitle isEqualToString:@"From Facebook"]){
+        return [_allFacebookFriends count];
     }
     else if([_viewTitle isEqualToString:@"From Everyone"]){
         if(section == 0){
@@ -607,6 +657,16 @@
                  cell.textLabel.text = full_name;
              }
          }
+     }
+     else if([_viewTitle isEqualToString:@"From Facebook"]){
+         //cell.textLabel.text = _allFacebookFriends[indexPath.row][@"name"];
+         UILabel *friendHeader = [[UILabel alloc] initWithFrame:CGRectMake(60, 10, 235, 21)];
+         friendHeader.text =  _allFacebookFriends[indexPath.row][@"name"];
+         [friendHeader setFont:[UIFont systemFontOfSize:18]];
+         [cell.contentView addSubview:friendHeader];
+         UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(8, 4, 40, 40)];
+         img.image = [UIImage imageNamed:@"ManSilhouette"];
+         [cell.contentView addSubview:img];
      }
      else if( [_viewTitle isEqualToString:@"From Everyone"] ){
              UIButton *newButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
