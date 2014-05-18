@@ -446,7 +446,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="pwb-b5-L6d">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="250" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="pwb-b5-L6d">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="479"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
@@ -473,7 +473,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                     <outlet property="delegate" destination="3fY-a2-DTS" id="wA2-d1-gS9"/>
                                 </connections>
                             </tableView>
-                            <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="fbj-08-CLB">
+                            <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" ambiguous="YES" misplaced="YES" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="fbj-08-CLB">
                                 <rect key="frame" x="0.0" y="487" width="320" height="81"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
@@ -499,13 +499,17 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                     <outlet property="delegate" destination="3fY-a2-DTS" id="348-im-fHa"/>
                                 </connections>
                             </collectionView>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="29k-fu-Ptu">
-                                <rect key="frame" x="0.0" y="478" width="320" height="10"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.54772555440000004" green="0.91066028229999996" blue="0.66053427419999999" alpha="1" colorSpace="calibratedRGB"/>
-                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="pwb-b5-L6d" secondAttribute="trailing" id="Nr9-US-LUD"/>
+                            <constraint firstItem="pwb-b5-L6d" firstAttribute="top" secondItem="yRe-GH-r55" secondAttribute="top" id="RkA-ty-k3V"/>
+                            <constraint firstItem="pwb-b5-L6d" firstAttribute="leading" secondItem="fbj-08-CLB" secondAttribute="leading" id="WpU-xQ-PEw"/>
+                            <constraint firstItem="pwb-b5-L6d" firstAttribute="leading" secondItem="yRe-GH-r55" secondAttribute="leading" id="Yje-xB-pAs"/>
+                            <constraint firstItem="pwb-b5-L6d" firstAttribute="trailing" secondItem="fbj-08-CLB" secondAttribute="trailing" id="af8-nB-d9x"/>
+                            <constraint firstItem="tkx-eM-m7K" firstAttribute="top" secondItem="pwb-b5-L6d" secondAttribute="bottom" constant="89" id="n7O-Fz-jnW"/>
+                            <constraint firstItem="tkx-eM-m7K" firstAttribute="top" secondItem="fbj-08-CLB" secondAttribute="bottom" id="tXD-MN-mjA"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="yag-gK-46a">
                         <barButtonItem key="leftBarButtonItem" title="Back" id="70g-JF-Pb2">
