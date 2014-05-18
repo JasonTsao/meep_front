@@ -146,9 +146,6 @@
     }
     
     else if ([_viewTitle isEqualToString:@"From Facebook"]){
-        NSLog(@"sync with fb friends response: %@", jsonResponse);
-        
-        
         if([jsonResponse objectForKey:@"all_facebook_friends"] != nil){
             NSArray *all_fb_friends = jsonResponse[@"all_facebook_friends"];
             for (int i = 0; i < [all_fb_friends count]; i++){
@@ -167,7 +164,6 @@
     else if ([_viewTitle isEqualToString:@"From Everyone"]){
         
         if([jsonResponse objectForKey:@"friends"] != nil){
-            NSLog(@"friends: %@", jsonResponse[@"friends"]);
             NSArray * friends = jsonResponse[@"friends"];
             _friendsList = [[NSMutableArray alloc]init];
             
@@ -178,8 +174,6 @@
                 NSString *friend_account_id = [NSString stringWithFormat:@"%i",[new_friend_dict[@"account_id"] integerValue]];
                 [_friendsList addObject:friend_account_id];
             }
-
-            NSLog(@"frienst list is: %@", _friendsList);
         }
         else{
             NSMutableArray *searchUsers = jsonResponse[@"users"];
@@ -285,8 +279,6 @@
                           completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
                               if (!error) {
                                   // Success! Include your code to handle the results here
-                                  NSLog(@"got some friends!!");
-                                  NSLog(@"user friends: %@", result);
                                   NSArray *results = result;
                                   NSLog(@"results: %@", results);
                                   for (int i = 0; i < [results count]; i++){
@@ -327,7 +319,7 @@
             // The session state handler (in the app delegate) will be called automatically
             
             //[FBSession.activeSession closeAndClearTokenInformation];
-            [self syncFacebookUser];
+            //[self syncFacebookUser];
             [self getAllFacebookFriends];
             // If the session state is not any of the two "open" states when the button is clicked
         } else {
@@ -516,7 +508,6 @@
             [conn start];
         }
     }
-    
 }
 
 
