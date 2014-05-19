@@ -9,11 +9,13 @@
 #import "MEPLocationService.h"
 #import "MEEPhttp.h"
 #import <CoreLocation/CoreLocation.h>
+#import <MapKit/MapKit.h>
 
 @interface MEPLocationService() <CLLocationManagerDelegate>
 
 @property (nonatomic, strong) CLLocationManager * locationManager;
 @property (nonatomic, strong) NSMutableData * data;
+@property (nonatomic, strong) CLLocation * currentLocation;
 
 @end
 
@@ -42,6 +44,7 @@
         NSLog(@"latitude %+.6f, longitutde %+.6f\n",
               location.coordinate.latitude,
               location.coordinate.longitude);
+        _currentLocation = location;
     }
     NSString *latitude = [NSString stringWithFormat:@"%f", location.coordinate.latitude];
     NSString *longitude = [NSString stringWithFormat:@"%f", location.coordinate.longitude];
@@ -78,18 +81,15 @@
 
 -(void)handleData{
     NSDictionary * recievedData = [NSJSONSerialization JSONObjectWithData:_data options:0 error:nil];
-    NSLog(@"%@",recievedData);
 }
 
 +(float) distanceBetweenCoordinatesWithLatitudeOne:(float)lat1
-                                      longitudeOne:(float)lon1
+                                      longitudeOne:(float)lng1
                                        latitudeTwo:(float)lat2
-                                      longitudeTwo:(float)lon2 {
-    float dlat = lat1 - lat2;
-    float dlon = lon1 - lon2;
-    float a = (float) ((sin(dlat/2))*(sin(dlat/2)) + (cos(lat1) * cos(lat2) * (sin(dlon/2)*sin(dlon/2))));
-    float c = (float) (2 * atan2(sqrt(a), sqrt(a)));
-    return c;
+                                      longitudeTwo:(float)lng2 {
+    CLLocation * loc1 = [[CLLocation alloc] initWithLatitude:lat1 longitude:lng1];
+    CLLocation * loc2 = [[CLLocation alloc] initWithLatitude:lat2 longitude:lng2];
+    CLLocationDistance distance = [loc1 distanceFromLocation:loc2];
+    return (distance * 3.28084)/5280;
 }
-
 @end

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3C1FD80A19287EC000AA4593 /* MEPGlossyUIView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C1FD80919287EC000AA4593 /* MEPGlossyUIView.m */; };
+		3C22DBFE1928A823006BCF7B /* UIBarButtonAdd_2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C22DBFD1928A823006BCF7B /* UIBarButtonAdd_2x.png */; };
 		3CB231FE192176B900684E1D /* MEPLocationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CB231FD192176B900684E1D /* MEPLocationService.m */; };
 		3CC11A341923F2FE003A6A57 /* cocktail6.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CC11A211923F2FE003A6A57 /* cocktail6.png */; };
 		3CC11A351923F2FE003A6A57 /* cocktail7.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CC11A221923F2FE003A6A57 /* cocktail7.png */; };
@@ -82,7 +84,10 @@
 		968630391909FAB200CAE305 /* Photo.m in Sources */ = {isa = PBXBuildFile; fileRef = 968630341909FAB200CAE305 /* Photo.m */; };
 		96967E1D191D4887007613AF /* EditEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96967E1C191D4887007613AF /* EditEventViewController.m */; };
 		96967E20191D5BF5007613AF /* AddRemoveFriendsFromEventTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96967E1F191D5BF5007613AF /* AddRemoveFriendsFromEventTableViewController.m */; };
+		96AFDA4819286FFC0055181C /* EventChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96AFDA4719286FFC0055181C /* EventChatViewController.m */; };
 		96B397CB191B4BB700FFA7BF /* SignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96B397CA191B4BB700FFA7BF /* SignUpViewController.m */; };
+		96DB11761926D2BC0096FEDE /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96DB11751926D2BC0096FEDE /* FacebookSDK.framework */; };
+		96DF0C2D19287E9C00352309 /* EventChatMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 96DF0C2C19287E9C00352309 /* EventChatMessage.m */; };
 		96E1D22B1913503600951DEB /* CreateMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E1D22A1913503600951DEB /* CreateMessageViewController.m */; };
 		96E1D22E1913645600951DEB /* GroupsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E1D22D1913645600951DEB /* GroupsViewController.m */; };
 		96E1D2311915709300951DEB /* InvitedFriend.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E1D2301915709300951DEB /* InvitedFriend.m */; };
@@ -138,6 +143,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3C1FD80819287EC000AA4593 /* MEPGlossyUIView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MEPGlossyUIView.h; sourceTree = "<group>"; };
+		3C1FD80919287EC000AA4593 /* MEPGlossyUIView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MEPGlossyUIView.m; sourceTree = "<group>"; };
+		3C22DBFD1928A823006BCF7B /* UIBarButtonAdd_2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = UIBarButtonAdd_2x.png; sourceTree = "<group>"; };
 		3CB231FC192176B900684E1D /* MEPLocationService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MEPLocationService.h; path = ../MEPLocationService.h; sourceTree = "<group>"; };
 		3CB231FD192176B900684E1D /* MEPLocationService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MEPLocationService.m; path = ../MEPLocationService.m; sourceTree = "<group>"; };
 		3CC11A211923F2FE003A6A57 /* cocktail6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cocktail6.png; sourceTree = "<group>"; };
@@ -244,8 +252,13 @@
 		96967E1C191D4887007613AF /* EditEventViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditEventViewController.m; sourceTree = "<group>"; };
 		96967E1E191D5BF5007613AF /* AddRemoveFriendsFromEventTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddRemoveFriendsFromEventTableViewController.h; sourceTree = "<group>"; };
 		96967E1F191D5BF5007613AF /* AddRemoveFriendsFromEventTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddRemoveFriendsFromEventTableViewController.m; sourceTree = "<group>"; };
+		96AFDA4619286FFC0055181C /* EventChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventChatViewController.h; sourceTree = "<group>"; };
+		96AFDA4719286FFC0055181C /* EventChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventChatViewController.m; sourceTree = "<group>"; };
 		96B397C9191B4BB700FFA7BF /* SignUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignUpViewController.h; sourceTree = "<group>"; };
 		96B397CA191B4BB700FFA7BF /* SignUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignUpViewController.m; sourceTree = "<group>"; };
+		96DB11751926D2BC0096FEDE /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
+		96DF0C2B19287E9C00352309 /* EventChatMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventChatMessage.h; sourceTree = "<group>"; };
+		96DF0C2C19287E9C00352309 /* EventChatMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventChatMessage.m; sourceTree = "<group>"; };
 		96E1D2291913503600951DEB /* CreateMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateMessageViewController.h; sourceTree = "<group>"; };
 		96E1D22A1913503600951DEB /* CreateMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateMessageViewController.m; sourceTree = "<group>"; };
 		96E1D22C1913645600951DEB /* GroupsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupsViewController.h; sourceTree = "<group>"; };
@@ -293,6 +306,7 @@
 				3CCC507B19059F9500EB0980 /* CoreGraphics.framework in Frameworks */,
 				3CCC507D19059F9500EB0980 /* UIKit.framework in Frameworks */,
 				3CCC507919059F9500EB0980 /* Foundation.framework in Frameworks */,
+				96DB11761926D2BC0096FEDE /* FacebookSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -339,6 +353,7 @@
 		3CC11A201923F2FE003A6A57 /* Icon Assets */ = {
 			isa = PBXGroup;
 			children = (
+				3C22DBFD1928A823006BCF7B /* UIBarButtonAdd_2x.png */,
 				3CC11A471923FEB6003A6A57 /* jumping2.png */,
 				3CC11A211923F2FE003A6A57 /* cocktail6.png */,
 				3CC11A221923F2FE003A6A57 /* cocktail7.png */,
@@ -387,6 +402,7 @@
 		3CCC507719059F9500EB0980 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				96DB11751926D2BC0096FEDE /* FacebookSDK.framework */,
 				96E1D26219172F3000951DEB /* AddressBookUI.framework */,
 				96E1D26019172F2A00951DEB /* AddressBook.framework */,
 				3CCC507819059F9500EB0980 /* Foundation.framework */,
@@ -430,6 +446,8 @@
 				3CCC507F19059F9500EB0980 /* Supporting Files */,
 				DAF700801917209A004EDC66 /* ABIGBOOB.h */,
 				DAF700811917209A004EDC66 /* ABIGBOOB.m */,
+				3C1FD80819287EC000AA4593 /* MEPGlossyUIView.h */,
+				3C1FD80919287EC000AA4593 /* MEPGlossyUIView.m */,
 			);
 			path = Meep_IOS;
 			sourceTree = "<group>";
@@ -505,6 +523,8 @@
 			children = (
 				3CCC51371905A20D00EB0980 /* Event.h */,
 				3CCC51381905A20D00EB0980 /* Event.m */,
+				96DF0C2B19287E9C00352309 /* EventChatMessage.h */,
+				96DF0C2C19287E9C00352309 /* EventChatMessage.m */,
 				3CCC513B1905A20D00EB0980 /* EventPage.xib */,
 				3CCC513C1905A20D00EB0980 /* EventPageViewController.h */,
 				3CCC513D1905A20D00EB0980 /* EventPageViewController.m */,
@@ -520,6 +540,8 @@
 				96F338EE1921F8430031FB2E /* EventAttendeesDistanceViewController.m */,
 				96F338F01921F87C0031FB2E /* EventAttendeeTabBarController.h */,
 				96F338F11921F87C0031FB2E /* EventAttendeeTabBarController.m */,
+				96AFDA4619286FFC0055181C /* EventChatViewController.h */,
+				96AFDA4719286FFC0055181C /* EventChatViewController.m */,
 			);
 			name = "Event Pages";
 			sourceTree = "<group>";
@@ -754,6 +776,7 @@
 				3CC11A441923F2FE003A6A57 /* sun23.png in Resources */,
 				3CCC515C1905A20D00EB0980 /* Images.xcassets in Resources */,
 				3CC11A3F1923F2FE003A6A57 /* plate7.png in Resources */,
+				3C22DBFE1928A823006BCF7B /* UIBarButtonAdd_2x.png in Resources */,
 				3CC11A431923F2FE003A6A57 /* soccer19.png in Resources */,
 				3CCC51561905A20D00EB0980 /* CreateEvent.xib in Resources */,
 				3CCC51631905A20D00EB0980 /* MainViewController.xib in Resources */,
@@ -824,17 +847,20 @@
 				96E1D2371915977400951DEB /* Group.m in Sources */,
 				3CCC51621905A20D00EB0980 /* MainViewController.m in Sources */,
 				96E1D2741918549400951DEB /* DjangoAuthLoginResultObject.m in Sources */,
+				96AFDA4819286FFC0055181C /* EventChatViewController.m in Sources */,
 				3CCF3CE41912A70A00DED761 /* MEPTextParse.m in Sources */,
 				968466D6191E9DE200E56901 /* EditGroupViewController.m in Sources */,
 				96E1D2341915932100951DEB /* GroupTableViewController.m in Sources */,
 				968630351909FAB200CAE305 /* Friend.m in Sources */,
 				3CDDCDA419087D0000F851EE /* EventElementViewController.m in Sources */,
+				3C1FD80A19287EC000AA4593 /* MEPGlossyUIView.m in Sources */,
 				3CCF971B190827CE005FA454 /* AccountViewController.m in Sources */,
 				968466D3191E9DC600E56901 /* AddRemoveFriendsFromGroupTableViewController.m in Sources */,
 				9606E6A6191308EA00D985A7 /* CreateGroupViewController.m in Sources */,
 				96FD569A19218C110085B364 /* GroupEventsTableViewController.m in Sources */,
 				3CCC515B1905A20D00EB0980 /* EventPageViewController.m in Sources */,
 				DAF700821917209A004EDC66 /* ABIGBOOB.m in Sources */,
+				96DF0C2D19287E9C00352309 /* EventChatMessage.m in Sources */,
 				96E1D26D19174EA000951DEB /* AddFriendsFromTableViewController.m in Sources */,
 				9644F7611926B93500048AF1 /* ProfileViewController.m in Sources */,
 				96E1D277191854D900951DEB /* AuthenticationViewController.m in Sources */,
@@ -1003,6 +1029,10 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Meep_IOS/Meep_IOS-Prefix.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/Meep_IOS/MeepIOS-Info.plist";
@@ -1019,6 +1049,10 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Meep_IOS/Meep_IOS-Prefix.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/Meep_IOS/MeepIOS-Info.plist";

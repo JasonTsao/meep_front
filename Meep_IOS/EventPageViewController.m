@@ -14,6 +14,7 @@
 #import "EventAttendeeTabBarController.h"
 #import "EventAttendeesDistanceViewController.h"
 #import "EventAttendeesViewController.h"
+#import "EventChatViewController.h"
 #import <CoreLocation/CoreLocation.h>
 
 
@@ -88,6 +89,11 @@
     [self presentViewController:navigation animated:YES completion:nil];
 }
 
+- (void) openChatPage
+{
+    [self performSegueWithIdentifier:@"toEventChat" sender:self];
+}
+
 - (void) openAddRemoveFriendsPage
 {
     UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"CenterStoryboard" bundle:nil];
@@ -107,14 +113,17 @@
         case 1: {
             switch (buttonIndex) {
                 case 0:
+                    [self openChatPage];
+                    break;
+                case 1:
                     NSLog(@"Removing user from group");
                     //[self logoutSelect];
                     break;
-                case 1:
+                case 2:
                     NSLog(@"going to edit view page");
                     [self openEditEventPage];
                     break;
-                case 2:
+                case 3:
                     NSLog(@"going to invite more friends page");
                     [self openAddRemoveFriendsPage];
                 default:
@@ -130,7 +139,7 @@
 - (IBAction)openEventOptions:(id)sender {
     
     //if user is host
-    UIActionSheet *eventOptionsPopup = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Leave Event", @"Edit Event", @"Add/Remove Friends",nil];
+    UIActionSheet *eventOptionsPopup = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Chat",@"Leave Event", @"Edit Event", @"Add/Remove Friends",nil];
     //else
     //UIActionSheet *eventOptionsPopup = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Leave Event",nil];
     eventOptionsPopup.tag = 1;
@@ -192,20 +201,21 @@
         new_friend.name = new_friend_dict[@"name"];
         new_friend.account_id = [new_friend_dict[@"friend_id"] intValue];
         
-        if ([new_friend_dict[@"pf_pic"] length] == 0){
+        if ([new_friend_dict[@"pf_pic"] length] == 0 || [new_friend_dict objectForKey:@"pf_pf"] == nil){
             UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(8, 4, 40, 40)];
             img.image = [UIImage imageNamed:@"ManSilhouette"];
             //new_friend.profilePic = img;
             new_friend.profilePic = img.image;
         }
         else{
-            NSURL *url = [[NSURL alloc] initWithString:new_friend_dict[@"fb_pfpic_url"]];
-            //NSURL *url = [[NSURL alloc] initWithString:@"https://graph.facebook.com/jason.s.tsao/picture"];
-            NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url];
-            //NSData *urlData = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:&response error:nil];
-            NSData *urlData = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:nil error:nil];
-            UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
-            new_friend.profilePic = image;
+                NSURL *url = [[NSURL alloc] initWithString:new_friend_dict[@"fb_pfpic_url"]];
+                //NSURL *url = [[NSURL alloc] initWithString:@"https://graph.facebook.com/jason.s.tsao/picture"];
+                NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url];
+                //NSData *urlData = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:&response error:nil];
+                NSData *urlData = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:nil error:nil];
+                UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
+                new_friend.profilePic = image;
+            
         }
 
         
@@ -333,7 +343,7 @@
             
         }
         //if( [_currentEvent.start_time length] != 0){
-        if( ![_currentEvent.start_time isEqual:[NSNull null]]){
+        if (![_currentEvent.start_time isEqual:[NSNull null]]){
             [_basicInfoToDisplay addObject:@"time"];
             numRows++;
         }
@@ -512,8 +522,8 @@
                 
                 MKCoordinateRegion region = self.mapView.region;
                 region.center = placemark.region.center;
-                region.span.longitudeDelta /= 400.0;
-                region.span.latitudeDelta /= 400.0;
+                region.span.longitudeDelta /= 1000.0;
+                region.span.latitudeDelta /= 1000.0;
                 [self.mapView setRegion:region animated:YES];
                 [self.mapView addAnnotation:placemark];
             }
@@ -565,6 +575,10 @@
 {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
+    
+    EventChatViewController * chatView = [segue destinationViewController];
+    chatView.invitedFriends = _invitedFriends;
+    chatView.currentEvent = _currentEvent;
 }
 
 

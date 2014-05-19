@@ -109,6 +109,7 @@
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"navItem" forIndexPath:indexPath];
     //initWithFrame:CGRectMake(cell.bounds.size.width-10,-10,23,23) == top right
+    
     cell.contentView.backgroundColor = [UIColor darkGrayColor];
     cell.textLabel.backgroundColor = [UIColor darkGrayColor];
     cell.textLabel.textColor = [UIColor lightGrayColor];
@@ -131,6 +132,8 @@
         //NEED TO ACTUALLY GET REAL PF PIC LATER!
         UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(8, 4, 40, 40)];
         img.image = [UIImage imageNamed:@"ManSilhouette"];
+        img.layer.cornerRadius = img.frame.size.height/2;
+        img.layer.masksToBounds = YES;
         [cell.contentView addSubview:img];
     }
     else if(indexPath.section == 1){

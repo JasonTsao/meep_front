@@ -403,4 +403,95 @@
     return @"generic";
 }
 
++ (NSString*) getTimeUntilDateTime:(NSDate *)date {
+    NSDate * now = [[NSDate alloc] init];
+    NSDate * then = date;
+    NSCalendar * calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSUInteger unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit;
+    BOOL eventPassed = NO;
+    if ([now compare:date] == NSOrderedDescending) {
+        eventPassed = YES;
+        then = now;
+        now = date;
+    }
+    NSDateComponents * components = [calendar components:unitFlags fromDate:now toDate:then options:0];
+    NSInteger years = [components year];
+    NSInteger months = [components month];
+    NSInteger days = [components day];
+    NSInteger hours = [components hour];
+    NSInteger minutes = [components minute];
+    NSString * timeDiffMessage = @"";
+    if (years > 0) {
+        if (eventPassed) {
+            if (years == 1) {
+                return timeDiffMessage = [NSString stringWithFormat:@"1 year ago"];
+            }
+            return timeDiffMessage = [NSString stringWithFormat:@"%li years ago",(long)years];
+        }
+        else {
+            if (years == 1) {
+                return timeDiffMessage = [NSString stringWithFormat:@"In 1 year"];
+            }
+            return timeDiffMessage = [NSString stringWithFormat:@"In %ld years",(long)years];
+        }
+    }
+    else if (months > 0) {
+        if (eventPassed) {
+            if (months == 1) {
+                return timeDiffMessage = [NSString stringWithFormat:@"1 month ago"];
+            }
+            return timeDiffMessage = [NSString stringWithFormat:@"%li months ago",(long)months];
+        }
+        else {
+            if (months == 1) {
+                return timeDiffMessage = [NSString stringWithFormat:@"In 1 month"];
+            }
+            return timeDiffMessage = [NSString stringWithFormat:@"In %li months",(long)months];
+        }
+    }
+    else if (days > 0) {
+        if (eventPassed) {
+            if (days == 1) {
+                return timeDiffMessage = [NSString stringWithFormat:@"1 day ago"];
+            }
+            return timeDiffMessage = [NSString stringWithFormat:@"%li days ago",(long)days];
+        }
+        else {
+            if (days == 1) {
+                return timeDiffMessage = [NSString stringWithFormat:@"In 1 day"];
+            }
+            return timeDiffMessage = [NSString stringWithFormat:@"In %li days",(long)days];
+        }
+    }
+    else if (hours > 0) {
+        if (eventPassed) {
+            if (hours == 1) {
+                return timeDiffMessage = [NSString stringWithFormat:@"1 hour ago"];
+            }
+            return timeDiffMessage = [NSString stringWithFormat:@"%li hours ago",(long)hours];
+        }
+        else {
+            if (hours == 1) {
+                return timeDiffMessage = [NSString stringWithFormat:@"In 1 hour"];
+            }
+            return timeDiffMessage = [NSString stringWithFormat:@"In %li hours",(long)hours];
+        }
+    }
+    else if (minutes >= 0) {
+        if (eventPassed) {
+            if (minutes == 1) {
+                return timeDiffMessage = [NSString stringWithFormat:@"On going"];
+            }
+            return timeDiffMessage = [NSString stringWithFormat:@"Started %li minutes ago",(long)minutes];
+        }
+        else {
+            if (minutes == 1) {
+                return timeDiffMessage = [NSString stringWithFormat:@"Starts in 1 minute"];
+            }
+            return timeDiffMessage = [NSString stringWithFormat:@"Starts in %li minutes",(long)minutes];
+        }
+    }
+    return @"Data Unavailable";
+}
+
 @end

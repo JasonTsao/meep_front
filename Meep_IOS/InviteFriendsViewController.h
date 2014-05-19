@@ -15,9 +15,13 @@
 - (void) backToCenterFromCreateEvent:(InviteFriendsViewController *)controller;
 @end
 
-@interface InviteFriendsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UISearchDisplayDelegate>
+@interface InviteFriendsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UISearchDisplayDelegate, UICollectionViewDataSource, UICollectionViewDelegate>
 @property(nonatomic, strong) id <InviteFriendsViewControllerDelegate> delegate;
 @property(nonatomic, strong) NSMutableData * data;
 
 - (IBAction) backToMain:(id)sender;
+
++(UITableViewCell*) createCustomFriendCell:(Friend*)friend
+                                  forTable:(UITableView*)tableView
+                                  selected:(BOOL)sel;
 @end
