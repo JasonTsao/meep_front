@@ -83,13 +83,17 @@
     NSDictionary * recievedData = [NSJSONSerialization JSONObjectWithData:_data options:0 error:nil];
 }
 
-+(float) distanceBetweenCoordinatesWithLatitudeOne:(float)lat1
++(NSString*) distanceBetweenCoordinatesWithLatitudeOne:(float)lat1
                                       longitudeOne:(float)lng1
                                        latitudeTwo:(float)lat2
                                       longitudeTwo:(float)lng2 {
     CLLocation * loc1 = [[CLLocation alloc] initWithLatitude:lat1 longitude:lng1];
     CLLocation * loc2 = [[CLLocation alloc] initWithLatitude:lat2 longitude:lng2];
     CLLocationDistance distance = [loc1 distanceFromLocation:loc2];
-    return (distance * 3.28084)/5280;
+    float dist = (distance * 3.28084)/5280;
+    if (dist >= 10) {
+        return [NSString stringWithFormat:@"%.0Lf miles away",roundl(dist*100.0)/100.0];
+    }
+    return [NSString stringWithFormat:@"%.1Lf miles away",roundl(dist*100.0)/100.0];
 }
 @end

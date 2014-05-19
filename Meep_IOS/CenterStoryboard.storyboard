@@ -740,12 +740,12 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                     </tabBar>
                     <connections>
                         <segue destination="8EK-xy-iF0" kind="relationship" relationship="viewControllers" id="D5y-Ok-PHP"/>
-                        <segue destination="P6j-01-4UH" kind="relationship" relationship="viewControllers" id="Ul9-Kq-hh9"/>
+                        <segue destination="UqY-zs-vBV" kind="relationship" relationship="viewControllers" id="MWn-Ep-xQC"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lsL-RZ-h4D" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-377" y="908"/>
+            <point key="canvasLocation" x="-309" y="885"/>
         </scene>
         <!--Event Attendees View Controller - Friends-->
         <scene sceneID="NcG-Hf-AYW">
@@ -786,48 +786,56 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eSv-ZD-mbW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="7" y="908"/>
+            <point key="canvasLocation" x="93" y="1004"/>
         </scene>
-        <!--Event Attendees Distance View Controller - Distance-->
-        <scene sceneID="pZR-qj-uCe">
+        <!--Event Attendees Distance View Controller - Item-->
+        <scene sceneID="0cy-Hp-baE">
             <objects>
-                <collectionViewController storyboardIdentifier="eventAttendeesDistanceCollectionView" autoresizesArchivedViewToFullSize="NO" id="P6j-01-4UH" customClass="EventAttendeesDistanceViewController" sceneMemberID="viewController">
-                    <collectionView key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" id="ANz-Nu-yNt">
+                <viewController id="UqY-zs-vBV" customClass="EventAttendeesDistanceViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Gwm-F4-OFG"/>
+                        <viewControllerLayoutGuide type="bottom" id="PVR-Gk-v8U"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="7t1-p0-RmX">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                        <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="pdv-wr-iw2">
-                            <size key="itemSize" width="50" height="50"/>
-                            <size key="headerReferenceSize" width="50" height="50"/>
-                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                        </collectionViewFlowLayout>
-                        <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="invitedFriendDistanceCell" id="iSX-My-mGZ">
-                                <rect key="frame" x="0.0" y="50" width="50" height="50"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                    <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                </view>
-                            </collectionViewCell>
-                        </cells>
-                        <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="MVY-Sv-iAC">
-                            <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
-                            <autoresizingMask key="autoresizingMask"/>
-                        </collectionReusableView>
-                        <connections>
-                            <outlet property="dataSource" destination="P6j-01-4UH" id="pph-kj-K0w"/>
-                            <outlet property="delegate" destination="P6j-01-4UH" id="dMr-fM-NG1"/>
-                        </connections>
-                    </collectionView>
-                    <tabBarItem key="tabBarItem" title="Distance" id="NDB-7O-a5e"/>
-                </collectionViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="rum-nF-eur" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="ko8-7A-QBt">
+                                <rect key="frame" x="0.0" y="63" width="320" height="455"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="eM9-lz-TaQ">
+                                    <size key="itemSize" width="60" height="100"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="invitedFriendDistanceCell" id="G7n-4N-knj">
+                                        <rect key="frame" x="0.0" y="0.0" width="60" height="100"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                            <rect key="frame" x="0.0" y="0.0" width="60" height="100"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </view>
+                                    </collectionViewCell>
+                                </cells>
+                            </collectionView>
+                            <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="74U-na-yil">
+                                <rect key="frame" x="0.0" y="6" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            </navigationBar>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Item" id="WTl-nw-epT"/>
+                    <connections>
+                        <outlet property="friendsDistanceCollectionView" destination="ko8-7A-QBt" id="zzA-VA-ef7"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Gyc-Gb-q5E" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="352" y="864"/>
+            <point key="canvasLocation" x="429" y="1004"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="UKe-JS-umv">
