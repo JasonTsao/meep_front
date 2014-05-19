@@ -81,4 +81,15 @@
     NSLog(@"%@",recievedData);
 }
 
++(float) distanceBetweenCoordinatesWithLatitudeOne:(float)lat1
+                                      longitudeOne:(float)lon1
+                                       latitudeTwo:(float)lat2
+                                      longitudeTwo:(float)lon2 {
+    float dlat = lat1 - lat2;
+    float dlon = lon1 - lon2;
+    float a = (float) ((sin(dlat/2))*(sin(dlat/2)) + (cos(lat1) * cos(lat2) * (sin(dlon/2)*sin(dlon/2))));
+    float c = (float) (2 * atan2(sqrt(a), sqrt(a)));
+    return c;
+}
+
 @end

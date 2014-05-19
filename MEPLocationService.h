@@ -9,5 +9,8 @@
 #import <Foundation/Foundation.h>
 
 @interface MEPLocationService : NSObject
-
++(float) distanceBetweenCoordinatesWithLatitudeOne:(float)lat1
+                                      longitudeOne:(float)lon1
+                                       latitudeTwo:(float)lat2
+                                      longitudeTwo:(float)lon2;
 @end
