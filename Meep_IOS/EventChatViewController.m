@@ -10,6 +10,7 @@
 #import "EventChatMessage.h"
 #import "CenterViewController.h"
 #import "Friend.h"
+#import "DjangoAuthClient.h"
 #import "MEEPhttp.h"
 
 @interface EventChatViewController ()
@@ -19,6 +20,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *sendButton;
 
 @property (weak, nonatomic) IBOutlet UITableView *chatMessageTable;
+
+@property(nonatomic, strong) DjangoAuthClient * authClient;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *keyboardHeight;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *textboxVerticalTopSpace;
@@ -99,7 +102,6 @@
     NSError* error;
     NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:_data options:0 error:&error];
     
-    NSLog(@"jsonResponse: %@", jsonResponse);
     if([jsonResponse objectForKey:@"chat_saved"] != nil){
         [self.chatMessageTable reloadData];
     }
@@ -107,7 +109,6 @@
         NSArray *chatMessageArray = jsonResponse[@"comments"];
         
         for(int i = 0; i < [chatMessageArray count]; i++){
-            NSLog(@"chat message: %@", chatMessageArray[i]);
             EventChatMessage * message = [[EventChatMessage alloc] init];
             
             message.event_id = _currentEvent.event_id;
@@ -230,16 +231,73 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     CGFloat height;
-    NSString *eventInfoType;
-    
-    height = 20;
-    NSInteger message_length = [[_chatMessages[indexPath.row] message] length];
+    EventChatMessage *currentMessage = _chatMessages[indexPath.row];
 
-    if( message_length > 25){
-        height *= 2;
+    CGRect chatCell = self.chatMessageTable.frame;
+    
+    if( [currentMessage creator_id] != [_account_id integerValue]){
+        chatCell.size.width = (self.chatMessageTable.frame.size.width - (self.chatMessageTable.frame.size.width/3) );
+        chatCell.origin.x = 0.0;
+    
+    }else{
+        chatCell.size.width = (self.chatMessageTable.frame.size.width - (self.chatMessageTable.frame.size.width/3) );
+        chatCell.origin.x = (self.chatMessageTable.frame.size.width - (self.chatMessageTable.frame.size.width/3) );
+    }
+    
+    
+    CGSize expectedLabelSize = [[currentMessage message] sizeWithFont:[UIFont systemFontOfSize:13]
+                                   constrainedToSize:chatCell.size
+                                       lineBreakMode:UILineBreakModeWordWrap];
+
+    
+    if( [currentMessage creator_id] != [_account_id integerValue]){
+        height = expectedLabelSize.height * 3;
+    }
+    else{
+        height = expectedLabelSize.height * 2.5;
     }
     
     return height;
+}
+
+
+//NEED TO FIGURE OUT BETTER SPACING TO GET ALL TEXT WITHIN BOUNDS
+- (CGSize) getMessageLabelSize:(NSInteger) messageLength withString:(NSString *)message isCreator:(BOOL)isCreator
+{
+    CGSize messageSize;
+    
+    CGRect chatCell = self.chatMessageTable.frame;
+    
+    if( isCreator){
+        chatCell.size.width = (self.chatMessageTable.frame.size.width - (self.chatMessageTable.frame.size.width/3) );
+        chatCell.origin.x = (self.chatMessageTable.frame.size.width - (self.chatMessageTable.frame.size.width/3) );
+    }else{
+        chatCell.size.width = (self.chatMessageTable.frame.size.width - (self.chatMessageTable.frame.size.width/3) );
+        chatCell.origin.x = 35.0;
+    }
+    
+    CGSize expectedLabelSize = [message sizeWithFont:[UIFont systemFontOfSize:13]
+                                   constrainedToSize:chatCell.size
+                                       lineBreakMode:UILineBreakModeWordWrap];
+    
+    if(expectedLabelSize.width < 15){
+        expectedLabelSize.width = 15;
+    }
+    
+    messageSize.width = expectedLabelSize.width;
+    messageSize.height = expectedLabelSize.height;
+    
+    if( isCreator){
+        messageSize.height = messageSize.height *1.3;
+    }else{
+        messageSize.height = messageSize.height *1.3;
+    }
+
+    if (messageSize.height < 31.018002){
+        messageSize.height = 31;
+    }
+
+    return messageSize;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -254,16 +312,31 @@
     
     EventChatMessage *currentMessage = _chatMessages[indexPath.row];
     NSInteger message_length = [currentMessage.message length];
-    NSInteger message_height = 21;
-    NSInteger message_pixel_length = message_length * 6;
 
-    if( [currentMessage creator_id] != 1){
+    
+    BOOL isCreator;
+    if(currentMessage.creator_id == [_account_id integerValue]){
+        isCreator = YES;
+    }
+    else{
+        isCreator = NO;
+    }
+    CGSize messageSize = [self getMessageLabelSize:message_length withString:currentMessage.message isCreator:isCreator];
+    
+    NSInteger message_pixel_length = messageSize.width;
+    NSInteger message_pixel_height = messageSize.height;
+
+
+    if( [currentMessage creator_id] != [_account_id integerValue]){
         
-        UILabel *currentMessageHeader = [[UILabel alloc] initWithFrame:CGRectMake(35, 10, message_pixel_length, 21)];
+        UILabel *currentMessageHeader = [[UILabel alloc] initWithFrame:CGRectMake(35, 10, message_pixel_length, message_pixel_height)];
+        currentMessageHeader.textAlignment = NSTextAlignmentCenter;
         currentMessageHeader.layer.cornerRadius = 5;
         currentMessageHeader.layer.masksToBounds = YES;
+        currentMessageHeader.lineBreakMode = UILineBreakModeWordWrap;
         currentMessageHeader.text = [currentMessage message];
         currentMessageHeader.backgroundColor = [UIColor lightGrayColor];
+        
         
         [currentMessageHeader setFont:[UIFont systemFontOfSize:13]];
         [cell.contentView addSubview:currentMessageHeader];
@@ -276,14 +349,18 @@
         
         UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(8, 0, 25, 25)];
         img.image = [UIImage imageNamed:@"ManSilhouette"];
+        img.layer.cornerRadius = img.frame.size.height/2;
+        img.layer.masksToBounds = YES;
+
         //img.image = currentFriend.profilePic;
         [cell.contentView addSubview:img];
     }
     else{
-        UILabel *currentMessageHeader = [[UILabel alloc] initWithFrame:CGRectMake(self.chatMessageTable.frame.size.width - message_pixel_length - 10, 0, message_pixel_length, 21)];
-        
+        UILabel *currentMessageHeader = [[UILabel alloc] initWithFrame:CGRectMake(self.chatMessageTable.frame.size.width - (message_pixel_length) -  (self.chatMessageTable.frame.size.width/30), 0, message_pixel_length, message_pixel_height)];
+        currentMessageHeader.textAlignment = NSTextAlignmentCenter;
         currentMessageHeader.layer.cornerRadius = 5;
         currentMessageHeader.layer.masksToBounds = YES;
+        currentMessageHeader.lineBreakMode = UILineBreakModeWordWrap;
         
         if([_chatMessages[indexPath.row] new_message]){
             UIColor *self_message_color = [UIColor blackColor];
@@ -293,20 +370,18 @@
         }
         
         UIColor *self_message_color = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",BORDER_COLOR]];
-        //UILabel *currentMessageHeader = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.chatMessageTable.frame.size.width - 10, 21)];
-        currentMessageHeader.textAlignment = UITextAlignmentRight;
+
         currentMessageHeader.text = [currentMessage message];
+        currentMessageHeader.numberOfLines = 0;
+ 
         [currentMessageHeader setFont:[UIFont systemFontOfSize:13]];
+        
         currentMessageHeader.textColor = [UIColor whiteColor];
         currentMessageHeader.backgroundColor = self_message_color;
         [cell.contentView addSubview:currentMessageHeader];
         
     }
-    
-    //UIView * lineRemoval = [[UIView alloc] initWithFrame:CGRectMake(0, cell.frame.size.height, cell.frame.size.width, 1)];
-    //[cell addSubview:lineRemoval];
-    //cell = [self clearCell:cell];
-    //cell.textLabel.text = [_chatMessages[indexPath.row] message];
+
     return cell;
 }
                                        
@@ -319,6 +394,10 @@
     [self observeKeyboard];
     self.title = @"Chat";
     _chatMessages = [[NSMutableArray alloc] init];
+    
+    NSData *authenticated = [[NSUserDefaults standardUserDefaults] objectForKey:@"auth_client"];
+    _authClient = [NSKeyedUnarchiver unarchiveObjectWithData:authenticated];
+    _account_id = _authClient.enc_userid;
     
     [self getPreviousChats];
     // Do any additional setup after loading the view.

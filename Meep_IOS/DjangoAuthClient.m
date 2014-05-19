@@ -7,7 +7,7 @@
 //
 
 #import "DjangoAuthClient.h"
-#import "DjangoAuthLoginResultObject.h"
+
 
 NSString * const DjangoAuthClientDidLoginSuccessfully = @"DjangoAuthClientDidLoginSuccessfully";
 NSString * const DjangoAuthClientDidFailToLogin = @"DjangoAuthClientDidFailToLogin";
@@ -19,6 +19,7 @@ NSString *const kDjangoAuthClientLoginFailureInactiveAccount = @"kDjangoAuthClie
 @interface DjangoAuthClient()
 
 // Private properties
+@property (nonatomic, strong) NSString *userid;
 @property (nonatomic, strong) NSString *username;
 @property (nonatomic, strong) NSString *password;
 @property (nonatomic, strong) NSString *email;
@@ -27,7 +28,7 @@ NSString *const kDjangoAuthClientLoginFailureInactiveAccount = @"kDjangoAuthClie
 @end
 
 @implementation DjangoAuthClient
-
+@synthesize enc_userid;
 @synthesize enc_username;
 @synthesize enc_password;
 @synthesize enc_email;
@@ -37,6 +38,7 @@ NSString *const kDjangoAuthClientLoginFailureInactiveAccount = @"kDjangoAuthClie
 
 - (id)initWithCoder:(NSCoder *)decoder {
     if (self = [super init]) {
+        self.enc_userid = [decoder decodeObjectForKey:@"userid"];
         self.enc_username = [decoder decodeObjectForKey:@"username"];
         self.enc_password = [decoder decodeObjectForKey:@"password"];
         self.enc_email = [decoder decodeObjectForKey:@"email"];
@@ -49,6 +51,7 @@ NSString *const kDjangoAuthClientLoginFailureInactiveAccount = @"kDjangoAuthClie
 
 
 - (void)encodeWithCoder:(NSCoder *)encoder {
+    [encoder encodeObject:enc_userid forKey:@"userid"];
     [encoder encodeObject:enc_username forKey:@"username"];
     [encoder encodeObject:enc_password forKey:@"password"];
     [encoder encodeObject:enc_email forKey:@"email"];
@@ -69,6 +72,9 @@ NSString *const kDjangoAuthClientLoginFailureInactiveAccount = @"kDjangoAuthClie
     _responseData = [[NSMutableData alloc] initWithCapacity:512];
     _serverDidRespond = NO;
     _serverDidAuthenticate = NO;
+    
+    _loginSucceeded = NO;
+
     self.enc_serverDidAuthenticate = NO;
     self.enc_username = username;
     
@@ -88,6 +94,8 @@ NSString *const kDjangoAuthClientLoginFailureInactiveAccount = @"kDjangoAuthClie
     _responseData = [[NSMutableData alloc] initWithCapacity:512];
     _serverDidRespond = NO;
     _serverDidAuthenticate = NO;
+    
+    _loginSucceeded = NO;
     self.enc_serverDidAuthenticate = NO;
     self.enc_username = username;
     
@@ -125,30 +133,27 @@ NSString *const kDjangoAuthClientLoginFailureInactiveAccount = @"kDjangoAuthClie
         NSLog(@"no connection!");
         [[NSNotificationCenter defaultCenter] postNotificationName:DjangoAuthClientDidFailToCreateConnectionToAuthURL object:self];
     }
-
+    [connection start];
 }
 
 #pragma mark - NSURLConnectionDelegate Methods
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
     [self.responseData appendData:data];
-    NSError *error;
-    NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:self.responseData options:0 error:&error];
-    NSLog(@"jsonREsponse: %@", jsonResponse);
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
     
     DjangoAuthLoginResultObject *resultObject = [DjangoAuthLoginResultObject loginResultObjectFromResponse:response];
     
-    NSLog(@"status code is %i", resultObject.statusCode);
-    
     if (resultObject.statusCode == 200) {
         // We're logged in and good to go
-        NSLog(@"initial login attempt!!");
+        _loginSucceeded = YES;
+        _djangoResultObject = resultObject;
+        
+        /*NSLog(@"initial login attempt!!");
         // Initial login attempt
         NSArray *cookies = [NSHTTPCookie cookiesWithResponseHeaderFields:resultObject.responseHeaders forURL:self.requestURL];
-        
         // Django defaults to CSRF protection, so we need to get the token to send back in the request
         NSHTTPCookie *csrfCookie;
         for (NSHTTPCookie *cookie in cookies) {
@@ -160,7 +165,8 @@ NSString *const kDjangoAuthClientLoginFailureInactiveAccount = @"kDjangoAuthClie
         if ([_delegate respondsToSelector:@selector(loginSuccessful:)]) {
             self.enc_serverDidAuthenticate = YES;
             [_delegate loginSuccessful:resultObject];
-        }
+        }*/
+        
         [[NSNotificationCenter defaultCenter] postNotificationName:DjangoAuthClientDidLoginSuccessfully object:resultObject];
     }
     else if (resultObject.statusCode == 401) {
@@ -174,35 +180,6 @@ NSString *const kDjangoAuthClientLoginFailureInactiveAccount = @"kDjangoAuthClie
         }
         [[NSNotificationCenter defaultCenter] postNotificationName:DjangoAuthClientDidFailToLogin object:resultObject];
         
-        // Check to see if we've already made an attempt to log in and failed
-        /*if ([[resultObject.responseHeaders objectForKey:@"Auth-Response"] isEqualToString:@"Login failed"]) {
-            resultObject.loginFailureReason = kDjangoAuthClientLoginFailureInvalidCredentials;
-            if ([_delegate respondsToSelector:@selector(loginFailed:)]) {
-                [_delegate loginFailed:resultObject];
-            }
-            [[NSNotificationCenter defaultCenter] postNotificationName:DjangoAuthClientDidFailToLogin object:resultObject];
-        }
-        else {
-            NSLog(@"else initial login attempt!!");
-            // Initial login attempt
-            NSArray *cookies = [NSHTTPCookie cookiesWithResponseHeaderFields:resultObject.responseHeaders forURL:self.requestURL];
-            
-            // Django defaults to CSRF protection, so we need to get the token to send back in the request
-            NSHTTPCookie *csrfCookie;
-            for (NSHTTPCookie *cookie in cookies) {
-                if ([cookie.name isEqualToString:@"csrftoken"]) {
-                    csrfCookie = cookie;
-                }
-            }
-            
-            NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:self.requestURL];
-            [request setHTTPMethod:@"POST"];
-            //[request setValue:@"multipart/form-data; boundary=0xKhTmLbOuNdArY" forHTTPHeaderField:@"Content-Type"];
-            NSString *authString = [NSString stringWithFormat:@"username=%@;password=%@;csrfmiddlewaretoken=%@;", _username, _password, csrfCookie.value, nil];
-            [request setHTTPBody:[authString dataUsingEncoding:NSUTF8StringEncoding]];
-
-            [self makeLoginRequest:request];
-        }*/
     }
     else if (resultObject.statusCode == 403) {
         // Login failed because the user's account is inactive
@@ -212,16 +189,38 @@ NSString *const kDjangoAuthClientLoginFailureInactiveAccount = @"kDjangoAuthClie
         }
         [[NSNotificationCenter defaultCenter] postNotificationName:DjangoAuthClientDidFailToLogin object:resultObject];
     }
-    /*delete this code later*/
-    else{
-        NSLog(@"no valid response code");
-        [_delegate loginFailed:nil];
-    }
+    
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
-    NSLog(@"response data string %@", [[NSString alloc] initWithData:self.responseData encoding:NSUTF8StringEncoding]);
-    [self.responseData setLength:0];
+    [self handleData:connection];
+}
+
+- (void)handleData:(NSURLConnection *)connection
+{
+    NSLog(@"initial login attempt!!");
+    // Initial login attempt
+    /*NSArray *cookies = [NSHTTPCookie cookiesWithResponseHeaderFields:resultObject.responseHeaders forURL:self.requestURL];
+    // Django defaults to CSRF protection, so we need to get the token to send back in the request
+    NSHTTPCookie *csrfCookie;
+    for (NSHTTPCookie *cookie in cookies) {
+        if ([cookie.name isEqualToString:@"csrftoken"]) {
+            csrfCookie = cookie;
+        }
+    }*/
+    [connection cancel];
+    if ([_delegate respondsToSelector:@selector(loginSuccessful:)]) {
+        NSError *error;
+        NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:self.responseData options:0 error:&error];
+        
+        if([jsonResponse objectForKey:@"userid"]){
+            self.enc_userid = jsonResponse[@"userid"];
+        }
+        
+        self.enc_serverDidAuthenticate = YES;
+        [_delegate loginSuccessful:_djangoResultObject];
+        [self.responseData setLength:0];
+    }
 }
 
 
