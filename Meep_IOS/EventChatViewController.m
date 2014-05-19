@@ -10,6 +10,7 @@
 #import "EventChatMessage.h"
 #import "CenterViewController.h"
 #import "Friend.h"
+#import "DjangoAuthClient.h"
 #import "MEEPhttp.h"
 
 @interface EventChatViewController ()
@@ -19,6 +20,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *sendButton;
 
 @property (weak, nonatomic) IBOutlet UITableView *chatMessageTable;
+
+@property(nonatomic, strong) DjangoAuthClient * authClient;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *keyboardHeight;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *textboxVerticalTopSpace;
@@ -232,7 +235,7 @@
 
     CGRect chatCell = self.chatMessageTable.frame;
     
-    if( [currentMessage creator_id] != 1){
+    if( [currentMessage creator_id] != [_account_id integerValue]){
         chatCell.size.width = (self.chatMessageTable.frame.size.width - (self.chatMessageTable.frame.size.width/3) );
         chatCell.origin.x = 0.0;
     
@@ -247,8 +250,8 @@
                                        lineBreakMode:UILineBreakModeWordWrap];
 
     
-    if( [currentMessage creator_id] != 1){
-        height = expectedLabelSize.height * 2.5;
+    if( [currentMessage creator_id] != [_account_id integerValue]){
+        height = expectedLabelSize.height * 3;
     }
     else{
         height = expectedLabelSize.height * 2.5;
@@ -312,7 +315,7 @@
 
     
     BOOL isCreator;
-    if(currentMessage.creator_id == 1){
+    if(currentMessage.creator_id == [_account_id integerValue]){
         isCreator = YES;
     }
     else{
@@ -324,7 +327,7 @@
     NSInteger message_pixel_height = messageSize.height;
 
 
-    if( [currentMessage creator_id] != 1){
+    if( [currentMessage creator_id] != [_account_id integerValue]){
         
         UILabel *currentMessageHeader = [[UILabel alloc] initWithFrame:CGRectMake(35, 10, message_pixel_length, message_pixel_height)];
         currentMessageHeader.textAlignment = NSTextAlignmentCenter;
@@ -388,6 +391,10 @@
     [self observeKeyboard];
     self.title = @"Chat";
     _chatMessages = [[NSMutableArray alloc] init];
+    
+    NSData *authenticated = [[NSUserDefaults standardUserDefaults] objectForKey:@"auth_client"];
+    _authClient = [NSKeyedUnarchiver unarchiveObjectWithData:authenticated];
+    _account_id = _authClient.enc_userid;
     
     [self getPreviousChats];
     // Do any additional setup after loading the view.

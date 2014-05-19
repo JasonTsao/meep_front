@@ -65,12 +65,6 @@
 - (void)loginSuccessful:(DjangoAuthLoginResultObject *)result {
 
     NSLog(@"login successful");
-    NSLog(@"is logged in %hhd", _authClient.enc_serverDidAuthenticate);
-    /*NSLog(@"did response %hhd", _authClient.enc_serverDidRespond);
-    NSLog(@"username %@", _authClient.enc_username);
-    NSLog(@"password %@", _authClient.enc_password);
-    NSLog(@"email %@", _authClient.enc_email);*/
-    
     NSData *data = [NSKeyedArchiver archivedDataWithRootObject:_authClient];
     [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"auth_client"];
     [NSUserDefaults resetStandardUserDefaults];
