@@ -19,5 +19,6 @@
 @property NSString * locationLatitude;
 @property NSString * locationLongitude;
 @property NSString * time_stamp;
+@property BOOL * new_message;
 @property Group * eventGroup;
 @end

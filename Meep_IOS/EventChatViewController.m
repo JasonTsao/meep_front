@@ -38,6 +38,23 @@
     return self;
 }
 
+- (void)putMessageOnTable:(NSString *)message
+{
+    EventChatMessage * chatMessage = [[EventChatMessage alloc] init];
+    NSInteger creator_id = 1;
+    NSInteger creator_name = @"Jason";
+    NSString * currentTime = @"2014-05-15 04:33:22";
+    
+    chatMessage.event_id = _currentEvent.event_id;
+    chatMessage.creator_id = creator_id;
+    chatMessage.creator_name = @"Jason";
+    chatMessage.message = message;
+    chatMessage.time_stamp = currentTime;
+    chatMessage.new_message = YES;
+    
+    [_chatMessages addObject:message];
+}
+
 - (void) getPreviousChats{
     NSString *event_id = [NSString stringWithFormat:@"%ld", _currentEvent.event_id];
     NSString * requestURL = [NSString stringWithFormat:@"%@chat_messages/%@",[MEEPhttp eventURL], event_id];
@@ -56,6 +73,8 @@
     NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
     NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
     [conn start];
+    
+    [self putMessageOnTable:_chatMessageToSend.text];
 }
 
 -(void)connection:(NSURLConnection*)connection didReceiveResponse:(NSURLResponse*)response
@@ -265,6 +284,13 @@
         
         currentMessageHeader.layer.cornerRadius = 5;
         currentMessageHeader.layer.masksToBounds = YES;
+        
+        if([_chatMessages[indexPath.row] new_message]){
+            UIColor *self_message_color = [UIColor blackColor];
+        }
+        else{
+            UIColor *self_message_color = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",BORDER_COLOR]];
+        }
         
         UIColor *self_message_color = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",BORDER_COLOR]];
         //UILabel *currentMessageHeader = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.chatMessageTable.frame.size.width - 10, 21)];
