@@ -99,7 +99,6 @@
     NSError* error;
     NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:_data options:0 error:&error];
     
-    NSLog(@"jsonResponse: %@", jsonResponse);
     if([jsonResponse objectForKey:@"chat_saved"] != nil){
         [self.chatMessageTable reloadData];
     }
@@ -107,7 +106,6 @@
         NSArray *chatMessageArray = jsonResponse[@"comments"];
         
         for(int i = 0; i < [chatMessageArray count]; i++){
-            NSLog(@"chat message: %@", chatMessageArray[i]);
             EventChatMessage * message = [[EventChatMessage alloc] init];
             
             message.event_id = _currentEvent.event_id;
@@ -230,60 +228,60 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     CGFloat height;
-    NSString *eventInfoType;
     EventChatMessage *currentMessage = _chatMessages[indexPath.row];
-    NSInteger message_length = [[currentMessage message] length];
-    NSInteger numRows = message_length % 40;
-    
-    NSLog(@"numRows : %i", numRows);
+
+    CGRect chatCell = self.chatMessageTable.frame;
     
     if( [currentMessage creator_id] != 1){
-        height = 40;
-        if( message_length > 35){
-            height *= 2;
-        }
+        chatCell.size.width = (self.chatMessageTable.frame.size.width - (self.chatMessageTable.frame.size.width/3) );
+        chatCell.origin.x = 0.0;
+    
+    }else{
+        chatCell.size.width = (self.chatMessageTable.frame.size.width - (self.chatMessageTable.frame.size.width/3) );
+        chatCell.origin.x = (self.chatMessageTable.frame.size.width - (self.chatMessageTable.frame.size.width/3) );
+    }
+    
+    
+    CGSize expectedLabelSize = [[currentMessage message] sizeWithFont:[UIFont systemFontOfSize:13]
+                                   constrainedToSize:chatCell.size
+                                       lineBreakMode:UILineBreakModeWordWrap];
+
+    
+    if( [currentMessage creator_id] != 1){
+        height = expectedLabelSize.height * 2.5;
     }
     else{
-        height = 30;
-
-        if( message_length > 35){
-            height *= 2;
-        }
+        height = expectedLabelSize.height * 2;
     }
-
+    
     return height;
 }
 
-- (NSInteger)getMessagePixelLength:(NSInteger) messageLength
+- (CGSize) getMessageLabelSize:(NSInteger) messageLength withString:(NSString *)message isCreator:(BOOL)isCreator
 {
-    NSInteger message_pixel_length;
+    CGSize messageSize;
     
-    message_pixel_length = messageLength * 6;
+    CGRect chatCell = self.chatMessageTable.frame;
     
-    if(messageLength < 40){
-       message_pixel_length = messageLength * 7;
+    if( isCreator){
+        chatCell.size.width = (self.chatMessageTable.frame.size.width - (self.chatMessageTable.frame.size.width/3) );
+        chatCell.origin.x = (self.chatMessageTable.frame.size.width - (self.chatMessageTable.frame.size.width/3) );
+    }else{
+        chatCell.size.width = (self.chatMessageTable.frame.size.width - (self.chatMessageTable.frame.size.width/3) );
+        chatCell.origin.x = 0.0;
     }
-    else if(messageLength >= 40 && messageLength < 150){
-        message_pixel_length = messageLength * 8;
-    }
     
-    return message_pixel_length;
-}
+    CGSize expectedLabelSize = [message sizeWithFont:[UIFont systemFontOfSize:13]
+                                   constrainedToSize:chatCell.size
+                                       lineBreakMode:UILineBreakModeWordWrap];
+    messageSize.width = expectedLabelSize.width;
+    messageSize.height = expectedLabelSize.height;
 
-- (NSInteger)getMessagePixelHeight:(NSInteger) messageLength
-{
-    NSInteger message_pixel_height;
-    NSInteger multiplier = messageLength /21;
-    
-    if( multiplier < 1){
-        message_pixel_height = 25;
+    if (messageSize.height < 31.018002){
+        messageSize.height = 31;
     }
-    else{
-        message_pixel_height = 25 * multiplier;
-    }
-    
-    
-    return message_pixel_height;
+
+    return messageSize;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -298,22 +296,22 @@
     
     EventChatMessage *currentMessage = _chatMessages[indexPath.row];
     NSInteger message_length = [currentMessage.message length];
-    NSInteger message_height = 21;
-    //NSInteger message_pixel_length = message_length * 6;
-    NSInteger message_pixel_length = [self getMessagePixelLength:message_length];
-    NSInteger message_pixel_height = [self getMessagePixelHeight:message_length];
 
-    /*if( message_length > 25){
-        message_height *= 1.5;
-    }*/
+    CGSize messageSize = [self getMessageLabelSize:message_length withString:currentMessage.message isCreator:[currentMessage creator_id]];
+    
+    NSInteger message_pixel_length = messageSize.width;
+    NSInteger message_pixel_height = messageSize.height;
+
 
     if( [currentMessage creator_id] != 1){
         
-        UILabel *currentMessageHeader = [[UILabel alloc] initWithFrame:CGRectMake(35, 10, message_pixel_length, message_height)];
+        UILabel *currentMessageHeader = [[UILabel alloc] initWithFrame:CGRectMake(35, 10, message_pixel_length, message_pixel_height)];
+        currentMessageHeader.textAlignment = NSTextAlignmentCenter;
         currentMessageHeader.layer.cornerRadius = 5;
         currentMessageHeader.layer.masksToBounds = YES;
         currentMessageHeader.text = [currentMessage message];
         currentMessageHeader.backgroundColor = [UIColor lightGrayColor];
+        currentMessageHeader.lineBreakMode = UILineBreakModeWordWrap;
         
         [currentMessageHeader setFont:[UIFont systemFontOfSize:13]];
         [cell.contentView addSubview:currentMessageHeader];
@@ -331,10 +329,10 @@
     }
     else{
         UILabel *currentMessageHeader = [[UILabel alloc] initWithFrame:CGRectMake(self.chatMessageTable.frame.size.width - (message_pixel_length) -  (self.chatMessageTable.frame.size.width/30), 0, message_pixel_length, message_pixel_height)];
-        
-        //currentMessageHeader.numberOfLines = 0;
+        currentMessageHeader.textAlignment = NSTextAlignmentCenter;
         currentMessageHeader.layer.cornerRadius = 5;
         currentMessageHeader.layer.masksToBounds = YES;
+        currentMessageHeader.lineBreakMode = UILineBreakModeWordWrap;
         
         if([_chatMessages[indexPath.row] new_message]){
             UIColor *self_message_color = [UIColor blackColor];
@@ -344,22 +342,18 @@
         }
         
         UIColor *self_message_color = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",BORDER_COLOR]];
-        //UILabel *currentMessageHeader = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.chatMessageTable.frame.size.width - 10, 21)];
 
         currentMessageHeader.text = [currentMessage message];
         currentMessageHeader.numberOfLines = 0;
-        //[currentMessageHeader sizeToFit];
+ 
         [currentMessageHeader setFont:[UIFont systemFontOfSize:13]];
+        
         currentMessageHeader.textColor = [UIColor whiteColor];
         currentMessageHeader.backgroundColor = self_message_color;
         [cell.contentView addSubview:currentMessageHeader];
         
     }
-    
-    //UIView * lineRemoval = [[UIView alloc] initWithFrame:CGRectMake(0, cell.frame.size.height, cell.frame.size.width, 1)];
-    //[cell addSubview:lineRemoval];
-    //cell = [self clearCell:cell];
-    //cell.textLabel.text = [_chatMessages[indexPath.row] message];
+
     return cell;
 }
                                        
