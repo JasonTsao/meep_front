@@ -231,15 +231,59 @@
 {
     CGFloat height;
     NSString *eventInfoType;
+    EventChatMessage *currentMessage = _chatMessages[indexPath.row];
+    NSInteger message_length = [[currentMessage message] length];
+    NSInteger numRows = message_length % 40;
     
-    height = 20;
-    NSInteger message_length = [[_chatMessages[indexPath.row] message] length];
+    NSLog(@"numRows : %i", numRows);
+    
+    if( [currentMessage creator_id] != 1){
+        height = 40;
+        if( message_length > 35){
+            height *= 2;
+        }
+    }
+    else{
+        height = 30;
 
-    if( message_length > 25){
-        height *= 2;
+        if( message_length > 35){
+            height *= 2;
+        }
+    }
+
+    return height;
+}
+
+- (NSInteger)getMessagePixelLength:(NSInteger) messageLength
+{
+    NSInteger message_pixel_length;
+    
+    message_pixel_length = messageLength * 6;
+    
+    if(messageLength < 40){
+       message_pixel_length = messageLength * 7;
+    }
+    else if(messageLength >= 40 && messageLength < 150){
+        message_pixel_length = messageLength * 8;
     }
     
-    return height;
+    return message_pixel_length;
+}
+
+- (NSInteger)getMessagePixelHeight:(NSInteger) messageLength
+{
+    NSInteger message_pixel_height;
+    NSInteger multiplier = messageLength /21;
+    
+    if( multiplier < 1){
+        message_pixel_height = 25;
+    }
+    else{
+        message_pixel_height = 25 * multiplier;
+    }
+    
+    
+    return message_pixel_height;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -255,11 +299,17 @@
     EventChatMessage *currentMessage = _chatMessages[indexPath.row];
     NSInteger message_length = [currentMessage.message length];
     NSInteger message_height = 21;
-    NSInteger message_pixel_length = message_length * 6;
+    //NSInteger message_pixel_length = message_length * 6;
+    NSInteger message_pixel_length = [self getMessagePixelLength:message_length];
+    NSInteger message_pixel_height = [self getMessagePixelHeight:message_length];
+
+    /*if( message_length > 25){
+        message_height *= 1.5;
+    }*/
 
     if( [currentMessage creator_id] != 1){
         
-        UILabel *currentMessageHeader = [[UILabel alloc] initWithFrame:CGRectMake(35, 10, message_pixel_length, 21)];
+        UILabel *currentMessageHeader = [[UILabel alloc] initWithFrame:CGRectMake(35, 10, message_pixel_length, message_height)];
         currentMessageHeader.layer.cornerRadius = 5;
         currentMessageHeader.layer.masksToBounds = YES;
         currentMessageHeader.text = [currentMessage message];
@@ -280,8 +330,9 @@
         [cell.contentView addSubview:img];
     }
     else{
-        UILabel *currentMessageHeader = [[UILabel alloc] initWithFrame:CGRectMake(self.chatMessageTable.frame.size.width - message_pixel_length - 10, 0, message_pixel_length, 21)];
+        UILabel *currentMessageHeader = [[UILabel alloc] initWithFrame:CGRectMake(self.chatMessageTable.frame.size.width - (message_pixel_length) -  (self.chatMessageTable.frame.size.width/30), 0, message_pixel_length, message_pixel_height)];
         
+        //currentMessageHeader.numberOfLines = 0;
         currentMessageHeader.layer.cornerRadius = 5;
         currentMessageHeader.layer.masksToBounds = YES;
         
@@ -294,8 +345,10 @@
         
         UIColor *self_message_color = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",BORDER_COLOR]];
         //UILabel *currentMessageHeader = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.chatMessageTable.frame.size.width - 10, 21)];
-        currentMessageHeader.textAlignment = UITextAlignmentRight;
+
         currentMessageHeader.text = [currentMessage message];
+        currentMessageHeader.numberOfLines = 0;
+        //[currentMessageHeader sizeToFit];
         [currentMessageHeader setFont:[UIFont systemFontOfSize:13]];
         currentMessageHeader.textColor = [UIColor whiteColor];
         currentMessageHeader.backgroundColor = self_message_color;
