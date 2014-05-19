@@ -15,4 +15,5 @@
 @property (nonatomic) Event *currentEvent;
 @property (nonatomic) NSMutableArray *invitedFriends;
 @property(nonatomic, strong) NSMutableData * data;
++(UIColor*)colorWithHexString:(NSString*)hex;
 @end

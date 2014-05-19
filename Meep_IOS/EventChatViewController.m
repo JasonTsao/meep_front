@@ -8,6 +8,7 @@
 
 #import "EventChatViewController.h"
 #import "EventChatMessage.h"
+#import "CenterViewController.h"
 #import "Friend.h"
 #import "MEEPhttp.h"
 
@@ -25,6 +26,7 @@
 @property (nonatomic, assign) BOOL keyboardShowed;
 @end
 
+#define BORDER_COLOR "3FC380"
 @implementation EventChatViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -105,37 +107,82 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillChangeFrameNotification object:nil];
 }
 
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    return YES;
+}
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [self.view endEditing: YES];
+}
+
 - (void) keyboardWillShow:(NSNotification *)notification {
-    if(_keyboardShowed)
-        return;
-    NSDictionary * info = [notification userInfo];
-    NSValue *kbFrame = [info objectForKey:UIKeyboardFrameEndUserInfoKey];
-    NSTimeInterval animationDuration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
-    CGRect keyboardFrame = [kbFrame CGRectValue];
-    CGFloat height = keyboardFrame.size.height;
-    _keyboardHeight.constant = height;
-    CGRect frameRect = self.textAndButtonHolder.frame;
-    frameRect.origin.y = self.textAndButtonHolder.frame.origin.y - height;
-    _textAndButtonHolder.frame = frameRect;
+    if(_keyboardShowed){
+        NSLog(@"keyboard going away!!");
+        NSDictionary * info = [notification userInfo];
+        NSValue *kbFrame = [info objectForKey:UIKeyboardFrameEndUserInfoKey];
+        NSTimeInterval animationDuration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+        CGRect keyboardFrame = [kbFrame CGRectValue];
+        CGFloat height = keyboardFrame.size.height;
+        _keyboardHeight.constant = height;
+        CGRect frameRect = self.textAndButtonHolder.frame;
+        frameRect.origin.y = self.textAndButtonHolder.frame.origin.y + height;
+        _textAndButtonHolder.frame = frameRect;
+        
+        CGRect textframeRect = self.chatMessageToSend.frame;
+        textframeRect.origin.y = self.chatMessageToSend.frame.origin.y + height;
+        _chatMessageToSend.frame = textframeRect;
+        
+        CGRect buttonframeRect = self.sendButton.frame;
+        //textframeRect.size.height = (self.chatMessageToSend.frame.size.height - height);
+        buttonframeRect.origin.y = self.sendButton.frame.origin.y + height;
+        _sendButton.frame = buttonframeRect;
+        
+        CGRect tableFrameRect = self.chatMessageTable.frame;
+        tableFrameRect.size.height = (self.chatMessageTable.frame.size.height + (height/2));
+        tableFrameRect.origin.y = self.chatMessageTable.frame.origin.y + (height/2);
+        _chatMessageTable.frame = tableFrameRect;
+        
+        [UIView animateWithDuration:animationDuration animations:^{
+            [self.view layoutIfNeeded];
+        }];
+        
+        NSLog(@"keyboard now gone!");
+        self.keyboardShowed = NO;
+    }
+    else{
+        NSDictionary * info = [notification userInfo];
+        NSValue *kbFrame = [info objectForKey:UIKeyboardFrameEndUserInfoKey];
+        NSTimeInterval animationDuration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+        CGRect keyboardFrame = [kbFrame CGRectValue];
+        CGFloat height = keyboardFrame.size.height;
+        _keyboardHeight.constant = height;
+        CGRect frameRect = self.textAndButtonHolder.frame;
+        frameRect.origin.y = self.textAndButtonHolder.frame.origin.y - height;
+        _textAndButtonHolder.frame = frameRect;
+        
+        CGRect textframeRect = self.chatMessageToSend.frame;
+        textframeRect.origin.y = self.chatMessageToSend.frame.origin.y - height;
+        _chatMessageToSend.frame = textframeRect;
+        
+        CGRect buttonframeRect = self.sendButton.frame;
+        //textframeRect.size.height = (self.chatMessageToSend.frame.size.height - height);
+        buttonframeRect.origin.y = self.sendButton.frame.origin.y - height;
+        _sendButton.frame = buttonframeRect;
+        
+        CGRect tableFrameRect = self.chatMessageTable.frame;
+        tableFrameRect.size.height = (self.chatMessageTable.frame.size.height - (height/2));
+        tableFrameRect.origin.y = self.chatMessageTable.frame.origin.y - (height/2);
+        _chatMessageTable.frame = tableFrameRect;
+        
+        [UIView animateWithDuration:animationDuration animations:^{
+            [self.view layoutIfNeeded];
+        }];
+        self.keyboardShowed = YES;
+    }
     
-    CGRect textframeRect = self.chatMessageToSend.frame;
-    textframeRect.origin.y = self.chatMessageToSend.frame.origin.y - height;
-    _chatMessageToSend.frame = textframeRect;
-    
-    CGRect buttonframeRect = self.sendButton.frame;
-    //textframeRect.size.height = (self.chatMessageToSend.frame.size.height - height);
-    buttonframeRect.origin.y = self.sendButton.frame.origin.y - height;
-    _sendButton.frame = buttonframeRect;
-    
-    CGRect tableFrameRect = self.chatMessageTable.frame;
-    tableFrameRect.size.height = (self.chatMessageTable.frame.size.height - (height/2));
-    tableFrameRect.origin.y = self.chatMessageTable.frame.origin.y - (height/2);
-    _chatMessageTable.frame = tableFrameRect;
-    
-    [UIView animateWithDuration:animationDuration animations:^{
-        [self.view layoutIfNeeded];
-    }];
-    self.keyboardShowed = YES;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -161,6 +208,21 @@
     return cell;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    CGFloat height;
+    NSString *eventInfoType;
+    
+    height = 20;
+    NSInteger message_length = [[_chatMessages[indexPath.row] message] length];
+
+    if( message_length > 25){
+        height *= 2;
+    }
+    
+    return height;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"chatMessage" forIndexPath:indexPath];
@@ -172,30 +234,45 @@
     cell.contentView.frame = cellFrameRect;
     
     EventChatMessage *currentMessage = _chatMessages[indexPath.row];
+    NSInteger message_length = [currentMessage.message length];
+    NSInteger message_height = 21;
+    NSInteger message_pixel_length = message_length * 6;
 
     if( [currentMessage creator_id] != 1){
         
-        UILabel *currentMessageHeader = [[UILabel alloc] initWithFrame:CGRectMake(35, 10, 235, 21)];
+        UILabel *currentMessageHeader = [[UILabel alloc] initWithFrame:CGRectMake(35, 10, message_pixel_length, 21)];
+        currentMessageHeader.layer.cornerRadius = 5;
+        currentMessageHeader.layer.masksToBounds = YES;
         currentMessageHeader.text = [currentMessage message];
+        currentMessageHeader.backgroundColor = [UIColor lightGrayColor];
+        
         [currentMessageHeader setFont:[UIFont systemFontOfSize:13]];
         [cell.contentView addSubview:currentMessageHeader];
         
-        UILabel *messageCreatorName = [[UILabel alloc] initWithFrame:CGRectMake(40, 0, 100, 21)];
+        UILabel *messageCreatorName = [[UILabel alloc] initWithFrame:CGRectMake(35, -6, 100, 21)];
         messageCreatorName.text = [currentMessage creator_name];
         [messageCreatorName setTextColor:[UIColor lightGrayColor]];
         [messageCreatorName setFont:[UIFont systemFontOfSize:11]];
         [cell.contentView addSubview:messageCreatorName];
         
-        UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(8, 14, 25, 25)];
+        UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(8, 0, 25, 25)];
         img.image = [UIImage imageNamed:@"ManSilhouette"];
         //img.image = currentFriend.profilePic;
         [cell.contentView addSubview:img];
     }
     else{
-        UILabel *currentMessageHeader = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.chatMessageTable.frame.size.width - 10, 21)];
+        UILabel *currentMessageHeader = [[UILabel alloc] initWithFrame:CGRectMake(self.chatMessageTable.frame.size.width - message_pixel_length - 10, 0, message_pixel_length, 21)];
+        
+        currentMessageHeader.layer.cornerRadius = 5;
+        currentMessageHeader.layer.masksToBounds = YES;
+        
+        UIColor *self_message_color = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",BORDER_COLOR]];
+        //UILabel *currentMessageHeader = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.chatMessageTable.frame.size.width - 10, 21)];
         currentMessageHeader.textAlignment = UITextAlignmentRight;
         currentMessageHeader.text = [currentMessage message];
         [currentMessageHeader setFont:[UIFont systemFontOfSize:13]];
+        currentMessageHeader.textColor = [UIColor whiteColor];
+        currentMessageHeader.backgroundColor = self_message_color;
         [cell.contentView addSubview:currentMessageHeader];
         
     }
@@ -206,6 +283,8 @@
     //cell.textLabel.text = [_chatMessages[indexPath.row] message];
     return cell;
 }
+                                       
+
 
 - (void)viewDidLoad
 {
