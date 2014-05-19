@@ -349,6 +349,9 @@
         
         UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(8, 0, 25, 25)];
         img.image = [UIImage imageNamed:@"ManSilhouette"];
+        img.layer.cornerRadius = img.frame.size.height/2;
+        img.layer.masksToBounds = YES;
+
         //img.image = currentFriend.profilePic;
         [cell.contentView addSubview:img];
     }
