@@ -251,7 +251,7 @@
         height = expectedLabelSize.height * 2.5;
     }
     else{
-        height = expectedLabelSize.height * 2;
+        height = expectedLabelSize.height * 2.5;
     }
     
     return height;
