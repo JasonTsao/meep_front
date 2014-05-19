@@ -257,6 +257,8 @@
     return height;
 }
 
+
+//NEED TO FIGURE OUT BETTER SPACING TO GET ALL TEXT WITHIN BOUNDS
 - (CGSize) getMessageLabelSize:(NSInteger) messageLength withString:(NSString *)message isCreator:(BOOL)isCreator
 {
     CGSize messageSize;
@@ -268,14 +270,25 @@
         chatCell.origin.x = (self.chatMessageTable.frame.size.width - (self.chatMessageTable.frame.size.width/3) );
     }else{
         chatCell.size.width = (self.chatMessageTable.frame.size.width - (self.chatMessageTable.frame.size.width/3) );
-        chatCell.origin.x = 0.0;
+        chatCell.origin.x = 35.0;
     }
     
     CGSize expectedLabelSize = [message sizeWithFont:[UIFont systemFontOfSize:13]
                                    constrainedToSize:chatCell.size
                                        lineBreakMode:UILineBreakModeWordWrap];
+    
+    if(expectedLabelSize.width < 15){
+        expectedLabelSize.width = 15;
+    }
+    
     messageSize.width = expectedLabelSize.width;
     messageSize.height = expectedLabelSize.height;
+    
+    if( isCreator){
+        messageSize.height = messageSize.height *1.3;
+    }else{
+        messageSize.height = messageSize.height *1.3;
+    }
 
     if (messageSize.height < 31.018002){
         messageSize.height = 31;
@@ -297,7 +310,15 @@
     EventChatMessage *currentMessage = _chatMessages[indexPath.row];
     NSInteger message_length = [currentMessage.message length];
 
-    CGSize messageSize = [self getMessageLabelSize:message_length withString:currentMessage.message isCreator:[currentMessage creator_id]];
+    
+    BOOL isCreator;
+    if(currentMessage.creator_id == 1){
+        isCreator = YES;
+    }
+    else{
+        isCreator = NO;
+    }
+    CGSize messageSize = [self getMessageLabelSize:message_length withString:currentMessage.message isCreator:isCreator];
     
     NSInteger message_pixel_length = messageSize.width;
     NSInteger message_pixel_height = messageSize.height;
@@ -309,9 +330,10 @@
         currentMessageHeader.textAlignment = NSTextAlignmentCenter;
         currentMessageHeader.layer.cornerRadius = 5;
         currentMessageHeader.layer.masksToBounds = YES;
+        currentMessageHeader.lineBreakMode = UILineBreakModeWordWrap;
         currentMessageHeader.text = [currentMessage message];
         currentMessageHeader.backgroundColor = [UIColor lightGrayColor];
-        currentMessageHeader.lineBreakMode = UILineBreakModeWordWrap;
+        
         
         [currentMessageHeader setFont:[UIFont systemFontOfSize:13]];
         [cell.contentView addSubview:currentMessageHeader];
