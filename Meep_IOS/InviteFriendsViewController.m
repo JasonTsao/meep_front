@@ -237,15 +237,15 @@
             header = @"Groups";
         }
         else if(section == 1){
-            header = @"Friends";
+            header = @"Contacts";
         }
     }
-    UIView * headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width - 6, tableView.sectionHeaderHeight * 4)];
+    UIView * headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width - 6, 20)];
     headerView.backgroundColor = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_SECTION_HEADER_BACKGROUND_COLOR]];
     UIView * lineSeparatorMask = [[UIView alloc] initWithFrame:CGRectMake(0, (tableView.sectionHeaderHeight * 4)-1, headerView.frame.size.width, 1)];
     lineSeparatorMask.backgroundColor = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_BACKGROUND_COLOR]];
     [headerView addSubview:lineSeparatorMask];
-    UILabel * headerTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width - 6, tableView.sectionHeaderHeight * 4)];
+    UILabel * headerTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width - 6, 20)];
     headerTitle.text = header;
     headerTitle.textColor = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_SECTION_HEADER_TEXT_COLOR]];
     headerTitle.textAlignment = NSTextAlignmentRight;

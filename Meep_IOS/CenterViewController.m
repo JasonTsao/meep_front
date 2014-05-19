@@ -332,7 +332,12 @@
     if (![event.locationLongitude isEqual:[NSNull null]]) {
         UILabel *distance = [[UILabel alloc] initWithFrame:CGRectMake(0, detailYCoord, (contentView.frame.size.width) - 6, 21)];
         float distanceInMiles = [MEPLocationService distanceBetweenCoordinatesWithLatitudeOne:_lat longitudeOne:_lng latitudeTwo:[event.locationLatitude floatValue] longitudeTwo:[event.locationLongitude floatValue]];
-        distance.text = [NSString stringWithFormat:@"%.2Lf miles away",roundl(distanceInMiles*100.0)/100.0];
+        if (distanceInMiles >= 10) {
+            distance.text = [NSString stringWithFormat:@"%.0Lf miles away",roundl(distanceInMiles*100.0)/100.0];
+        }
+        else {
+            distance.text = [NSString stringWithFormat:@"%.1Lf miles away",roundl(distanceInMiles*100.0)/100.0];
+        }
         distance.textColor = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"F4F4F4"]];
         [distance setFont:[UIFont systemFontOfSize:8.5]];
         distance.textAlignment = NSTextAlignmentRight;
