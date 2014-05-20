@@ -405,10 +405,17 @@
 
 - (void) openGroupsPage
 {
+    //[self.view addSubview:_centerViewController.view];
+    //[self addChildViewController:_centerViewController];
+    
+    
     UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"CenterStoryboard" bundle:nil];
     _groupsViewController = (GroupsViewController *)[storyboard instantiateViewControllerWithIdentifier:@"groups"];
     UINavigationController *navigation = [[UINavigationController alloc]initWithRootViewController:_groupsViewController];
     [_groupsViewController setDelegate:self];
+    
+    //[self.view addSubview:_groupsViewController.view];
+    //[self addChildViewController:_groupsViewController];
     [self presentViewController:navigation animated:YES completion:nil];
 }
 

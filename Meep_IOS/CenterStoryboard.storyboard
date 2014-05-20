@@ -190,11 +190,13 @@
                                 <items>
                                     <navigationItem id="lnS-OW-Wtw">
                                         <barButtonItem key="leftBarButtonItem" title="Menu" id="DJB-0J-qMT">
+                                            <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                             <connections>
                                                 <action selector="openLeftPanelPage:" destination="2hO-ff-VXe" id="8aU-7q-0CZ"/>
                                             </connections>
                                         </barButtonItem>
-                                        <barButtonItem key="rightBarButtonItem" title="Create" id="4dj-Sl-SMc">
+                                        <barButtonItem key="rightBarButtonItem" systemItem="compose" id="4dj-Sl-SMc">
+                                            <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                             <connections>
                                                 <action selector="openCreateEventPage:" destination="2hO-ff-VXe" id="czD-J5-7Wn"/>
                                             </connections>
