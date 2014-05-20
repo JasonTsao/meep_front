@@ -123,15 +123,20 @@
     NSError* error;
     NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:_data options:0 error:&error];
     
-    if([jsonResponse objectForKey:@"chat_saved"] != nil){
-        [self.chatMessageTable reloadData];
+    if([jsonResponse objectForKey:@"chat_created"] != nil){
+        NSLog(@"new chat created and saved on server!");
+        NSInteger index = [_chatMessages count] - 1 ;
+        EventChatMessage *newChatMessage = _chatMessages[index];
+        newChatMessage.new_message = NO;
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:[_chatMessages count] - 1 inSection:0];
+        NSArray *indexPaths = [[NSArray alloc] initWithObjects:indexPath, nil];
+        [self.chatMessageTable reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
     }
     else if([jsonResponse objectForKey:@"comments"] != nil){
         NSArray *chatMessageArray = jsonResponse[@"comments"];
         
         for(int i = 0; i < [chatMessageArray count]; i++){
             EventChatMessage * message = [[EventChatMessage alloc] init];
-            
             message.event_id = _currentEvent.event_id;
             message.creator_id = [chatMessageArray[i][@"creator_id"] integerValue];
             message.creator_name = chatMessageArray[i][@"creator_name"];
