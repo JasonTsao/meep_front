@@ -291,9 +291,11 @@
         
         if (!_showPanel) {
             [self movePanelToOriginalPosition];
+            _centerViewController.showingLeftPanel = NO;
         } else {
             if (_showingLeftPanel) {
                 [self movePanelRight];
+                _centerViewController.showingLeftPanel = YES;
             }  else if (_showingRightPanel) {
                 [self movePanelLeft];
             }
