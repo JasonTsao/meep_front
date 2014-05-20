@@ -437,6 +437,9 @@
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"eventInfoCell"];
     NSString *eventInfoType;
+    
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
     if (indexPath.section == 0){
         eventInfoType = _basicInfoToDisplay[indexPath.row];
         cell.textLabel.font = [UIFont systemFontOfSize:14];

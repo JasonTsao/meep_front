@@ -272,7 +272,7 @@
             }
         } else {
             if (!_showingLeftPanel) {
-                childView = [self getRightView];
+                //childView = [self getRightView];
             }
             
         }
@@ -329,7 +329,7 @@
 
 - (void)movePanelLeft // to show right panel
 {
-    UIView *childView = [self getRightView];
+    /*UIView *childView = [self getRightView];
     [self.view sendSubviewToBack:childView];
     
     [UIView animateWithDuration:SLIDE_TIMING delay:0 options:UIViewAnimationOptionBeginFromCurrentState
@@ -341,7 +341,7 @@
                              
                              _centerViewController.rightButton.tag = 0;
                          }
-                     }];
+                     }];*/
 }
 
 - (void)movePanelRight // to show left panel

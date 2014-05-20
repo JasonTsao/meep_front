@@ -189,7 +189,11 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <items>
                                     <navigationItem id="lnS-OW-Wtw">
-                                        <barButtonItem key="leftBarButtonItem" title="Menu" id="DJB-0J-qMT"/>
+                                        <barButtonItem key="leftBarButtonItem" title="Menu" id="DJB-0J-qMT">
+                                            <connections>
+                                                <action selector="openLeftPanelPage:" destination="2hO-ff-VXe" id="8aU-7q-0CZ"/>
+                                            </connections>
+                                        </barButtonItem>
                                         <barButtonItem key="rightBarButtonItem" title="Create" id="4dj-Sl-SMc">
                                             <connections>
                                                 <action selector="openCreateEventPage:" destination="2hO-ff-VXe" id="czD-J5-7Wn"/>

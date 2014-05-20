@@ -46,6 +46,7 @@
 @property (weak, nonatomic) IBOutlet UITableViewCell *cellMain;
 @property (weak, nonatomic) IBOutlet UITableView *upcomingEvents;
 @property(nonatomic) NSInteger numDates;
+@property(nonatomic) BOOL showingLeftPanel;
 @property(nonatomic, strong) NSMutableArray *datesArray;
 @property(nonatomic, strong) NSMutableArray *datesSectionCountArray;
 @property(nonatomic, strong) NSMutableDictionary *datesSectionCountDictionary;
@@ -97,6 +98,19 @@
 {
     [_delegate openAddFriendsPage];
 }
+
+- (IBAction)openLeftPanelPage:(id)sender {
+    if(!_showingLeftPanel){
+        _showingLeftPanel = YES;
+        [_delegate movePanelRight];
+    }
+    else{
+        _showingLeftPanel = NO;
+        [_delegate movePanelToOriginalPosition];
+    }
+}
+
+
 
 #pragma mark -
 #pragma mark View Did Load/Unload
@@ -406,6 +420,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    _showingLeftPanel = NO;
+    
     // Get Location Data
     _locationManager = [[CLLocationManager alloc] init];
     _locationManager.distanceFilter = kCLDistanceFilterNone;
