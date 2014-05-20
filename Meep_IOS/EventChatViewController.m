@@ -5,7 +5,7 @@
 //  Created by Jason Tsao on 5/17/14.
 //  Copyright (c) 2014 futoi. All rights reserved.
 //
-
+#import <QuartzCore/QuartzCore.h>
 #import "EventChatViewController.h"
 #import "EventChatMessage.h"
 #import "CenterViewController.h"
@@ -44,18 +44,37 @@
 - (void)putMessageOnTable:(NSString *)message
 {
     EventChatMessage * chatMessage = [[EventChatMessage alloc] init];
-    NSInteger creator_id = 1;
-    NSInteger creator_name = @"Jason";
-    NSString * currentTime = @"2014-05-15 04:33:22";
+    NSInteger creator_id = [_account_id integerValue];
+    NSString *creator_name = _user_name;
+    //NSString * currentTime = @"2014-05-15 04:33:22";
     
+    NSLog(@"creator_id: %i", creator_id);
     chatMessage.event_id = _currentEvent.event_id;
     chatMessage.creator_id = creator_id;
-    chatMessage.creator_name = @"Jason";
+    chatMessage.creator_name = creator_name;
     chatMessage.message = message;
-    chatMessage.time_stamp = currentTime;
+    //chatMessage.time_stamp = currentTime;
     chatMessage.new_message = YES;
     
-    [_chatMessages addObject:message];
+    //[_chatMessages addObject:chatMessage];
+    
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:[_chatMessages indexOfObject:chatMessage] inSection:0];
+    NSArray *indexPaths = [[NSArray alloc] initWithObjects:indexPath, nil];
+    
+    
+    [_chatMessageTable beginUpdates];
+    [_chatMessages addObject:chatMessage];
+    [_chatMessageTable insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:[_chatMessages indexOfObject:chatMessage] inSection:0]]
+                     withRowAnimation:UITableViewRowAnimationFade];
+    [_chatMessageTable endUpdates];
+    NSLog(@"indexPath %@", indexPath);
+    NSLog(@"indexPaths %@", indexPaths);
+    
+    /*[_chatMessageTable beginUpdates];
+    [_chatMessageTable reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPaths] withRowAnimation:UITableViewRowAnimationBottom];
+    [_chatMessageTable endUpdates];*/
+    
+    NSLog(@"updates to table complete");
 }
 
 - (void) getPreviousChats{
@@ -78,6 +97,8 @@
     [conn start];
     
     [self putMessageOnTable:_chatMessageToSend.text];
+    
+    
 }
 
 -(void)connection:(NSURLConnection*)connection didReceiveResponse:(NSURLResponse*)response
@@ -102,15 +123,20 @@
     NSError* error;
     NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:_data options:0 error:&error];
     
-    if([jsonResponse objectForKey:@"chat_saved"] != nil){
-        [self.chatMessageTable reloadData];
+    if([jsonResponse objectForKey:@"chat_created"] != nil){
+        NSLog(@"new chat created and saved on server!");
+        NSInteger index = [_chatMessages count] - 1 ;
+        EventChatMessage *newChatMessage = _chatMessages[index];
+        newChatMessage.new_message = NO;
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:[_chatMessages count] - 1 inSection:0];
+        NSArray *indexPaths = [[NSArray alloc] initWithObjects:indexPath, nil];
+        [self.chatMessageTable reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
     }
     else if([jsonResponse objectForKey:@"comments"] != nil){
         NSArray *chatMessageArray = jsonResponse[@"comments"];
         
         for(int i = 0; i < [chatMessageArray count]; i++){
             EventChatMessage * message = [[EventChatMessage alloc] init];
-            
             message.event_id = _currentEvent.event_id;
             message.creator_id = [chatMessageArray[i][@"creator_id"] integerValue];
             message.creator_name = chatMessageArray[i][@"creator_name"];
@@ -312,7 +338,6 @@
     
     EventChatMessage *currentMessage = _chatMessages[indexPath.row];
     NSInteger message_length = [currentMessage.message length];
-
     
     BOOL isCreator;
     if(currentMessage.creator_id == [_account_id integerValue]){
@@ -323,7 +348,7 @@
     }
     CGSize messageSize = [self getMessageLabelSize:message_length withString:currentMessage.message isCreator:isCreator];
     
-    NSInteger message_pixel_length = messageSize.width;
+    NSInteger message_pixel_length = messageSize.width + 10;
     NSInteger message_pixel_height = messageSize.height;
 
 
@@ -362,22 +387,27 @@
         currentMessageHeader.layer.masksToBounds = YES;
         currentMessageHeader.lineBreakMode = UILineBreakModeWordWrap;
         
-        if([_chatMessages[indexPath.row] new_message]){
-            UIColor *self_message_color = [UIColor blackColor];
+        if(currentMessage.new_message){
+            UIColor *self_message_color = [UIColor whiteColor];
+            currentMessageHeader.textColor = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",BORDER_COLOR]];
+            currentMessageHeader.backgroundColor = self_message_color;
+            currentMessageHeader.layer.borderColor = [[CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",BORDER_COLOR]]CGColor];
+            currentMessageHeader.layer.borderWidth = 0.5;
         }
         else{
             UIColor *self_message_color = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",BORDER_COLOR]];
+            currentMessageHeader.textColor = [UIColor whiteColor];
+            currentMessageHeader.backgroundColor = self_message_color;
         }
         
-        UIColor *self_message_color = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",BORDER_COLOR]];
+        //UIColor *self_message_color = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",BORDER_COLOR]];
 
         currentMessageHeader.text = [currentMessage message];
         currentMessageHeader.numberOfLines = 0;
  
         [currentMessageHeader setFont:[UIFont systemFontOfSize:13]];
         
-        currentMessageHeader.textColor = [UIColor whiteColor];
-        currentMessageHeader.backgroundColor = self_message_color;
+        
         [cell.contentView addSubview:currentMessageHeader];
         
     }
@@ -398,6 +428,7 @@
     NSData *authenticated = [[NSUserDefaults standardUserDefaults] objectForKey:@"auth_client"];
     _authClient = [NSKeyedUnarchiver unarchiveObjectWithData:authenticated];
     _account_id = _authClient.enc_userid;
+    _user_name = _authClient.enc_username;
     
     [self getPreviousChats];
     // Do any additional setup after loading the view.

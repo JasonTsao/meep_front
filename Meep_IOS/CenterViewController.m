@@ -321,10 +321,10 @@
     [eventDetailLabel setFont:[UIFont systemFontOfSize:8.5]];
     [contentView addSubview:eventDetailLabel];
     
-    UILabel *eventHeader = [[UILabel alloc] initWithFrame:CGRectMake(6, 3, contentView.frame.size.width - 12, 40)];
+    UILabel *eventHeader = [[UILabel alloc] initWithFrame:CGRectMake(8, 3, contentView.frame.size.width - 12, 40)];
     eventHeader.text = event.description;
     [eventHeader setFont:[UIFont systemFontOfSize:14]];
-    eventHeader.lineBreakMode = UILineBreakModeWordWrap;
+    eventHeader.lineBreakMode = NSLineBreakByWordWrapping;
     eventHeader.numberOfLines = 0;
     eventHeader.textColor = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",MAIN_TEXT_COLOR]];
     [contentView addSubview:eventHeader];

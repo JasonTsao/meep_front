@@ -15,6 +15,7 @@
 @property (nonatomic) Event *currentEvent;
 @property (nonatomic) NSMutableArray *invitedFriends;
 @property (nonatomic) NSString *account_id;
+@property (nonatomic) NSString *user_name;
 @property(nonatomic, strong) NSMutableData * data;
 +(UIColor*)colorWithHexString:(NSString*)hex;
 @end

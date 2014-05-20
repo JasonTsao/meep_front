@@ -30,6 +30,8 @@
 		3CC11A451923F2FE003A6A57 /* tree60.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CC11A321923F2FE003A6A57 /* tree60.png */; };
 		3CC11A461923F2FE003A6A57 /* wine47.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CC11A331923F2FE003A6A57 /* wine47.png */; };
 		3CC11A481923FEB6003A6A57 /* jumping2.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CC11A471923FEB6003A6A57 /* jumping2.png */; };
+		3CCB8C72192BBE95008C62C0 /* yelp.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CCB8C71192BBE95008C62C0 /* yelp.png */; };
+		3CCB8C74192C0823008C62C0 /* map19.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CCB8C73192C0823008C62C0 /* map19.png */; };
 		3CCC507919059F9500EB0980 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CCC507819059F9500EB0980 /* Foundation.framework */; };
 		3CCC507B19059F9500EB0980 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CCC507A19059F9500EB0980 /* CoreGraphics.framework */; };
 		3CCC507D19059F9500EB0980 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CCC507C19059F9500EB0980 /* UIKit.framework */; };
@@ -168,6 +170,8 @@
 		3CC11A321923F2FE003A6A57 /* tree60.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tree60.png; sourceTree = "<group>"; };
 		3CC11A331923F2FE003A6A57 /* wine47.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wine47.png; sourceTree = "<group>"; };
 		3CC11A471923FEB6003A6A57 /* jumping2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = jumping2.png; sourceTree = "<group>"; };
+		3CCB8C71192BBE95008C62C0 /* yelp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = yelp.png; sourceTree = "<group>"; };
+		3CCB8C73192C0823008C62C0 /* map19.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = map19.png; sourceTree = "<group>"; };
 		3CCC507519059F9500EB0980 /* Meep_IOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Meep_IOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3CCC507819059F9500EB0980 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		3CCC507A19059F9500EB0980 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -353,6 +357,8 @@
 		3CC11A201923F2FE003A6A57 /* Icon Assets */ = {
 			isa = PBXGroup;
 			children = (
+				3CCB8C73192C0823008C62C0 /* map19.png */,
+				3CCB8C71192BBE95008C62C0 /* yelp.png */,
 				3C22DBFD1928A823006BCF7B /* UIBarButtonAdd_2x.png */,
 				3CC11A471923FEB6003A6A57 /* jumping2.png */,
 				3CC11A211923F2FE003A6A57 /* cocktail6.png */,
@@ -792,6 +798,7 @@
 				3CCC51551905A20D00EB0980 /* CenterViewController.xib in Resources */,
 				3CC11A451923F2FE003A6A57 /* tree60.png in Resources */,
 				3CC11A381923F2FE003A6A57 /* fork.png in Resources */,
+				3CCB8C72192BBE95008C62C0 /* yelp.png in Resources */,
 				3CC11A411923F2FE003A6A57 /* reset1.png in Resources */,
 				3CC11A341923F2FE003A6A57 /* cocktail6.png in Resources */,
 				3CCC51611905A20D00EB0980 /* MainCellRight.xib in Resources */,
@@ -802,6 +809,7 @@
 				3CC11A481923FEB6003A6A57 /* jumping2.png in Resources */,
 				3CCC51571905A20D00EB0980 /* InfoPlist.strings in Resources */,
 				3CC11A401923F2FE003A6A57 /* pointer5.png in Resources */,
+				3CCB8C74192C0823008C62C0 /* map19.png in Resources */,
 				3CCC51691905A20D00EB0980 /* UpcomingEventCell.storyboard in Resources */,
 				3CC11A361923F2FE003A6A57 /* communities.png in Resources */,
 			);
