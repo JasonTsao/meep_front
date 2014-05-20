@@ -188,8 +188,15 @@
                                 <rect key="frame" x="0.0" y="23" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <items>
-                                    <navigationItem title="Upcoming Events" id="lnS-OW-Wtw">
-                                        <barButtonItem key="rightBarButtonItem" title="Create" id="4dj-Sl-SMc">
+                                    <navigationItem id="lnS-OW-Wtw">
+                                        <barButtonItem key="leftBarButtonItem" title="Menu" id="DJB-0J-qMT">
+                                            <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                            <connections>
+                                                <action selector="openLeftPanelPage:" destination="2hO-ff-VXe" id="8aU-7q-0CZ"/>
+                                            </connections>
+                                        </barButtonItem>
+                                        <barButtonItem key="rightBarButtonItem" systemItem="compose" id="4dj-Sl-SMc">
+                                            <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                             <connections>
                                                 <action selector="openCreateEventPage:" destination="2hO-ff-VXe" id="czD-J5-7Wn"/>
                                             </connections>
@@ -213,6 +220,8 @@
                     </navigationItem>
                     <nil key="simulatedTopBarMetrics"/>
                     <connections>
+                        <outlet property="leftNavBarButton" destination="DJB-0J-qMT" id="ywM-Pl-owQ"/>
+                        <outlet property="rightNavBarButton" destination="4dj-Sl-SMc" id="YY5-Fu-U34"/>
                         <outlet property="upcomingEvents" destination="ueG-mt-Rth" id="k9k-ex-ErH"/>
                     </connections>
                 </viewController>
@@ -356,6 +365,9 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="Pl6-Hp-ROt" id="7Z8-Bu-fgR"/>
+                                </connections>
                             </textField>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="RNA-Dm-iXC">
                                 <rect key="frame" x="0.0" y="65" width="320" height="455"/>
@@ -701,7 +713,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="RTW-k9-B24">
-                        <barButtonItem key="rightBarButtonItem" title="Create" id="kwD-Ir-T4N">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="kwD-Ir-T4N">
                             <connections>
                                 <action selector="createEvent:" destination="zg3-sd-w2B" id="EDK-g4-bFe"/>
                             </connections>
@@ -1040,7 +1052,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                 <action selector="backToMain:" destination="N4S-Gt-oFK" id="Xmr-nb-sG7"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="Create" id="lYG-G0-CDf">
+                        <barButtonItem key="rightBarButtonItem" systemItem="compose" id="lYG-G0-CDf">
                             <connections>
                                 <segue destination="jKX-Pg-oou" kind="push" identifier="createGroup" id="1xp-zV-oCj"/>
                             </connections>
@@ -1459,11 +1471,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         <barButtonItem key="leftBarButtonItem" title="Back" id="Mcl-Vk-t1g">
                             <connections>
                                 <action selector="backToCenterFromAddFriends:" destination="5FU-yS-c5b" id="z22-iF-EMH"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="FB" id="d0j-Yb-vTF">
-                            <connections>
-                                <action selector="facebookSync:" destination="5FU-yS-c5b" id="llx-KW-e5T"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>

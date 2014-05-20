@@ -23,6 +23,7 @@
 
 @property(nonatomic, strong) id <GroupsViewControllerDelegate> delegate;
 @property(nonatomic, strong) NSMutableData * data;
+@property(nonatomic) BOOL showingLeftPanel;
 
 - (IBAction) backToMain:(id)sender;
 

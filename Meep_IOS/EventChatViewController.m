@@ -97,8 +97,7 @@
     [conn start];
     
     [self putMessageOnTable:_chatMessageToSend.text];
-    
-    
+    [_chatMessageToSend resignFirstResponder];
 }
 
 -(void)connection:(NSURLConnection*)connection didReceiveResponse:(NSURLResponse*)response
@@ -155,7 +154,7 @@
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    [textField resignFirstResponder];
+    NSLog(@"pressed return!!");
     return YES;
 }
 
@@ -331,10 +330,10 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"chatMessage" forIndexPath:indexPath];
 
     cell = [self clearCell:cell];
-    //Friend *currentFriend = [friends_list objectAtIndex:indexPath.row];
     CGRect cellFrameRect = cell.contentView.frame;
     cellFrameRect.size.height = (cell.contentView.frame.size.height + 10 );
     cell.contentView.frame = cellFrameRect;
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     EventChatMessage *currentMessage = _chatMessages[indexPath.row];
     NSInteger message_length = [currentMessage.message length];

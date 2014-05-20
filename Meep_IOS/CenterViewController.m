@@ -13,6 +13,7 @@
 #import "MEPLocationService.h"
 #import <CoreLocation/CoreLocation.h>
 
+
 #define BORDER_WIDTH 1
 
 // Color Settings (Green Context Background, White Table Background)
@@ -37,10 +38,15 @@
  
 @interface CenterViewController () <UITableViewDataSource, UICollectionViewDataSource>
 
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *leftNavBarButton;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *rightNavBarButton;
+
+
 @property (weak, nonatomic) IBOutlet UITableView *upcomingEventsTable;
 @property (weak, nonatomic) IBOutlet UITableViewCell *cellMain;
 @property (weak, nonatomic) IBOutlet UITableView *upcomingEvents;
 @property(nonatomic) NSInteger numDates;
+
 @property(nonatomic, strong) NSMutableArray *datesArray;
 @property(nonatomic, strong) NSMutableArray *datesSectionCountArray;
 @property(nonatomic, strong) NSMutableDictionary *datesSectionCountDictionary;
@@ -92,6 +98,19 @@
 {
     [_delegate openAddFriendsPage];
 }
+
+- (IBAction)openLeftPanelPage:(id)sender {
+    if(!_showingLeftPanel){
+        _showingLeftPanel = YES;
+        [_delegate movePanelRight];
+    }
+    else{
+        _showingLeftPanel = NO;
+        [_delegate movePanelToOriginalPosition];
+    }
+}
+
+
 
 #pragma mark -
 #pragma mark View Did Load/Unload
@@ -401,11 +420,18 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    _showingLeftPanel = NO;
+    
     // Get Location Data
     _locationManager = [[CLLocationManager alloc] init];
     _locationManager.distanceFilter = kCLDistanceFilterNone;
     _locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters;
     [_locationManager startUpdatingLocation];
+    
+    // Set Button Icons
+    
+    //[_leftNavBarButton setImage:[UIImage imageNamed:NSImageNameListViewTemplate]];
     
     UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
     [refreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];

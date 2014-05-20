@@ -272,7 +272,7 @@
             }
         } else {
             if (!_showingLeftPanel) {
-                childView = [self getRightView];
+                //childView = [self getRightView];
             }
             
         }
@@ -291,9 +291,11 @@
         
         if (!_showPanel) {
             [self movePanelToOriginalPosition];
+            _centerViewController.showingLeftPanel = NO;
         } else {
             if (_showingLeftPanel) {
                 [self movePanelRight];
+                _centerViewController.showingLeftPanel = YES;
             }  else if (_showingRightPanel) {
                 [self movePanelLeft];
             }
@@ -329,7 +331,7 @@
 
 - (void)movePanelLeft // to show right panel
 {
-    UIView *childView = [self getRightView];
+    /*UIView *childView = [self getRightView];
     [self.view sendSubviewToBack:childView];
     
     [UIView animateWithDuration:SLIDE_TIMING delay:0 options:UIViewAnimationOptionBeginFromCurrentState
@@ -341,7 +343,7 @@
                              
                              _centerViewController.rightButton.tag = 0;
                          }
-                     }];
+                     }];*/
 }
 
 - (void)movePanelRight // to show left panel
@@ -403,10 +405,17 @@
 
 - (void) openGroupsPage
 {
+    //[self.view addSubview:_centerViewController.view];
+    //[self addChildViewController:_centerViewController];
+    
+    
     UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"CenterStoryboard" bundle:nil];
     _groupsViewController = (GroupsViewController *)[storyboard instantiateViewControllerWithIdentifier:@"groups"];
     UINavigationController *navigation = [[UINavigationController alloc]initWithRootViewController:_groupsViewController];
     [_groupsViewController setDelegate:self];
+    
+    //[self.view addSubview:_groupsViewController.view];
+    //[self addChildViewController:_groupsViewController];
     [self presentViewController:navigation animated:YES completion:nil];
 }
 
