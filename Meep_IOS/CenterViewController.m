@@ -13,6 +13,7 @@
 #import "MEPLocationService.h"
 #import <CoreLocation/CoreLocation.h>
 
+
 #define BORDER_WIDTH 1
 
 // Color Settings (Green Context Background, White Table Background)
@@ -36,6 +37,10 @@
 */
  
 @interface CenterViewController () <UITableViewDataSource, UICollectionViewDataSource>
+
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *leftNavBarButton;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *rightNavBarButton;
+
 
 @property (weak, nonatomic) IBOutlet UITableView *upcomingEventsTable;
 @property (weak, nonatomic) IBOutlet UITableViewCell *cellMain;
@@ -406,6 +411,10 @@
     _locationManager.distanceFilter = kCLDistanceFilterNone;
     _locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters;
     [_locationManager startUpdatingLocation];
+    
+    // Set Button Icons
+    
+    //[_leftNavBarButton setImage:[UIImage imageNamed:NSImageNameListViewTemplate]];
     
     UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
     [refreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];

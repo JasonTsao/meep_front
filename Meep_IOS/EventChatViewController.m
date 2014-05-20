@@ -97,8 +97,7 @@
     [conn start];
     
     [self putMessageOnTable:_chatMessageToSend.text];
-    
-    
+    [_chatMessageToSend resignFirstResponder];
 }
 
 -(void)connection:(NSURLConnection*)connection didReceiveResponse:(NSURLResponse*)response
@@ -155,7 +154,7 @@
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    [textField resignFirstResponder];
+    NSLog(@"pressed return!!");
     return YES;
 }
 
