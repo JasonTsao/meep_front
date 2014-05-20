@@ -10,7 +10,7 @@
 #import "Group.h"
 
 @interface Event : NSObject
-@property NSInteger * event_id;
+@property NSInteger event_id;
 @property NSString * name;
 @property NSString * description;
 @property NSString * locationName;

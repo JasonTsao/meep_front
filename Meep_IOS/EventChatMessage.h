@@ -10,8 +10,8 @@
 #import "Group.h"
 
 @interface EventChatMessage : NSObject
-@property NSInteger * event_id;
-@property NSInteger * creator_id;
+@property NSInteger event_id;
+@property NSInteger creator_id;
 @property NSString * creator_name;
 @property NSString * message;
 @property NSString * locationName;
@@ -19,5 +19,6 @@
 @property NSString * locationLatitude;
 @property NSString * locationLongitude;
 @property NSString * time_stamp;
+@property BOOL * new_message;
 @property Group * eventGroup;
 @end

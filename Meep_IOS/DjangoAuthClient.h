@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "DjangoAuthLoginResultObject.h"
 #import "MEEPhttp.h"
 
 // Notifications
@@ -31,7 +32,7 @@ extern NSString *const kDjangoAuthClientLoginFailureInactiveAccount;
 
 // Client class definition
 @interface DjangoAuthClient : NSObject <NSURLConnectionDelegate, NSCoding>{
-
+NSString *enc_userid;
 NSString *enc_username;
 NSString *enc_password;
 NSString *enc_email;
@@ -40,6 +41,7 @@ BOOL enc_serverDidRespond;
 BOOL enc_serverDidAuthenticate;
 }
 
+@property (nonatomic) NSString *enc_userid;
 @property (nonatomic) NSString *enc_username;
 @property (nonatomic) NSString *enc_password;
 @property (nonatomic) NSString *enc_email;
@@ -49,7 +51,9 @@ BOOL enc_serverDidAuthenticate;
 
 @property (unsafe_unretained) id <DjangoAuthClientDelegate> delegate;
 
+@property (nonatomic) BOOL loginSucceeded;
 @property (nonatomic, copy) NSData *requestBodyData;
+@property (nonatomic, strong) DjangoAuthLoginResultObject *djangoResultObject;
 @property (nonatomic, retain) NSURL *requestURL;
 @property (nonatomic, strong) NSMutableData *responseData;
 
