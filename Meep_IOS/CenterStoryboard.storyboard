@@ -670,7 +670,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="RTW-k9-B24">
-                        <barButtonItem key="rightBarButtonItem" title="Create" id="kwD-Ir-T4N">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="kwD-Ir-T4N">
                             <connections>
                                 <action selector="createEvent:" destination="zg3-sd-w2B" id="EDK-g4-bFe"/>
                             </connections>
@@ -1009,7 +1009,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                 <action selector="backToMain:" destination="N4S-Gt-oFK" id="Xmr-nb-sG7"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="Create" id="lYG-G0-CDf">
+                        <barButtonItem key="rightBarButtonItem" systemItem="compose" id="lYG-G0-CDf">
                             <connections>
                                 <segue destination="jKX-Pg-oou" kind="push" identifier="createGroup" id="1xp-zV-oCj"/>
                             </connections>
@@ -1428,11 +1428,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         <barButtonItem key="leftBarButtonItem" title="Back" id="Mcl-Vk-t1g">
                             <connections>
                                 <action selector="backToCenterFromAddFriends:" destination="5FU-yS-c5b" id="z22-iF-EMH"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="FB" id="d0j-Yb-vTF">
-                            <connections>
-                                <action selector="facebookSync:" destination="5FU-yS-c5b" id="llx-KW-e5T"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
