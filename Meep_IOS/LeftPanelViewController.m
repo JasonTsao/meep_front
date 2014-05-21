@@ -153,6 +153,12 @@
         else if([_navItems[indexPath.row] isEqualToString:@"Groups"] ){
             img.image = [UIImage imageNamed:@"groups"];
         }
+        else if([_navItems[indexPath.row] isEqualToString:@"Home"] ){
+            img.image = [UIImage imageNamed:@"home"];
+        }
+        else if([_navItems[indexPath.row] isEqualToString:@"Friends"] ){
+            img.image = [UIImage imageNamed:@"friends"];
+        }
         img.layer.cornerRadius = img.frame.size.height/2;
         img.layer.masksToBounds = YES;
         [cell.contentView addSubview:img];
