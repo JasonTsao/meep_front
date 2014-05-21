@@ -165,7 +165,6 @@
     }
     else if(indexPath.section == 2){
         NSInteger index = indexPath.row + 4;
-        //cell.textLabel.text = _navItems[index] ;
         UILabel *settingsHeader = [[UILabel alloc] initWithFrame:CGRectMake(60, 10, 70, 21)];
         settingsHeader.text = _navItems[index];
         [settingsHeader setFont:[UIFont systemFontOfSize:18]];
