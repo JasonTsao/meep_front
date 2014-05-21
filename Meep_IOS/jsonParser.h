@@ -11,4 +11,5 @@
 @interface jsonParser : NSObject
 +(NSArray*)friendsArray:(NSArray*)friends_list;
 +(NSArray*)eventsArray:(NSArray*)events_list;
++(NSArray*)groupsArray:(NSArray*)groups_list;
 @end

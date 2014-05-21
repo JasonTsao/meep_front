@@ -623,7 +623,6 @@
             
             [[_dateEventsDictionary valueForKey:eventDate] addObject:event];
         }
-
     }
 
     NSSortDescriptor* nameSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"start_time" ascending:YES];
