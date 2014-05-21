@@ -45,16 +45,16 @@
 @property (weak, nonatomic) IBOutlet UITableView *upcomingEventsTable;
 @property (weak, nonatomic) IBOutlet UITableViewCell *cellMain;
 @property (weak, nonatomic) IBOutlet UITableView *upcomingEvents;
-@property(nonatomic) NSInteger numDates;
+@property (nonatomic, assign) NSInteger numDates;
 
-@property(nonatomic, strong) NSMutableArray *datesArray;
-@property(nonatomic, strong) NSMutableArray *datesSectionCountArray;
-@property(nonatomic, strong) NSMutableDictionary *datesSectionCountDictionary;
-@property(nonatomic, strong) NSMutableDictionary *dateEventsDictionary;
+@property (nonatomic, strong) NSMutableArray *datesArray;
+@property (nonatomic, strong) NSMutableArray *datesSectionCountArray;
+@property (nonatomic, strong) NSMutableDictionary *datesSectionCountDictionary;
+@property (nonatomic, strong) NSMutableDictionary *dateEventsDictionary;
 
-@property(nonatomic, strong) NSArray * eventArray;
+@property (nonatomic, strong) NSArray * eventArray;
 
-@property(nonatomic, strong) NSMutableData * data;
+@property (nonatomic, strong) NSMutableData * data;
 
 @property (nonatomic, strong) CLLocationManager * locationManager;
 @property (nonatomic, assign) float lat;
