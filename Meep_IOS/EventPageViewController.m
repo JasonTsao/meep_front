@@ -15,7 +15,7 @@
 #import "EventAttendeesDistanceViewController.h"
 #import "EventAttendeesViewController.h"
 #import "EventChatViewController.h"
-#import "CenterViewController.h"
+#import "Colors.h"
 #import <CoreLocation/CoreLocation.h>
 
 #define CONTENT_BG_COLOR "3FC380"
@@ -397,7 +397,7 @@
     CGSize expectedSize = [title sizeWithFont:[UIFont systemFontOfSize:16] constrainedToSize:CGRectMake(0, 0, cell.frame.size.width - (CONTENT_SPACING * 2), cell.frame.size.height - (CONTENT_SPACING * 2)).size lineBreakMode:NSLineBreakByWordWrapping];
     cell.frame = CGRectMake(0, 0, cell.frame.size.width, expectedSize.height * 2);
     UIView * titleView = [[UIView alloc] initWithFrame:CGRectMake(CONTENT_SPACING, CONTENT_SPACING, cell.frame.size.width - (CONTENT_SPACING * 2), cell.frame.size.height - (CONTENT_SPACING * 2))];
-    titleView.backgroundColor = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",CONTENT_BG_COLOR]];
+    titleView.backgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",CONTENT_BG_COLOR]];
     UILabel* titleText = [[UILabel alloc] initWithFrame:CGRectMake(CONTENT_SPACING, CONTENT_SPACING, cell.frame.size.width - (CONTENT_SPACING * 2), cell.frame.size.height - (CONTENT_SPACING * 2))];
     if ([_currentEvent.name length] > 1) {
         titleText.text = _currentEvent.name;
@@ -405,7 +405,7 @@
     else {
         titleText.text = _currentEvent.description;
     }
-    titleText.textColor = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",CONTENT_TEXT_COLOR]];
+    titleText.textColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",CONTENT_TEXT_COLOR]];
     titleText.textAlignment = NSTextAlignmentLeft;
     titleText.lineBreakMode = NSLineBreakByWordWrapping;
     titleView.layer.cornerRadius = 5;
@@ -418,11 +418,11 @@
 - (UITableViewCell *) mainContentView:(UITableViewCell*)cell {
     NSLog(@"%f",cell.frame.size.height);
     UIView * textContent = [[UIView alloc] initWithFrame:CGRectMake(CONTENT_SPACING, CONTENT_SPACING, cell.frame.size.width - (CONTENT_SPACING * 2), cell.frame.size.height - (CONTENT_SPACING * 2))];
-    textContent.backgroundColor = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",CONTENT_BG_COLOR]];
+    textContent.backgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",CONTENT_BG_COLOR]];
     textContent.layer.cornerRadius = 5;
     if (!(_currentEvent.locationAddress == (id)[NSNull null] || _currentEvent.locationAddress.length == 0)) {
         UIView * mapViewFrame = [[UIView alloc] initWithFrame:CGRectMake(cell.frame.size.width/2 + CONTENT_SPACING, CONTENT_SPACING, (cell.frame.size.width/2) - (CONTENT_SPACING * 2), cell.frame.size.height - (CONTENT_SPACING * 2))];
-        mapViewFrame.backgroundColor = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",CONTENT_BG_COLOR]];
+        mapViewFrame.backgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",CONTENT_BG_COLOR]];
         mapViewFrame.layer.cornerRadius = 5;
         UIView * mapFrame = [[UIView alloc] initWithFrame:CGRectMake(2, 2, mapViewFrame.frame.size.width - 4, mapViewFrame.frame.size.height - 4)];
         _mapView.frame = CGRectMake(CONTENT_SPACING, CONTENT_SPACING, mapViewFrame.frame.size.width - (CONTENT_SPACING * 2), mapViewFrame.frame.size.height - (CONTENT_SPACING * 2));
@@ -437,7 +437,7 @@
         CGSize descSize = [_currentEvent.description sizeWithFont:[UIFont systemFontOfSize:14] constrainedToSize:textContent.frame.size lineBreakMode:NSLineBreakByWordWrapping];
         UILabel * desc = [[UILabel alloc] initWithFrame:CGRectMake(2, yCoord, descSize.width-4, descSize.height)];
         desc.text = _currentEvent.description;
-        desc.textColor = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",CONTENT_TEXT_COLOR]];
+        desc.textColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",CONTENT_TEXT_COLOR]];
         [desc setFont:[UIFont systemFontOfSize:9]];
         yCoord = 6 + descSize.height;
         [textContent addSubview:desc];
@@ -445,13 +445,13 @@
     if (![_currentEvent.locationAddress isEqual:[NSNull null]]) {
         UILabel * addressLabel = [[UILabel alloc] initWithFrame:CGRectMake(2, yCoord, textContent.frame.size.width - 4, 15)];
         addressLabel.text = @"Location";
-        addressLabel.textColor = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",CONTENT_TEXT_COLOR]];
+        addressLabel.textColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",CONTENT_TEXT_COLOR]];
         [addressLabel setFont:[UIFont systemFontOfSize:9.5]];
         [textContent addSubview:addressLabel];
         yCoord = yCoord + 1 + addressLabel.frame.size.height;
         UILabel * address = [[UILabel alloc] initWithFrame:CGRectMake(2, yCoord, textContent.frame.size.width-4, 15)];
         address.text = _currentEvent.locationAddress;
-        address.textColor = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",CONTENT_TEXT_COLOR]];
+        address.textColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",CONTENT_TEXT_COLOR]];
         [address setFont:[UIFont systemFontOfSize:9]];
         yCoord = yCoord + 6 + address.frame.size.height;
         [textContent addSubview:address];
@@ -465,7 +465,7 @@
         NSString * startTime = [dateFormatter stringFromDate:startedDate];
         UILabel * startTimeLabel = [[UILabel alloc] initWithFrame:CGRectMake(2, yCoord, textContent.frame.size.width-4, 15)];
         startTimeLabel.text = startTime;
-        startTimeLabel.textColor = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",CONTENT_TEXT_COLOR]];
+        startTimeLabel.textColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",CONTENT_TEXT_COLOR]];
         [startTimeLabel setFont:[UIFont systemFontOfSize:9]];
         [textContent addSubview:startTimeLabel];
     }
@@ -476,7 +476,7 @@
 - (UITableViewCell *) externalLinksCellView:(UITableViewCell*)cell {
     cell.frame = CGRectMake(0, 0, cell.frame.size.width, 60);
     UIView * linksContainer = [[UIView alloc] initWithFrame:CGRectMake(CONTENT_SPACING, CONTENT_SPACING, cell.frame.size.width - (CONTENT_SPACING * 2), cell.frame.size.height - (CONTENT_SPACING * 2))];
-    linksContainer.backgroundColor = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",CONTENT_BG_COLOR]];
+    linksContainer.backgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",CONTENT_BG_COLOR]];
     if (![_currentEvent.locationAddress isEqual:[NSNull null]]) {
         UIButton * mapsIconHolder = [[UIButton alloc] initWithFrame:CGRectMake(2, 2, linksContainer.frame.size.height - 8, linksContainer.frame.size.height - 8)];
         [mapsIconHolder addTarget:self action:@selector(openMapsLink:) forControlEvents:UIControlEventTouchUpInside];
@@ -486,7 +486,7 @@
         UIGraphicsBeginImageContext(rect.size);
         CGContextRef context = UIGraphicsGetCurrentContext();
         CGContextClipToMask(context, rect, iconImage.CGImage);
-        CGContextSetFillColorWithColor(context, [[CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",CONTENT_TEXT_COLOR]] CGColor]);
+        CGContextSetFillColorWithColor(context, [[Colors colorWithHexString:[NSString stringWithFormat:@"%s",CONTENT_TEXT_COLOR]] CGColor]);
         CGContextFillRect(context, rect);
         UIImage *image2 = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
@@ -496,7 +496,7 @@
         
         UILabel * mapIconLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, mapsIconHolder.frame.size.height - 6, mapsIconHolder.frame.size.width, 10)];
         mapIconLabel.text = @"Maps";
-        mapIconLabel.textColor = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",CONTENT_TEXT_COLOR]];
+        mapIconLabel.textColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",CONTENT_TEXT_COLOR]];
         [mapIconLabel setFont:[UIFont systemFontOfSize:9]];
         mapIconLabel.textAlignment = NSTextAlignmentCenter;
         [mapsIconHolder addSubview:mapIconLabel];

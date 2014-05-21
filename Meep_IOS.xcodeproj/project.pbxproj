@@ -86,6 +86,7 @@
 		968630391909FAB200CAE305 /* Photo.m in Sources */ = {isa = PBXBuildFile; fileRef = 968630341909FAB200CAE305 /* Photo.m */; };
 		96967E1D191D4887007613AF /* EditEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96967E1C191D4887007613AF /* EditEventViewController.m */; };
 		96967E20191D5BF5007613AF /* AddRemoveFriendsFromEventTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96967E1F191D5BF5007613AF /* AddRemoveFriendsFromEventTableViewController.m */; };
+		96ACDDDA192C3E3D0040D5FC /* Colors.m in Sources */ = {isa = PBXBuildFile; fileRef = 96ACDDD9192C3E3D0040D5FC /* Colors.m */; };
 		96AFDA4819286FFC0055181C /* EventChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96AFDA4719286FFC0055181C /* EventChatViewController.m */; };
 		96B397CB191B4BB700FFA7BF /* SignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96B397CA191B4BB700FFA7BF /* SignUpViewController.m */; };
 		96DB11761926D2BC0096FEDE /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96DB11751926D2BC0096FEDE /* FacebookSDK.framework */; };
@@ -256,6 +257,8 @@
 		96967E1C191D4887007613AF /* EditEventViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditEventViewController.m; sourceTree = "<group>"; };
 		96967E1E191D5BF5007613AF /* AddRemoveFriendsFromEventTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddRemoveFriendsFromEventTableViewController.h; sourceTree = "<group>"; };
 		96967E1F191D5BF5007613AF /* AddRemoveFriendsFromEventTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddRemoveFriendsFromEventTableViewController.m; sourceTree = "<group>"; };
+		96ACDDD8192C3E3D0040D5FC /* Colors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Colors.h; sourceTree = "<group>"; };
+		96ACDDD9192C3E3D0040D5FC /* Colors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Colors.m; sourceTree = "<group>"; };
 		96AFDA4619286FFC0055181C /* EventChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventChatViewController.h; sourceTree = "<group>"; };
 		96AFDA4719286FFC0055181C /* EventChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventChatViewController.m; sourceTree = "<group>"; };
 		96B397C9191B4BB700FFA7BF /* SignUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignUpViewController.h; sourceTree = "<group>"; };
@@ -454,6 +457,8 @@
 				DAF700811917209A004EDC66 /* ABIGBOOB.m */,
 				3C1FD80819287EC000AA4593 /* MEPGlossyUIView.h */,
 				3C1FD80919287EC000AA4593 /* MEPGlossyUIView.m */,
+				96ACDDD8192C3E3D0040D5FC /* Colors.h */,
+				96ACDDD9192C3E3D0040D5FC /* Colors.m */,
 			);
 			path = Meep_IOS;
 			sourceTree = "<group>";
@@ -874,6 +879,7 @@
 				96E1D277191854D900951DEB /* AuthenticationViewController.m in Sources */,
 				3CCC51541905A20D00EB0980 /* CenterViewController.m in Sources */,
 				3CCC516A1905A20D00EB0980 /* User.m in Sources */,
+				96ACDDDA192C3E3D0040D5FC /* Colors.m in Sources */,
 				96E1D2311915709300951DEB /* InvitedFriend.m in Sources */,
 				96967E20191D5BF5007613AF /* AddRemoveFriendsFromEventTableViewController.m in Sources */,
 				968630381909FAB200CAE305 /* FriendsListTableViewController.m in Sources */,
