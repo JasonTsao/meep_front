@@ -11,6 +11,7 @@
 #import "EventPageViewController.h"
 #import "Event.h"
 #import "MEEPhttp.h"
+#import "jsonParser.h"
 
 @interface GroupEventsTableViewController ()
 
@@ -71,27 +72,15 @@
     NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:_data options:0 error:&error];
     
     NSArray * upcoming = jsonResponse[@"upcoming_events"];
-    NSArray * owned = jsonResponse[@"owned_upcoming_events"];
-    NSString *startTime;
-    NSMutableArray *unsortedEventArray = [[NSMutableArray alloc] init];
     NSInteger numRowsInSection = 0;
+    NSMutableArray *unsortedEventArray = [jsonParser eventsArray:upcoming];
     _datesArray = [[NSMutableArray alloc] init];
-    for(NSDictionary *eventObj in upcoming) {
-        if( [eventObj[@"start_time"]  isEqual:[NSNull null]]){
-            startTime = eventObj[@"created"];
-        }
-        else{
-            startTime = eventObj[@"start_time"];
-        }
-        
-        Event * event = [[Event alloc] initWithDescription:eventObj[@"description"] withName:eventObj[@"name"] startTime:startTime eventId:[eventObj[@"id"] integerValue]] ;
-        event.locationName = eventObj[@"location_name"];
-        event.locationAddress = eventObj[@"location_address"];
-        event.end_time = eventObj[@"end_time"];
+    
+    for( Event *event in unsortedEventArray){
         //event.group = eventObj[@"group"];
         
         //getting number of differnt days
-        NSTimeInterval startedTime = [startTime doubleValue];
+        NSTimeInterval startedTime = [event.start_time doubleValue];
         NSDate *startedDate = [[NSDate alloc] initWithTimeIntervalSince1970:startedTime];
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setDateFormat:@"yyyy-MM-dd"];
@@ -108,18 +97,16 @@
         else{
             NSInteger currentCount = [[_datesSectionCountDictionary valueForKey:eventDate] integerValue];
             currentCount++;
-            NSString *newCount = [NSString stringWithFormat:@"%i", currentCount];
+            NSString *newCount = [NSString stringWithFormat:@"%li", (long)currentCount];
             
             [_datesSectionCountDictionary setValue:newCount forKey:eventDate];
             
             [[_dateEventsDictionary valueForKey:eventDate] addObject:event];
         }
     }
-    
+
     NSSortDescriptor* nameSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"start_time" ascending:YES];
     _eventArray = [unsortedEventArray sortedArrayUsingDescriptors:[NSArray arrayWithObject:nameSortDescriptor]];
-    //self.tableView.dataSource = self;
-    //self.tableView.delegate = self;
     [self.tableView reloadData];
 }
 
