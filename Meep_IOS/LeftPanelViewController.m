@@ -121,7 +121,7 @@
         name = _authClient.enc_username;
         
         //UILabel *userHeader = [[UILabel alloc] initWithFrame:CGRectMake(60, 10, 235, 21)];
-        UILabel *userHeader = [[UILabel alloc] initWithFrame:CGRectMake(60, 10, 50, 21)];
+        UILabel *userHeader = [[UILabel alloc] initWithFrame:CGRectMake(60, 10, 70, 21)];
         userHeader.text = name;
         [userHeader setFont:[UIFont systemFontOfSize:18]];
         userHeader.textColor = [UIColor lightGrayColor];
@@ -131,17 +131,46 @@
         
         //NEED TO ACTUALLY GET REAL PF PIC LATER!
         UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(8, 4, 40, 40)];
+        
         img.image = [UIImage imageNamed:@"ManSilhouette"];
         img.layer.cornerRadius = img.frame.size.height/2;
         img.layer.masksToBounds = YES;
         [cell.contentView addSubview:img];
     }
     else if(indexPath.section == 1){
-        cell.textLabel.text = _navItems[indexPath.row];
+        //cell.textLabel.text = _navItems[indexPath.row];
+        UILabel *leftNavHeader = [[UILabel alloc] initWithFrame:CGRectMake(60, 10, 70, 21)];
+        leftNavHeader.text = _navItems[indexPath.row];
+        [leftNavHeader setFont:[UIFont systemFontOfSize:18]];
+        leftNavHeader.textColor = [UIColor lightGrayColor];
+        [cell.contentView addSubview:leftNavHeader];
+        
+        UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(8, 4, 40, 40)];
+        
+        if([_navItems[indexPath.row] isEqualToString:@"Search"] ){
+            img.image = [UIImage imageNamed:@"search"];
+        }
+        else if([_navItems[indexPath.row] isEqualToString:@"Groups"] ){
+            img.image = [UIImage imageNamed:@"groups"];
+        }
+        img.layer.cornerRadius = img.frame.size.height/2;
+        img.layer.masksToBounds = YES;
+        [cell.contentView addSubview:img];
     }
     else if(indexPath.section == 2){
         NSInteger index = indexPath.row + 4;
-        cell.textLabel.text = _navItems[index] ;
+        //cell.textLabel.text = _navItems[index] ;
+        UILabel *settingsHeader = [[UILabel alloc] initWithFrame:CGRectMake(60, 10, 70, 21)];
+        settingsHeader.text = _navItems[index];
+        [settingsHeader setFont:[UIFont systemFontOfSize:18]];
+        settingsHeader.textColor = [UIColor lightGrayColor];
+        [cell.contentView addSubview:settingsHeader];
+        
+        UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(8, 4, 40, 40)];
+        img.image = [UIImage imageNamed:@"settings"];
+        img.layer.cornerRadius = img.frame.size.height/2;
+        img.layer.masksToBounds = YES;
+        [cell.contentView addSubview:img];
     }
     
     return cell;
@@ -162,7 +191,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    _navItems = [[NSArray alloc] initWithObjects:@"Home",@"Groups", @"Friends",@"Add Friends", @"Settings" ,nil];
+    _navItems = [[NSArray alloc] initWithObjects:@"Home",@"Groups", @"Friends",@"Search", @"Settings" ,nil];
     [self.navTable registerClass:[UITableViewCell class] forCellReuseIdentifier:@"navItem"];
     self.navTable.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 }
