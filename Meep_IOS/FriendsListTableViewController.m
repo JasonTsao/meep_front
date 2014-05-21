@@ -7,6 +7,7 @@
 //
 
 #import "FriendsListTableViewController.h"
+#import "jsonParser.h"
 #import "MEEPhttp.h"
 
 @interface FriendsListTableViewController (){
@@ -64,40 +65,7 @@
     NSError* error;
     NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:_data options:0 error:&error];
     NSArray * friends = jsonResponse[@"friends"];
-    friends_list = [[NSMutableArray alloc]init];
-    for( int i = 0; i< [friends count]; i++){
-        Friend *new_friend = [[Friend alloc]init];
-        
-        NSDictionary * new_friend_dict = [NSJSONSerialization JSONObjectWithData: [friends[i] dataUsingEncoding:NSUTF8StringEncoding]
-                                                                         options: NSJSONReadingMutableContainers
-                                                                           error: &error];
-        
-        
-        new_friend.name = new_friend_dict[@"name"];
-        new_friend.numTimesInvitedByMe = new_friend_dict[@"invited_count"];
-        new_friend.phoneNumber= new_friend_dict[@"phone_number"];
-        new_friend.imageFileName = new_friend_dict[@"pf_pic"];
-        new_friend.bio = new_friend_dict[@"bio"];
-        new_friend.account_id = [new_friend_dict[@"account_id"] intValue];
-        
-        if ([new_friend_dict[@"pf_pic"] length] == 0){
-            UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(8, 4, 40, 40)];
-            img.image = [UIImage imageNamed:@"ManSilhouette"];
-            //new_friend.profilePic = img;
-            new_friend.profilePic = img.image;
-        }
-        else{
-            NSURL *url = [[NSURL alloc] initWithString:new_friend_dict[@"fb_pfpic_url"]];
-            //NSURL *url = [[NSURL alloc] initWithString:@"https://graph.facebook.com/jason.s.tsao/picture"];
-            NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url];
-            //NSData *urlData = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:&response error:nil];
-            NSData *urlData = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:nil error:nil];
-            UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
-            new_friend.profilePic = image;
-        }
-  
-        [friends_list addObject:new_friend];
-    }
+    friends_list = [jsonParser friendsArray:friends];
     
     NSData *data = [NSKeyedArchiver archivedDataWithRootObject:friends_list];
     [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"friends_list"];
@@ -121,11 +89,16 @@
     friends_list = [[NSMutableArray alloc]init];
     
     NSData *friendsListData = [[NSUserDefaults standardUserDefaults] objectForKey:@"friends_list"];
-    NSMutableArray *user_friends_list = [NSKeyedUnarchiver unarchiveObjectWithData:friendsListData];
     [self getFriendsList];
-    friends_list = user_friends_list;
     
-    /*if (!user_friends_list){
+    
+    /*
+    Code for caching friends list
+     
+    //NSMutableArray *user_friends_list = [NSKeyedUnarchiver unarchiveObjectWithData:friendsListData];
+    //friends_list = user_friends_list;
+
+    if (!user_friends_list){
         NSLog(@"There is no friends list stored already");
         [self getFriendsList];
     }
