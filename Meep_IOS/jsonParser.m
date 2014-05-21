@@ -51,4 +51,30 @@
     }
     return friends_list;
 }
+
++(NSArray*)eventsArray:(NSArray*)events_list
+{
+    NSMutableArray *events = [[NSMutableArray alloc] init];
+    for(NSDictionary *eventObj in events_list) {
+        NSString *startTime;
+        if ([eventObj[@"start_time"]  isEqual:[NSNull null]]){
+            startTime = eventObj[@"created"];
+        }
+        else {
+            startTime = eventObj[@"start_time"];
+        }
+        Event * event = [[Event alloc] initWithDescription:eventObj[@"description"] withName:eventObj[@"name"] startTime:startTime eventId:[eventObj[@"id"] integerValue]] ;
+        event.locationName = eventObj[@"location_name"];
+        event.locationAddress = eventObj[@"location_address"];
+        event.end_time = eventObj[@"end_time"];
+        event.yelpLink = eventObj[@"yelp_url"];
+        event.locationLatitude = eventObj[@"location_latitude"];
+        event.locationLongitude = eventObj[@"location_longitude"];
+        event.yelpImageLink = eventObj[@"yelp_img_url"];
+        [events addObject:event];
+    }
+
+    return events;
+}
+
 @end
