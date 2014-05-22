@@ -9,6 +9,7 @@
 #import "InviteFriendsViewController.h"
 #import "CenterViewController.h"
 #import "MEEPhttp.h"
+#import "jsonPArser.h"
 #import "Group.h"
 #import "Friend.h"
 
@@ -100,64 +101,11 @@
     
     if ([jsonResponse objectForKey:@"groups"] != nil){
         NSArray * groups = jsonResponse[@"groups"];
-        groups_list = [[NSMutableArray alloc]init];
-        for( int i = 0; i< [groups count]; i++){
-            Group *new_group = [[Group alloc]init];
-            
-            NSDictionary * new_group_dict = groups[i];
-            new_group.name = new_group_dict[@"name"];
-            new_group.group_id = [new_group_dict[@"id"] integerValue];
-            
-            if ([new_group_dict[@"group_pic_url"] length] == 0){
-                UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(8, 4, 40, 40)];
-                img.image = [UIImage imageNamed:@"ManSilhouette"];
-                //new_friend.profilePic = img;
-                new_group.groupProfilePic = img.image;
-            }
-            else{
-                NSURL *url = [[NSURL alloc] initWithString:new_group_dict[@"group_pic_url"]];
-                 NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url];
-                 NSData *urlData = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:nil error:nil];
-                 UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
-                 new_group.groupProfilePic = image;
-            }
-            [groups_list addObject:new_group];
-        }
+        groups_list = [jsonParser groupsArray:groups];
     }
     else{
         NSArray * friends = jsonResponse[@"friends"];
-        friends_list = [[NSMutableArray alloc]init];
-        for( int i = 0; i< [friends count]; i++){
-            Friend *new_friend = [[Friend alloc]init];
-            
-            NSDictionary * new_friend_dict = [NSJSONSerialization JSONObjectWithData: [friends[i] dataUsingEncoding:NSUTF8StringEncoding]
-                                                                             options: NSJSONReadingMutableContainers
-                                                                               error: &error];
-            new_friend.name = new_friend_dict[@"name"];
-            new_friend.numTimesInvitedByMe = (int) new_friend_dict[@"invited_count"];
-            new_friend.phoneNumber= new_friend_dict[@"phone_number"];
-            new_friend.imageFileName = new_friend_dict[@"pf_pic"];
-            new_friend.bio = new_friend_dict[@"bio"];
-            new_friend.account_id = [new_friend_dict[@"account_id"] intValue];
-            
-            if ([new_friend_dict[@"pf_pic"] length] == 0){
-                UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(8, 4, 40, 40)];
-                img.image = [UIImage imageNamed:@"ManSilhouette"];
-                //new_friend.profilePic = img;
-                new_friend.profilePic = img.image;
-            }
-            else{
-                NSURL *url = [[NSURL alloc] initWithString:new_friend_dict[@"fb_pfpic_url"]];
-                //NSURL *url = [[NSURL alloc] initWithString:@"https://graph.facebook.com/jason.s.tsao/picture"];
-                NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url];
-                //NSData *urlData = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:&response error:nil];
-                NSData *urlData = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:nil error:nil];
-                UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
-                new_friend.profilePic = image;
-            }
-            [friends_list addObject:new_friend];
-        }
-        
+        friends_list = [jsonParser friendsArray:friends];
         NSData *data = [NSKeyedArchiver archivedDataWithRootObject:friends_list];
         [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"friends_list"];
         [NSUserDefaults resetStandardUserDefaults];

@@ -128,13 +128,16 @@
     [titleString appendString: _group.name];
     [titleString appendString: @" Events"];
 
+    // Initializing variables
     self.title = titleString;
     self.eventArray = [[NSArray alloc] init];
     self.datesSectionCountArray = [[NSMutableArray alloc]init];
     self.datesSectionCountDictionary = [[NSMutableDictionary alloc] init];
     self.dateEventsDictionary = [[NSMutableDictionary alloc] init];
     self.numDates = 0;
+    
     [self getUpcomingGroupEvents];
+
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
