@@ -480,7 +480,8 @@
         if([eventInfoType isEqualToString:@"locationAddress"]){
             //DISPLAY MAP IF THIS IS TRUE
             //cell.textLabel.text = _currentEvent.locationAddress;
-             
+            CGRect mapFrame = CGRectMake(cell.frame.size.width/2, 0, cell.frame.size.width/2, _mapView.frame.size.height);
+            _mapView.frame = mapFrame;
              [cell.contentView addSubview:_mapView];
         }
         else if([eventInfoType isEqualToString:@"locationName"]){

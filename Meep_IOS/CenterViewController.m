@@ -23,6 +23,7 @@
 #define CONTENT_BACKGROUND_COLOR "3FC380"
 #define ICON_BACKGROUND_COLOR "FFFFFF"
 #define MAIN_TEXT_COLOR "FFFFFF"
+#define NAV_BAR_COLOR "22313F"
 
 /*
  // Color Settings (White Context Background, Green Table Background)
@@ -397,6 +398,9 @@
     [refreshControl endRefreshing];
 }
 
+-(UIStatusBarStyle)preferredStatusBarStyle{
+    return UIStatusBarStyleLightContent;
+}
 
 - (void)viewDidLoad
 {
@@ -409,6 +413,12 @@
     
     UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
     [refreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];
+    self.view.backgroundColor = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",NAV_BAR_COLOR]];
+    // self.navigationController.navigationBar.translucent = NO;
+    // self.navigationController.navigationBar.opaque = NO;
+    // s[[UINavigationBar appearance] setBarTintColor:[CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",NAV_BAR_COLOR]]];
+    [[UINavigationBar appearance] setBarTintColor:[UIColor clearColor]];
+    self.navigationController.view.backgroundColor = [UIColor clearColor];
     [self.upcomingEvents addSubview:refreshControl];
     //self.eventArray = [[NSMutableArray alloc] init];
     self.eventArray = [[NSArray alloc] init];

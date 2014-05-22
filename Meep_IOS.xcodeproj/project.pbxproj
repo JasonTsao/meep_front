@@ -426,7 +426,6 @@
 				9686302A1909FA7700CAE305 /* Friend Pages */,
 				9606E6A3191308A300D985A7 /* Group Pages */,
 				3CCC516E1905A44400EB0980 /* Center Page */,
-				3CCC51341905A20D00EB0980 /* en.lproj */,
 				3CCC513E1905A20D00EB0980 /* Images.xcassets */,
 				3CCC51431905A20D00EB0980 /* MainCellLeft.xib */,
 				3CCC51441905A20D00EB0980 /* MainCellRight.xib */,
@@ -505,6 +504,7 @@
 			children = (
 				3CCC513F1905A20D00EB0980 /* LeftPanelViewController.h */,
 				3CCC51401905A20D00EB0980 /* LeftPanelViewController.m */,
+				3CCC51341905A20D00EB0980 /* en.lproj */,
 				3CCC51411905A20D00EB0980 /* LeftPanelViewController.xib */,
 				3CCC51451905A20D00EB0980 /* MainViewController.h */,
 				3CCC51461905A20D00EB0980 /* MainViewController.m */,
