@@ -12,6 +12,9 @@
 #import "Event.h"
 #import "MEEPhttp.h"
 #import "jsonParser.h"
+#import "MEPTableCell.h"
+
+#import <CoreLocation/CoreLocation.h>
 
 @interface GroupEventsTableViewController ()
 
@@ -20,6 +23,12 @@
 @property(nonatomic, strong) NSMutableArray *datesSectionCountArray;
 @property(nonatomic, strong) NSMutableDictionary *datesSectionCountDictionary;
 @property(nonatomic, strong) NSMutableDictionary *dateEventsDictionary;
+@property (nonatomic, strong) NSMutableArray *eventCellArray;
+
+@property (nonatomic, assign) float lat;
+@property (nonatomic, assign) float lng;
+
+@property (nonatomic, strong) CLLocationManager * locationManager;
 
 @property (nonatomic, strong) EventPageViewController *eventPageViewController;
 
@@ -78,8 +87,18 @@
     
     for( Event *event in unsortedEventArray){
         //event.group = eventObj[@"group"];
-        
+        NSLog(@"event: %@", event);
         //getting number of differnt days
+        if (![event.locationLatitude isEqual:[NSNull null]] &&
+            ![event.locationLongitude isEqual:[NSNull null]]) {
+            _lat = _locationManager.location.coordinate.latitude;
+            _lng = _locationManager.location.coordinate.longitude;
+            if (_lat < 0.001) {
+                _lat = [[jsonResponse valueForKey:@"lat"] floatValue];
+                _lng = [[jsonResponse valueForKey:@"lng"] floatValue];
+            }
+        }
+        
         NSTimeInterval startedTime = [event.start_time doubleValue];
         NSDate *startedDate = [[NSDate alloc] initWithTimeIntervalSince1970:startedTime];
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -107,7 +126,16 @@
 
     NSSortDescriptor* nameSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"start_time" ascending:YES];
     _eventArray = [unsortedEventArray sortedArrayUsingDescriptors:[NSArray arrayWithObject:nameSortDescriptor]];
+    
+    self.eventCellArray = [[NSMutableArray alloc] init];
+    for (Event * event in unsortedEventArray) {
+        [_eventCellArray addObject:[MEPTableCell eventCell:event userLatitude:_lat userLongitude:_lng]];
+    }
+
+    
     [self.tableView reloadData];
+    
+    
 }
 
 - (void)refresh:(UIRefreshControl *)refreshControl {
@@ -158,15 +186,16 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return [_datesArray count];
+    //return [_datesArray count];
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSString *key = [_datesArray objectAtIndex:section];
+    /*NSString *key = [_datesArray objectAtIndex:section];
     NSInteger count = [[_datesSectionCountDictionary valueForKey:key] integerValue];
-    return count;
-    //return [_eventArray count];
+    return count;*/
+    return [_eventCellArray count];
 }
 
 -(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
@@ -192,8 +221,9 @@
 {
     NSString *dateString = _datesArray[indexPath.section];
     NSMutableArray *eventArray = [_dateEventsDictionary objectForKey:dateString];
-    Event *currentRecord = eventArray[indexPath.row];
-    //Event *currentRecord = [self.eventArray objectAtIndex:indexPath.row];
+    //Event *currentRecord = eventArray[indexPath.row];
+    Event *currentRecord = _eventArray[indexPath.row];
+    //Event *currentRecord = _eventCellArray[indexPath.row];
     
     UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"CenterStoryboard" bundle:nil];
     self.eventPageViewController = (EventPageViewController *)[storyboard instantiateViewControllerWithIdentifier:@"EventViewController"];
@@ -209,17 +239,19 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"groupEvent" forIndexPath:indexPath];
     NSString *dateString = _datesArray[indexPath.section];
     
-    NSMutableArray *eventArray = [_dateEventsDictionary objectForKey:dateString];
-    Event *upcomingEvent = eventArray[indexPath.row];
+    //NSMutableArray *eventArray = [_dateEventsDictionary objectForKey:dateString];
+    //Event *upcomingEvent = eventArray[indexPath.row];
     
     //Event *upcomingEvent = [_eventArray objectAtIndex:indexPath.row];
-    cell.textLabel.text = upcomingEvent.description;
+    /*cell.textLabel.text = upcomingEvent.description;
     NSTimeInterval startedTime = [upcomingEvent.start_time doubleValue];
     NSDate *startedDate = [[NSDate alloc] initWithTimeIntervalSince1970:startedTime];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"h:mm a"];
     NSString * eventDate = [dateFormatter stringFromDate:startedDate];
-    cell.detailTextLabel.text = eventDate;
+    cell.detailTextLabel.text = eventDate;*/
+    
+    [cell addSubview:_eventCellArray[indexPath.row]];
     
     return cell;
 }
