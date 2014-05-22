@@ -11,6 +11,7 @@
 #import "Event.h"
 #import "MEPTextParse.h"
 #import "MEPLocationService.h"
+#import "Colors.h"
 #import <CoreLocation/CoreLocation.h>
 
 
@@ -146,7 +147,7 @@
 -(UIView *) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     NSString *dateString;
     dateString = [_datesArray objectAtIndex:section];
-    UIColor * framingColor = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",BORDER_COLOR]];
+    UIColor * framingColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",BORDER_COLOR]];
     
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"yyyy-MM-dd"];
@@ -167,13 +168,13 @@
     // headerContainer.backgroundColor = [UIColor colorWithRed:1.f green:1.f blue:1.f alpha:1.f];
     headerTitle.text = header;
     // [headerTitle setFont:[UIFont fontWithName:@"GurmukhiMN" size:10]];
-    headerTitle.textColor = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",HEADER_TEXT_COLOR]];
+    headerTitle.textColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",HEADER_TEXT_COLOR]];
     [headerContainer addSubview:headerTitle];
     
     [headerView addSubview:headerContainer];
     [headerView addSubview:verticalLine];
     // [headerView addSubview:horizontalLine];
-    headerView.backgroundColor = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_BACKGROUND_COLOR]];
+    headerView.backgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_BACKGROUND_COLOR]];
     return headerView;
 }
 
@@ -195,7 +196,7 @@
 {
 
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"upcomingEvent" forIndexPath:indexPath];
-    cell = [self clearCell:cell];
+    // cell = [self clearCell:cell];
     NSString *dateString = _datesArray[indexPath.section];
     NSMutableArray *eventArray = [_dateEventsDictionary objectForKey:dateString];
     Event *upcomingEvent = eventArray[indexPath.row];
@@ -258,11 +259,11 @@
     float contentBoxWidth = cell.frame.size.width - contentBoxXCoord - 15;
     float contentBoxHeight = cell.frame.size.height - (contentBoxYCoord * 2);
     float bgndImgScale = BORDER_WIDTH;
-    UIColor * framingColor = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",BORDER_COLOR]];
-    UIColor * staticImageColor = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",STATIC_IMAGE_COLOR]];
-    UIColor * backgroundColor = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_BACKGROUND_COLOR]];
-    UIColor * contentBackgroundColor = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",CONTENT_BACKGROUND_COLOR]];
-    UIColor * iconBackgroundColor = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",ICON_BACKGROUND_COLOR]];
+    UIColor * framingColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",BORDER_COLOR]];
+    UIColor * staticImageColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",STATIC_IMAGE_COLOR]];
+    UIColor * backgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_BACKGROUND_COLOR]];
+    UIColor * contentBackgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",CONTENT_BACKGROUND_COLOR]];
+    UIColor * iconBackgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",ICON_BACKGROUND_COLOR]];
     
     cell.backgroundColor = backgroundColor;
     
@@ -336,7 +337,7 @@
     NSDate *startedDate = [[NSDate alloc] initWithTimeIntervalSince1970:startedTime];
     NSString * eventDateMessage = [MEPTextParse getTimeUntilDateTime:startedDate];
     eventDetailLabel.text = eventDateMessage;
-    eventDetailLabel.textColor = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"F4F4F4"]];
+    eventDetailLabel.textColor = [Colors colorWithHexString:[NSString stringWithFormat:@"F4F4F4"]];
     [eventDetailLabel setFont:[UIFont systemFontOfSize:8.5]];
     [contentView addSubview:eventDetailLabel];
     
@@ -345,14 +346,14 @@
     [eventHeader setFont:[UIFont systemFontOfSize:14]];
     eventHeader.lineBreakMode = NSLineBreakByWordWrapping;
     eventHeader.numberOfLines = 0;
-    eventHeader.textColor = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",MAIN_TEXT_COLOR]];
+    eventHeader.textColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",MAIN_TEXT_COLOR]];
     [contentView addSubview:eventHeader];
     
     if (![event.locationLongitude isEqual:[NSNull null]]) {
         UILabel *distance = [[UILabel alloc] initWithFrame:CGRectMake(0, detailYCoord, (contentView.frame.size.width) - 6, 21)];
         NSString * distanceInMiles = [MEPLocationService distanceBetweenCoordinatesWithLatitudeOne:_lat longitudeOne:_lng latitudeTwo:[event.locationLatitude floatValue] longitudeTwo:[event.locationLongitude floatValue]];
         distance.text = distanceInMiles;
-        distance.textColor = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"F4F4F4"]];
+        distance.textColor = [Colors colorWithHexString:[NSString stringWithFormat:@"F4F4F4"]];
         [distance setFont:[UIFont systemFontOfSize:8.5]];
         distance.textAlignment = NSTextAlignmentRight;
         [contentView addSubview:distance];
@@ -644,42 +645,6 @@
     //self.upcomingEvents.dataSource = self;
     //self.upcomingEvents.delegate = self;
     [self.upcomingEvents reloadData];
-}
-
-+(UIColor*)colorWithHexString:(NSString*)hex
-{
-    NSString *cString = [[hex stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] uppercaseString];
-    
-    // String should be 6 or 8 characters
-    if ([cString length] < 6) return [UIColor grayColor];
-    
-    // strip 0X if it appears
-    if ([cString hasPrefix:@"0X"]) cString = [cString substringFromIndex:2];
-    
-    if ([cString length] != 6) return  [UIColor grayColor];
-    
-    // Separate into r, g, b substrings
-    NSRange range;
-    range.location = 0;
-    range.length = 2;
-    NSString *rString = [cString substringWithRange:range];
-    
-    range.location = 2;
-    NSString *gString = [cString substringWithRange:range];
-    
-    range.location = 4;
-    NSString *bString = [cString substringWithRange:range];
-    
-    // Scan values
-    unsigned int r, g, b;
-    [[NSScanner scannerWithString:rString] scanHexInt:&r];
-    [[NSScanner scannerWithString:gString] scanHexInt:&g];
-    [[NSScanner scannerWithString:bString] scanHexInt:&b];
-    
-    return [UIColor colorWithRed:((float) r / 255.0f)
-                           green:((float) g / 255.0f)
-                            blue:((float) b / 255.0f)
-                           alpha:1.0f];
 }
 
 -(void)closeEventModal {
