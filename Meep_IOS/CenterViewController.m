@@ -199,6 +199,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"upcomingEvent" forIndexPath:indexPath];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     int count = 0;
     for (UIView * subview in cell.subviews) {
         NSLog(@"%i",count);
@@ -252,6 +253,7 @@
     // img.image = [UIImage imageNamed:imageFileName];
     // [cell.contentView addSubview:img];
     [cell addSubview:_eventCellArray[indexPath.row]];
+    
     return cell;
     // return [self createCustomCellView:cell forEvent:upcomingEvent withImage:[UIImage imageNamed:imageFileName]];
 }
@@ -418,10 +420,10 @@
 {
     NSString *dateString = _datesArray[indexPath.section];
     //NSMutableArray *eventArray = [_dateEventsDictionary objectForKey:dateString];
-    // Event *currentRecord = eventArray[indexPath.row];
+    Event *currentRecord = _eventArray[indexPath.row];
     //Event *currentRecord = [self.eventArray objectAtIndex:indexPath.row];
 
-    // [_delegate displayEventPage:currentRecord];
+    [_delegate displayEventPage:currentRecord];
 }
 
 - (void)refresh:(UIRefreshControl *)refreshControl {
