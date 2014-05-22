@@ -7,6 +7,7 @@
 //
 
 #import "GroupsViewController.h"
+#import "jsonParser.h"
 
 @interface GroupsViewController (){
     NSMutableArray *groups_list;
@@ -61,30 +62,9 @@
     NSError* error;
     NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:_data options:0 error:&error];
     NSArray * groups = jsonResponse[@"groups"];
-    groups_list = [[NSMutableArray alloc]init];
-    for( int i = 0; i< [groups count]; i++){
-        Group *new_group = [[Group alloc]init];
     
-        NSDictionary * new_group_dict = groups[i];
-        new_group.name = new_group_dict[@"name"];
-        new_group.group_id = [new_group_dict[@"id"] integerValue];
-        
-        if ([new_group_dict[@"group_pic_url"] length] == 0){
-            UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(8, 4, 40, 40)];
-            img.image = [UIImage imageNamed:@"ManSilhouette"];
-            //new_friend.profilePic = img;
-            new_group.groupProfilePic = img.image;
-        }
-        else{
-            NSURL *url = [[NSURL alloc] initWithString:new_group_dict[@"group_pic_url"]];
-            NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url];
-            NSData *urlData = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:nil error:nil];
-            UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
-            new_group.groupProfilePic = image;
-        }
-        [groups_list addObject:new_group];
-    }
-    
+    groups_list = [jsonParser groupsArray:groups];
+
    /* NSData *data = [NSKeyedArchiver archivedDataWithRootObject:groups_list];
     [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"groups"];
     [NSUserDefaults resetStandardUserDefaults];*/

@@ -12,6 +12,7 @@
 #import "MEPTextParse.h"
 #import "MEPLocationService.h"
 #import "MEPTableCell.h"
+#import "jsonParser.h"
 #import <CoreLocation/CoreLocation.h>
 
 
@@ -604,22 +605,10 @@
     NSString *startTime;
     NSMutableArray *unsortedEventArray = [[NSMutableArray alloc] init];
     _datesArray = [[NSMutableArray alloc] init];
-    for(NSDictionary *eventObj in upcoming) {
-        if ([eventObj[@"start_time"]  isEqual:[NSNull null]]){
-            startTime = eventObj[@"created"];
-        }
-        else {
-            startTime = eventObj[@"start_time"];
-        }
-        
-        Event * event = [[Event alloc] initWithDescription:eventObj[@"description"] withName:eventObj[@"name"] startTime:startTime eventId:[eventObj[@"id"] integerValue]] ;
-        event.locationName = eventObj[@"location_name"];
-        event.locationAddress = eventObj[@"location_address"];
-        event.end_time = eventObj[@"end_time"];
-        event.yelpLink = eventObj[@"yelp_url"];
-        event.locationLatitude = eventObj[@"location_latitude"];
-        event.locationLongitude = eventObj[@"location_longitude"];
-        event.yelpImageLink = eventObj[@"yelp_img_url"];
+    
+    NSArray *upcomingEvents = [jsonParser eventsArray:upcoming];
+    
+    for( Event *event in upcomingEvents){
         if (![event.locationLatitude isEqual:[NSNull null]] &&
             ![event.locationLongitude isEqual:[NSNull null]]) {
             _lat = _locationManager.location.coordinate.latitude;
@@ -632,7 +621,7 @@
         //event.group = eventObj[@"group"];
         
         //getting number of differnt days
-        NSTimeInterval startedTime = [startTime doubleValue];
+        NSTimeInterval startedTime = [event.start_time doubleValue];
         NSDate *startedDate = [[NSDate alloc] initWithTimeIntervalSince1970:startedTime];
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setDateFormat:@"yyyy-MM-dd"];
@@ -655,15 +644,12 @@
             
             [[_dateEventsDictionary valueForKey:eventDate] addObject:event];
         }
-        
         //Event * event = [[Event alloc] initWithDescription:eventObj[@"description"] withName:eventObj[@"name"] startTime:startTime eventId:[eventObj[@"id"] integerValue]] ;
         [unsortedEventArray addObject:event];
     }
-    
+
     NSSortDescriptor* nameSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"start_time" ascending:YES];
     _eventArray = [unsortedEventArray sortedArrayUsingDescriptors:[NSArray arrayWithObject:nameSortDescriptor]];
-    //self.upcomingEvents.dataSource = self;
-    //self.upcomingEvents.delegate = self;
     [self.upcomingEvents reloadData];
     self.eventCellArray = [[NSMutableArray alloc] init];
     for (Event * event in _eventArray) {
