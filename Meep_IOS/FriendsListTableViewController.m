@@ -67,6 +67,8 @@
     NSArray * friends = jsonResponse[@"friends"];
     friends_list = [jsonParser friendsArray:friends];
     
+    [self.tableView reloadData];
+    
     NSData *data = [NSKeyedArchiver archivedDataWithRootObject:friends_list];
     [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"friends_list"];
     [NSUserDefaults resetStandardUserDefaults];

@@ -7,11 +7,13 @@
 //
 
 #import "Event.h"
+#import "Friend.h"
 #import <Foundation/Foundation.h>
 
 @interface MEPTableCell : NSObject
 
 +(UIView*)eventCell:(Event*)event userLatitude:(float)lat userLongitude:(float)lng;
 +(UIView*)eventHeaderCell:(NSString*)dateText;
++ (UITableViewCell*) customFriendCell:(Friend*)friend forTable:(UITableView*)tableView selected:(BOOL)sel;
 
 @end

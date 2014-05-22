@@ -9,6 +9,7 @@
 #import "InviteFriendsViewController.h"
 #import "MEEPhttp.h"
 #import "jsonPArser.h"
+#import "MEPTableCell.h"
 #import "Group.h"
 #import "Friend.h"
 #import "Colors.h"
@@ -253,35 +254,6 @@
     return 54;
 }
 
-+ (UITableViewCell*) createCustomFriendCell:(Friend*)friend
-                                   forTable:(UITableView*)tableView
-                                   selected:(BOOL)sel {
-    UITableViewCell * cell = [[UITableViewCell alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 54)];
-    cell.backgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_BACKGROUND_COLOR]];
-    UIView * lineMask = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 1)];
-    lineMask.backgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_BACKGROUND_COLOR]];
-    [cell addSubview:lineMask];
-    UIView * cellContents = [[UIView alloc] initWithFrame:CGRectMake(3, 3, cell.frame.size.width - 6, cell.frame.size.height + 6)];
-    if (!sel) {
-        cellContents.backgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_DATA_BACKGROUND_COLOR]];
-    }
-    else {
-        cellContents.backgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",CELL_SELECT_COLOR]];
-    }
-    cellContents.layer.cornerRadius = 10;
-    UILabel *friendHeader = [[UILabel alloc] initWithFrame:CGRectMake(60, 14, 235, 21)];
-    friendHeader.text = friend.name;
-    friendHeader.textColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_DATA_TEXT_COLOR]];
-    [friendHeader setFont:[UIFont systemFontOfSize:18]];
-    [cellContents addSubview:friendHeader];
-    UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(8, 4, 40, 40)];
-    img.image = friend.profilePic;
-    img.layer.cornerRadius = img.frame.size.height/2;
-    img.layer.masksToBounds = YES;
-    [cellContents addSubview:img];
-    [cell addSubview:cellContents];
-    return cell;
-}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -334,7 +306,8 @@
             if ([selected_friends_list containsObject:currentFriend]) {
                 selected = YES;
             }
-            cell = [InviteFriendsViewController createCustomFriendCell:currentFriend forTable:tableView selected:selected];
+            //cell = [InviteFriendsViewController createCustomFriendCell:currentFriend forTable:tableView selected:selected];
+            cell = [MEPTableCell customFriendCell:currentFriend forTable:tableView selected:selected];
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         // [cell addSubview:contentView];

@@ -20,8 +20,4 @@
 @property(nonatomic, strong) NSMutableData * data;
 
 - (IBAction) backToMain:(id)sender;
-
-+(UITableViewCell*) createCustomFriendCell:(Friend*)friend
-                                  forTable:(UITableView*)tableView
-                                  selected:(BOOL)sel;
 @end

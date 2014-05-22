@@ -239,6 +239,8 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"groupEvent" forIndexPath:indexPath];
     NSString *dateString = _datesArray[indexPath.section];
     
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
     //NSMutableArray *eventArray = [_dateEventsDictionary objectForKey:dateString];
     //Event *upcomingEvent = eventArray[indexPath.row];
     
