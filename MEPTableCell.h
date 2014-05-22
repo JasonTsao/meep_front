@@ -11,6 +11,7 @@
 
 @interface MEPTableCell : NSObject
 
-+(UITableViewCell*)eventCell:(Event*)event userLatitude:(float)lat userLongitude:(float)lng;
++(UIView*)eventCell:(Event*)event userLatitude:(float)lat userLongitude:(float)lng;
++(UIView*)eventHeaderCell:(NSString*)dateText;
 
 @end

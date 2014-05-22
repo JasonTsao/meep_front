@@ -41,6 +41,4 @@
 @property (nonatomic, weak) IBOutlet UIButton *rightButton;
 @property(nonatomic) BOOL showingLeftPanel;
 
-+(UIColor*)colorWithHexString:(NSString*)hex;
-
 @end
