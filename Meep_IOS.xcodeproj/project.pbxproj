@@ -67,6 +67,7 @@
 		3CCC516D1905A3B000EB0980 /* Meep_IOS-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3CCC516B1905A3B000EB0980 /* Meep_IOS-Info.plist */; };
 		3CCC51701905A46400EB0980 /* EventCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3CCC516F1905A46400EB0980 /* EventCell.xib */; };
 		3CCC51731905A55F00EB0980 /* MeepIOS-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3CCC51721905A55F00EB0980 /* MeepIOS-Info.plist */; };
+		3CCCECEC192DAF8C000A9CCE /* MEPTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CCCECEB192DAF8C000A9CCE /* MEPTableCell.m */; };
 		3CCE111F190AAA88004AD66E /* LocationSearch.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3CCE111E190AAA88004AD66E /* LocationSearch.xib */; };
 		3CCF3CE41912A70A00DED761 /* MEPTextParse.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CCF3CE31912A70A00DED761 /* MEPTextParse.m */; };
 		3CCF971B190827CE005FA454 /* AccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CCF9719190827CE005FA454 /* AccountViewController.m */; };
@@ -87,6 +88,7 @@
 		96967E1D191D4887007613AF /* EditEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96967E1C191D4887007613AF /* EditEventViewController.m */; };
 		96967E20191D5BF5007613AF /* AddRemoveFriendsFromEventTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96967E1F191D5BF5007613AF /* AddRemoveFriendsFromEventTableViewController.m */; };
 		96ACDDDA192C3E3D0040D5FC /* Colors.m in Sources */ = {isa = PBXBuildFile; fileRef = 96ACDDD9192C3E3D0040D5FC /* Colors.m */; };
+		96ACDDDD192D49990040D5FC /* jsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 96ACDDDC192D49990040D5FC /* jsonParser.m */; };
 		96AFDA4819286FFC0055181C /* EventChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96AFDA4719286FFC0055181C /* EventChatViewController.m */; };
 		96B397CB191B4BB700FFA7BF /* SignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96B397CA191B4BB700FFA7BF /* SignUpViewController.m */; };
 		96DB11761926D2BC0096FEDE /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96DB11751926D2BC0096FEDE /* FacebookSDK.framework */; };
@@ -222,6 +224,8 @@
 		3CCC516C1905A3B000EB0980 /* Meep_IOS-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Meep_IOS-Prefix.pch"; sourceTree = "<group>"; };
 		3CCC516F1905A46400EB0980 /* EventCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EventCell.xib; sourceTree = "<group>"; };
 		3CCC51721905A55F00EB0980 /* MeepIOS-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "MeepIOS-Info.plist"; sourceTree = "<group>"; };
+		3CCCECEA192DAF8C000A9CCE /* MEPTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MEPTableCell.h; sourceTree = "<group>"; };
+		3CCCECEB192DAF8C000A9CCE /* MEPTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MEPTableCell.m; sourceTree = "<group>"; };
 		3CCE111E190AAA88004AD66E /* LocationSearch.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LocationSearch.xib; sourceTree = "<group>"; };
 		3CCF3CE21912A70A00DED761 /* MEPTextParse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MEPTextParse.h; sourceTree = "<group>"; };
 		3CCF3CE31912A70A00DED761 /* MEPTextParse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MEPTextParse.m; sourceTree = "<group>"; };
@@ -259,6 +263,8 @@
 		96967E1F191D5BF5007613AF /* AddRemoveFriendsFromEventTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddRemoveFriendsFromEventTableViewController.m; sourceTree = "<group>"; };
 		96ACDDD8192C3E3D0040D5FC /* Colors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Colors.h; sourceTree = "<group>"; };
 		96ACDDD9192C3E3D0040D5FC /* Colors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Colors.m; sourceTree = "<group>"; };
+		96ACDDDB192D49990040D5FC /* jsonParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsonParser.h; sourceTree = "<group>"; };
+		96ACDDDC192D49990040D5FC /* jsonParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = jsonParser.m; sourceTree = "<group>"; };
 		96AFDA4619286FFC0055181C /* EventChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventChatViewController.h; sourceTree = "<group>"; };
 		96AFDA4719286FFC0055181C /* EventChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventChatViewController.m; sourceTree = "<group>"; };
 		96B397C9191B4BB700FFA7BF /* SignUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignUpViewController.h; sourceTree = "<group>"; };
@@ -390,6 +396,8 @@
 		3CCC506C19059F9500EB0980 = {
 			isa = PBXGroup;
 			children = (
+				3CCCECEA192DAF8C000A9CCE /* MEPTableCell.h */,
+				3CCCECEB192DAF8C000A9CCE /* MEPTableCell.m */,
 				3CCC507E19059F9500EB0980 /* Meep_IOS */,
 				3CCC509719059F9500EB0980 /* Meep_IOSTests */,
 				3CCC507719059F9500EB0980 /* Frameworks */,
@@ -435,7 +443,6 @@
 				9686302A1909FA7700CAE305 /* Friend Pages */,
 				9606E6A3191308A300D985A7 /* Group Pages */,
 				3CCC516E1905A44400EB0980 /* Center Page */,
-				3CCC51341905A20D00EB0980 /* en.lproj */,
 				3CCC513E1905A20D00EB0980 /* Images.xcassets */,
 				3CCC51431905A20D00EB0980 /* MainCellLeft.xib */,
 				3CCC51441905A20D00EB0980 /* MainCellRight.xib */,
@@ -459,6 +466,8 @@
 				3C1FD80919287EC000AA4593 /* MEPGlossyUIView.m */,
 				96ACDDD8192C3E3D0040D5FC /* Colors.h */,
 				96ACDDD9192C3E3D0040D5FC /* Colors.m */,
+				96ACDDDB192D49990040D5FC /* jsonParser.h */,
+				96ACDDDC192D49990040D5FC /* jsonParser.m */,
 			);
 			path = Meep_IOS;
 			sourceTree = "<group>";
@@ -516,6 +525,7 @@
 			children = (
 				3CCC513F1905A20D00EB0980 /* LeftPanelViewController.h */,
 				3CCC51401905A20D00EB0980 /* LeftPanelViewController.m */,
+				3CCC51341905A20D00EB0980 /* en.lproj */,
 				3CCC51411905A20D00EB0980 /* LeftPanelViewController.xib */,
 				3CCC51451905A20D00EB0980 /* MainViewController.h */,
 				3CCC51461905A20D00EB0980 /* MainViewController.m */,
@@ -849,6 +859,7 @@
 				96967E1D191D4887007613AF /* EditEventViewController.m in Sources */,
 				3CCC51581905A20D00EB0980 /* Event.m in Sources */,
 				96B397CB191B4BB700FFA7BF /* SignUpViewController.m in Sources */,
+				96ACDDDD192D49990040D5FC /* jsonParser.m in Sources */,
 				96E1D22E1913645600951DEB /* GroupsViewController.m in Sources */,
 				96E1D22B1913503600951DEB /* CreateMessageViewController.m in Sources */,
 				96F338F21921F87C0031FB2E /* EventAttendeeTabBarController.m in Sources */,
@@ -866,6 +877,7 @@
 				96E1D2341915932100951DEB /* GroupTableViewController.m in Sources */,
 				968630351909FAB200CAE305 /* Friend.m in Sources */,
 				3CDDCDA419087D0000F851EE /* EventElementViewController.m in Sources */,
+				3CCCECEC192DAF8C000A9CCE /* MEPTableCell.m in Sources */,
 				3C1FD80A19287EC000AA4593 /* MEPGlossyUIView.m in Sources */,
 				3CCF971B190827CE005FA454 /* AccountViewController.m in Sources */,
 				968466D3191E9DC600E56901 /* AddRemoveFriendsFromGroupTableViewController.m in Sources */,

@@ -12,6 +12,7 @@
 #import "Friend.h"
 #import "DjangoAuthClient.h"
 #import "MEEPhttp.h"
+#import "Colors.h"
 
 @interface EventChatViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *chatMessageToSend;
@@ -388,13 +389,13 @@
         
         if(currentMessage.new_message){
             UIColor *self_message_color = [UIColor whiteColor];
-            currentMessageHeader.textColor = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",BORDER_COLOR]];
+            currentMessageHeader.textColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",BORDER_COLOR]];
             currentMessageHeader.backgroundColor = self_message_color;
-            currentMessageHeader.layer.borderColor = [[CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",BORDER_COLOR]]CGColor];
+            currentMessageHeader.layer.borderColor = [[Colors colorWithHexString:[NSString stringWithFormat:@"%s",BORDER_COLOR]]CGColor];
             currentMessageHeader.layer.borderWidth = 0.5;
         }
         else{
-            UIColor *self_message_color = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",BORDER_COLOR]];
+            UIColor *self_message_color = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",BORDER_COLOR]];
             currentMessageHeader.textColor = [UIColor whiteColor];
             currentMessageHeader.backgroundColor = self_message_color;
         }

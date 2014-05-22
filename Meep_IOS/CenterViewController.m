@@ -12,6 +12,8 @@
 #import "MEPTextParse.h"
 #import "MEPLocationService.h"
 #import "Colors.h"
+#import "MEPTableCell.h"
+#import "jsonParser.h"
 #import <CoreLocation/CoreLocation.h>
 
 
@@ -25,6 +27,7 @@
 #define CONTENT_BACKGROUND_COLOR "3FC380"
 #define ICON_BACKGROUND_COLOR "FFFFFF"
 #define MAIN_TEXT_COLOR "FFFFFF"
+#define NAV_BAR_COLOR "22313F"
 
 /*
  // Color Settings (White Context Background, Green Table Background)
@@ -52,6 +55,10 @@
 @property (nonatomic, strong) NSMutableArray *datesSectionCountArray;
 @property (nonatomic, strong) NSMutableDictionary *datesSectionCountDictionary;
 @property (nonatomic, strong) NSMutableDictionary *dateEventsDictionary;
+@property (nonatomic, strong) NSMutableArray *eventCellArray;
+
+@property (nonatomic, strong) NSMutableDictionary * eventData;
+@property (nonatomic, strong) NSMutableDictionary * eventCellData;
 
 @property (nonatomic, strong) NSArray * eventArray;
 
@@ -123,9 +130,8 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     NSString *key = [_datesArray objectAtIndex:section];
-    NSInteger count = [[_datesSectionCountDictionary valueForKey:key] integerValue];
+    NSInteger count = [[_eventCellData objectForKey:key] count];
     return count;
-    //return [_eventArray count];
 }
 
 /*
@@ -143,6 +149,7 @@
     return header;
 }
  */
+
 
 -(UIView *) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     NSString *dateString;
@@ -186,7 +193,7 @@
 - (UITableViewCell*)clearCell:(UITableViewCell *)cell{
     for(UIView *view in cell.contentView.subviews){
         if ([view isKindOfClass:[UIView class]]) {
-            [view removeFromSuperview];
+            [cell delete:view];
         }
     }
     return cell;
@@ -194,175 +201,13 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"upcomingEvent" forIndexPath:indexPath];
-    // cell = [self clearCell:cell];
-    NSString *dateString = _datesArray[indexPath.section];
-    NSMutableArray *eventArray = [_dateEventsDictionary objectForKey:dateString];
-    Event *upcomingEvent = eventArray[indexPath.row];
-    /*
-    //Event *upcomingEvent = [_eventArray objectAtIndex:indexPath.row];
-    UILabel *eventHeader = [[UILabel alloc] initWithFrame:CGRectMake(60, 15, 235, 21)];
-    eventHeader.text = upcomingEvent.description;
-    [eventHeader setFont:[UIFont systemFontOfSize:18]];
-    // cell.textLabel.text = upcomingEvent.description;
-    NSTimeInterval startedTime = [upcomingEvent.start_time doubleValue];
-    NSDate *startedDate = [[NSDate alloc] initWithTimeIntervalSince1970:startedTime];
-    //NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    //[dateFormatter setDateFormat:@"h:mm a"];
-    //NSString * eventDate = [dateFormatter stringFromDate:startedDate];
-    NSString * eventDateMessage = [MEPTextParse getTimeUntilDateTime:startedDate];
-    // cell.detailTextLabel.text = eventDate;
-    UILabel * eventDetailLabel = [[UILabel alloc] initWithFrame:CGRectMake(60, 35, 235, 21)];
-    eventDetailLabel.text = eventDateMessage;
-    [eventDetailLabel setFont:[UIFont systemFontOfSize:12]];
-    [cell.contentView addSubview:eventHeader];
-    [cell.contentView addSubview:eventDetailLabel];
-     */
-    NSString * description = upcomingEvent.description;
-    NSString * category = [MEPTextParse identifyCategory:description];
-    NSString * imageFileName = @"tree60.png";
-    if ([category isEqualToString:@"meal"]) {
-        imageFileName = @"fork.png";
-    }
-    else if ([category isEqualToString:@"nightlife"]) {
-        imageFileName = @"jumping2.png";
-    }
-    else if ([category isEqualToString:@"drinks"]) {
-        imageFileName = @"glass16";
-    }
-    else if ([category isEqualToString:@"meeting"]) {
-        imageFileName = @"communities.png";
-    }
-    else if ([category isEqualToString:@"outdoors"]) {
-        imageFileName = @"sun23.png";
-    }
-    // Insert event icon into the cell.
-    // UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(6, 6, 44, 44)];
-    // img.image = [UIImage imageNamed:imageFileName];
-    // [cell.contentView addSubview:img];
-    // return cell;
-    return [self createCustomCellView:cell forEvent:upcomingEvent withImage:[UIImage imageNamed:imageFileName]];
-}
-
-
-- (UITableViewCell *) createCustomCellView:(UITableViewCell*)cell
-                                  forEvent:(Event*)event
-                                 withImage:(UIImage*)image{
-    
-    float imageHeight = 40;
-    float imageXCoord = 8;
-    float imageYCoord = (cell.frame.size.height/2) - (imageHeight/2);
-    float vertLineXCoord = (imageHeight/2) + imageXCoord;
-    float contentBoxXCoord = imageXCoord + imageHeight + 12;
-    float contentBoxYCoord = 12;
-    float contentBoxWidth = cell.frame.size.width - contentBoxXCoord - 15;
-    float contentBoxHeight = cell.frame.size.height - (contentBoxYCoord * 2);
-    float bgndImgScale = BORDER_WIDTH;
-    UIColor * framingColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",BORDER_COLOR]];
-    UIColor * staticImageColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",STATIC_IMAGE_COLOR]];
-    UIColor * backgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_BACKGROUND_COLOR]];
-    UIColor * contentBackgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",CONTENT_BACKGROUND_COLOR]];
-    UIColor * iconBackgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",ICON_BACKGROUND_COLOR]];
-    
-    cell.backgroundColor = backgroundColor;
-    
-    // This view covers the line separator between the cells.
-    UIView* separatorLineView = [[UIView alloc] initWithFrame:CGRectMake(0, cell.frame.size.height - 1, cell.frame.size.width, 1)];
-    separatorLineView.backgroundColor = backgroundColor;
-    [cell addSubview:separatorLineView];
-    
-    // This view creates the vertical line that lies behind the image.
-    UIView * verticalLine = [[UIView alloc] initWithFrame:CGRectMake(vertLineXCoord + 1, 0, bgndImgScale, cell.frame.size.height)];
-    verticalLine.backgroundColor = framingColor;
-    [cell addSubview:verticalLine];
-    
-    // This view creates the horizontal line between the image and the content frames.
-    UIView * horizontalLine = [[UIView alloc] initWithFrame:CGRectMake(21, (cell.frame.size.height/2), (cell.frame.size.width/2), bgndImgScale)];
-    horizontalLine.backgroundColor = framingColor;
-    [cell addSubview:horizontalLine];
-    
-    // This view creates the black background which the image and mid ground lie on top of.
-    UIView * imageBackGround = [[UIView alloc] initWithFrame:CGRectMake(imageXCoord - bgndImgScale, imageYCoord - bgndImgScale, imageHeight + (bgndImgScale*2), imageHeight + (bgndImgScale*2))];
-    imageBackGround.layer.cornerRadius = 21;
-    imageBackGround.backgroundColor = framingColor;
-    [cell addSubview:imageBackGround];
-    
-    // This view creates the white background for the image.
-    UIView * imageBackMid = [[UIView alloc] initWithFrame:CGRectMake(imageXCoord, imageYCoord, imageHeight, imageHeight)];
-    imageBackMid.backgroundColor = iconBackgroundColor;
-    imageBackMid.layer.cornerRadius = 20;
-    [cell addSubview:imageBackMid];
-    
-    // This view creates uses the image provided in the parameters to display the image on top of the background and midground
-    UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(imageXCoord + 10, imageYCoord + 10, imageHeight - 20, imageHeight - 20)];
-    if (![event.yelpImageLink isEqual:[NSNull null]] && [event.yelpImageLink length] > 1 && YES) {
-        img = [[UIImageView alloc] initWithFrame:CGRectMake(imageXCoord, imageYCoord, imageHeight, imageHeight)];
-        image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:event.yelpImageLink]]];
-        img.layer.masksToBounds = imageHeight/2;
-    }
-    else {
-        CGRect rect = CGRectMake(0, 0, image.size.width, image.size.height);
-        UIGraphicsBeginImageContext(rect.size);
-        CGContextRef context = UIGraphicsGetCurrentContext();
-        CGContextClipToMask(context, rect, image.CGImage);
-        CGContextSetFillColorWithColor(context, [staticImageColor CGColor]);
-        CGContextFillRect(context, rect);
-        UIImage *image2 = UIGraphicsGetImageFromCurrentImageContext();
-        UIGraphicsEndImageContext();
-        
-        image = [UIImage imageWithCGImage:image2.CGImage scale:1.0 orientation: UIImageOrientationDownMirrored];
-    }
-    img.image = image;
-    img.layer.cornerRadius = imageHeight/2;
-    // img.layer.masksToBounds = YES;
-    [cell addSubview:img];
-    
-    // This view creates the background for the content
-    UIView * contentFrame = [[UIView alloc] initWithFrame:CGRectMake(contentBoxXCoord - bgndImgScale + 1, contentBoxYCoord - bgndImgScale + 1, contentBoxWidth + (bgndImgScale*2) - 2, contentBoxHeight + (bgndImgScale*2) - 2)];
-    contentFrame.layer.cornerRadius = 6;
-    contentFrame.backgroundColor = framingColor;
-    // [cell addSubview:contentFrame];
-    
-    // This view contains the data fields and is placed on top of the background view.
-    UIView * contentView = [[UIView alloc] initWithFrame:CGRectMake(contentBoxXCoord, contentBoxYCoord, contentBoxWidth, contentBoxHeight)];
-    contentView.backgroundColor = contentBackgroundColor;
-    contentView.layer.cornerRadius = 5;
-    
-    float detailXCoord = 10;
-    float detailYCoord = contentView.frame.size.height * 6/8 - 5;
-    UILabel * eventDetailLabel = [[UILabel alloc] initWithFrame:CGRectMake(detailXCoord, detailYCoord, (contentView.frame.size.width/2 ) - 20, 21)];
-    
-    NSTimeInterval startedTime = [event.start_time doubleValue];
-    NSDate *startedDate = [[NSDate alloc] initWithTimeIntervalSince1970:startedTime];
-    NSString * eventDateMessage = [MEPTextParse getTimeUntilDateTime:startedDate];
-    eventDetailLabel.text = eventDateMessage;
-    eventDetailLabel.textColor = [Colors colorWithHexString:[NSString stringWithFormat:@"F4F4F4"]];
-    [eventDetailLabel setFont:[UIFont systemFontOfSize:8.5]];
-    [contentView addSubview:eventDetailLabel];
-    
-    UILabel *eventHeader = [[UILabel alloc] initWithFrame:CGRectMake(8, 3, contentView.frame.size.width - 12, 40)];
-    eventHeader.text = event.description;
-    [eventHeader setFont:[UIFont systemFontOfSize:14]];
-    eventHeader.lineBreakMode = NSLineBreakByWordWrapping;
-    eventHeader.numberOfLines = 0;
-    eventHeader.textColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",MAIN_TEXT_COLOR]];
-    [contentView addSubview:eventHeader];
-    
-    if (![event.locationLongitude isEqual:[NSNull null]]) {
-        UILabel *distance = [[UILabel alloc] initWithFrame:CGRectMake(0, detailYCoord, (contentView.frame.size.width) - 6, 21)];
-        NSString * distanceInMiles = [MEPLocationService distanceBetweenCoordinatesWithLatitudeOne:_lat longitudeOne:_lng latitudeTwo:[event.locationLatitude floatValue] longitudeTwo:[event.locationLongitude floatValue]];
-        distance.text = distanceInMiles;
-        distance.textColor = [Colors colorWithHexString:[NSString stringWithFormat:@"F4F4F4"]];
-        [distance setFont:[UIFont systemFontOfSize:8.5]];
-        distance.textAlignment = NSTextAlignmentRight;
-        [contentView addSubview:distance];
-    }
-    [cell addSubview:contentView];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    NSString * key = _datesArray[indexPath.section];
+    [cell addSubview:_eventCellData[key][indexPath.row]];
+    
     return cell;
 }
-
 
  // Override to support conditional editing of the table view.
  - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
@@ -404,11 +249,10 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *dateString = _datesArray[indexPath.section];
-    NSMutableArray *eventArray = [_dateEventsDictionary objectForKey:dateString];
-    Event *currentRecord = eventArray[indexPath.row];
-    //Event *currentRecord = [self.eventArray objectAtIndex:indexPath.row];
-
+    if ([[_eventArray objectAtIndex:indexPath.row] isKindOfClass:[NSString class]]) {
+        return;
+    }
+    Event *currentRecord = _eventArray[indexPath.row];
     [_delegate displayEventPage:currentRecord];
 }
 
@@ -417,6 +261,9 @@
     [refreshControl endRefreshing];
 }
 
+-(UIStatusBarStyle)preferredStatusBarStyle{
+    return UIStatusBarStyleLightContent;
+}
 
 - (void)viewDidLoad
 {
@@ -436,9 +283,15 @@
     
     UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
     [refreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];
+    self.view.backgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",NAV_BAR_COLOR]];
+    // self.navigationController.navigationBar.translucent = NO;
+    // self.navigationController.navigationBar.opaque = NO;
+    // s[[UINavigationBar appearance] setBarTintColor:[CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",NAV_BAR_COLOR]]];
+    [[UINavigationBar appearance] setBarTintColor:[UIColor clearColor]];
+    self.navigationController.view.backgroundColor = [UIColor clearColor];
     [self.upcomingEvents addSubview:refreshControl];
     //self.eventArray = [[NSMutableArray alloc] init];
-    self.eventArray = [[NSArray alloc] init];
+    self.eventArray = [[NSMutableArray alloc] init];
     self.datesSectionCountArray = [[NSMutableArray alloc]init];
     self.datesSectionCountDictionary = [[NSMutableDictionary alloc] init];
     self.dateEventsDictionary = [[NSMutableDictionary alloc] init];
@@ -581,70 +434,42 @@
     NSError* error;
     NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:_data options:0 error:&error];
     NSArray * upcoming = jsonResponse[@"upcoming_events"];
-    NSString *startTime;
-    NSMutableArray *unsortedEventArray = [[NSMutableArray alloc] init];
     _datesArray = [[NSMutableArray alloc] init];
-    for(NSDictionary *eventObj in upcoming) {
-        if ([eventObj[@"start_time"]  isEqual:[NSNull null]]){
-            startTime = eventObj[@"created"];
+    NSArray *upcomingEvents = [jsonParser eventsArray:upcoming];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+    _eventData = [[NSMutableDictionary alloc] init];
+    
+    _lat = _locationManager.location.coordinate.latitude;
+    _lng = _locationManager.location.coordinate.longitude;
+    
+    for (Event * event in upcomingEvents) {
+        NSTimeInterval interval = [event.start_time doubleValue];
+        NSDate * eventDate = [[NSDate alloc] initWithTimeIntervalSince1970:interval];
+        NSString * dateString = [dateFormatter stringFromDate:eventDate];
+        if ([_eventData objectForKey:dateString]) {
+            NSMutableArray * unsortedEventData = [_eventData objectForKey:dateString];
+            [unsortedEventData addObject:event];
+            [_eventData setObject:unsortedEventData forKey:dateString];
         }
         else {
-            startTime = eventObj[@"start_time"];
+            NSMutableArray * unsortedEventData = [[NSMutableArray alloc] initWithObjects:event, nil];
+            [_eventData setObject:unsortedEventData forKey:dateString];
         }
-        
-        Event * event = [[Event alloc] initWithDescription:eventObj[@"description"] withName:eventObj[@"name"] startTime:startTime eventId:[eventObj[@"id"] integerValue]] ;
-        event.locationName = eventObj[@"location_name"];
-        event.locationAddress = eventObj[@"location_address"];
-        event.end_time = eventObj[@"end_time"];
-        event.yelpLink = eventObj[@"yelp_url"];
-        event.locationLatitude = eventObj[@"location_latitude"];
-        event.locationLongitude = eventObj[@"location_longitude"];
-        event.yelpImageLink = eventObj[@"yelp_img_url"];
-        if (![event.locationLatitude isEqual:[NSNull null]] &&
-            ![event.locationLongitude isEqual:[NSNull null]]) {
-            _lat = _locationManager.location.coordinate.latitude;
-            _lng = _locationManager.location.coordinate.longitude;
-            if (_lat < 0.001) {
-                _lat = [[jsonResponse valueForKey:@"lat"] floatValue];
-                _lng = [[jsonResponse valueForKey:@"lng"] floatValue];
-            }
-        }
-        //event.group = eventObj[@"group"];
-        
-        //getting number of differnt days
-        NSTimeInterval startedTime = [startTime doubleValue];
-        NSDate *startedDate = [[NSDate alloc] initWithTimeIntervalSince1970:startedTime];
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateFormat:@"yyyy-MM-dd"];
-        NSString * eventDate = [dateFormatter stringFromDate:startedDate];
-        if (![_datesArray containsObject: eventDate]){
-            [_datesArray addObject:eventDate];
-            [_datesSectionCountDictionary setValue:@"1" forKey:eventDate];
-            
-            NSMutableArray *dateEventArray = [[NSMutableArray alloc] init];
-            [dateEventArray addObject:event];
-            [_dateEventsDictionary setObject:dateEventArray forKey:eventDate];
-            
-        }
-        else{
-            NSInteger currentCount = [[_datesSectionCountDictionary valueForKey:eventDate] integerValue];
-            currentCount++;
-            NSString *newCount = [NSString stringWithFormat:@"%li", (long)currentCount];
-            
-            [_datesSectionCountDictionary setValue:newCount forKey:eventDate];
-            
-            [[_dateEventsDictionary valueForKey:eventDate] addObject:event];
-        }
-        
-        //Event * event = [[Event alloc] initWithDescription:eventObj[@"description"] withName:eventObj[@"name"] startTime:startTime eventId:[eventObj[@"id"] integerValue]] ;
-        //[unsortedEventArray addObject:event];
     }
-    
-    NSSortDescriptor* nameSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"start_time" ascending:YES];
-    _eventArray = [unsortedEventArray sortedArrayUsingDescriptors:[NSArray arrayWithObject:nameSortDescriptor]];
-    //self.upcomingEvents.dataSource = self;
-    //self.upcomingEvents.delegate = self;
-    [self.upcomingEvents reloadData];
+    NSSortDescriptor * nameSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"start_time" ascending:YES];
+    for (NSString * key in [_eventData allKeys]) {
+        _eventData[key] = [_eventData[key] sortedArrayUsingDescriptors:[NSArray arrayWithObject:nameSortDescriptor]];
+    }
+    for (NSString * key in [_eventData allKeys]) {
+        NSMutableArray * orderedTableCells = [[NSMutableArray alloc] init];
+        for (Event * event in [_eventData objectForKey:key]) {
+            [orderedTableCells addObject:[MEPTableCell eventCell:event userLatitude:_lat userLongitude:_lng]];
+        }
+        [_eventCellData setObject:orderedTableCells forKey:key];
+    }
+    [_datesArray addObjectsFromArray:[[_eventData allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)]];
+    [_upcomingEvents reloadData];
 }
 
 -(void)closeEventModal {
