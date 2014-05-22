@@ -123,7 +123,6 @@
     NSString *classType = [NSString stringWithFormat:@"%@",[tableView class]];
     // if this is the search bar table
     if([classType isEqualToString:@"UISearchResultsTableView"] ){
-        NSLog(@"selected friend: %@", search_friends_list[indexPath.row]);
         selectedFriend = search_friends_list[indexPath.row];
         friend_name = selectedFriend.name;
         if (![selected_friends_list containsObject:selectedFriend]){

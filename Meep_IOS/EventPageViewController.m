@@ -16,6 +16,7 @@
 #import "EventAttendeesViewController.h"
 #import "EventChatViewController.h"
 #import "Colors.h"
+#import "jsonParser.h"
 #import <CoreLocation/CoreLocation.h>
 
 #define CONTENT_BG_COLOR "3FC380"
@@ -201,34 +202,7 @@
     NSError* error;
     NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:_data options:0 error:&error];
     NSArray * friends = jsonResponse[@"invited_friends"];
-    _invitedFriends = [[NSMutableArray alloc]init];
-    for( int i = 0; i< [friends count]; i++){
-        InvitedFriend *new_friend = [[InvitedFriend alloc]init];
-        
-        NSDictionary * new_friend_dict = [NSJSONSerialization JSONObjectWithData: [friends[i] dataUsingEncoding:NSUTF8StringEncoding]
-                                                                         options: NSJSONReadingMutableContainers
-                                                                           error: &error];
-        new_friend.name = new_friend_dict[@"name"];
-        new_friend.account_id = [new_friend_dict[@"friend_id"] intValue];
-        
-        if ([new_friend_dict[@"pf_pic"] length] == 0 || [new_friend_dict objectForKey:@"pf_pf"] == nil){
-            UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(8, 4, 40, 40)];
-            img.image = [UIImage imageNamed:@"ManSilhouette"];
-            //new_friend.profilePic = img;
-            new_friend.profilePic = img.image;
-        }
-        else{
-                NSURL *url = [[NSURL alloc] initWithString:new_friend_dict[@"fb_pfpic_url"]];
-                //NSURL *url = [[NSURL alloc] initWithString:@"https://graph.facebook.com/jason.s.tsao/picture"];
-                NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url];
-                //NSData *urlData = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:&response error:nil];
-                NSData *urlData = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:nil error:nil];
-                UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
-                new_friend.profilePic = image;
-        }
-        [_invitedFriends addObject:new_friend];
-    }
-    
+    _invitedFriends = [jsonParser invitedFriendsArray:friends];
     [self.friendsCollection reloadData];
     /*NSData *data = [NSKeyedArchiver archivedDataWithRootObject:_invitedFriends];
     [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"invited_friends_list"];
