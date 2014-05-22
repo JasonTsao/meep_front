@@ -11,7 +11,7 @@
 #import "InvitedFriend.h"
 #import "Friend.h"
 
-@interface EventChatViewController : UIViewController
+@interface EventChatViewController : UIViewController <UITextFieldDelegate>
 @property (nonatomic) Event *currentEvent;
 @property (nonatomic) NSMutableArray *invitedFriends;
 @property (nonatomic) NSString *account_id;

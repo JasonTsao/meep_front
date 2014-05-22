@@ -15,8 +15,13 @@
 #import "EventAttendeesDistanceViewController.h"
 #import "EventAttendeesViewController.h"
 #import "EventChatViewController.h"
+#import "Colors.h"
 #import <CoreLocation/CoreLocation.h>
 
+#define CONTENT_BG_COLOR "3FC380"
+#define CONTENT_TEXT_COLOR "FFFFFF"
+
+#define CONTENT_SPACING 4
 
 @interface EventPageViewController ()
 
@@ -146,6 +151,11 @@
     [eventOptionsPopup showInView:self.view];
 }
 
+- (IBAction)openMapsLink:(id)sender {
+    NSString* url = [NSString stringWithFormat:@"http://maps.google.com/maps?saddr=%f,%f&daddr=%@",_locationManager.location.coordinate.latitude, _locationManager.location.coordinate.longitude, [_currentEvent.locationAddress stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url]];
+}
+
 
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil event:(Event*) event
@@ -215,11 +225,7 @@
                 NSData *urlData = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:nil error:nil];
                 UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
                 new_friend.profilePic = image;
-            
         }
-
-        
-        
         [_invitedFriends addObject:new_friend];
     }
     
@@ -310,7 +316,6 @@
             [self openEventAttendeesPage];
         }
     }
-    
 }
 
 - (BOOL) isYelpInstalled {
@@ -319,7 +324,7 @@
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 4;
+    return 1;
 }
 
 /*-(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
@@ -330,71 +335,14 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSInteger numRows = 0;
-    
-    if(section == 0){
-        if( [_currentEvent.name length] != 0){
-            [_basicInfoToDisplay addObject:@"name"];
-            numRows++;
-        }
-        if( [_currentEvent.description length] != 0){
-            [_basicInfoToDisplay addObject:@"description"];
-            numRows++;
-            
-        }
-        //if( [_currentEvent.start_time length] != 0){
-        if (![_currentEvent.start_time isEqual:[NSNull null]]){
-            [_basicInfoToDisplay addObject:@"time"];
-            numRows++;
-        }
-    }
-    
-    if(section == 1){
-        //if([_currentEvent.locationAddress length] != 0){
-        if(![_currentEvent.locationAddress isEqual:[NSNull null]]){
-            
-            if([_currentEvent.locationAddress length] != 0){
-                NSLog(@"location address is : %@", _currentEvent.locationAddress);
-                //MAKE MAP VIEW
-                [_locationInfoToDisplay addObject:@"locationAddress"];
-                numRows++;
-            }
-            
-        }
-        //if( [_currentEvent.locationName length] != 0){
-        if(![_currentEvent.locationName isEqual:[NSNull null]]){
-            if([_currentEvent.locationName length] != 0){
-                [_locationInfoToDisplay addObject:@"locationName"];
-                numRows++;
-            }
-        }
-    }
-    
-    if(section == 2){
-        if (!(_currentEvent.yelpLink == (id)[NSNull null] || _currentEvent.yelpLink.length == 0)){
-            [_thirdPartyInfoToDisplay addObject:@"yelp"];
-            _YELP_SLOT = numRows;
-            numRows++;
-        }
-        if (!(_currentEvent.uberLink == (id)[NSNull null] || _currentEvent.uberLink.length == 0)){
-            [_thirdPartyInfoToDisplay addObject:@"uber"];
-            numRows++;
-        }
-    }
-    
-    
-    if(section == 3){
-        numRows = 1;
-    }
-    
-    return numRows;
+    return 3;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     CGFloat height;
     NSString *eventInfoType;
-    
+    /*
     height = 25.0;
     if (indexPath.section == 0){
         eventInfoType = _basicInfoToDisplay[indexPath.row];
@@ -421,7 +369,6 @@
             height = 30.0;
         }
     }
-    
     else if(indexPath.section == 2){
         height = 25.0;
     }
@@ -429,14 +376,157 @@
     else if(indexPath.section == 3){
         height = 30.0;
     }
-
+     */
+    if (indexPath.row == 0) {
+        NSString * title = ([_currentEvent.name isEqual:[NSNull null]] ? _currentEvent.name : _currentEvent.description);
+        CGSize expectedSize = [title sizeWithFont:[UIFont systemFontOfSize:16] constrainedToSize:self.eventInfoTable.frame.size lineBreakMode:NSLineBreakByWordWrapping];
+        // height = 40.0;
+        height = expectedSize.height * 2;
+    }
+    else if (indexPath.row == 1) {
+        height = 180.0;
+    }
+    else if (indexPath.row == 2) {
+        height = 50.0;
+    }
     return height;
+}
+
+- (UITableViewCell *) titleCellView:(UITableViewCell*)cell {
+    NSString * title = ([_currentEvent.name isEqual:[NSNull null]] ? _currentEvent.name : _currentEvent.description);
+    CGSize expectedSize = [title sizeWithFont:[UIFont systemFontOfSize:16] constrainedToSize:CGRectMake(0, 0, cell.frame.size.width - (CONTENT_SPACING * 2), cell.frame.size.height - (CONTENT_SPACING * 2)).size lineBreakMode:NSLineBreakByWordWrapping];
+    cell.frame = CGRectMake(0, 0, cell.frame.size.width, expectedSize.height * 2);
+    UIView * titleView = [[UIView alloc] initWithFrame:CGRectMake(CONTENT_SPACING, CONTENT_SPACING, cell.frame.size.width - (CONTENT_SPACING * 2), cell.frame.size.height - (CONTENT_SPACING * 2))];
+    titleView.backgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",CONTENT_BG_COLOR]];
+    UILabel* titleText = [[UILabel alloc] initWithFrame:CGRectMake(CONTENT_SPACING, CONTENT_SPACING, cell.frame.size.width - (CONTENT_SPACING * 2), cell.frame.size.height - (CONTENT_SPACING * 2))];
+    if ([_currentEvent.name length] > 1) {
+        titleText.text = _currentEvent.name;
+    }
+    else {
+        titleText.text = _currentEvent.description;
+    }
+    titleText.textColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",CONTENT_TEXT_COLOR]];
+    titleText.textAlignment = NSTextAlignmentLeft;
+    titleText.lineBreakMode = NSLineBreakByWordWrapping;
+    titleView.layer.cornerRadius = 5;
+    [titleText setFont:[UIFont systemFontOfSize:14]];
+    [titleView addSubview:titleText];
+    [cell addSubview:titleView];
+    return cell;
+}
+
+- (UITableViewCell *) mainContentView:(UITableViewCell*)cell {
+    NSLog(@"%f",cell.frame.size.height);
+    UIView * textContent = [[UIView alloc] initWithFrame:CGRectMake(CONTENT_SPACING, CONTENT_SPACING, cell.frame.size.width - (CONTENT_SPACING * 2), cell.frame.size.height - (CONTENT_SPACING * 2))];
+    textContent.backgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",CONTENT_BG_COLOR]];
+    textContent.layer.cornerRadius = 5;
+    if (!(_currentEvent.locationAddress == (id)[NSNull null] || _currentEvent.locationAddress.length == 0)) {
+        UIView * mapViewFrame = [[UIView alloc] initWithFrame:CGRectMake(cell.frame.size.width/2 + CONTENT_SPACING, CONTENT_SPACING, (cell.frame.size.width/2) - (CONTENT_SPACING * 2), cell.frame.size.height - (CONTENT_SPACING * 2))];
+        mapViewFrame.backgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",CONTENT_BG_COLOR]];
+        mapViewFrame.layer.cornerRadius = 5;
+        UIView * mapFrame = [[UIView alloc] initWithFrame:CGRectMake(2, 2, mapViewFrame.frame.size.width - 4, mapViewFrame.frame.size.height - 4)];
+        _mapView.frame = CGRectMake(CONTENT_SPACING, CONTENT_SPACING, mapViewFrame.frame.size.width - (CONTENT_SPACING * 2), mapViewFrame.frame.size.height - (CONTENT_SPACING * 2));
+        _mapView.layer.cornerRadius = 5;
+        [mapViewFrame addSubview:_mapView];
+        [cell addSubview:mapViewFrame];
+        
+        textContent.frame = CGRectMake(CONTENT_SPACING, CONTENT_SPACING, (cell.frame.size.width/2) - (CONTENT_SPACING * 2), cell.frame.size.height - (CONTENT_SPACING * 2));
+    }
+    float yCoord = 2;
+    if (![_currentEvent.name isEqual:[NSNull null]] && [_currentEvent.name length] > 1) {
+        CGSize descSize = [_currentEvent.description sizeWithFont:[UIFont systemFontOfSize:14] constrainedToSize:textContent.frame.size lineBreakMode:NSLineBreakByWordWrapping];
+        UILabel * desc = [[UILabel alloc] initWithFrame:CGRectMake(2, yCoord, descSize.width-4, descSize.height)];
+        desc.text = _currentEvent.description;
+        desc.textColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",CONTENT_TEXT_COLOR]];
+        [desc setFont:[UIFont systemFontOfSize:9]];
+        yCoord = 6 + descSize.height;
+        [textContent addSubview:desc];
+    }
+    if (![_currentEvent.locationAddress isEqual:[NSNull null]]) {
+        UILabel * addressLabel = [[UILabel alloc] initWithFrame:CGRectMake(2, yCoord, textContent.frame.size.width - 4, 15)];
+        addressLabel.text = @"Location";
+        addressLabel.textColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",CONTENT_TEXT_COLOR]];
+        [addressLabel setFont:[UIFont systemFontOfSize:9.5]];
+        [textContent addSubview:addressLabel];
+        yCoord = yCoord + 1 + addressLabel.frame.size.height;
+        UILabel * address = [[UILabel alloc] initWithFrame:CGRectMake(2, yCoord, textContent.frame.size.width-4, 15)];
+        address.text = _currentEvent.locationAddress;
+        address.textColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",CONTENT_TEXT_COLOR]];
+        [address setFont:[UIFont systemFontOfSize:9]];
+        yCoord = yCoord + 6 + address.frame.size.height;
+        [textContent addSubview:address];
+    }
+    if (![_currentEvent.start_time isEqual:[NSNull null]]) {
+        NSMutableString *timeString = [[NSMutableString alloc] init];
+        NSTimeInterval startedTime = [_currentEvent.start_time doubleValue];
+        NSDate *startedDate = [[NSDate alloc] initWithTimeIntervalSince1970:startedTime];
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"MMM dd h:mm a"];
+        NSString * startTime = [dateFormatter stringFromDate:startedDate];
+        UILabel * startTimeLabel = [[UILabel alloc] initWithFrame:CGRectMake(2, yCoord, textContent.frame.size.width-4, 15)];
+        startTimeLabel.text = startTime;
+        startTimeLabel.textColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",CONTENT_TEXT_COLOR]];
+        [startTimeLabel setFont:[UIFont systemFontOfSize:9]];
+        [textContent addSubview:startTimeLabel];
+    }
+    [cell addSubview:textContent];
+    return cell;
+}
+
+- (UITableViewCell *) externalLinksCellView:(UITableViewCell*)cell {
+    cell.frame = CGRectMake(0, 0, cell.frame.size.width, 60);
+    UIView * linksContainer = [[UIView alloc] initWithFrame:CGRectMake(CONTENT_SPACING, CONTENT_SPACING, cell.frame.size.width - (CONTENT_SPACING * 2), cell.frame.size.height - (CONTENT_SPACING * 2))];
+    linksContainer.backgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",CONTENT_BG_COLOR]];
+    if (![_currentEvent.locationAddress isEqual:[NSNull null]]) {
+        UIButton * mapsIconHolder = [[UIButton alloc] initWithFrame:CGRectMake(2, 2, linksContainer.frame.size.height - 8, linksContainer.frame.size.height - 8)];
+        [mapsIconHolder addTarget:self action:@selector(openMapsLink:) forControlEvents:UIControlEventTouchUpInside];
+        UIImageView * mapsImageView = [[UIImageView alloc] initWithFrame:CGRectMake(4, 0, linksContainer.frame.size.height - 14, linksContainer.frame.size.height - 14)];
+        UIImage * iconImage = [UIImage imageNamed:@"map19.png"];
+        CGRect rect = CGRectMake(0, 0, iconImage.size.width, iconImage.size.height);
+        UIGraphicsBeginImageContext(rect.size);
+        CGContextRef context = UIGraphicsGetCurrentContext();
+        CGContextClipToMask(context, rect, iconImage.CGImage);
+        CGContextSetFillColorWithColor(context, [[Colors colorWithHexString:[NSString stringWithFormat:@"%s",CONTENT_TEXT_COLOR]] CGColor]);
+        CGContextFillRect(context, rect);
+        UIImage *image2 = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+        iconImage = [UIImage imageWithCGImage:image2.CGImage scale:1.0 orientation: UIImageOrientationDownMirrored];
+        mapsImageView.image = iconImage;
+        [mapsIconHolder addSubview:mapsImageView];
+        
+        UILabel * mapIconLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, mapsIconHolder.frame.size.height - 6, mapsIconHolder.frame.size.width, 10)];
+        mapIconLabel.text = @"Maps";
+        mapIconLabel.textColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",CONTENT_TEXT_COLOR]];
+        [mapIconLabel setFont:[UIFont systemFontOfSize:9]];
+        mapIconLabel.textAlignment = NSTextAlignmentCenter;
+        [mapsIconHolder addSubview:mapIconLabel];
+        
+        [linksContainer addSubview:mapsIconHolder];
+    }
+    linksContainer.layer.cornerRadius = 5;
+    [cell addSubview:linksContainer];
+    return cell;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"eventInfoCell"];
+    if (indexPath.row == 0) {
+        cell = [self titleCellView:cell];
+    }
+    else if (indexPath.row == 1) {
+        cell = [self mainContentView:cell];
+    }
+    else if (indexPath.row == 2) {
+        cell = [self externalLinksCellView:cell];
+    }
+    
+    
+    /*
     NSString *eventInfoType;
+    
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
     if (indexPath.section == 0){
         eventInfoType = _basicInfoToDisplay[indexPath.row];
         cell.textLabel.font = [UIFont systemFontOfSize:14];
@@ -503,6 +593,8 @@
     if(indexPath.section == 3){
         cell.textLabel.text = @"Attendees";
     }
+     */
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
 
@@ -520,7 +612,6 @@
             if (placemarks && placemarks.count > 0) {
                 CLPlacemark * topResult = [placemarks objectAtIndex:0];
                 MKPlacemark * placemark = [[MKPlacemark alloc] initWithPlacemark:topResult];
-                
                 MKCoordinateRegion region = self.mapView.region;
                 region.center = placemark.region.center;
                 region.span.longitudeDelta /= 1000.0;
@@ -543,7 +634,7 @@
     //self.friendsCollection.delegate = self;
     
     UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
-    [flowLayout setScrollDirection:UICollectionViewScrollDirectionVertical];
+    [flowLayout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
     [self.friendsCollection setCollectionViewLayout:flowLayout];
     
     UIBarButtonItem *customBarItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStyleBordered target:self action:@selector(backToCenterFromEventPage:)];
@@ -581,6 +672,7 @@
     chatView.invitedFriends = _invitedFriends;
     chatView.currentEvent = _currentEvent;
 }
+
 
 
 @end

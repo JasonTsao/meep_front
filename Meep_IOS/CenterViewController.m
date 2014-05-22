@@ -11,7 +11,9 @@
 #import "Event.h"
 #import "MEPTextParse.h"
 #import "MEPLocationService.h"
+#import "MEPTableCell.h"
 #import <CoreLocation/CoreLocation.h>
+
 
 #define BORDER_WIDTH 1
 
@@ -38,18 +40,24 @@
  
 @interface CenterViewController () <UITableViewDataSource, UICollectionViewDataSource>
 
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *leftNavBarButton;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *rightNavBarButton;
+
+
 @property (weak, nonatomic) IBOutlet UITableView *upcomingEventsTable;
 @property (weak, nonatomic) IBOutlet UITableViewCell *cellMain;
 @property (weak, nonatomic) IBOutlet UITableView *upcomingEvents;
-@property(nonatomic) NSInteger numDates;
-@property(nonatomic, strong) NSMutableArray *datesArray;
-@property(nonatomic, strong) NSMutableArray *datesSectionCountArray;
-@property(nonatomic, strong) NSMutableDictionary *datesSectionCountDictionary;
-@property(nonatomic, strong) NSMutableDictionary *dateEventsDictionary;
+@property (nonatomic, assign) NSInteger numDates;
 
-@property(nonatomic, strong) NSArray * eventArray;
+@property (nonatomic, strong) NSMutableArray *datesArray;
+@property (nonatomic, strong) NSMutableArray *datesSectionCountArray;
+@property (nonatomic, strong) NSMutableDictionary *datesSectionCountDictionary;
+@property (nonatomic, strong) NSMutableDictionary *dateEventsDictionary;
+@property (nonatomic, strong) NSMutableArray *eventCellArray;
 
-@property(nonatomic, strong) NSMutableData * data;
+@property (nonatomic, strong) NSArray * eventArray;
+
+@property (nonatomic, strong) NSMutableData * data;
 
 @property (nonatomic, strong) CLLocationManager * locationManager;
 @property (nonatomic, assign) float lat;
@@ -94,19 +102,33 @@
     [_delegate openAddFriendsPage];
 }
 
+- (IBAction)openLeftPanelPage:(id)sender {
+    if(!_showingLeftPanel){
+        _showingLeftPanel = YES;
+        [_delegate movePanelRight];
+    }
+    else{
+        _showingLeftPanel = NO;
+        [_delegate movePanelToOriginalPosition];
+    }
+}
+
+
+
 #pragma mark -
 #pragma mark View Did Load/Unload
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return [_datesArray count];
+    // return [_datesArray count];
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     NSString *key = [_datesArray objectAtIndex:section];
     NSInteger count = [[_datesSectionCountDictionary valueForKey:key] integerValue];
-    return count;
-    //return [_eventArray count];
+    // return count;
+    return [_eventArray count];
 }
 
 /*
@@ -167,7 +189,7 @@
 - (UITableViewCell*)clearCell:(UITableViewCell *)cell{
     for(UIView *view in cell.contentView.subviews){
         if ([view isKindOfClass:[UIView class]]) {
-            [view removeFromSuperview];
+            [cell delete:view];
         }
     }
     return cell;
@@ -175,12 +197,18 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"upcomingEvent" forIndexPath:indexPath];
-    cell = [self clearCell:cell];
+    int count = 0;
+    for (UIView * subview in cell.subviews) {
+        NSLog(@"%i",count);
+        count++;
+    }
+    if ([_eventCellArray count] - 1 < indexPath.row) {
+        return cell;
+    }
     NSString *dateString = _datesArray[indexPath.section];
-    NSMutableArray *eventArray = [_dateEventsDictionary objectForKey:dateString];
-    Event *upcomingEvent = eventArray[indexPath.row];
+    // NSMutableArray *eventArray = [_dateEventsDictionary objectForKey:dateString];
+    Event *upcomingEvent = _eventArray[indexPath.row];
     /*
     //Event *upcomingEvent = [_eventArray objectAtIndex:indexPath.row];
     UILabel *eventHeader = [[UILabel alloc] initWithFrame:CGRectMake(60, 15, 235, 21)];
@@ -222,8 +250,9 @@
     // UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(6, 6, 44, 44)];
     // img.image = [UIImage imageNamed:imageFileName];
     // [cell.contentView addSubview:img];
-    // return cell;
-    return [self createCustomCellView:cell forEvent:upcomingEvent withImage:[UIImage imageNamed:imageFileName]];
+    [cell addSubview:_eventCellArray[indexPath.row]];
+    return cell;
+    // return [self createCustomCellView:cell forEvent:upcomingEvent withImage:[UIImage imageNamed:imageFileName]];
 }
 
 
@@ -279,6 +308,7 @@
     UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(imageXCoord + 10, imageYCoord + 10, imageHeight - 20, imageHeight - 20)];
     if (![event.yelpImageLink isEqual:[NSNull null]] && [event.yelpImageLink length] > 1 && YES) {
         img = [[UIImageView alloc] initWithFrame:CGRectMake(imageXCoord, imageYCoord, imageHeight, imageHeight)];
+        NSLog(@"%@",event.yelpImageLink);
         image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:event.yelpImageLink]]];
         img.layer.masksToBounds = imageHeight/2;
     }
@@ -325,7 +355,7 @@
     UILabel *eventHeader = [[UILabel alloc] initWithFrame:CGRectMake(8, 3, contentView.frame.size.width - 12, 40)];
     eventHeader.text = event.description;
     [eventHeader setFont:[UIFont systemFontOfSize:14]];
-    eventHeader.lineBreakMode = UILineBreakModeWordWrap;
+    eventHeader.lineBreakMode = NSLineBreakByWordWrapping;
     eventHeader.numberOfLines = 0;
     eventHeader.textColor = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",MAIN_TEXT_COLOR]];
     [contentView addSubview:eventHeader];
@@ -386,11 +416,11 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSString *dateString = _datesArray[indexPath.section];
-    NSMutableArray *eventArray = [_dateEventsDictionary objectForKey:dateString];
-    Event *currentRecord = eventArray[indexPath.row];
+    //NSMutableArray *eventArray = [_dateEventsDictionary objectForKey:dateString];
+    // Event *currentRecord = eventArray[indexPath.row];
     //Event *currentRecord = [self.eventArray objectAtIndex:indexPath.row];
 
-    [_delegate displayEventPage:currentRecord];
+    // [_delegate displayEventPage:currentRecord];
 }
 
 - (void)refresh:(UIRefreshControl *)refreshControl {
@@ -405,11 +435,18 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    _showingLeftPanel = NO;
+    
     // Get Location Data
     _locationManager = [[CLLocationManager alloc] init];
     _locationManager.distanceFilter = kCLDistanceFilterNone;
     _locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters;
     [_locationManager startUpdatingLocation];
+    
+    // Set Button Icons
+    
+    //[_leftNavBarButton setImage:[UIImage imageNamed:NSImageNameListViewTemplate]];
     
     UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
     [refreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];
@@ -620,7 +657,7 @@
         }
         
         //Event * event = [[Event alloc] initWithDescription:eventObj[@"description"] withName:eventObj[@"name"] startTime:startTime eventId:[eventObj[@"id"] integerValue]] ;
-        //[unsortedEventArray addObject:event];
+        [unsortedEventArray addObject:event];
     }
     
     NSSortDescriptor* nameSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"start_time" ascending:YES];
@@ -628,6 +665,11 @@
     //self.upcomingEvents.dataSource = self;
     //self.upcomingEvents.delegate = self;
     [self.upcomingEvents reloadData];
+    self.eventCellArray = [[NSMutableArray alloc] init];
+    for (Event * event in _eventArray) {
+        NSLog(@"HI");
+        [_eventCellArray addObject:[MEPTableCell eventCell:event userLatitude:_lat userLongitude:_lng]];
+    }
 }
 
 +(UIColor*)colorWithHexString:(NSString*)hex
