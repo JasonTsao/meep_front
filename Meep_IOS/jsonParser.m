@@ -100,6 +100,8 @@
                                                                            error: &error];
         new_friend.name = new_friend_dict[@"name"];
         new_friend.account_id = [new_friend_dict[@"friend_id"] intValue];
+
+        new_friend.has_viewed_event = [new_friend_dict[@"has_viewed_event"] boolValue];
         
         if ([new_friend_dict[@"pf_pic"] length] == 0 || [new_friend_dict objectForKey:@"pf_pf"] == nil){
             UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(8, 4, 40, 40)];

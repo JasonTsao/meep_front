@@ -15,6 +15,7 @@
 #import "EventAttendeesDistanceViewController.h"
 #import "EventAttendeesViewController.h"
 #import "EventChatViewController.h"
+#import "DjangoAuthClient.h"
 #import "Colors.h"
 #import "jsonParser.h"
 #import <CoreLocation/CoreLocation.h>
@@ -40,6 +41,8 @@
 
 @property (nonatomic, strong) EventAttendeeTabBarController *eventAttendeeTabBarController;
 @property (nonatomic, strong) EventAttendeesViewController *eventAttendeesViewController;
+
+@property (nonatomic, strong) DjangoAuthClient* authClient;
 
 @property(nonatomic, strong) NSMutableArray *basicInfoToDisplay;
 @property(nonatomic, strong) NSMutableArray *locationInfoToDisplay;
@@ -202,13 +205,33 @@
     NSError* error;
     NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:_data options:0 error:&error];
     NSArray * friends = jsonResponse[@"invited_friends"];
-    _invitedFriends = [jsonParser invitedFriendsArray:friends];
-    [self.friendsCollection reloadData];
+    
+    if(friends != nil){
+        _invitedFriends = [jsonParser invitedFriendsArray:friends];
+        
+        //Check if current user has viewed the Event already, if not, call server and tell it that this user did
+        for( InvitedFriend *friend in _invitedFriends){
+            if([_authClient.enc_userid integerValue] == friend.account_id){
+                if(!friend.has_viewed_event){
+                    [self userHasViewedEvent];
+                }
+            }
+        }
+        [self.friendsCollection reloadData];
+    }
     /*NSData *data = [NSKeyedArchiver archivedDataWithRootObject:_invitedFriends];
     [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"invited_friends_list"];
     [NSUserDefaults resetStandardUserDefaults];*/
     //[self.];
     
+}
+
+- (void) userHasViewedEvent{
+    NSString * requestURL = [NSString stringWithFormat:@"%@invited_friend/has_viewed_event/%i",[MEEPhttp eventURL], _currentEvent.event_id];
+    NSDictionary *postDict = [[NSDictionary alloc] init];
+    NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
+    NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    [conn start];
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
@@ -575,6 +598,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    NSData *authenticated = [[NSUserDefaults standardUserDefaults] objectForKey:@"auth_client"];
+    _authClient = [NSKeyedUnarchiver unarchiveObjectWithData:authenticated];
     
     //initializing fields
     self.eventInfoTable.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
