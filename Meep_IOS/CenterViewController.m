@@ -440,9 +440,11 @@
     [dateFormatter setDateFormat:@"yyyy-MM-dd"];
     _eventData = [[NSMutableDictionary alloc] init];
     
-    _lat = _locationManager.location.coordinate.latitude;
-    _lng = _locationManager.location.coordinate.longitude;
-    
+    // _lat = _locationManager.location.coordinate.latitude;
+    // _lng = _locationManager.location.coordinate.longitude;
+    _lat = 0;
+    _lng = 0;
+    _eventCellData = [[NSMutableDictionary alloc] init];
     for (Event * event in upcomingEvents) {
         NSTimeInterval interval = [event.start_time doubleValue];
         NSDate * eventDate = [[NSDate alloc] initWithTimeIntervalSince1970:interval];
@@ -461,10 +463,12 @@
     for (NSString * key in [_eventData allKeys]) {
         _eventData[key] = [_eventData[key] sortedArrayUsingDescriptors:[NSArray arrayWithObject:nameSortDescriptor]];
     }
+    NSMutableArray * orderedTableCells;
     for (NSString * key in [_eventData allKeys]) {
-        NSMutableArray * orderedTableCells = [[NSMutableArray alloc] init];
+        orderedTableCells = [[NSMutableArray alloc] init];
         for (Event * event in [_eventData objectForKey:key]) {
-            [orderedTableCells addObject:[MEPTableCell eventCell:event userLatitude:_lat userLongitude:_lng]];
+            UIView * eventCover = [MEPTableCell eventCell:event userLatitude:_lat userLongitude:_lng];
+            [orderedTableCells addObject:eventCover];
         }
         [_eventCellData setObject:orderedTableCells forKey:key];
     }
