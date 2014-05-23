@@ -12,6 +12,7 @@
 #import "jsonParser.h"
 
 @interface AddRemoveFriendsFromGroupTableViewController ()
+@property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 
 @end
 
@@ -125,6 +126,19 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{   
+    /*search_friends_list = [[NSMutableArray alloc] init];
+    for( int i = 0; i < [friends_list count]; i++){
+        if([[friends_list[i] name] hasPrefix:searchText]){
+            [search_friends_list addObject:friends_list[i]];
+        }
+    }
+    
+    [self.searchDisplayController.searchResultsTableView reloadData];*/
+}
+
 
 #pragma mark - Table view data source
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{

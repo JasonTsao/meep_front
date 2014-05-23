@@ -251,7 +251,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 54;
+    return [MEPTableCell customFriendCellHeight];
 }
 
 

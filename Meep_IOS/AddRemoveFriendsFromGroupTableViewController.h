@@ -16,7 +16,7 @@
 - (void) backToGroupPage:(AddRemoveFriendsFromGroupTableViewController *)controller;
 @end
 
-@interface AddRemoveFriendsFromGroupTableViewController : UITableViewController
+@interface AddRemoveFriendsFromGroupTableViewController : UITableViewController <UISearchBarDelegate, UISearchDisplayDelegate>
 @property (nonatomic) Group *currentGroup;
 @property (nonatomic) NSMutableArray *invitedMembers;
 @property (nonatomic) NSMutableArray *originalMembers;
