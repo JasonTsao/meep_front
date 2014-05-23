@@ -8,6 +8,7 @@
 
 #import "FriendsListTableViewController.h"
 #import "jsonParser.h"
+#import "MEPTableCell.h"
 #import "MEEPhttp.h"
 
 @interface FriendsListTableViewController (){
@@ -122,6 +123,10 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    [self performSegueWithIdentifier:@"toFriendProfilePage" sender:self];
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -149,18 +154,12 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
-    
-    cell = [self clearCell:cell];
+    //UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
+    //cell = [self clearCell:cell];
+
     Friend *currentFriend = [friends_list objectAtIndex:indexPath.row];
-    UILabel *friendHeader = [[UILabel alloc] initWithFrame:CGRectMake(60, 10, 235, 21)];
-    friendHeader.text = currentFriend.name;
-    [friendHeader setFont:[UIFont systemFontOfSize:18]];
-    [cell.contentView addSubview:friendHeader];
-    UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(8, 4, 40, 40)];
-    img.image = currentFriend.profilePic;
-    [cell.contentView addSubview:img];
-    
+    BOOL selected = NO;
+    UITableViewCell *cell = [MEPTableCell customFriendCell:currentFriend forTable:tableView selected:selected];
     return cell;
 }
 
@@ -208,6 +207,8 @@
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
+    //toFriendProfilePage
+    
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
     FriendProfileViewController * friend_profile = [segue destinationViewController];
