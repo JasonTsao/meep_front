@@ -173,6 +173,11 @@
 
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return [MEPTableCell customFriendCellHeight];
+}
+
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     NSString *classType = [NSString stringWithFormat:@"%@",[tableView class]];

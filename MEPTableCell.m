@@ -196,6 +196,11 @@
     return headerView;
 }
 
++ (CGFloat) customFriendCellHeight
+{
+    return 54;
+}
+
 + (UITableViewCell*) customFriendCell:(Friend*)friend
                                    forTable:(UITableView*)tableView
                                    selected:(BOOL)sel {
