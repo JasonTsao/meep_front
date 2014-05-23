@@ -249,10 +249,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([[_eventArray objectAtIndex:indexPath.row] isKindOfClass:[NSString class]]) {
-        return;
-    }
-    Event *currentRecord = _eventArray[indexPath.row];
+    NSString * dateText = [_datesArray objectAtIndex:indexPath.section];
+    Event * currentRecord = [[_eventData objectForKey:dateText] objectAtIndex:indexPath.row];
     [_delegate displayEventPage:currentRecord];
 }
 
@@ -268,6 +266,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.automaticallyAdjustsScrollViewInsets = NO;
     
     _showingLeftPanel = NO;
     
