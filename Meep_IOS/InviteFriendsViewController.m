@@ -317,6 +317,7 @@
 {
     [super viewDidLoad];
     self.title = @"Invite Friends";
+    self.navigationController.navigationBar.titleTextAttributes = [NSDictionary dictionaryWithObject:[UIColor whiteColor] forKey:UITextAttributeTextColor];
     friends_list = [[NSMutableArray alloc]init];
     selected_friends_list = [[NSMutableArray alloc]init];
     NSData *friendsListData = [[NSUserDefaults standardUserDefaults] objectForKey:@"friends_list"];

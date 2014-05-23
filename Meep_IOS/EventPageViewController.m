@@ -601,6 +601,7 @@
     else{
         self.title = _currentEvent.description;
     }
+    self.navigationController.navigationBar.titleTextAttributes = [NSDictionary dictionaryWithObject:[UIColor whiteColor] forKey:UITextAttributeTextColor];
     [self getInvitedFriends];
     self.eventInfoTable.dataSource = self;
     self.eventInfoTable.delegate = self;
