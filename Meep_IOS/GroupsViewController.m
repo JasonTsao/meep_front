@@ -8,6 +8,7 @@
 
 #import "GroupsViewController.h"
 #import "jsonParser.h"
+#import "MEPTableCell.h"
 
 @interface GroupsViewController (){
     NSMutableArray *groups_list;
@@ -128,16 +129,15 @@
     
     // Configure the cell...
     Group *currentGroup = [groups_list objectAtIndex:indexPath.row];
-    //cell.textLabel.text = currentGroup.name;
-    UILabel *groupHeader = [[UILabel alloc] initWithFrame:CGRectMake(60, 10, 235, 21)];
+    cell = [MEPTableCell customGroupCell:currentGroup forCell:cell forTable:tableView selected:NO];
+    /*UILabel *groupHeader = [[UILabel alloc] initWithFrame:CGRectMake(60, 10, 235, 21)];
     groupHeader.text = currentGroup.name;
     [groupHeader setFont:[UIFont systemFontOfSize:18]];
     [cell.contentView addSubview:groupHeader];
     UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(8, 4, 40, 40)];
     img.image = currentGroup.groupProfilePic;
-    [cell.contentView addSubview:img];
-    /*UIImage *image = currentFriend.profilePic;
-    [cell.imageView setImage: image];*/
+    [cell.contentView addSubview:img];*/
+
     return cell;
 }
 
