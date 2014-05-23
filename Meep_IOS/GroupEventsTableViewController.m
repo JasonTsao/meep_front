@@ -200,15 +200,22 @@
 
 -(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    NSString *dateString;
-    dateString = [_datesArray objectAtIndex:section];
+    NSString * header;
+    if( [_datesArray count] > 0){
+        NSString *dateString;
+        dateString = [_datesArray objectAtIndex:section];
+        
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+        NSDate *startedDate = [dateFormatter dateFromString:dateString];
+        
+        [dateFormatter setDateFormat:@"MMM dd"];
+        header = [dateFormatter stringFromDate:startedDate];
+    }
+    else{
+        header = @"";
+    }
     
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"yyyy-MM-dd"];
-    NSDate *startedDate = [dateFormatter dateFromString:dateString];
-    
-    [dateFormatter setDateFormat:@"MMM dd"];
-    NSString * header = [dateFormatter stringFromDate:startedDate];
     return header;
 }
 

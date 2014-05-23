@@ -575,11 +575,18 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    //initializing fields
     self.eventInfoTable.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     _basicInfoToDisplay = [[NSMutableArray alloc]init];
     _locationInfoToDisplay = [[NSMutableArray alloc]init];
     _thirdPartyInfoToDisplay = [[NSMutableArray alloc]init];
     _mapView = [[MKMapView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 180.0)];
+    
+    //ADD CODE FOR CHECKING IF CURRENT USER HAS VIeWED THIS PAGE, IF NOT AND THIS IS FIRST TIME VIEWING, SAVE has_viewed AS TRUE
+    
+    
+    //getting location data
     if (!(_currentEvent.locationAddress == (id)[NSNull null] || _currentEvent.locationAddress.length == 0)) {
         CLGeocoder * geocoder = [[CLGeocoder alloc] init];
         [geocoder geocodeAddressString:_currentEvent.locationAddress completionHandler:^(NSArray * placemarks, NSError* error) {

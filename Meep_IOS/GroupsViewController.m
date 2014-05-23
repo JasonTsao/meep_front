@@ -136,6 +136,7 @@
     // Configure the cell...
     Group *currentGroup = [groups_list objectAtIndex:indexPath.row];
     cell = [MEPTableCell customGroupCell:currentGroup forCell:cell forTable:tableView selected:NO];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     /*UILabel *groupHeader = [[UILabel alloc] initWithFrame:CGRectMake(60, 10, 235, 21)];
     groupHeader.text = currentGroup.name;
     [groupHeader setFont:[UIFont systemFontOfSize:18]];
