@@ -927,7 +927,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <segue destination="y3l-cT-LGs" kind="push" id="5q4-5L-BtY"/>
+                                    <segue destination="y3l-cT-LGs" kind="push" identifier="toGroupMemberProfilePage" id="5q4-5L-BtY"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -1530,6 +1530,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="SkQ-ts-ddb"/>
+        <segue reference="5q4-5L-BtY"/>
     </inferredMetricsTieBreakers>
 </document>

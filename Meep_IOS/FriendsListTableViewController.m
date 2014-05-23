@@ -156,10 +156,11 @@
 {
     //UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
     //cell = [self clearCell:cell];
-
+    
     Friend *currentFriend = [friends_list objectAtIndex:indexPath.row];
     BOOL selected = NO;
     UITableViewCell *cell = [MEPTableCell customFriendCell:currentFriend forTable:tableView selected:selected];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
 

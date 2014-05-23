@@ -49,11 +49,9 @@
         [_bioLabel setText:self.currentFriend.bio];
     }
     else{
-        NSLog(@"No bio");
         [_bioLabel setText:@""];
     }
     if (self.currentFriend.profilePic){
-        NSLog(@"curent friend profile pic: %@", self.currentFriend.profilePic);
         [_currentProfileImage setImage:self.currentFriend.profilePic];
     }
     // Do any additional setup after loading the view.
