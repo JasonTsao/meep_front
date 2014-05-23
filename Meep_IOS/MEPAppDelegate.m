@@ -222,6 +222,34 @@
     }
 }
 
+- (void)registerForRemoteNotificationTypes:(UIRemoteNotificationType)types{
+    NSLog(@"registering for remote notification types!");
+}
+
+- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
+{
+    NSLog(@"failed to register for remote notifications!");
+    NSLog(@"error: %@", error);
+}
+
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
+{
+    NSLog(@"Got Device token!: %@", deviceToken);
+    const char* data = [deviceToken bytes];
+    NSMutableString* token = [NSMutableString string];
+    
+    for (int i = 0; i < [deviceToken length]; i++) {
+        [token appendFormat:@"%02.2hhX", data[i]];
+    }
+    
+    NSString * requestURL = [NSString stringWithFormat:@"%@device?token=%@&service=0",[MEEPhttp iosNotificationsURL], token];
+    NSLog(@"request url : %@", requestURL);
+    NSDictionary * postDict = [[NSDictionary alloc] init];
+    NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
+    NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    [conn start];
+}
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
@@ -269,6 +297,10 @@
                                           [self sessionStateChanged:session state:state error:error];
                                       }];
     }
+    
+    //make call to APN Services
+    [[UIApplication sharedApplication] registerForRemoteNotificationTypes:UIRemoteNotificationTypeBadge];
+    
     return YES;
 }
 
@@ -287,6 +319,42 @@
 {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    
+    
+   /* 
+    SOME EXAMPLE CODE ON HOW TO HANDLE PUSH NOTIFICATIONS IN THE BACKGROUND
+    NSLog(@"Application entered background state.");
+    // bgTask is a property of the class
+    NSAssert(self.bgTask == UIInvalidBackgroundTask, nil);
+    
+    bgTask = [application beginBackgroundTaskWithExpirationHandler: ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [application endBackgroundTask:self.bgTask];
+            self.bgTask = UIInvalidBackgroundTask;
+        });
+    }];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        while ([application backgroundTimeRemaining] > 1.0) {
+            NSString *friend = [self checkForIncomingChat];
+            if (friend) {
+                UILocalNotification *localNotif = [[UILocalNotification alloc] init];
+                if (localNotif) {
+                    localNotif.alertBody = [NSString stringWithFormat:
+                                            NSLocalizedString(@"%@ has a message for you.", nil), friend];
+                    localNotif.alertAction = NSLocalizedString(@"Read Message", nil);
+                    localNotif.soundName = @"alarmsound.caf";
+                    localNotif.applicationIconBadgeNumber = 1;
+                    [application presentLocalNotificationNow:localNotif];
+                    [localNotif release];
+                    friend = nil;
+                    break;
+                }
+            }
+        }
+        [application endBackgroundTask:self.bgTask];
+        self.bgTask = UIInvalidBackgroundTask;
+    });*/
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
