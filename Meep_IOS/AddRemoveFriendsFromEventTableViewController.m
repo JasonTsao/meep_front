@@ -12,6 +12,7 @@
 #import "Group.h"
 #import "MEEPhttp.h"
 #import "jsonParser.h"
+#import "MEPTableCell.h"
 
 @interface AddRemoveFriendsFromEventTableViewController ()
 
@@ -202,6 +203,11 @@
 }
 
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return [MEPTableCell customFriendCellHeight];
+}
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
 #warning Potentially incomplete method implementation.
@@ -247,7 +253,8 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"eventFriendCell" forIndexPath:indexPath];
+    //UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"eventFriendCell" forIndexPath:indexPath];
+    UITableViewCell *cell;
     Friend *currentFriend;
     cell = [self clearCell:cell];
 
@@ -257,14 +264,8 @@
     else if (indexPath.section == 1){
         currentFriend = _friends[indexPath.row];
     }
-    
-    UILabel *friendHeader = [[UILabel alloc] initWithFrame:CGRectMake(60, 10, 235, 21)];
-    friendHeader.text = currentFriend.name;
-    [friendHeader setFont:[UIFont systemFontOfSize:18]];
-    [cell.contentView addSubview:friendHeader];
-    UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(8, 4, 40, 40)];
-    img.image = currentFriend.profilePic;
-    [cell.contentView addSubview:img];
+
+    cell = [MEPTableCell customFriendCell:currentFriend forTable:tableView selected:NO];
     
     return cell;
 }

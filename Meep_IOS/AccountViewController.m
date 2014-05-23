@@ -288,7 +288,9 @@
     self.reminders = @[@"Reminder"];
     self.notifications = @[@"Vibrate On Notification"];
 
-    NSLog(@"Settings from archive");
+    self.title = @"Settings";
+    self.navigationController.navigationBar.titleTextAttributes = [NSDictionary dictionaryWithObject:[UIColor whiteColor] forKey:UITextAttributeTextColor];
+    
     NSData *settingsData = [[NSUserDefaults standardUserDefaults] objectForKey:@"account_settings"];
     _user_account_settings = [NSKeyedUnarchiver unarchiveObjectWithData:settingsData];
 	// Do any additional setup after loading the view, typically from a nib.
