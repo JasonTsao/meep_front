@@ -115,7 +115,6 @@
 		96F338EF1921F8430031FB2E /* EventAttendeesDistanceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96F338EE1921F8430031FB2E /* EventAttendeesDistanceViewController.m */; };
 		96F338F21921F87C0031FB2E /* EventAttendeeTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96F338F11921F87C0031FB2E /* EventAttendeeTabBarController.m */; };
 		96FD569A19218C110085B364 /* GroupEventsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96FD569919218C110085B364 /* GroupEventsTableViewController.m */; };
-		DAF700821917209A004EDC66 /* ABIGBOOB.m in Sources */ = {isa = PBXBuildFile; fileRef = DAF700811917209A004EDC66 /* ABIGBOOB.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -305,8 +304,6 @@
 		96F338F11921F87C0031FB2E /* EventAttendeeTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventAttendeeTabBarController.m; sourceTree = "<group>"; };
 		96FD569819218C110085B364 /* GroupEventsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupEventsTableViewController.h; sourceTree = "<group>"; };
 		96FD569919218C110085B364 /* GroupEventsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupEventsTableViewController.m; sourceTree = "<group>"; };
-		DAF700801917209A004EDC66 /* ABIGBOOB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABIGBOOB.h; sourceTree = "<group>"; };
-		DAF700811917209A004EDC66 /* ABIGBOOB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABIGBOOB.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -460,8 +457,6 @@
 				3CCC508719059F9500EB0980 /* MEPAppDelegate.h */,
 				3CCC508819059F9500EB0980 /* MEPAppDelegate.m */,
 				3CCC507F19059F9500EB0980 /* Supporting Files */,
-				DAF700801917209A004EDC66 /* ABIGBOOB.h */,
-				DAF700811917209A004EDC66 /* ABIGBOOB.m */,
 				3C1FD80819287EC000AA4593 /* MEPGlossyUIView.h */,
 				3C1FD80919287EC000AA4593 /* MEPGlossyUIView.m */,
 				96ACDDD8192C3E3D0040D5FC /* Colors.h */,
@@ -884,7 +879,6 @@
 				9606E6A6191308EA00D985A7 /* CreateGroupViewController.m in Sources */,
 				96FD569A19218C110085B364 /* GroupEventsTableViewController.m in Sources */,
 				3CCC515B1905A20D00EB0980 /* EventPageViewController.m in Sources */,
-				DAF700821917209A004EDC66 /* ABIGBOOB.m in Sources */,
 				96DF0C2D19287E9C00352309 /* EventChatMessage.m in Sources */,
 				96E1D26D19174EA000951DEB /* AddFriendsFromTableViewController.m in Sources */,
 				9644F7611926B93500048AF1 /* ProfileViewController.m in Sources */,

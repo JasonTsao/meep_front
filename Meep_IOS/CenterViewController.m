@@ -27,7 +27,7 @@
 #define CONTENT_BACKGROUND_COLOR "3FC380"
 #define ICON_BACKGROUND_COLOR "FFFFFF"
 #define MAIN_TEXT_COLOR "FFFFFF"
-#define NAV_BAR_COLOR "22313F"
+#define NAV_BAR_COLOR "#2c3e50"
 
 /*
  // Color Settings (White Context Background, Green Table Background)
