@@ -48,49 +48,56 @@
 -(void)handleData{
     NSError* error;
     NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:_data options:0 error:&error];
-    NSDictionary * settings_data = jsonResponse[@"settings"];
-    BOOL privacy_allowed;
-    BOOL search_allowed;
-    BOOL reminders_allowed;
-    BOOL vibrate_on_notification;
-    @try{
-        if ([settings_data[@"private"] boolValue]){
-            privacy_allowed = YES;
+    
+    if( [jsonResponse objectForKey:@"settings"]){
+        NSDictionary * settings_data = jsonResponse[@"settings"];
+        BOOL privacy_allowed;
+        BOOL search_allowed;
+        BOOL reminders_allowed;
+        BOOL vibrate_on_notification;
+        @try{
+            if ([settings_data[@"private"] boolValue]){
+                privacy_allowed = YES;
+            }
+            else{
+                privacy_allowed = NO;
+            }
+            if ([settings_data[@"private"] boolValue]){
+                search_allowed = YES;
+            }
+            else{
+                search_allowed = NO;
+            }
+            if ([settings_data[@"searchable"] boolValue]){
+                reminders_allowed = YES;
+            }
+            else{
+                reminders_allowed = NO;
+            }
+            if ([settings_data[@"vibrate_on_notification"] boolValue]){
+                vibrate_on_notification = YES;
+            }
+            else{
+                vibrate_on_notification = NO;
+            }
+            privacy_allowed = [settings_data[@"private"] boolValue];
+            search_allowed = [settings_data[@"searchable"] boolValue];
+            reminders_allowed = [settings_data[@"reminder_on"] boolValue];
+            vibrate_on_notification = [settings_data[@"vibrate_on_notification"] boolValue];
+            
+            AccountSettings *account_settings = [[AccountSettings alloc]initWithPrivate: privacy_allowed withSearchable:search_allowed withReminders:reminders_allowed withVibrateOnNotification:vibrate_on_notification];
+            
+            NSData *data = [NSKeyedArchiver archivedDataWithRootObject:account_settings];
+            [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"account_settings"];
         }
-        else{
-            privacy_allowed = NO;
+        @catch(NSString *){
+            NSLog(@"Not getting account settings");
         }
-        if ([settings_data[@"private"] boolValue]){
-            search_allowed = YES;
-        }
-        else{
-            search_allowed = NO;
-        }
-        if ([settings_data[@"searchable"] boolValue]){
-            reminders_allowed = YES;
-        }
-        else{
-            reminders_allowed = NO;
-        }
-        if ([settings_data[@"vibrate_on_notification"] boolValue]){
-            vibrate_on_notification = YES;
-        }
-        else{
-            vibrate_on_notification = NO;
-        }
-        privacy_allowed = [settings_data[@"private"] boolValue];
-        search_allowed = [settings_data[@"searchable"] boolValue];
-        reminders_allowed = [settings_data[@"reminder_on"] boolValue];
-        vibrate_on_notification = [settings_data[@"vibrate_on_notification"] boolValue];
-        
-        AccountSettings *account_settings = [[AccountSettings alloc]initWithPrivate: privacy_allowed withSearchable:search_allowed withReminders:reminders_allowed withVibrateOnNotification:vibrate_on_notification];
-        
-        NSData *data = [NSKeyedArchiver archivedDataWithRootObject:account_settings];
-        [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"account_settings"];
     }
-    @catch(NSString *){
-        NSLog(@"Not getting account settings");
+    else{
+        //HANDLE RETRYING TO GET DEVICE TOKEN
     }
+    
     
     //NSArray * upcoming = jsonResponse[@"upcoming_events"];
     //NSArray * owned = jsonResponse[@"owned_upcoming_events"];
@@ -232,6 +239,7 @@
     NSLog(@"error: %@", error);
 }
 
+
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
     NSLog(@"Got Device token!: %@", deviceToken);
@@ -250,8 +258,34 @@
     [conn start];
 }
 
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
+{
+    NSLog(@"did recieve remote notification, application state: %@!", application.applicationState);
+    if( application.applicationState == UIApplicationStateInactive){
+        NSLog(@"user is not in the application when it got the notification");
+    }
+    else if( application.applicationState == UIApplicationStateActive){
+        NSLog(@"application is already open when user got notification");
+    }
+    
+}
+
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
+{
+    NSLog(@"did receive local notification!");
+}
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    UILocalNotification *localNotif =
+    [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
+    if (localNotif) {
+        NSLog(@"got local notificaiton!");
+        NSLog(@"%@", localNotif);
+        NSString *itemName = [localNotif.userInfo objectForKey:@"event"];
+        application.applicationIconBadgeNumber = localNotif.applicationIconBadgeNumber-1;
+    }
+    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     
@@ -299,7 +333,7 @@
     }
     
     //make call to APN Services
-    [[UIApplication sharedApplication] registerForRemoteNotificationTypes:UIRemoteNotificationTypeBadge];
+    [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
     
     return YES;
 }
