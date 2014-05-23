@@ -171,46 +171,6 @@
     NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:_data options:0 error:&error];
     NSArray * members = jsonResponse[@"members"];
     _groupMembers = [jsonParser friendsArrayNoEncoding:members];
-    /*_groupMembers = [[NSMutableArray alloc]init];
-    for( int i = 0; i< [members count]; i++){
-        Friend *new_friend = [[Friend alloc]init];
-        
-        //NSDictionary * new_friend_dict = [NSJSONSerialization JSONObjectWithData: [members[i] dataUsingEncoding:NSUTF8StringEncoding]
-        //options: NSJSONReadingMutableContainers
-        //error: &error];
-        NSDictionary * new_friend_dict = members[i];
-        new_friend.name = new_friend_dict[@"user_name"];
-        new_friend.bio = new_friend_dict[@"bio"];
-        new_friend.account_id = [new_friend_dict[@"id"] intValue];
-        
-        if ([new_friend_dict[@"pf_pic"] length] == 0){
-            UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(8, 4, 40, 40)];
-            img.image = [UIImage imageNamed:@"ManSilhouette"];
-            //new_friend.profilePic = img;
-            new_friend.profilePic = img.image;
-        }
-        else{
-            NSURL *url = [[NSURL alloc] initWithString:new_friend_dict[@"fb_pfpic_url"]];
-            //NSURL *url = [[NSURL alloc] initWithString:@"https://graph.facebook.com/jason.s.tsao/picture"];
-            NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url];
-            //NSData *urlData = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:&response error:nil];
-            NSData *urlData = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:nil error:nil];
-            UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
-            new_friend.profilePic = image;
-        }
-        
-        //NSURL *url = [[NSURL alloc] initWithString:new_friend_dict[@"fb_pfpic_url"]];
-         //NSURL *url = [[NSURL alloc] initWithString:@"https://graph.facebook.com/jason.s.tsao/picture"];
-        //NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url];
-         //NSData *urlData = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:&response error:nil];
-        //NSData *urlData = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:nil error:nil];
-        //UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
-        //new_friend.profilePic = image;
-        //NSLog(@"new friend pf pic %@", new_friend.profilePic);
-        
-        [_groupMembers addObject:new_friend];
-    }*/
-
     [self.tableView reloadData];
     
 }
@@ -282,14 +242,6 @@
         BOOL selected = NO;
         cell = [MEPTableCell customFriendCell:currentFriend forTable:tableView selected:selected];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        /*//cell.textLabel.text = currentFriend.name;
-        UILabel *friendHeader = [[UILabel alloc] initWithFrame:CGRectMake(60, 10, 235, 21)];
-        friendHeader.text = currentFriend.name;
-        [friendHeader setFont:[UIFont systemFontOfSize:18]];
-        [cell.contentView addSubview:friendHeader];
-        UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(8, 4, 40, 40)];
-        img.image = currentFriend.profilePic;
-        [cell.contentView addSubview:img];*/
     }
     return cell;
 }

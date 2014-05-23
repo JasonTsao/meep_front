@@ -279,26 +279,9 @@
     else{
         cell = [tableView dequeueReusableCellWithIdentifier:@"selectFriendCell"];
         cell = [self clearCell:cell];
-        UIView * lineSeparatorMask = [[UIView alloc] initWithFrame:CGRectMake(0, cell.frame.size.height-1, cell.frame.size.width, 1)];
-        lineSeparatorMask.backgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_BACKGROUND_COLOR]];
-        [cell addSubview:lineSeparatorMask];
-        UIView * contentView = [[UIView alloc] initWithFrame:CGRectMake(3, 3, tableView.frame.size.width - 6, cell.frame.size.height - 6)];
-        contentView.backgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_DATA_BACKGROUND_COLOR]];
-        contentView.layer.cornerRadius = 10;
-        [contentView setTag:1];
         if (indexPath.section == 0){
             Group *currentGroup = groups_list[indexPath.row];
-            UILabel *groupHeader = [[UILabel alloc] initWithFrame:CGRectMake(60, 14, 235, 21)];
-            groupHeader.text = currentGroup.name;
-            groupHeader.textColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_DATA_TEXT_COLOR]];
-            [groupHeader setFont:[UIFont systemFontOfSize:18]];
-            [contentView addSubview:groupHeader];
-            UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(8, 4, 40, 40)];
-            img.image = currentGroup.groupProfilePic;
-            img.layer.cornerRadius = img.frame.size.height/2;
-            img.layer.masksToBounds = YES;
-            [contentView addSubview:img];
-            [cell addSubview:contentView];
+            cell = [MEPTableCell customGroupCell:currentGroup forCell:cell forTable:tableView selected:NO];
         }
         else if (indexPath.section == 1){
             Friend *currentFriend = friends_list[indexPath.row];

@@ -226,4 +226,29 @@
     return cell;
 }
 
++ (UITableViewCell*) customGroupCell:(Group*)group forCell:(UITableViewCell*)cell forTable:(UITableView*)tableView selected:(BOOL)sel
+{
+    UIView * lineSeparatorMask = [[UIView alloc] initWithFrame:CGRectMake(0, cell.frame.size.height-1, cell.frame.size.width, 1)];
+    lineSeparatorMask.backgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_BACKGROUND_COLOR]];
+    [cell addSubview:lineSeparatorMask];
+    UIView * contentView = [[UIView alloc] initWithFrame:CGRectMake(3, 3, tableView.frame.size.width - 6, cell.frame.size.height - 6)];
+    contentView.backgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_DATA_BACKGROUND_COLOR]];
+    contentView.layer.cornerRadius = 10;
+    [contentView setTag:1];
+    
+    //Group *currentGroup = groups_list[indexPath.row];
+    UILabel *groupHeader = [[UILabel alloc] initWithFrame:CGRectMake(60, 14, 235, 21)];
+    groupHeader.text = group.name;
+    groupHeader.textColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_DATA_TEXT_COLOR]];
+    [groupHeader setFont:[UIFont systemFontOfSize:18]];
+    [contentView addSubview:groupHeader];
+    UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(8, 4, 40, 40)];
+    img.image = group.groupProfilePic;
+    img.layer.cornerRadius = img.frame.size.height/2;
+    img.layer.masksToBounds = YES;
+    [contentView addSubview:img];
+    [cell addSubview:contentView];
+    return cell;
+}
+
 @end
