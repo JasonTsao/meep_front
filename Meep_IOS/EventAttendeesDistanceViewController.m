@@ -8,6 +8,7 @@
 
 #import "EventAttendeesDistanceViewController.h"
 #import "CenterViewController.h"
+#import "Colors.h"
 #import "MEEPhttp.h"
 #import "MEPLocationService.h"
 
@@ -83,7 +84,7 @@
     UILabel * name = [[UILabel alloc] initWithFrame:CGRectMake(0, cell.frame.size.width - 4, cell.frame.size.width - 8, 10)];
     name.text = guest[@"name"];
     name.textAlignment = NSTextAlignmentCenter;
-    name.backgroundColor = [CenterViewController colorWithHexString:@"FFFFFF"];
+    name.backgroundColor = [Colors colorWithHexString:@"FFFFFF"];
     [name setFont:[UIFont systemFontOfSize:9]];
     [cell addSubview:name];
     

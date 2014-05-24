@@ -92,8 +92,8 @@
     CLLocationDistance distance = [loc1 distanceFromLocation:loc2];
     float dist = (distance * 3.28084)/5280;
     if (dist >= 10) {
-        return [NSString stringWithFormat:@"%.0Lf miles away",roundl(dist*100.0)/100.0];
+        return [NSString stringWithFormat:@"%.0Lf miles",roundl(dist*100.0)/100.0];
     }
-    return [NSString stringWithFormat:@"%.1Lf miles away",roundl(dist*100.0)/100.0];
+    return [NSString stringWithFormat:@"%.1Lf miles",roundl(dist*100.0)/100.0];
 }
 @end

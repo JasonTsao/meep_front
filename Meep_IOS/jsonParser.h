@@ -10,6 +10,7 @@
 
 @interface jsonParser : NSObject
 +(NSArray*)friendsArray:(NSArray*)friends_list;
++(NSArray*)friendsArrayNoEncoding:(NSArray*)friends;
 +(NSArray*)invitedFriendsArray:(NSArray*)invited_friends_list;
 +(NSArray*)eventsArray:(NSArray*)events_list;
 +(NSArray*)groupsArray:(NSArray*)groups_list;

@@ -12,6 +12,7 @@
 +(NSString*) applicationURL;
 +(NSString*) accountURL;
 +(NSString*) eventURL;
++(NSString*) iosNotificationsURL;
 +(NSMutableURLRequest*) makePOSTRequestWithString:(NSString*) urlString
                                    postDictionary:(NSDictionary*) postDict;
 

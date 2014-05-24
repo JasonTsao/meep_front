@@ -14,6 +14,7 @@
 @property (nonatomic) NSInteger invited_friend_id;
 @property (nonatomic) BOOL attending;
 @property (nonatomic) BOOL can_invite_friends;
+@property (nonatomic) BOOL has_viewed_event;
 @property (nonatomic) NSString *name;
 @property (nonatomic) NSString *longitude;
 @property (nonatomic) NSString *latitude;

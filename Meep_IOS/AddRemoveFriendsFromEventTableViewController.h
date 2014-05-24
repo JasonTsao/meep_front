@@ -16,7 +16,7 @@
 @end
 
 
-@interface AddRemoveFriendsFromEventTableViewController : UITableViewController<UITableViewDataSource>
+@interface AddRemoveFriendsFromEventTableViewController : UITableViewController<UITableViewDataSource, UISearchBarDelegate, UISearchDisplayDelegate>
 @property (nonatomic) Event *currentEvent;
 @property (nonatomic) NSMutableArray *invitedFriends;
 @property (nonatomic) NSMutableArray *originalInvitedFriends;

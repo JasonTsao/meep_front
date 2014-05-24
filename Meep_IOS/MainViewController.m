@@ -18,6 +18,7 @@
 #import "InviteFriendsViewController.h"
 #import "ProfileViewController.h"
 #import "Event.h"
+#import "NotificationHandler.h"
 #import "MEPLocationService.h"
 
 #import <QuartzCore/QuartzCore.h>
@@ -508,6 +509,9 @@
 }
 
 - (void)displayEventPage:(Event *)event{
+
+    [NotificationHandler createAndSendLocalNotificationForEvent:event];
+    
     UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"CenterStoryboard" bundle:nil];
     self.eventPageViewController = (EventPageViewController *)[storyboard instantiateViewControllerWithIdentifier:@"EventViewController"];
     _eventPageViewController.currentEvent = event;

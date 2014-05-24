@@ -48,49 +48,56 @@
 -(void)handleData{
     NSError* error;
     NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:_data options:0 error:&error];
-    NSDictionary * settings_data = jsonResponse[@"settings"];
-    BOOL privacy_allowed;
-    BOOL search_allowed;
-    BOOL reminders_allowed;
-    BOOL vibrate_on_notification;
-    @try{
-        if ([settings_data[@"private"] boolValue]){
-            privacy_allowed = YES;
+    
+    if( [jsonResponse objectForKey:@"settings"]){
+        NSDictionary * settings_data = jsonResponse[@"settings"];
+        BOOL privacy_allowed;
+        BOOL search_allowed;
+        BOOL reminders_allowed;
+        BOOL vibrate_on_notification;
+        @try{
+            if ([settings_data[@"private"] boolValue]){
+                privacy_allowed = YES;
+            }
+            else{
+                privacy_allowed = NO;
+            }
+            if ([settings_data[@"private"] boolValue]){
+                search_allowed = YES;
+            }
+            else{
+                search_allowed = NO;
+            }
+            if ([settings_data[@"searchable"] boolValue]){
+                reminders_allowed = YES;
+            }
+            else{
+                reminders_allowed = NO;
+            }
+            if ([settings_data[@"vibrate_on_notification"] boolValue]){
+                vibrate_on_notification = YES;
+            }
+            else{
+                vibrate_on_notification = NO;
+            }
+            privacy_allowed = [settings_data[@"private"] boolValue];
+            search_allowed = [settings_data[@"searchable"] boolValue];
+            reminders_allowed = [settings_data[@"reminder_on"] boolValue];
+            vibrate_on_notification = [settings_data[@"vibrate_on_notification"] boolValue];
+            
+            AccountSettings *account_settings = [[AccountSettings alloc]initWithPrivate: privacy_allowed withSearchable:search_allowed withReminders:reminders_allowed withVibrateOnNotification:vibrate_on_notification];
+            
+            NSData *data = [NSKeyedArchiver archivedDataWithRootObject:account_settings];
+            [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"account_settings"];
         }
-        else{
-            privacy_allowed = NO;
+        @catch(NSString *){
+            NSLog(@"Not getting account settings");
         }
-        if ([settings_data[@"private"] boolValue]){
-            search_allowed = YES;
-        }
-        else{
-            search_allowed = NO;
-        }
-        if ([settings_data[@"searchable"] boolValue]){
-            reminders_allowed = YES;
-        }
-        else{
-            reminders_allowed = NO;
-        }
-        if ([settings_data[@"vibrate_on_notification"] boolValue]){
-            vibrate_on_notification = YES;
-        }
-        else{
-            vibrate_on_notification = NO;
-        }
-        privacy_allowed = [settings_data[@"private"] boolValue];
-        search_allowed = [settings_data[@"searchable"] boolValue];
-        reminders_allowed = [settings_data[@"reminder_on"] boolValue];
-        vibrate_on_notification = [settings_data[@"vibrate_on_notification"] boolValue];
-        
-        AccountSettings *account_settings = [[AccountSettings alloc]initWithPrivate: privacy_allowed withSearchable:search_allowed withReminders:reminders_allowed withVibrateOnNotification:vibrate_on_notification];
-        
-        NSData *data = [NSKeyedArchiver archivedDataWithRootObject:account_settings];
-        [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"account_settings"];
     }
-    @catch(NSString *){
-        NSLog(@"Not getting account settings");
+    else{
+        //HANDLE RETRYING TO GET DEVICE TOKEN
     }
+    
     
     //NSArray * upcoming = jsonResponse[@"upcoming_events"];
     //NSArray * owned = jsonResponse[@"owned_upcoming_events"];
@@ -222,8 +229,63 @@
     }
 }
 
+- (void)registerForRemoteNotificationTypes:(UIRemoteNotificationType)types{
+    NSLog(@"registering for remote notification types!");
+}
+
+- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
+{
+    NSLog(@"failed to register for remote notifications!");
+    NSLog(@"error: %@", error);
+}
+
+
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
+{
+    NSLog(@"Got Device token!: %@", deviceToken);
+    const char* data = [deviceToken bytes];
+    NSMutableString* token = [NSMutableString string];
+    
+    for (int i = 0; i < [deviceToken length]; i++) {
+        [token appendFormat:@"%02.2hhX", data[i]];
+    }
+    
+    NSString * requestURL = [NSString stringWithFormat:@"%@device?token=%@&service=0",[MEEPhttp iosNotificationsURL], token];
+    NSLog(@"request url : %@", requestURL);
+    NSDictionary * postDict = [[NSDictionary alloc] init];
+    NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
+    NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    [conn start];
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
+{
+    NSLog(@"did recieve remote notification, application state: %@!", application.applicationState);
+    if( application.applicationState == UIApplicationStateInactive){
+        NSLog(@"user is not in the application when it got the notification");
+    }
+    else if( application.applicationState == UIApplicationStateActive){
+        NSLog(@"application is already open when user got notification");
+    }
+    
+}
+
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
+{
+    NSLog(@"did receive local notification!");
+}
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    UILocalNotification *localNotif =
+    [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
+    if (localNotif) {
+        NSLog(@"got local notificaiton!");
+        NSLog(@"%@", localNotif);
+        NSString *itemName = [localNotif.userInfo objectForKey:@"event"];
+        application.applicationIconBadgeNumber = localNotif.applicationIconBadgeNumber-1;
+    }
+    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     
@@ -269,6 +331,10 @@
                                           [self sessionStateChanged:session state:state error:error];
                                       }];
     }
+    
+    //make call to APN Services
+    [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
+    
     return YES;
 }
 
@@ -287,6 +353,42 @@
 {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    
+    
+   /* 
+    SOME EXAMPLE CODE ON HOW TO HANDLE PUSH NOTIFICATIONS IN THE BACKGROUND
+    NSLog(@"Application entered background state.");
+    // bgTask is a property of the class
+    NSAssert(self.bgTask == UIInvalidBackgroundTask, nil);
+    
+    bgTask = [application beginBackgroundTaskWithExpirationHandler: ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [application endBackgroundTask:self.bgTask];
+            self.bgTask = UIInvalidBackgroundTask;
+        });
+    }];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        while ([application backgroundTimeRemaining] > 1.0) {
+            NSString *friend = [self checkForIncomingChat];
+            if (friend) {
+                UILocalNotification *localNotif = [[UILocalNotification alloc] init];
+                if (localNotif) {
+                    localNotif.alertBody = [NSString stringWithFormat:
+                                            NSLocalizedString(@"%@ has a message for you.", nil), friend];
+                    localNotif.alertAction = NSLocalizedString(@"Read Message", nil);
+                    localNotif.soundName = @"alarmsound.caf";
+                    localNotif.applicationIconBadgeNumber = 1;
+                    [application presentLocalNotificationNow:localNotif];
+                    [localNotif release];
+                    friend = nil;
+                    break;
+                }
+            }
+        }
+        [application endBackgroundTask:self.bgTask];
+        self.bgTask = UIInvalidBackgroundTask;
+    });*/
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application

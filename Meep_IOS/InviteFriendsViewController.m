@@ -7,11 +7,12 @@
 //
 
 #import "InviteFriendsViewController.h"
-#import "CenterViewController.h"
 #import "MEEPhttp.h"
 #import "jsonPArser.h"
+#import "MEPTableCell.h"
 #import "Group.h"
 #import "Friend.h"
+#import "Colors.h"
 
 #define TABLE_BACKGROUND_COLOR "FFFFFF"
 
@@ -147,7 +148,7 @@
             else{
                 NSInteger deleteRow = [selected_friends_list indexOfObject:selectedFriend];
                 [selected_friends_list removeObjectAtIndex: deleteRow];
-                [cell viewWithTag:1].backgroundColor = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_DATA_BACKGROUND_COLOR]];
+                [cell viewWithTag:1].backgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_DATA_BACKGROUND_COLOR]];
             }
         }
         else if(indexPath.section == 0){
@@ -188,13 +189,13 @@
         }
     }
     UIView * headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width - 6, 20)];
-    headerView.backgroundColor = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_SECTION_HEADER_BACKGROUND_COLOR]];
+    headerView.backgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_SECTION_HEADER_BACKGROUND_COLOR]];
     UIView * lineSeparatorMask = [[UIView alloc] initWithFrame:CGRectMake(0, (tableView.sectionHeaderHeight * 4)-1, headerView.frame.size.width, 1)];
-    lineSeparatorMask.backgroundColor = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_BACKGROUND_COLOR]];
+    lineSeparatorMask.backgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_BACKGROUND_COLOR]];
     [headerView addSubview:lineSeparatorMask];
     UILabel * headerTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width - 6, 20)];
     headerTitle.text = header;
-    headerTitle.textColor = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_SECTION_HEADER_TEXT_COLOR]];
+    headerTitle.textColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_SECTION_HEADER_TEXT_COLOR]];
     headerTitle.textAlignment = NSTextAlignmentRight;
     [headerView addSubview:headerTitle];
     return headerView;
@@ -250,42 +251,13 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 54;
+    return [MEPTableCell customFriendCellHeight];
 }
 
-+ (UITableViewCell*) createCustomFriendCell:(Friend*)friend
-                                   forTable:(UITableView*)tableView
-                                   selected:(BOOL)sel {
-    UITableViewCell * cell = [[UITableViewCell alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 54)];
-    cell.backgroundColor = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_BACKGROUND_COLOR]];
-    UIView * lineMask = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 1)];
-    lineMask.backgroundColor = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_BACKGROUND_COLOR]];
-    [cell addSubview:lineMask];
-    UIView * cellContents = [[UIView alloc] initWithFrame:CGRectMake(3, 3, cell.frame.size.width - 6, cell.frame.size.height + 6)];
-    if (!sel) {
-        cellContents.backgroundColor = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_DATA_BACKGROUND_COLOR]];
-    }
-    else {
-        cellContents.backgroundColor = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",CELL_SELECT_COLOR]];
-    }
-    cellContents.layer.cornerRadius = 10;
-    UILabel *friendHeader = [[UILabel alloc] initWithFrame:CGRectMake(60, 14, 235, 21)];
-    friendHeader.text = friend.name;
-    friendHeader.textColor = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_DATA_TEXT_COLOR]];
-    [friendHeader setFont:[UIFont systemFontOfSize:18]];
-    [cellContents addSubview:friendHeader];
-    UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(8, 4, 40, 40)];
-    img.image = friend.profilePic;
-    img.layer.cornerRadius = img.frame.size.height/2;
-    img.layer.masksToBounds = YES;
-    [cellContents addSubview:img];
-    [cell addSubview:cellContents];
-    return cell;
-}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [[UITableViewCell alloc]init];;
+    UITableViewCell *cell = [[UITableViewCell alloc]init];
     
     NSString *classType = [NSString stringWithFormat:@"%@",[tableView class]];
     if([classType isEqualToString:@"UISearchResultsTableView"] ){
@@ -307,26 +279,9 @@
     else{
         cell = [tableView dequeueReusableCellWithIdentifier:@"selectFriendCell"];
         cell = [self clearCell:cell];
-        UIView * lineSeparatorMask = [[UIView alloc] initWithFrame:CGRectMake(0, cell.frame.size.height-1, cell.frame.size.width, 1)];
-        lineSeparatorMask.backgroundColor = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_BACKGROUND_COLOR]];
-        [cell addSubview:lineSeparatorMask];
-        UIView * contentView = [[UIView alloc] initWithFrame:CGRectMake(3, 3, tableView.frame.size.width - 6, cell.frame.size.height - 6)];
-        contentView.backgroundColor = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_DATA_BACKGROUND_COLOR]];
-        contentView.layer.cornerRadius = 10;
-        [contentView setTag:1];
         if (indexPath.section == 0){
             Group *currentGroup = groups_list[indexPath.row];
-            UILabel *groupHeader = [[UILabel alloc] initWithFrame:CGRectMake(60, 14, 235, 21)];
-            groupHeader.text = currentGroup.name;
-            groupHeader.textColor = [CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_DATA_TEXT_COLOR]];
-            [groupHeader setFont:[UIFont systemFontOfSize:18]];
-            [contentView addSubview:groupHeader];
-            UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(8, 4, 40, 40)];
-            img.image = currentGroup.groupProfilePic;
-            img.layer.cornerRadius = img.frame.size.height/2;
-            img.layer.masksToBounds = YES;
-            [contentView addSubview:img];
-            [cell addSubview:contentView];
+            cell = [MEPTableCell customGroupCell:currentGroup forCell:cell forTable:tableView selected:NO];
         }
         else if (indexPath.section == 1){
             Friend *currentFriend = friends_list[indexPath.row];
@@ -334,7 +289,8 @@
             if ([selected_friends_list containsObject:currentFriend]) {
                 selected = YES;
             }
-            cell = [InviteFriendsViewController createCustomFriendCell:currentFriend forTable:tableView selected:selected];
+            //cell = [InviteFriendsViewController createCustomFriendCell:currentFriend forTable:tableView selected:selected];
+            cell = [MEPTableCell customFriendCell:currentFriend forTable:tableView selected:selected];
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         // [cell addSubview:contentView];
@@ -361,6 +317,7 @@
 {
     [super viewDidLoad];
     self.title = @"Invite Friends";
+    self.navigationController.navigationBar.titleTextAttributes = [NSDictionary dictionaryWithObject:[UIColor whiteColor] forKey:UITextAttributeTextColor];
     friends_list = [[NSMutableArray alloc]init];
     selected_friends_list = [[NSMutableArray alloc]init];
     NSData *friendsListData = [[NSUserDefaults standardUserDefaults] objectForKey:@"friends_list"];
@@ -381,7 +338,7 @@
     }
     friends_list = user_friends_list;
     // Do any additional setup after loading the view.
-    _breakBar.backgroundColor = [CenterViewController colorWithHexString:@"049372"];
+    _breakBar.backgroundColor = [Colors colorWithHexString:@"049372"];
 }
 
 
@@ -434,7 +391,7 @@
     UILabel * name = [[UILabel alloc] initWithFrame:CGRectMake(0, cell.frame.size.width - 4, cell.frame.size.width, 10)];
     name.text = selectedFriend.name;
     name.textAlignment = NSTextAlignmentCenter;
-    name.backgroundColor = [CenterViewController colorWithHexString:@"FFFFFF"];
+    name.backgroundColor = [Colors colorWithHexString:@"FFFFFF"];
     [name setFont:[UIFont systemFontOfSize:9]];
     [cell addSubview:name];
     return cell;

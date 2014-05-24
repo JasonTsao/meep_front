@@ -12,8 +12,10 @@
 #import "Group.h"
 #import "MEEPhttp.h"
 #import "jsonParser.h"
+#import "MEPTableCell.h"
 
 @interface AddRemoveFriendsFromEventTableViewController ()
+@property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 
 @end
 
@@ -145,6 +147,18 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{
+    /*search_friends_list = [[NSMutableArray alloc] init];
+     for( int i = 0; i < [friends_list count]; i++){
+     if([[friends_list[i] name] hasPrefix:searchText]){
+     [search_friends_list addObject:friends_list[i]];
+     }
+     }
+     
+     [self.searchDisplayController.searchResultsTableView reloadData];*/
+}
+
 #pragma mark - Table view data source
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     NSString *friend_name;
@@ -202,6 +216,11 @@
 }
 
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return [MEPTableCell customFriendCellHeight];
+}
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
 #warning Potentially incomplete method implementation.
@@ -247,7 +266,8 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"eventFriendCell" forIndexPath:indexPath];
+    //UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"eventFriendCell" forIndexPath:indexPath];
+    UITableViewCell *cell;
     Friend *currentFriend;
     cell = [self clearCell:cell];
 
@@ -257,14 +277,8 @@
     else if (indexPath.section == 1){
         currentFriend = _friends[indexPath.row];
     }
-    
-    UILabel *friendHeader = [[UILabel alloc] initWithFrame:CGRectMake(60, 10, 235, 21)];
-    friendHeader.text = currentFriend.name;
-    [friendHeader setFont:[UIFont systemFontOfSize:18]];
-    [cell.contentView addSubview:friendHeader];
-    UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(8, 4, 40, 40)];
-    img.image = currentFriend.profilePic;
-    [cell.contentView addSubview:img];
+
+    cell = [MEPTableCell customFriendCell:currentFriend forTable:tableView selected:NO];
     
     return cell;
 }

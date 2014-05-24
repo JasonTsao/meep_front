@@ -7,6 +7,8 @@
 //
 
 #import "CreateGroupViewController.h"
+#import "jsonParser.h"
+#import "MEPTableCell.h"
 
 @interface CreateGroupViewController ()
 @property (weak, nonatomic) IBOutlet UITableView *friendTable;
@@ -65,8 +67,9 @@
     NSError* error;
     NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:_data options:0 error:&error];
     NSArray * friends = jsonResponse[@"friends"];
-    friends_list = [[NSMutableArray alloc]init];
-    for( int i = 0; i< [friends count]; i++){
+    //friends_list = [[NSMutableArray alloc]init];
+    friends_list = [jsonParser friendsArray:friends];
+    /*for( int i = 0; i< [friends count]; i++){
         Friend *new_friend = [[Friend alloc]init];
         
         NSDictionary * new_friend_dict = [NSJSONSerialization JSONObjectWithData: [friends[i] dataUsingEncoding:NSUTF8StringEncoding]
@@ -80,7 +83,7 @@
         new_friend.account_id = [new_friend_dict[@"account_id"] intValue];
         
         [friends_list addObject:new_friend];
-    }
+    }*/
     
     NSData *data = [NSKeyedArchiver archivedDataWithRootObject:friends_list];
     [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"friends_list"];
@@ -170,6 +173,11 @@
 
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return [MEPTableCell customFriendCellHeight];
+}
+
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     NSString *classType = [NSString stringWithFormat:@"%@",[tableView class]];
@@ -236,12 +244,24 @@
         cell = [tableView dequeueReusableCellWithIdentifier:@"selectCell"];
         
         if (indexPath.section == 0){
+            //Friend *currentFriend = selected_friends_list[indexPath.row];
+            //cell.textLabel.text = currentFriend.name;
             Friend *currentFriend = selected_friends_list[indexPath.row];
-            cell.textLabel.text = currentFriend.name;
+            BOOL selected = NO;
+            if ([selected_friends_list containsObject:currentFriend]) {
+                selected = YES;
+            }
+            //cell = [InviteFriendsViewController createCustomFriendCell:currentFriend forTable:tableView selected:selected];
+            cell = [MEPTableCell customFriendCell:currentFriend forTable:tableView selected:selected];
         }
         else if (indexPath.section == 1){
             Friend *currentFriend = friends_list[indexPath.row];
-            cell.textLabel.text = currentFriend.name;
+            BOOL selected = NO;
+            if ([selected_friends_list containsObject:currentFriend]) {
+                selected = YES;
+            }
+            //cell = [InviteFriendsViewController createCustomFriendCell:currentFriend forTable:tableView selected:selected];
+            cell = [MEPTableCell customFriendCell:currentFriend forTable:tableView selected:selected];
         }
     }
     

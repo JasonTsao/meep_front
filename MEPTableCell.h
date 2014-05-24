@@ -7,10 +7,16 @@
 //
 
 #import "Event.h"
+#import "Friend.h"
+#import "Group.h"
 #import <Foundation/Foundation.h>
 
 @interface MEPTableCell : NSObject
 
-+(UITableViewCell*)eventCell:(Event*)event userLatitude:(float)lat userLongitude:(float)lng;
++(UIView*)eventCell:(Event*)event userLatitude:(float)lat userLongitude:(float)lng;
++(UIView*)eventHeaderCell:(NSString*)dateText;
++ (CGFloat) customFriendCellHeight;
++ (UITableViewCell*) customFriendCell:(Friend*)friend forTable:(UITableView*)tableView selected:(BOOL)sel;
++ (UITableViewCell*) customGroupCell:(Group*)group forCell:(UITableViewCell*)cell forTable:(UITableView*)tableView selected:(BOOL)sel;
 
 @end

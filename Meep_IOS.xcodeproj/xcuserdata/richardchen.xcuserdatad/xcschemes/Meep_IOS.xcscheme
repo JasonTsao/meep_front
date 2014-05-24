@@ -38,6 +38,16 @@
                ReferencedContainer = "container:Meep_IOS.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "96E1D24A19172E7E00951DEB"
+               BuildableName = "addressBookTests.xctest"
+               BlueprintName = "addressBookTests"
+               ReferencedContainer = "container:Meep_IOS.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference

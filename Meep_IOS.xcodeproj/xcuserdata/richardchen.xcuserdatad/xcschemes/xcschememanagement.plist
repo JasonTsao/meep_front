@@ -9,6 +9,11 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>addressBook.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
@@ -18,6 +23,16 @@
 			<true/>
 		</dict>
 		<key>3CCC508F19059F9500EB0980</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>96E1D23D19172E7E00951DEB</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>96E1D24A19172E7E00951DEB</key>
 		<dict>
 			<key>primary</key>
 			<true/>

@@ -8,8 +8,11 @@
 
 #import "AddRemoveFriendsFromGroupTableViewController.h"
 #import "MEEPhttp.h"
+#import "MEPTableCell.h"
+#import "jsonParser.h"
 
 @interface AddRemoveFriendsFromGroupTableViewController ()
+@property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 
 @end
 
@@ -57,29 +60,8 @@
     NSError* error;
     NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:_data options:0 error:&error];
     NSArray * friends = jsonResponse[@"friends"];
-    _friends = [[NSMutableArray alloc]init];
-    
-    for( int i = 0; i< [friends count]; i++){
-        Friend *new_friend = [[Friend alloc]init];
-        
-        NSDictionary * new_friend_dict = [NSJSONSerialization JSONObjectWithData: [friends[i] dataUsingEncoding:NSUTF8StringEncoding]
-                                                                         options: NSJSONReadingMutableContainers
-                                                                           error: &error];
-        new_friend.name = new_friend_dict[@"name"];
-        //new_friend.imageFileName = new_friend_dict[@"pf_pic"];
-        new_friend.account_id = [new_friend_dict[@"account_id"] intValue];
-        [_friends addObject:new_friend];
-        
-        for(int k = 0; k < [_originalMembers count]; k++){
-            //NSLog(@"original member: %i", [_originalMembers[k] account_id]);
-            //NSLog(@"new member: %i", new_friend.account_id);
-            if([_originalMembers[k] account_id] == new_friend.account_id){
-                NSLog(@"matched!: %i", new_friend.account_id);
-                [_invitedMembers addObject:new_friend];
-            }
-        }
-    }
-    
+    _friends = [jsonParser friendsArray:friends];
+
     /*NSData *data = [NSKeyedArchiver archivedDataWithRootObject:_friends];
      [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"friends_list"];
      [NSUserDefaults resetStandardUserDefaults];*/
@@ -145,6 +127,19 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{   
+    /*search_friends_list = [[NSMutableArray alloc] init];
+    for( int i = 0; i < [friends_list count]; i++){
+        if([[friends_list[i] name] hasPrefix:searchText]){
+            [search_friends_list addObject:friends_list[i]];
+        }
+    }
+    
+    [self.searchDisplayController.searchResultsTableView reloadData];*/
+}
+
+
 #pragma mark - Table view data source
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     NSString *friend_name;
@@ -201,6 +196,12 @@
     
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return [MEPTableCell customFriendCellHeight];
+}
+
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
 #warning Potentially incomplete method implementation.
@@ -214,7 +215,7 @@
     // Return the number of rows in the section.
     NSInteger numRows = 1;
     if (section == 0){
-        numRows = [_invitedMembers count];
+        numRows = [_originalMembers count];
     }
     else if(section == 1){
         numRows = [_friends count];
@@ -239,17 +240,19 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"groupMember" forIndexPath:indexPath];
-    
+    //UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"groupMember" forIndexPath:indexPath];
+    UITableViewCell *cell;
+    BOOL selected = NO;
     // Configure the cell...
     if (indexPath.section == 0){
-        NSLog(@"adding members: %@", _invitedMembers[indexPath.row]);
-        Friend *currentFriend = _invitedMembers[indexPath.row];
-        cell.textLabel.text = currentFriend.name;
+        Friend *currentFriend = _originalMembers[indexPath.row];
+        cell = [MEPTableCell customFriendCell:currentFriend forTable:tableView selected:selected];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     else if (indexPath.section == 1){
         Friend *currentFriend = _friends[indexPath.row];
-        cell.textLabel.text = currentFriend.name;
+        cell = [MEPTableCell customFriendCell:currentFriend forTable:tableView selected:selected];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     return cell;
 }

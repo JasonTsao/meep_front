@@ -8,7 +8,6 @@
 
 #import "MEPTableCell.h"
 #import "Colors.h"
-#import "Event.h"
 #import "MEPTextParse.h"
 #import "MEPLocationService.h"
 
@@ -22,6 +21,17 @@
 #define ICON_BACKGROUND_COLOR "FFFFFF"
 #define MAIN_TEXT_COLOR "FFFFFF"
 #define NAV_BAR_COLOR "22313F"
+
+#define TABLE_BACKGROUND_COLOR "FFFFFF"
+
+#define TABLE_SECTION_HEADER_BACKGROUND_COLOR "FFFFFF"
+#define TABLE_SECTION_HEADER_TEXT_COLOR "019875"
+
+#define TABLE_DATA_BACKGROUND_COLOR "3FC380"
+#define TABLE_DATA_TEXT_COLOR "FFFFFF"
+
+#define CELL_SELECT_COLOR "89C4F4"
+
 
 @implementation MEPTableCell
 
@@ -158,6 +168,91 @@
     }
     [cell addSubview:contentView];
     
+    return cell;
+}
+
++(UIView*)eventHeaderCell:(NSString*)dateText {
+    UIView * headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 22)];
+    UIColor * framingColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",BORDER_COLOR]];
+    
+    UIView * horizontalLine = [[UIView alloc] initWithFrame:CGRectMake(28, headerView.frame.size.height/2 + 1 - (BORDER_WIDTH/2), headerView.frame.size.width/5 - 28, BORDER_WIDTH)];
+    horizontalLine.backgroundColor = framingColor;
+    UIView * verticalLine = [[UIView alloc] initWithFrame:CGRectMake(30 - BORDER_WIDTH, 0, BORDER_WIDTH, headerView.frame.size.height)];
+    verticalLine.backgroundColor = framingColor;
+    UIView * headerContainer = [[UIView alloc] initWithFrame:CGRectMake(0, 0, headerView.frame.size.width, headerView.frame.size.height)];
+    UILabel * headerTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, headerContainer.frame.size.width - 15, headerContainer.frame.size.height)];
+    headerTitle.textAlignment = NSTextAlignmentRight;
+    // headerContainer.backgroundColor = [UIColor colorWithRed:1.f green:1.f blue:1.f alpha:1.f];
+    headerTitle.text = dateText;
+    // [headerTitle setFont:[UIFont fontWithName:@"GurmukhiMN" size:10]];
+    headerTitle.textColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",HEADER_TEXT_COLOR]];
+    [headerContainer addSubview:headerTitle];
+    
+    [headerView addSubview:headerContainer];
+    [headerView addSubview:verticalLine];
+    // [headerView addSubview:horizontalLine];
+    headerView.backgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_BACKGROUND_COLOR]];
+
+    return headerView;
+}
+
++ (CGFloat) customFriendCellHeight
+{
+    return 54;
+}
+
++ (UITableViewCell*) customFriendCell:(Friend*)friend
+                                   forTable:(UITableView*)tableView
+                                   selected:(BOOL)sel {
+    UITableViewCell * cell = [[UITableViewCell alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 54)];
+    cell.backgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_BACKGROUND_COLOR]];
+    UIView * lineMask = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 1)];
+    lineMask.backgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_BACKGROUND_COLOR]];
+    [cell addSubview:lineMask];
+    UIView * cellContents = [[UIView alloc] initWithFrame:CGRectMake(3, 3, cell.frame.size.width - 6, cell.frame.size.height + 6)];
+    if (!sel) {
+        cellContents.backgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_DATA_BACKGROUND_COLOR]];
+    }
+    else {
+        cellContents.backgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",CELL_SELECT_COLOR]];
+    }
+    cellContents.layer.cornerRadius = 10;
+    UILabel *friendHeader = [[UILabel alloc] initWithFrame:CGRectMake(60, 14, 235, 21)];
+    friendHeader.text = friend.name;
+    friendHeader.textColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_DATA_TEXT_COLOR]];
+    [friendHeader setFont:[UIFont systemFontOfSize:18]];
+    [cellContents addSubview:friendHeader];
+    UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(8, 4, 40, 40)];
+    img.image = friend.profilePic;
+    img.layer.cornerRadius = img.frame.size.height/2;
+    img.layer.masksToBounds = YES;
+    [cellContents addSubview:img];
+    [cell addSubview:cellContents];
+    return cell;
+}
+
++ (UITableViewCell*) customGroupCell:(Group*)group forCell:(UITableViewCell*)cell forTable:(UITableView*)tableView selected:(BOOL)sel
+{
+    UIView * lineSeparatorMask = [[UIView alloc] initWithFrame:CGRectMake(0, cell.frame.size.height-1, cell.frame.size.width, 1)];
+    lineSeparatorMask.backgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_BACKGROUND_COLOR]];
+    [cell addSubview:lineSeparatorMask];
+    UIView * contentView = [[UIView alloc] initWithFrame:CGRectMake(3, 3, tableView.frame.size.width - 6, cell.frame.size.height - 6)];
+    contentView.backgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_DATA_BACKGROUND_COLOR]];
+    contentView.layer.cornerRadius = 10;
+    [contentView setTag:1];
+    
+    //Group *currentGroup = groups_list[indexPath.row];
+    UILabel *groupHeader = [[UILabel alloc] initWithFrame:CGRectMake(60, 14, 235, 21)];
+    groupHeader.text = group.name;
+    groupHeader.textColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_DATA_TEXT_COLOR]];
+    [groupHeader setFont:[UIFont systemFontOfSize:18]];
+    [contentView addSubview:groupHeader];
+    UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(8, 4, 40, 40)];
+    img.image = group.groupProfilePic;
+    img.layer.cornerRadius = img.frame.size.height/2;
+    img.layer.masksToBounds = YES;
+    [contentView addSubview:img];
+    [cell addSubview:contentView];
     return cell;
 }
 

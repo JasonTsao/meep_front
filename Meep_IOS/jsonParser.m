@@ -52,6 +52,42 @@
     return friends_list;
 }
 
++(NSArray*)friendsArrayNoEncoding:(NSArray*)friends
+{
+    NSError* error;
+    NSMutableArray *friends_list = [[NSMutableArray alloc] init];
+    for( int i = 0; i< [friends count]; i++){
+        Friend *new_friend = [[Friend alloc]init];
+        
+        NSDictionary * new_friend_dict = friends[i];
+        
+        new_friend.name = new_friend_dict[@"user_name"];
+        new_friend.numTimesInvitedByMe = new_friend_dict[@"invited_count"];
+        new_friend.phoneNumber= new_friend_dict[@"phone_number"];
+        new_friend.imageFileName = new_friend_dict[@"pf_pic"];
+        new_friend.bio = new_friend_dict[@"bio"];
+        new_friend.account_id = [new_friend_dict[@"account_id"] intValue];
+        
+        if ([new_friend_dict[@"pf_pic"] length] == 0){
+            UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(8, 4, 40, 40)];
+            img.image = [UIImage imageNamed:@"ManSilhouette"];
+            new_friend.profilePic = img.image;
+        }
+        else{
+            NSURL *url = [[NSURL alloc] initWithString:new_friend_dict[@"fb_pfpic_url"]];
+            //NSURL *url = [[NSURL alloc] initWithString:@"https://graph.facebook.com/jason.s.tsao/picture"];
+            NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url];
+            //NSData *urlData = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:&response error:nil];
+            NSData *urlData = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:nil error:nil];
+            UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
+            new_friend.profilePic = image;
+        }
+        
+        [friends_list addObject:new_friend];
+    }
+    return friends_list;
+}
+
 +(NSArray*)invitedFriendsArray:(NSArray*)invited_friends_list
 {
     NSError* error;
@@ -64,6 +100,8 @@
                                                                            error: &error];
         new_friend.name = new_friend_dict[@"name"];
         new_friend.account_id = [new_friend_dict[@"friend_id"] intValue];
+
+        new_friend.has_viewed_event = [new_friend_dict[@"has_viewed_event"] boolValue];
         
         if ([new_friend_dict[@"pf_pic"] length] == 0 || [new_friend_dict objectForKey:@"pf_pf"] == nil){
             UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(8, 4, 40, 40)];
