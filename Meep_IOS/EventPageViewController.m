@@ -595,6 +595,23 @@
     return cell;
 }
 
+- (void)initializeBanner {
+    UIView * bannerView = [self.view viewWithTag:1];
+    CIContext * context = [CIContext contextWithOptions:nil];
+    UIImage * image = [[UIImage alloc] init];
+    CIImage * imageToBlur = [CIImage imageWithCGImage:image.CGImage];
+    
+    CIFilter *filter = [CIFilter filterWithName:@"CIGaussianBlur"];
+    [filter setValue:imageToBlur forKey:kCIInputImageKey];
+    [filter setValue:[NSNumber numberWithFloat:15.0f] forKey:@"inputRadius"];
+    CIImage * result = [filter valueForKey:kCIOutputImageKey];
+    
+    CGImageRef cgImage = [context createCGImage:result fromRect:[imageToBlur extent]];
+    
+    UIImage * blurredImage = [UIImage imageWithCGImage:cgImage];
+    CGImageRelease(cgImage);
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];

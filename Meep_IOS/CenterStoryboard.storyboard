@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="2hO-ff-VXe">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5053" systemVersion="12F45" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="2hO-ff-VXe">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
@@ -256,9 +256,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Eap-Wy-Cwm">
-                                <rect key="frame" x="0.0" y="65" width="320" height="75"/>
+                            <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Eap-Wy-Cwm">
+                                <rect key="frame" x="0.0" y="165" width="320" height="76"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="76" id="LMb-tp-AxL"/>
+                                </constraints>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="BmF-fQ-HE5">
                                     <size key="itemSize" width="50" height="50"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -278,7 +281,7 @@
                                 </cells>
                             </collectionView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="180" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="drH-Bo-4b8">
-                                <rect key="frame" x="0.0" y="139" width="320" height="380"/>
+                                <rect key="frame" x="0.0" y="241" width="320" height="278"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
@@ -301,19 +304,28 @@
                                     <tabBarItem systemItem="more" id="6P1-fT-x7q"/>
                                 </items>
                             </tabBar>
+                            <view tag="1" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PA0-Mh-uHH">
+                                <rect key="frame" x="0.0" y="64" width="320" height="102"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="Jpe-aZ-J0y" firstAttribute="top" secondItem="drH-Bo-4b8" secondAttribute="bottom" id="2MW-8d-jdh"/>
-                            <constraint firstItem="Jpe-aZ-J0y" firstAttribute="top" secondItem="drH-Bo-4b8" secondAttribute="bottom" id="6Ep-RK-FmT"/>
-                            <constraint firstAttribute="bottom" secondItem="Jpe-aZ-J0y" secondAttribute="bottom" id="6Qs-eo-kxk"/>
-                            <constraint firstItem="Jpe-aZ-J0y" firstAttribute="leading" secondItem="drH-Bo-4b8" secondAttribute="leading" id="BsC-s6-niO"/>
-                            <constraint firstItem="Jpe-aZ-J0y" firstAttribute="trailing" secondItem="Eap-Wy-Cwm" secondAttribute="trailing" id="LOa-Xq-5em"/>
-                            <constraint firstItem="Jpe-aZ-J0y" firstAttribute="leading" secondItem="Eap-Wy-Cwm" secondAttribute="leading" id="aqh-JG-bw0"/>
-                            <constraint firstItem="Jpe-aZ-J0y" firstAttribute="leading" secondItem="FVy-lU-6Xd" secondAttribute="leading" id="dAT-ei-3BP"/>
-                            <constraint firstItem="Jpe-aZ-J0y" firstAttribute="trailing" secondItem="drH-Bo-4b8" secondAttribute="trailing" id="hff-Iw-bSR"/>
-                            <constraint firstItem="drH-Bo-4b8" firstAttribute="top" secondItem="YrS-RG-hOI" secondAttribute="bottom" constant="75" id="jl6-rF-AAm"/>
-                            <constraint firstAttribute="trailing" secondItem="Jpe-aZ-J0y" secondAttribute="trailing" id="omf-Xd-PMK"/>
+                            <constraint firstItem="Eap-Wy-Cwm" firstAttribute="leading" secondItem="PA0-Mh-uHH" secondAttribute="leading" id="4r7-xB-fnB"/>
+                            <constraint firstAttribute="bottom" secondItem="Jpe-aZ-J0y" secondAttribute="bottom" id="5Ke-g5-q3Z"/>
+                            <constraint firstItem="Eap-Wy-Cwm" firstAttribute="top" secondItem="YrS-RG-hOI" secondAttribute="bottom" constant="101" id="7Qf-WN-QZf"/>
+                            <constraint firstItem="PA0-Mh-uHH" firstAttribute="top" secondItem="YrS-RG-hOI" secondAttribute="bottom" id="7Sj-0d-W5U"/>
+                            <constraint firstItem="PA0-Mh-uHH" firstAttribute="leading" secondItem="FVy-lU-6Xd" secondAttribute="leading" id="85X-27-Shw"/>
+                            <constraint firstItem="Jpe-aZ-J0y" firstAttribute="leading" secondItem="drH-Bo-4b8" secondAttribute="leading" id="Oka-uf-bHN"/>
+                            <constraint firstItem="Jpe-aZ-J0y" firstAttribute="top" secondItem="drH-Bo-4b8" secondAttribute="bottom" id="XS3-jt-jsX"/>
+                            <constraint firstAttribute="trailing" secondItem="drH-Bo-4b8" secondAttribute="trailing" id="Y3b-NB-fvg"/>
+                            <constraint firstItem="Eap-Wy-Cwm" firstAttribute="trailing" secondItem="PA0-Mh-uHH" secondAttribute="trailing" id="Zcz-GR-gwT"/>
+                            <constraint firstItem="drH-Bo-4b8" firstAttribute="top" secondItem="Eap-Wy-Cwm" secondAttribute="bottom" id="dL9-Ad-JPN"/>
+                            <constraint firstItem="drH-Bo-4b8" firstAttribute="leading" secondItem="Eap-Wy-Cwm" secondAttribute="leading" id="dcD-8l-few"/>
+                            <constraint firstItem="drH-Bo-4b8" firstAttribute="trailing" secondItem="Eap-Wy-Cwm" secondAttribute="trailing" id="ddS-Jm-1V6"/>
+                            <constraint firstItem="drH-Bo-4b8" firstAttribute="top" secondItem="PA0-Mh-uHH" secondAttribute="bottom" constant="75" id="pGM-nX-VXT"/>
+                            <constraint firstItem="Jpe-aZ-J0y" firstAttribute="trailing" secondItem="drH-Bo-4b8" secondAttribute="trailing" id="qvf-Rr-4DV"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="nbM-f8-YrH"/>
