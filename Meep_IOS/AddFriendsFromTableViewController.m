@@ -93,8 +93,13 @@
             _phoneNonFriendUsers = [[NSMutableArray alloc]init];
             _phoneContacts = [[NSMutableArray alloc]init];
             _phoneContactNumbers = [[NSMutableArray alloc]init];
+            
+            //ABAuthorizationStatus addressBookStatus = ABAddressBookGetAuthorizationStatus();
+            //NSLog(@"my address book status: %@", addressBookStatus);
+            
             CFErrorRef error = NULL;
-            ABAddressBookRef addressBook = ABAddressBookCreate( );
+            ABAddressBookRef addressBook = ABAddressBookCreate();
+            //ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(nil, (CFErrorRef *)&error);
             CFArrayRef allPeople = ABAddressBookCopyArrayOfAllPeople( addressBook );
             CFIndex nPeople = ABAddressBookGetPersonCount( addressBook );
             
