@@ -256,4 +256,24 @@
     return cell;
 }
 
++(UICollectionViewCell*) invitedFriendCell:(InvitedFriend*)friend forCollectionCell:(UICollectionViewCell*)cell {
+    CGRect viewFrame = cell.frame;
+    viewFrame.origin.y = - 10.0f;
+    viewFrame.size.height = viewFrame.size.height + 10;
+    cell.frame = viewFrame;
+    UIImageView * imageView = [[UIImageView alloc] initWithFrame:CGRectMake(2, 2, cell.frame.size.width - 4, cell.frame.size.width)];
+    imageView.image = friend.profilePic;
+    imageView.layer.cornerRadius = imageView.frame.size.width/2;
+    imageView.layer.masksToBounds = YES;
+    [cell addSubview:imageView];
+    
+    UILabel * userName = [[UILabel alloc] initWithFrame:CGRectMake(0, cell.frame.size.height - 14, cell.frame.size.width, 14)];
+    userName.text = friend.name;
+    userName.textAlignment = NSTextAlignmentCenter;
+    [userName setFont:[UIFont systemFontOfSize:10]];
+    [cell addSubview:userName];
+    
+    return cell;
+}
+
 @end

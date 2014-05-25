@@ -18,6 +18,7 @@
 #import "DjangoAuthClient.h"
 #import "Colors.h"
 #import "jsonParser.h"
+#import "MEPTableCell.h"
 #import <CoreLocation/CoreLocation.h>
 
 #define CONTENT_BG_COLOR "3FC380"
@@ -53,6 +54,8 @@
 @property (nonatomic, assign) int YELP_SLOT;
 
 @property (nonatomic, strong) CLLocationManager * locationManager;
+
+@property (nonatomic, strong) NSMutableArray * invitedFriendCells;
 
 @end
 
@@ -217,6 +220,7 @@
         }
         [self.friendsCollection reloadData];
     }
+    _invitedFriendCells = [[NSMutableArray alloc] init];
     /*NSData *data = [NSKeyedArchiver archivedDataWithRootObject:_invitedFriends];
     [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"invited_friends_list"];
     [NSUserDefaults resetStandardUserDefaults];*/
@@ -264,24 +268,8 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     UICollectionViewCell *cell = [_friendsCollection dequeueReusableCellWithReuseIdentifier:@"invitedFriendCell" forIndexPath:indexPath];
-    cell.frame = CGRectMake(0, 0, cell.frame.size.width, cell.frame.size.height);
-    //UIImage *cellImage = [[UIImage alloc] init];
-    UIButton *cellButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    NSString *user_name;
-
-    if([[_invitedFriends[indexPath.row] name] length] >= 6){
-        user_name = [[_invitedFriends[indexPath.row] name] substringToIndex:6];
-    }
-    else{
-        user_name = [_invitedFriends[indexPath.row] name];
-    }
-
-    [cellButton addTarget:self
-               action:@selector(openFriendPage:)
-     forControlEvents:UIControlEventTouchUpInside];
-    [cellButton setTitle:user_name forState:UIControlStateNormal];
-    cellButton.frame = CGRectMake(0.0, 0.0, 50.0, 50.0);
-    [cell.contentView addSubview: cellButton];
+    cell = [MEPTableCell invitedFriendCell:_invitedFriends[indexPath.row] forCollectionCell:cell];
+    
     return cell;
 }
 
@@ -329,7 +317,7 @@
 {
     CGFloat height;
     if (indexPath.row == 0) {
-        height = 180.0;
+        height = 150.0;
     }
     else if (indexPath.row == 1) {
         height = 50.0;
@@ -493,8 +481,8 @@
     CGSize textLabelSize = [_currentEvent.description sizeWithFont:[UIFont systemFontOfSize:14.0f] constrainedToSize:maximumLabelSize lineBreakMode:NSLineBreakByWordWrapping];
     
     CAGradientLayer *gradient = [CAGradientLayer layer];
-    gradient.frame = CGRectMake(0, 0, _bannerView.frame.size.width, _bannerView.frame.size.height);
-    gradient.colors = [NSArray arrayWithObjects:(id)[[UIColor blackColor] CGColor], [[UIColor clearColor] CGColor], [[UIColor blackColor] CGColor], nil];
+    gradient.frame = CGRectMake(0, 0, _bannerView.frame.size.width, _bannerView.frame.size.height + 2);
+    gradient.colors = [NSArray arrayWithObjects:(id)[[UIColor blackColor] CGColor], [[UIColor clearColor] CGColor], [[UIColor whiteColor] CGColor], nil];
     
     UILabel * headerText = [[UILabel alloc] initWithFrame:CGRectMake(5, 0, textLabelSize.width, textLabelSize.height)];
     headerText.text = _currentEvent.description;
@@ -538,7 +526,7 @@
     _basicInfoToDisplay = [[NSMutableArray alloc]init];
     _locationInfoToDisplay = [[NSMutableArray alloc]init];
     _thirdPartyInfoToDisplay = [[NSMutableArray alloc]init];
-    _mapView = [[MKMapView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 180.0)];
+    _mapView = [[MKMapView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 150.0)];
     
     //ADD CODE FOR CHECKING IF CURRENT USER HAS VIeWED THIS PAGE, IF NOT AND THIS IS FIRST TIME VIEWING, SAVE has_viewed AS TRUE
     
