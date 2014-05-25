@@ -8,6 +8,11 @@
 
 #import "LeftPanelViewController.h"
 #import "DjangoAuthClient.h"
+#import "Colors.h"
+
+#define LEFTTEXTCOLOR "FFFFFF"
+#define CELLBACKGROUNDCOLOR "34495e"
+#define TABLEBACKGROUNDCOLOR "34495e"
 
 @interface LeftPanelViewController ()
 
@@ -44,17 +49,17 @@
 }
 
 /*-(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-{
-    NSString *header;
-    
-    if(section == 0){
-        NSData *authenticated = [[NSUserDefaults standardUserDefaults] objectForKey:@"auth_client"];
-        _authClient = [NSKeyedUnarchiver unarchiveObjectWithData:authenticated];
-        header = _authClient.enc_username;
-    }
-    	
-    return header;
-}*/
+ {
+ NSString *header;
+ 
+ if(section == 0){
+ NSData *authenticated = [[NSUserDefaults standardUserDefaults] objectForKey:@"auth_client"];
+ _authClient = [NSKeyedUnarchiver unarchiveObjectWithData:authenticated];
+ header = _authClient.enc_username;
+ }
+ 
+ return header;
+ }*/
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -110,9 +115,15 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"navItem" forIndexPath:indexPath];
     //initWithFrame:CGRectMake(cell.bounds.size.width-10,-10,23,23) == top right
     
-    cell.contentView.backgroundColor = [UIColor darkGrayColor];
-    cell.textLabel.backgroundColor = [UIColor darkGrayColor];
-    cell.textLabel.textColor = [UIColor lightGrayColor];
+    UIColor * leftTextColor = [Colors colorWithHexString: [NSString stringWithFormat:@"%s",LEFTTEXTCOLOR]];
+    UIColor * cellBackgroundColor = [Colors colorWithHexString: [NSString stringWithFormat:@"%s",CELLBACKGROUNDCOLOR]];
+    
+    cell.contentView.backgroundColor = cellBackgroundColor;
+    //    cell.textLabel.backgroundColor = [UIColor blueColor];
+    //    cell.textLabel.textColor = [UIColor blueColor];
+    //    UIColor * XXX = [Colors colorWithHexString: [NSString stringWithFormat:@"%s",YYY]];
+    
+    
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     if (indexPath.section == 0){
         NSString *name;
@@ -124,8 +135,8 @@
         UILabel *userHeader = [[UILabel alloc] initWithFrame:CGRectMake(60, 10, 70, 21)];
         userHeader.text = name;
         [userHeader setFont:[UIFont systemFontOfSize:18]];
-        userHeader.textColor = [UIColor lightGrayColor];
-
+        userHeader.textColor = leftTextColor;
+        
         userHeader.tag = 1;
         [cell.contentView addSubview:userHeader];
         
@@ -142,7 +153,7 @@
         UILabel *leftNavHeader = [[UILabel alloc] initWithFrame:CGRectMake(60, 10, 70, 21)];
         leftNavHeader.text = _navItems[indexPath.row];
         [leftNavHeader setFont:[UIFont systemFontOfSize:18]];
-        leftNavHeader.textColor = [UIColor lightGrayColor];
+        leftNavHeader.textColor = leftTextColor;
         [cell.contentView addSubview:leftNavHeader];
         
         UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(8, 4, 40, 40)];
@@ -168,7 +179,7 @@
         UILabel *settingsHeader = [[UILabel alloc] initWithFrame:CGRectMake(60, 10, 70, 21)];
         settingsHeader.text = _navItems[index];
         [settingsHeader setFont:[UIFont systemFontOfSize:18]];
-        settingsHeader.textColor = [UIColor lightGrayColor];
+        settingsHeader.textColor = leftTextColor;
         [cell.contentView addSubview:settingsHeader];
         
         UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(8, 4, 40, 40)];
@@ -195,10 +206,12 @@
 
 - (void)viewDidLoad
 {
+    UIColor * tableViewBackgroundColor = [Colors colorWithHexString: [NSString stringWithFormat:@"%s",TABLEBACKGROUNDCOLOR]];
     [super viewDidLoad];
     _navItems = [[NSArray alloc] initWithObjects:@"Home",@"Groups", @"Friends",@"Search", @"Settings" ,nil];
     [self.navTable registerClass:[UITableViewCell class] forCellReuseIdentifier:@"navItem"];
     self.navTable.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    self.navTable.backgroundColor = tableViewBackgroundColor;
 }
 
 - (void)viewDidUnload
@@ -216,7 +229,7 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
-	[super viewDidAppear:animated];
+    [super viewDidAppear:animated];
 }
 
 #pragma mark -
@@ -224,12 +237,12 @@
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-	[super viewWillDisappear:animated];
+    [super viewWillDisappear:animated];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
 {
-	[super viewDidDisappear:animated];
+    [super viewDidDisappear:animated];
 }
 
 #pragma mark -
