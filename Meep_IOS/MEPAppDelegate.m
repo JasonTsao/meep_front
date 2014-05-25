@@ -250,7 +250,7 @@
         [token appendFormat:@"%02.2hhX", data[i]];
     }
     
-    NSString * requestURL = [NSString stringWithFormat:@"%@device?token=%@&service=0",[MEEPhttp iosNotificationsURL], token];
+    NSString * requestURL = [NSString stringWithFormat:@"%@device/?token=%@&service=0",[MEEPhttp iosNotificationsURL], token];
     NSLog(@"request url : %@", requestURL);
     NSDictionary * postDict = [[NSDictionary alloc] init];
     NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
