@@ -26,6 +26,7 @@
 #define CONTENT_SPACING 4
 
 @interface EventPageViewController ()
+@property (weak, nonatomic) IBOutlet UIView *bannerView;
 
 @property (weak, nonatomic) IBOutlet UITableView *eventInfoTable;
 @property (weak, nonatomic) IBOutlet UICollectionView *friendsCollection;
@@ -595,27 +596,48 @@
     return cell;
 }
 
-- (void)initializeBanner {
-    UIView * bannerView = [self.view viewWithTag:1];
+- (void)initializeBannerWithImage:(UIImage*)image {
     CIContext * context = [CIContext contextWithOptions:nil];
-    UIImage * image = [[UIImage alloc] init];
+    if ([image isEqual:[NSNull null]]) {
+        image = [[UIImage alloc] initWithContentsOfFile:@"planet5.png"];
+    }
     CIImage * imageToBlur = [CIImage imageWithCGImage:image.CGImage];
     
     CIFilter *filter = [CIFilter filterWithName:@"CIGaussianBlur"];
     [filter setValue:imageToBlur forKey:kCIInputImageKey];
-    [filter setValue:[NSNumber numberWithFloat:15.0f] forKey:@"inputRadius"];
+    [filter setValue:[NSNumber numberWithFloat:1.0f] forKey:@"inputRadius"];
     CIImage * result = [filter valueForKey:kCIOutputImageKey];
     
     CGImageRef cgImage = [context createCGImage:result fromRect:[imageToBlur extent]];
     
     UIImage * blurredImage = [UIImage imageWithCGImage:cgImage];
     CGImageRelease(cgImage);
+    
+    UIImageView * blurredImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, -(_bannerView.frame.size.width-_bannerView.frame.size.height)/2, _bannerView.frame.size.width, _bannerView.frame.size.width)];
+    blurredImageView.image = blurredImage;
+    [_bannerView addSubview:blurredImageView];
+    
+    CGSize maximumLabelSize = CGSizeMake(_bannerView.frame.size.width - 10,9999);
+    
+    CGSize textLabelSize = [_currentEvent.description sizeWithFont:[UIFont systemFontOfSize:16] constrainedToSize:maximumLabelSize lineBreakMode:NSLineBreakByWordWrapping];
+    
+    UILabel * headerText = [[UILabel alloc] initWithFrame:CGRectMake(5, 0, textLabelSize.width, textLabelSize.height)];
+    
+    // UIView * headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _bannerView.frame.size.width, _bannerView.frame.size.width*(3/4))];
+    [_bannerView addSubview:headerText];
+    _bannerView.layer.masksToBounds = YES;
+    [self.view addSubview:_bannerView];
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    if (![_currentEvent.yelpImageLink isEqual:[NSNull null]] && [_currentEvent.yelpImageLink length] > 0) {
+        [self initializeBannerWithImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:_currentEvent.yelpImageLink]]]];
+    }
+    else {
+        [self initializeBannerWithImage:nil];
+    }
     NSData *authenticated = [[NSUserDefaults standardUserDefaults] objectForKey:@"auth_client"];
     _authClient = [NSKeyedUnarchiver unarchiveObjectWithData:authenticated];
     

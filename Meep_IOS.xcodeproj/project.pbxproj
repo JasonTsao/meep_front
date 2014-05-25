@@ -224,8 +224,8 @@
 		3CCC516C1905A3B000EB0980 /* Meep_IOS-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Meep_IOS-Prefix.pch"; sourceTree = "<group>"; };
 		3CCC516F1905A46400EB0980 /* EventCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EventCell.xib; sourceTree = "<group>"; };
 		3CCC51721905A55F00EB0980 /* MeepIOS-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "MeepIOS-Info.plist"; sourceTree = "<group>"; };
-		3CCCECEA192DAF8C000A9CCE /* MEPTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MEPTableCell.h; sourceTree = "<group>"; };
-		3CCCECEB192DAF8C000A9CCE /* MEPTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MEPTableCell.m; sourceTree = "<group>"; };
+		3CCCECEA192DAF8C000A9CCE /* MEPTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MEPTableCell.h; path = ../MEPTableCell.h; sourceTree = "<group>"; };
+		3CCCECEB192DAF8C000A9CCE /* MEPTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MEPTableCell.m; path = ../MEPTableCell.m; sourceTree = "<group>"; };
 		3CCE111E190AAA88004AD66E /* LocationSearch.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LocationSearch.xib; sourceTree = "<group>"; };
 		3CCF3CE21912A70A00DED761 /* MEPTextParse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MEPTextParse.h; sourceTree = "<group>"; };
 		3CCF3CE31912A70A00DED761 /* MEPTextParse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MEPTextParse.m; sourceTree = "<group>"; };
@@ -396,8 +396,6 @@
 		3CCC506C19059F9500EB0980 = {
 			isa = PBXGroup;
 			children = (
-				3CCCECEA192DAF8C000A9CCE /* MEPTableCell.h */,
-				3CCCECEB192DAF8C000A9CCE /* MEPTableCell.m */,
 				3CCC507E19059F9500EB0980 /* Meep_IOS */,
 				3CCC509719059F9500EB0980 /* Meep_IOSTests */,
 				3CCC507719059F9500EB0980 /* Frameworks */,
@@ -433,6 +431,8 @@
 		3CCC507E19059F9500EB0980 /* Meep_IOS */ = {
 			isa = PBXGroup;
 			children = (
+				3CCCECEA192DAF8C000A9CCE /* MEPTableCell.h */,
+				3CCCECEB192DAF8C000A9CCE /* MEPTableCell.m */,
 				96C2DC27192FEE060030DBE3 /* Notiifications */,
 				3CB231FC192176B900684E1D /* MEPLocationService.h */,
 				3CB231FD192176B900684E1D /* MEPLocationService.m */,
