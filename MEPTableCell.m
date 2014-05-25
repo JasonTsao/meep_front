@@ -13,14 +13,15 @@
 
 
 #define BORDER_WIDTH 1
-#define BORDER_COLOR "7f8c8d"
+#define BORDER_COLOR "ffffff"
+#define LINE_COLOR "#7f8c8d"
 #define STATIC_IMAGE_COLOR "ffffff"
 #define TABLE_BACKGROUND_COLOR "000000"
 #define HEADER_TEXT_COLOR "019875"
 #define CONTENT_BACKGROUND_COLOR "000000"
 #define ICON_BACKGROUND_COLOR "000000"
 #define MAIN_TEXT_COLOR "FFFFFF"
-#define NAV_BAR_COLOR "22313F"
+#define NAV_BAR_COLOR "000000"
 
 #define TABLE_BACKGROUND_COLOR "000000"
 
@@ -70,6 +71,7 @@
     float contentBoxHeight = cell.frame.size.height - (contentBoxYCoord * 2);
     float bgndImgScale = BORDER_WIDTH;
     UIColor * framingColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",BORDER_COLOR]];
+    UIColor * lineColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",LINE_COLOR]];
     UIColor * staticImageColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",STATIC_IMAGE_COLOR]];
     UIColor * backgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_BACKGROUND_COLOR]];
     UIColor * contentBackgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",CONTENT_BACKGROUND_COLOR]];
@@ -88,14 +90,14 @@
         //UIView * verticalLine = [[UIView alloc] initWithFrame:CGRectMake(vertLineXCoord + 1, 0, bgndImgScale, cell.frame.size.height)];
     UIView * verticalLine = [[UIView alloc] initWithFrame:CGRectMake(-5, 0, bgndImgScale, cell.frame.size.height)];
     
-    verticalLine.backgroundColor = framingColor;
+    verticalLine.backgroundColor = lineColor;
     [cell addSubview:verticalLine];
     
     // This view creates the horizontal line between the image and the content frames.
     
     //(cell.frame.size.width/2)
     UIView * horizontalLine = [[UIView alloc] initWithFrame:CGRectMake(21, (cell.frame.size.height/2), 44, bgndImgScale)];
-    horizontalLine.backgroundColor = framingColor;
+    horizontalLine.backgroundColor = lineColor;
     [cell addSubview:horizontalLine];
     
     // This view creates the black background which the image and mid ground line on top of.
@@ -164,7 +166,7 @@
     NSString * eventDateMessage = [MEPTextParse getTimeUntilDateTime:startedDate];
     
     eventDetailLabel.text = eventDateMessage;
-    eventDetailLabel.textColor = [Colors colorWithHexString:[NSString stringWithFormat:@"F4F4F4"]];
+    eventDetailLabel.textColor = [Colors colorWithHexString:[NSString stringWithFormat:@"#95a5a6"]];
     [eventDetailLabel setFont:[UIFont systemFontOfSize:8.5]];
     [contentView addSubview:eventDetailLabel];
     
@@ -186,7 +188,7 @@
         UILabel *distance = [[UILabel alloc] initWithFrame:CGRectMake(0, detailYCoord, (contentView.frame.size.width) - 6, 21)];
         NSString * distanceInMiles = [MEPLocationService distanceBetweenCoordinatesWithLatitudeOne:lat longitudeOne:lng latitudeTwo:[event.locationLatitude floatValue] longitudeTwo:[event.locationLongitude floatValue]];
         distance.text = distanceInMiles;
-        distance.textColor = [Colors colorWithHexString:[NSString stringWithFormat:@"F4F4F4"]];
+        distance.textColor = [Colors colorWithHexString:[NSString stringWithFormat:@"#95a5a6"]];
         [distance setFont:[UIFont systemFontOfSize:8.5]];
         distance.textAlignment = NSTextAlignmentRight;
         [contentView addSubview:distance];
