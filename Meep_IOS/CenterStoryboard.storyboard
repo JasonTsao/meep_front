@@ -330,6 +330,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="nbM-f8-YrH"/>
                     <connections>
+                        <outlet property="bannerView" destination="PA0-Mh-uHH" id="anG-bR-w0G"/>
                         <outlet property="eventInfoTable" destination="drH-Bo-4b8" id="Zoh-7u-8DN"/>
                         <outlet property="friendsCollection" destination="Eap-Wy-Cwm" id="JfF-ea-ggs"/>
                         <segue destination="Pl6-Hp-ROt" kind="push" identifier="toEventChat" id="2iQ-nm-2I8"/>
