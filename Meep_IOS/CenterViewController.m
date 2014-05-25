@@ -19,15 +19,30 @@
 
 #define BORDER_WIDTH 1
 
+
+//Color Settings for date header: white text, black background.
+#define HEADER_TEXT_COLOR "ffffff"
+#define TABLE_BACKGROUND_COLOR "000000"
+
+
+
+//not working
+#define MAIN_TEXT_COLOR "000000"
+#define NAV_BAR_COLOR "FFFFFF"
+#define ICON_BACKGROUND_COLOR "000000"
+#define CONTENT_BACKGROUND_COLOR "FFFFFF"
+#define BORDER_COLOR "000000"
+#define STATIC_IMAGE_COLOR "000000"
+
 // Color Settings (Green Context Background, White Table Background)
-#define BORDER_COLOR "3FC380"
-#define STATIC_IMAGE_COLOR "3FC380"
-#define TABLE_BACKGROUND_COLOR "FFFFFF"
-#define HEADER_TEXT_COLOR "019875"
-#define CONTENT_BACKGROUND_COLOR "3FC380"
-#define ICON_BACKGROUND_COLOR "FFFFFF"
-#define MAIN_TEXT_COLOR "FFFFFF"
-#define NAV_BAR_COLOR "#2c3e50"
+//#define BORDER_COLOR "3FC380"
+//#define STATIC_IMAGE_COLOR "3FC380"
+//#define TABLE_BACKGROUND_COLOR "FFFFFF"
+//#define HEADER_TEXT_COLOR "019875"
+//#define CONTENT_BACKGROUND_COLOR "3FC380"
+//#define ICON_BACKGROUND_COLOR "FFFFFF"
+//#define MAIN_TEXT_COLOR "FFFFFF"
+//#define NAV_BAR_COLOR "#2c3e50"
 
 /*
  // Color Settings (White Context Background, Green Table Background)
@@ -174,15 +189,20 @@
     horizontalLine.backgroundColor = framingColor;
     UIView * verticalLine = [[UIView alloc] initWithFrame:CGRectMake(30 - BORDER_WIDTH, 0, BORDER_WIDTH, headerView.frame.size.height)];
     verticalLine.backgroundColor = framingColor;
+    
+    
     UIView * headerContainer = [[UIView alloc] initWithFrame:CGRectMake(0, 0, headerView.frame.size.width, headerView.frame.size.height)];
     UILabel * headerTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, headerContainer.frame.size.width - 15, headerContainer.frame.size.height)];
     headerTitle.textAlignment = NSTextAlignmentRight;
     // headerContainer.backgroundColor = [UIColor colorWithRed:1.f green:1.f blue:1.f alpha:1.f];
     headerTitle.text = header;
-    // [headerTitle setFont:[UIFont fontWithName:@"GurmukhiMN" size:10]];
-    headerTitle.textColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",HEADER_TEXT_COLOR]];
-    [headerContainer addSubview:headerTitle];
+    [headerTitle setFont:[UIFont fontWithName:@"AppleSDGothicNeo-Thin" size:35.0f]];
     
+    headerTitle.textColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",HEADER_TEXT_COLOR]];
+    
+    //[headerTitle setFont:[UIFont systemFontOfSize:30.0f]];
+    
+    [headerContainer addSubview:headerTitle];
     [headerView addSubview:headerContainer];
     [headerView addSubview:verticalLine];
     // [headerView addSubview:horizontalLine];
@@ -194,6 +214,7 @@
 {
     return 80;
 }
+
 
 - (UITableViewCell*)clearCell:(UITableViewCell *)cell{
     for(UIView *view in cell.contentView.subviews){

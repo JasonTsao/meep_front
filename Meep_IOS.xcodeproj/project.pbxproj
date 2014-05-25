@@ -522,6 +522,9 @@
 		3CCC516E1905A44400EB0980 /* Center Page */ = {
 			isa = PBXGroup;
 			children = (
+				96E1D2381915CFE000951DEB /* CenterStoryboard.storyboard */,
+				3CCC51301905A20D00EB0980 /* CenterViewController.h */,
+				3CCC51311905A20D00EB0980 /* CenterViewController.m */,
 				3CCC513F1905A20D00EB0980 /* LeftPanelViewController.h */,
 				3CCC51401905A20D00EB0980 /* LeftPanelViewController.m */,
 				3CCC51341905A20D00EB0980 /* en.lproj */,
@@ -529,11 +532,8 @@
 				3CCC51451905A20D00EB0980 /* MainViewController.h */,
 				3CCC51461905A20D00EB0980 /* MainViewController.m */,
 				3CCC51471905A20D00EB0980 /* MainViewController.xib */,
-				3CCC51301905A20D00EB0980 /* CenterViewController.h */,
-				3CCC51311905A20D00EB0980 /* CenterViewController.m */,
 				3CCC51321905A20D00EB0980 /* CenterViewController.xib */,
 				3CCC516F1905A46400EB0980 /* EventCell.xib */,
-				96E1D2381915CFE000951DEB /* CenterStoryboard.storyboard */,
 			);
 			name = "Center Page";
 			sourceTree = "<group>";
