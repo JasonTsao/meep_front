@@ -71,6 +71,10 @@
     return [NSString stringWithFormat:@"%@%@/",[self applicationURL],@"ios-notifications"];
 }
 
++(NSString*) notificationsURL {
+    return [NSString stringWithFormat:@"%@%@/",[self applicationURL],@"notifications"];
+}
+
 
 
 @end

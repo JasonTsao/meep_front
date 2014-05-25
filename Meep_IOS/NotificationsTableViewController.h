@@ -13,5 +13,6 @@
 
 @end
 @interface NotificationsTableViewController : UITableViewController
+@property(nonatomic, strong) NSMutableData * data;
 @property(nonatomic, strong) id <NotificationsTableViewControllerDelegate> delegate;
 @end
