@@ -16,6 +16,7 @@
 #import "FriendsListTableViewController.h"
 //#import "CreateGroupViewController.h"
 #import "InviteFriendsViewController.h"
+#import "NotificationsTableViewController.h"
 #import "ProfileViewController.h"
 #import "Event.h"
 #import "NotificationHandler.h"
@@ -38,6 +39,9 @@
 
 @property (nonatomic, strong) CreateGroupViewController *createGroupViewController;
 @property (nonatomic, assign) BOOL showGroupCreationPage;
+
+@property (nonatomic, strong) NotificationsTableViewController *notificationsTableViewController;
+@property (nonatomic, assign) BOOL showNotificationsPage;
 
 @property (nonatomic, strong) GroupsViewController *groupsViewController;
 @property (nonatomic, assign) BOOL showGroupsPage;
@@ -453,6 +457,16 @@
     [self presentViewController:navigation animated:YES completion:nil];
 }
 
+- (void)openNotificationsPage
+{
+    UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"CenterStoryboard" bundle:nil];
+    _notificationsTableViewController = (NotificationsTableViewController *)[storyboard instantiateViewControllerWithIdentifier:@"notifications"];
+    
+    UINavigationController *navigation = [[UINavigationController alloc]initWithRootViewController:_notificationsTableViewController];
+    [_notificationsTableViewController setDelegate:self];
+    [self presentViewController:navigation animated:YES completion:nil];
+}
+
 - (void) loadMainViewAfterAuthentication
 {
     
@@ -492,6 +506,11 @@
 }
 
 - (void) backToCenterFromAddFriends:(AddFriendsViewController *)controller
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void) backToCenterFromNotifications:(NotificationsTableViewController *)controller
 {
     [self dismissViewControllerAnimated:YES completion:nil];
 }

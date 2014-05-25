@@ -94,6 +94,9 @@
         else if(indexPath.row == 3){
             [_delegate openAddFriendsPage];
         }
+        else if(indexPath.row == 4){
+            [_delegate openNotificationsPage];
+        }
     }
     
     else if(indexPath.section == 2){
@@ -150,7 +153,7 @@
     }
     else if(indexPath.section == 1){
         //cell.textLabel.text = _navItems[indexPath.row];
-        UILabel *leftNavHeader = [[UILabel alloc] initWithFrame:CGRectMake(60, 10, 70, 21)];
+        UILabel *leftNavHeader = [[UILabel alloc] initWithFrame:CGRectMake(60, 10, 120, 21)];
         leftNavHeader.text = _navItems[indexPath.row];
         [leftNavHeader setFont:[UIFont systemFontOfSize:18]];
         leftNavHeader.textColor = leftTextColor;
@@ -170,13 +173,16 @@
         else if([_navItems[indexPath.row] isEqualToString:@"Friends"] ){
             img.image = [UIImage imageNamed:@"friends"];
         }
+        else if([_navItems[indexPath.row] isEqualToString:@"Notifications"] ){
+            //img.image = [UIImage imageNamed:@"notifications"];
+        }
         img.layer.cornerRadius = img.frame.size.height/2;
         img.layer.masksToBounds = YES;
         [cell.contentView addSubview:img];
     }
     else if(indexPath.section == 2){
-        NSInteger index = indexPath.row + 4;
-        UILabel *settingsHeader = [[UILabel alloc] initWithFrame:CGRectMake(60, 10, 70, 21)];
+        NSInteger index = indexPath.row + 5;
+        UILabel *settingsHeader = [[UILabel alloc] initWithFrame:CGRectMake(60, 10, 120, 21)];
         settingsHeader.text = _navItems[index];
         [settingsHeader setFont:[UIFont systemFontOfSize:18]];
         settingsHeader.textColor = leftTextColor;
@@ -208,7 +214,7 @@
 {
     UIColor * tableViewBackgroundColor = [Colors colorWithHexString: [NSString stringWithFormat:@"%s",TABLEBACKGROUNDCOLOR]];
     [super viewDidLoad];
-    _navItems = [[NSArray alloc] initWithObjects:@"Home",@"Groups", @"Friends",@"Search", @"Settings" ,nil];
+    _navItems = [[NSArray alloc] initWithObjects:@"Home",@"Groups", @"Friends",@"Search", @"Notifications",@"Settings" ,nil];
     [self.navTable registerClass:[UITableViewCell class] forCellReuseIdentifier:@"navItem"];
     self.navTable.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     self.navTable.backgroundColor = tableViewBackgroundColor;

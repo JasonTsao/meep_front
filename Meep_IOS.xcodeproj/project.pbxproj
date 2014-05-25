@@ -85,6 +85,7 @@
 		968630371909FAB200CAE305 /* FriendProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 968630301909FAB200CAE305 /* FriendProfileViewController.m */; };
 		968630381909FAB200CAE305 /* FriendsListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 968630321909FAB200CAE305 /* FriendsListTableViewController.m */; };
 		968630391909FAB200CAE305 /* Photo.m in Sources */ = {isa = PBXBuildFile; fileRef = 968630341909FAB200CAE305 /* Photo.m */; };
+		968B239F193205FB00CDC00A /* NotificationsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 968B239E193205FB00CDC00A /* NotificationsTableViewController.m */; };
 		96967E1D191D4887007613AF /* EditEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96967E1C191D4887007613AF /* EditEventViewController.m */; };
 		96967E20191D5BF5007613AF /* AddRemoveFriendsFromEventTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96967E1F191D5BF5007613AF /* AddRemoveFriendsFromEventTableViewController.m */; };
 		96ACDDDA192C3E3D0040D5FC /* Colors.m in Sources */ = {isa = PBXBuildFile; fileRef = 96ACDDD9192C3E3D0040D5FC /* Colors.m */; };
@@ -257,6 +258,8 @@
 		968630321909FAB200CAE305 /* FriendsListTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendsListTableViewController.m; sourceTree = "<group>"; };
 		968630331909FAB200CAE305 /* Photo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Photo.h; sourceTree = "<group>"; };
 		968630341909FAB200CAE305 /* Photo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Photo.m; sourceTree = "<group>"; };
+		968B239D193205FB00CDC00A /* NotificationsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationsTableViewController.h; sourceTree = "<group>"; };
+		968B239E193205FB00CDC00A /* NotificationsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationsTableViewController.m; sourceTree = "<group>"; };
 		96967E1B191D4887007613AF /* EditEventViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditEventViewController.h; sourceTree = "<group>"; };
 		96967E1C191D4887007613AF /* EditEventViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditEventViewController.m; sourceTree = "<group>"; };
 		96967E1E191D5BF5007613AF /* AddRemoveFriendsFromEventTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddRemoveFriendsFromEventTableViewController.h; sourceTree = "<group>"; };
@@ -643,6 +646,8 @@
 			children = (
 				96C2DC28192FEE2C0030DBE3 /* NotificationHandler.h */,
 				96C2DC29192FEE2C0030DBE3 /* NotificationHandler.m */,
+				968B239D193205FB00CDC00A /* NotificationsTableViewController.h */,
+				968B239E193205FB00CDC00A /* NotificationsTableViewController.m */,
 			);
 			name = Notiifications;
 			sourceTree = "<group>";
@@ -898,6 +903,7 @@
 				96E1D277191854D900951DEB /* AuthenticationViewController.m in Sources */,
 				3CCC51541905A20D00EB0980 /* CenterViewController.m in Sources */,
 				3CCC516A1905A20D00EB0980 /* User.m in Sources */,
+				968B239F193205FB00CDC00A /* NotificationsTableViewController.m in Sources */,
 				96ACDDDA192C3E3D0040D5FC /* Colors.m in Sources */,
 				96E1D2311915709300951DEB /* InvitedFriend.m in Sources */,
 				96967E20191D5BF5007613AF /* AddRemoveFriendsFromEventTableViewController.m in Sources */,
