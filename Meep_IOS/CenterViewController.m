@@ -443,6 +443,8 @@
     [dateFormatter setDateFormat:@"yyyy-MM-dd"];
     _eventData = [[NSMutableDictionary alloc] init];
     
+    
+    NSLog(@"upcoming events: %@", upcoming);
     // _lat = _locationManager.location.coordinate.latitude;
     // _lng = _locationManager.location.coordinate.longitude;
     _lat = 0;
