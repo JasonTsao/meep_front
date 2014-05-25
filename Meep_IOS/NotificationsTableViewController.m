@@ -12,7 +12,7 @@
 #import "MEPTableCell.h"
 
 @interface NotificationsTableViewController ()
-@property(nonatomic, weak) NSMutableArray *notifications_list;
+@property(nonatomic, strong) NSMutableArray *notifications_list;
 @end
 
 @implementation NotificationsTableViewController
@@ -64,8 +64,8 @@
     NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:_data options:0 error:&error];
     NSArray * notifications = jsonResponse[@"notifications"];
     NSLog(@"notifications: %@", notifications);
-    
     _notifications_list = [jsonParser notificationsArray:notifications];
+    //NSLog(@"notifications_list:%@", );
     
     [self.tableView reloadData];
     
@@ -79,7 +79,7 @@
     UIBarButtonItem *customBarItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStyleBordered target:self action:@selector(backToCenterFromNotifications:)];
     
     self.navigationItem.leftBarButtonItem = customBarItem;
-    
+    _notifications_list = [[NSMutableArray alloc] init];
     
     [self getNotifications];
     // Uncomment the following line to preserve selection between presentations.
@@ -96,31 +96,38 @@
 }
 
 #pragma mark - Table view data source
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return [MEPTableCell customFriendCellHeight];
+}
+
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
 #warning Potentially incomplete method implementation.
     // Return the number of sections.
-    return 0;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
 #warning Incomplete method implementation.
     // Return the number of rows in the section.
-    return 0;
+    return [_notifications_list count];
 }
 
-/*
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
+    //UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
+    UITableViewCell *cell;
     
+    cell = [MEPTableCell customNotificationcell:_notifications_list[indexPath.row] forTable:tableView selected:NO];
     // Configure the cell...
     
     return cell;
 }
-*/
+
 
 /*
 // Override to support conditional editing of the table view.

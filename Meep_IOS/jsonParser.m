@@ -183,7 +183,7 @@
         Notification *new_notification = [[Notification alloc]init];
         
         NSDictionary * new_notification_dict = notifications_list[i];
-        new_notification.message = new_notification_dict[@"name"];
+        new_notification.message = new_notification_dict[@"message"];
         new_notification.time_stamp = new_notification_dict[@"created_at"];
         new_notification.notification_id = [new_notification_dict[@"id"] integerValue];
         
