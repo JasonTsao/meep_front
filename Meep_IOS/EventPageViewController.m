@@ -366,6 +366,8 @@
     }
     linksContainer.layer.cornerRadius = 5;
     [cell addSubview:linksContainer];
+    
+    //second to last black of background
     cell.backgroundColor = [UIColor blackColor];
     return cell;
 }
@@ -486,6 +488,8 @@
     
     CAGradientLayer *gradient = [CAGradientLayer layer];
     gradient.frame = CGRectMake(0, 0, _bannerView.frame.size.width, _bannerView.frame.size.height + 2);
+    
+    //event photo gradient colors
     gradient.colors = [NSArray arrayWithObjects:(id)[[UIColor clearColor] CGColor], [[UIColor blackColor] CGColor], nil];
     
     UILabel * headerText = [[UILabel alloc] initWithFrame:CGRectMake(5, 90, textLabelSize.width, textLabelSize.height)];
@@ -584,7 +588,11 @@
     _locationManager.distanceFilter = kCLDistanceFilterNone;
     _locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters;
     [_locationManager startUpdatingLocation];
+    
+    //page background
     self.view.backgroundColor = [UIColor blackColor];
+    
+    //bottom background
     self.eventInfoTable.backgroundColor = [UIColor blackColor];
 }
 
