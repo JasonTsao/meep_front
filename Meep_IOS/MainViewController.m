@@ -510,7 +510,7 @@
 
 - (void)displayEventPage:(Event *)event{
 
-    [NotificationHandler createAndSendLocalNotificationForEvent:event];
+    //[NotificationHandler createAndSendLocalNotificationForEvent:event];
     
     UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"CenterStoryboard" bundle:nil];
     self.eventPageViewController = (EventPageViewController *)[storyboard instantiateViewControllerWithIdentifier:@"EventViewController"];

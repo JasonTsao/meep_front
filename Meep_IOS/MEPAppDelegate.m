@@ -261,8 +261,14 @@
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"did receieve remote notification!"
+                                                    message:[NSString stringWithFormat:@"%@", userInfo]
+                                                   delegate:self
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+    [alert show];
     NSLog(@"did recieve remote notification, application state: %@!", application.applicationState);
-    NSLog(@"user info dict: %@", userInfo);	
+    NSLog(@"user info dict: %@", userInfo);
     if( application.applicationState == UIApplicationStateInactive){
         NSLog(@"user is not in the application when it got the notification");
     }
@@ -275,17 +281,41 @@
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
 {
     NSLog(@"did receive local notification!");
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"did receieve local notification!"
+                                                    message:[NSString stringWithFormat:@"%@", notification]
+                                                   delegate:self
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+    [alert show];
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+
     UILocalNotification *localNotif =
     [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
+    NSDictionary *remoteNotif = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
     if (localNotif) {
         NSLog(@"got local notificaiton!");
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"local notification"
+                                                        message:[NSString stringWithFormat:@"%@", localNotif]
+                                                       delegate:self
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        [alert show];
         NSLog(@"%@", localNotif);
         NSString *itemName = [localNotif.userInfo objectForKey:@"event"];
         application.applicationIconBadgeNumber = localNotif.applicationIconBadgeNumber-1;
+    }
+    if (remoteNotif){
+        NSLog(@"got a remote notification!");
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"remote notification!"
+                                                        message:[NSString stringWithFormat:@"%@", remoteNotif]
+                                                       delegate:self
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        [alert show];
+        NSLog(@"%@", remoteNotif);
     }
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
@@ -334,6 +364,9 @@
                                       }];
     }
     
+    //CANCEL ALL NOTIFICATIONS. MUST GET RID OF THIS LATER!
+    //[[UIApplication sharedApplication] cancelAllLocalNotifications];
+    
     //make call to APN Services
     [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
     
@@ -355,9 +388,19 @@
 {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    NSLog(@"application did enter background");
     
-    
-   /* 
+    /*dispatch_async(dispatch_get_main_queue(), ^{
+        while ([application backgroundTimeRemaining] > 1.0) {
+            NSLog(@"making local notification in backgorund");
+            UILocalNotification *localNotif = [[UILocalNotification alloc] init];
+            localNotif.alertAction = NSLocalizedString(@"Read Message", nil);
+            localNotif.soundName = @"alarmsound.caf";
+            localNotif.applicationIconBadgeNumber = 1;
+            [application presentLocalNotificationNow:localNotif];
+        }
+    });*/
+   /*
     SOME EXAMPLE CODE ON HOW TO HANDLE PUSH NOTIFICATIONS IN THE BACKGROUND
     NSLog(@"Application entered background state.");
     // bgTask is a property of the class
