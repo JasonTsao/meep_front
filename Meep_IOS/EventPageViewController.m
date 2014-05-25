@@ -546,7 +546,7 @@
                 region.center = placemark.region.center;
                 region.span.longitudeDelta /= 1000.0;
                 region.span.latitudeDelta /= 1000.0;
-                [self.mapView setRegion:region animated:YES];
+                [self.mapView setRegion:region animated:NO];
                 [self.mapView addAnnotation:placemark];
             }
         }];
