@@ -11,4 +11,5 @@
 
 @interface NotificationHandler : NSObject
 + (void)createAndSendLocalNotificationForEvent:(Event*)event;
++ (void)handleNotification:(NSDictionary*)userInfo;
 @end

@@ -38,4 +38,16 @@
     NSLog(@"presenting local notificaiton now!");
 }
 
++ (void)handleNotification:(NSDictionary*)userInfo
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"in user handling data!"
+                                                    message:[NSString stringWithFormat:@"%@", userInfo]
+                                                   delegate:self
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+    [alert show];
+    NSLog(@"handling notification");
+}
+
+
 @end

@@ -339,7 +339,7 @@
     NSLog(@"adding message: %@", notification.message);
     notificationHeader.text = notification.message;
     notificationHeader.textColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_DATA_TEXT_COLOR]];
-    [notificationHeader setFont:[UIFont systemFontOfSize:18]];
+    [notificationHeader setFont:[UIFont systemFontOfSize:12]];
     [cellContents addSubview:notificationHeader];
     UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(8, 4, 40, 40)];
     img.image = [UIImage imageNamed:@"ManSilhouette"];
