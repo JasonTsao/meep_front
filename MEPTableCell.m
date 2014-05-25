@@ -164,10 +164,7 @@
     NSString * eventDateMessage = [MEPTextParse getTimeUntilDateTime:startedDate];
     
     eventDetailLabel.text = eventDateMessage;
-//    eventDetailLabel.textColor = [Colors colorWithHexString:[NSString stringWithFormat:@"F4F4F4"]];
-
-    eventDetailLabel.textColor = [Colors colorWithHexString:[NSString stringWithFormat:]];
-
+    eventDetailLabel.textColor = [Colors colorWithHexString:[NSString stringWithFormat:@"F4F4F4"]];
     [eventDetailLabel setFont:[UIFont systemFontOfSize:8.5]];
     [contentView addSubview:eventDetailLabel];
     
