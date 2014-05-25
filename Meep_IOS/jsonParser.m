@@ -103,14 +103,14 @@
 
         new_friend.has_viewed_event = [new_friend_dict[@"has_viewed_event"] boolValue];
         
-        if ([new_friend_dict[@"pf_pic"] length] == 0 || [new_friend_dict objectForKey:@"pf_pf"] == nil){
+        if ([new_friend_dict[@"pf_pic"] length] == 0 || ![new_friend_dict objectForKey:@"pf_pic"] == nil){
             UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(8, 4, 40, 40)];
             img.image = [UIImage imageNamed:@"ManSilhouette"];
             //new_friend.profilePic = img;
             new_friend.profilePic = img.image;
         }
         else{
-            NSURL *url = [[NSURL alloc] initWithString:new_friend_dict[@"fb_pfpic_url"]];
+            NSURL *url = [[NSURL alloc] initWithString:new_friend_dict[@"pf_pic"]];
             //NSURL *url = [[NSURL alloc] initWithString:@"https://graph.facebook.com/jason.s.tsao/picture"];
             NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url];
             //NSData *urlData = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:&response error:nil];

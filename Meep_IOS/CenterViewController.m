@@ -265,9 +265,11 @@
     [refreshControl endRefreshing];
 }
 
+/*
 -(UIStatusBarStyle)preferredStatusBarStyle{
     return UIStatusBarStyleLightContent;
 }
+*/
 
 - (void)viewDidLoad
 {
@@ -289,12 +291,13 @@
     
     UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
     [refreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];
-    self.view.backgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",NAV_BAR_COLOR]];
+    // self.view.backgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",NAV_BAR_COLOR]];'
+    self.view.backgroundColor = [UIColor blackColor];
     // self.navigationController.navigationBar.translucent = NO;
     // self.navigationController.navigationBar.opaque = NO;
-    // s[[UINavigationBar appearance] setBarTintColor:[CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",NAV_BAR_COLOR]]];
+    // [[UINavigationBar appearance] setBarTintColor:[CenterViewController colorWithHexString:[NSString stringWithFormat:@"%s",NAV_BAR_COLOR]]];
     [[UINavigationBar appearance] setBarTintColor:[UIColor clearColor]];
-    self.navigationController.view.backgroundColor = [UIColor clearColor];
+    // self.navigationController.view.backgroundColor = [UIColor clearColor];
     [self.upcomingEvents addSubview:refreshControl];
     //self.eventArray = [[NSMutableArray alloc] init];
     self.eventArray = [[NSMutableArray alloc] init];

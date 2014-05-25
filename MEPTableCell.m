@@ -258,10 +258,10 @@
 
 +(UICollectionViewCell*) invitedFriendCell:(InvitedFriend*)friend forCollectionCell:(UICollectionViewCell*)cell {
     CGRect viewFrame = cell.frame;
-    viewFrame.origin.y = - 10.0f;
+    viewFrame.origin.y = - 20.0;
     viewFrame.size.height = viewFrame.size.height + 10;
     cell.frame = viewFrame;
-    UIImageView * imageView = [[UIImageView alloc] initWithFrame:CGRectMake(2, 2, cell.frame.size.width - 4, cell.frame.size.width)];
+    UIImageView * imageView = [[UIImageView alloc] initWithFrame:CGRectMake(2, 2, cell.frame.size.width - 4, cell.frame.size.width - 4)];
     imageView.image = friend.profilePic;
     imageView.layer.cornerRadius = imageView.frame.size.width/2;
     imageView.layer.masksToBounds = YES;
@@ -271,6 +271,7 @@
     userName.text = friend.name;
     userName.textAlignment = NSTextAlignmentCenter;
     [userName setFont:[UIFont systemFontOfSize:10]];
+    userName.textColor = [Colors colorWithHexString:@"FFFFFF"];
     [cell addSubview:userName];
     
     return cell;

@@ -317,7 +317,7 @@
 {
     CGFloat height;
     if (indexPath.row == 0) {
-        height = 150.0;
+        height = 120.0;
     }
     else if (indexPath.row == 1) {
         height = 50.0;
@@ -337,6 +337,7 @@
     cell.frame = CGRectMake(0, 0, cell.frame.size.width, 60);
     UIView * linksContainer = [[UIView alloc] initWithFrame:CGRectMake(CONTENT_SPACING, CONTENT_SPACING, cell.frame.size.width - (CONTENT_SPACING * 2), cell.frame.size.height - (CONTENT_SPACING * 2))];
     linksContainer.backgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",CONTENT_BG_COLOR]];
+    linksContainer.backgroundColor = [UIColor blackColor];
     if (![_currentEvent.locationAddress isEqual:[NSNull null]]) {
         UIButton * mapsIconHolder = [[UIButton alloc] initWithFrame:CGRectMake(2, 2, linksContainer.frame.size.height - 8, linksContainer.frame.size.height - 8)];
         [mapsIconHolder addTarget:self action:@selector(openMapsLink:) forControlEvents:UIControlEventTouchUpInside];
@@ -365,6 +366,7 @@
     }
     linksContainer.layer.cornerRadius = 5;
     [cell addSubview:linksContainer];
+    cell.backgroundColor = [UIColor blackColor];
     return cell;
 }
 
@@ -457,14 +459,16 @@
 
 - (void)initializeBannerWithImage:(UIImage*)image {
     CIContext * context = [CIContext contextWithOptions:nil];
+    float blurr = 0.8f;
     if ([image isEqual:[NSNull null]] || image == nil) {
         image = [UIImage imageNamed:@"planet5.png"];
+        blurr = 2.0f;
     }
     CIImage * imageToBlur = [CIImage imageWithCGImage:image.CGImage];
     
     CIFilter *filter = [CIFilter filterWithName:@"CIGaussianBlur"];
     [filter setValue:imageToBlur forKey:kCIInputImageKey];
-    [filter setValue:[NSNumber numberWithFloat:0.8f] forKey:@"inputRadius"];
+    [filter setValue:[NSNumber numberWithFloat:blurr] forKey:@"inputRadius"];
     CIImage * result = [filter valueForKey:kCIOutputImageKey];
     
     CGImageRef cgImage = [context createCGImage:result fromRect:[imageToBlur extent]];
@@ -482,9 +486,9 @@
     
     CAGradientLayer *gradient = [CAGradientLayer layer];
     gradient.frame = CGRectMake(0, 0, _bannerView.frame.size.width, _bannerView.frame.size.height + 2);
-    gradient.colors = [NSArray arrayWithObjects:(id)[[UIColor blackColor] CGColor], [[UIColor clearColor] CGColor], [[UIColor whiteColor] CGColor], nil];
+    gradient.colors = [NSArray arrayWithObjects:(id)[[UIColor clearColor] CGColor], [[UIColor blackColor] CGColor], nil];
     
-    UILabel * headerText = [[UILabel alloc] initWithFrame:CGRectMake(5, 0, textLabelSize.width, textLabelSize.height)];
+    UILabel * headerText = [[UILabel alloc] initWithFrame:CGRectMake(5, 90, textLabelSize.width, textLabelSize.height)];
     headerText.text = _currentEvent.description;
     [headerText setFont:[UIFont systemFontOfSize:14.0f]];
     headerText.textColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",CONTENT_TEXT_COLOR]];
@@ -526,7 +530,7 @@
     _basicInfoToDisplay = [[NSMutableArray alloc]init];
     _locationInfoToDisplay = [[NSMutableArray alloc]init];
     _thirdPartyInfoToDisplay = [[NSMutableArray alloc]init];
-    _mapView = [[MKMapView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 150.0)];
+    _mapView = [[MKMapView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 120.0)];
     
     //ADD CODE FOR CHECKING IF CURRENT USER HAS VIeWED THIS PAGE, IF NOT AND THIS IS FIRST TIME VIEWING, SAVE has_viewed AS TRUE
     
@@ -562,7 +566,7 @@
     UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
     [flowLayout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
     [self.friendsCollection setCollectionViewLayout:flowLayout];
-    self.friendsCollection.backgroundColor = [UIColor whiteColor];
+    // self.friendsCollection.backgroundColor = [UIColor whiteColor];
     self.friendsCollection.delegate = self;
     self.friendsCollection.dataSource = self;
     
@@ -580,6 +584,8 @@
     _locationManager.distanceFilter = kCLDistanceFilterNone;
     _locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters;
     [_locationManager startUpdatingLocation];
+    self.view.backgroundColor = [UIColor blackColor];
+    self.eventInfoTable.backgroundColor = [UIColor blackColor];
 }
 
 
