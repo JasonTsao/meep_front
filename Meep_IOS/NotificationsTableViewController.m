@@ -26,9 +26,14 @@
     return self;
 }
 
+- (void)backToCenterFromNotifications:(id)sender {
+    [_delegate backToCenterFromNotifications:self];
+}
+
 - (void)getNotifications
 {
     NSString * requestURL = [NSString stringWithFormat:@"%@get",[MEEPhttp notificationsURL]];
+    NSLog(@"requesturl: %@", requestURL);
     NSDictionary * postDict = [[NSDictionary alloc] init];
     NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
     NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
@@ -43,7 +48,7 @@
 {
     [_data appendData:data];
 }
--(void)connection:(NSURLConnection*)connection didFailWithError:(NSError*)error
+-(void)connection:(NSURLConnection*)	connection didFailWithError:(NSError*)error
 {
     // Handle the error properly
     NSLog(@"Call Failed");
@@ -58,6 +63,7 @@
     NSError* error;
     NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:_data options:0 error:&error];
     NSArray * notifications = jsonResponse[@"notifications"];
+    NSLog(@"notifications: %@", notifications);
     
     _notifications_list = [jsonParser notificationsArray:notifications];
     
@@ -70,7 +76,12 @@
     [super viewDidLoad];
     self.title = @"Notifications";
     self.navigationController.navigationBar.titleTextAttributes = [NSDictionary dictionaryWithObject:[UIColor whiteColor] forKey:UITextAttributeTextColor];
+    UIBarButtonItem *customBarItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStyleBordered target:self action:@selector(backToCenterFromNotifications:)];
     
+    self.navigationItem.leftBarButtonItem = customBarItem;
+    
+    
+    [self getNotifications];
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
