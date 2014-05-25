@@ -118,7 +118,6 @@
 }
 
 - (void)actionSheet:(UIActionSheet *)popup clickedButtonAtIndex:(NSInteger)buttonIndex {
-    NSLog(@"clicked button at index: %i", buttonIndex);
     switch (popup.tag) {
         case 1: {
             switch (buttonIndex) {
@@ -206,12 +205,10 @@
     NSError* error;
     NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:_data options:0 error:&error];
     NSArray * friends = jsonResponse[@"invited_friends"];
-    
     if(friends != nil){
         _invitedFriends = [jsonParser invitedFriendsArray:friends];
-        
         //Check if current user has viewed the Event already, if not, call server and tell it that this user did
-        for( InvitedFriend *friend in _invitedFriends){
+        for(InvitedFriend *friend in _invitedFriends){
             if([_authClient.enc_userid integerValue] == friend.account_id){
                 if(!friend.has_viewed_event){
                     [self userHasViewedEvent];
@@ -266,8 +263,8 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-
     UICollectionViewCell *cell = [_friendsCollection dequeueReusableCellWithReuseIdentifier:@"invitedFriendCell" forIndexPath:indexPath];
+    cell.frame = CGRectMake(0, 0, cell.frame.size.width, cell.frame.size.height);
     //UIImage *cellImage = [[UIImage alloc] init];
     UIButton *cellButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     NSString *user_name;
@@ -293,14 +290,12 @@
     Friend *selectedFriend;
     if(indexPath.section == 1){
         if(indexPath.row == 1){
-            NSLog(@"Transfer to users map app!");
             NSString* url = [NSString stringWithFormat:@"http://maps.google.com/maps?saddr=%f,%f&daddr=%@",_locationManager.location.coordinate.latitude, _locationManager.location.coordinate.longitude, [_currentEvent.locationAddress stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url]];
         }
     }
     if (indexPath.section == 2) {
         if (indexPath.row == 0) {
-            NSLog(@"Opening Yelp Link");
             if ([self isYelpInstalled]) {
                 [[UIApplication sharedApplication] openURL:[NSURL URLWithString:_currentEvent.yelpLink]];
             }
@@ -325,149 +320,28 @@
     return 1;
 }
 
-/*-(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-{
-    NSString *header;
-    return header;
-}*/
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 3;
+    return 2;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     CGFloat height;
-    NSString *eventInfoType;
-    /*
-    height = 25.0;
-    if (indexPath.section == 0){
-        eventInfoType = _basicInfoToDisplay[indexPath.row];
-        if([eventInfoType isEqualToString:@"name"]){
-            height = 40.0;
-        }
-        else if([eventInfoType isEqualToString:@"time"]){
-            if(![_currentEvent.end_time isEqual:[NSNull null]]){
-                height = 55;
-            }
-            else{
-                height = 25.0;
-            }
-        }
-        
-    }
-    
-    else if(indexPath.section == 1){
-        eventInfoType = _locationInfoToDisplay[indexPath.row];
-        if([eventInfoType isEqualToString:@"locationAddress"]){
-            height = 180.0;
-        }
-        else if ([eventInfoType isEqualToString:@"locationName"]){
-            height = 30.0;
-        }
-    }
-    else if(indexPath.section == 2){
-        height = 25.0;
-    }
-    
-    else if(indexPath.section == 3){
-        height = 30.0;
-    }
-     */
     if (indexPath.row == 0) {
-        NSString * title = ([_currentEvent.name isEqual:[NSNull null]] ? _currentEvent.name : _currentEvent.description);
-        CGSize expectedSize = [title sizeWithFont:[UIFont systemFontOfSize:16] constrainedToSize:self.eventInfoTable.frame.size lineBreakMode:NSLineBreakByWordWrapping];
-        // height = 40.0;
-        height = expectedSize.height * 2;
-    }
-    else if (indexPath.row == 1) {
         height = 180.0;
     }
-    else if (indexPath.row == 2) {
+    else if (indexPath.row == 1) {
         height = 50.0;
     }
     return height;
 }
 
-- (UITableViewCell *) titleCellView:(UITableViewCell*)cell {
-    NSString * title = ([_currentEvent.name isEqual:[NSNull null]] ? _currentEvent.name : _currentEvent.description);
-    CGSize expectedSize = [title sizeWithFont:[UIFont systemFontOfSize:16] constrainedToSize:CGRectMake(0, 0, cell.frame.size.width - (CONTENT_SPACING * 2), cell.frame.size.height - (CONTENT_SPACING * 2)).size lineBreakMode:NSLineBreakByWordWrapping];
-    cell.frame = CGRectMake(0, 0, cell.frame.size.width, expectedSize.height * 2);
-    UIView * titleView = [[UIView alloc] initWithFrame:CGRectMake(CONTENT_SPACING, CONTENT_SPACING, cell.frame.size.width - (CONTENT_SPACING * 2), cell.frame.size.height - (CONTENT_SPACING * 2))];
-    titleView.backgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",CONTENT_BG_COLOR]];
-    UILabel* titleText = [[UILabel alloc] initWithFrame:CGRectMake(CONTENT_SPACING, CONTENT_SPACING, cell.frame.size.width - (CONTENT_SPACING * 2), cell.frame.size.height - (CONTENT_SPACING * 2))];
-    if ([_currentEvent.name length] > 1) {
-        titleText.text = _currentEvent.name;
-    }
-    else {
-        titleText.text = _currentEvent.description;
-    }
-    titleText.textColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",CONTENT_TEXT_COLOR]];
-    titleText.textAlignment = NSTextAlignmentLeft;
-    titleText.lineBreakMode = NSLineBreakByWordWrapping;
-    titleView.layer.cornerRadius = 5;
-    [titleText setFont:[UIFont systemFontOfSize:14]];
-    [titleView addSubview:titleText];
-    [cell addSubview:titleView];
-    return cell;
-}
-
 - (UITableViewCell *) mainContentView:(UITableViewCell*)cell {
-    NSLog(@"%f",cell.frame.size.height);
-    UIView * textContent = [[UIView alloc] initWithFrame:CGRectMake(CONTENT_SPACING, CONTENT_SPACING, cell.frame.size.width - (CONTENT_SPACING * 2), cell.frame.size.height - (CONTENT_SPACING * 2))];
-    textContent.backgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",CONTENT_BG_COLOR]];
-    textContent.layer.cornerRadius = 5;
     if (!(_currentEvent.locationAddress == (id)[NSNull null] || _currentEvent.locationAddress.length == 0)) {
-        UIView * mapViewFrame = [[UIView alloc] initWithFrame:CGRectMake(cell.frame.size.width/2 + CONTENT_SPACING, CONTENT_SPACING, (cell.frame.size.width/2) - (CONTENT_SPACING * 2), cell.frame.size.height - (CONTENT_SPACING * 2))];
-        mapViewFrame.backgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",CONTENT_BG_COLOR]];
-        mapViewFrame.layer.cornerRadius = 5;
-        UIView * mapFrame = [[UIView alloc] initWithFrame:CGRectMake(2, 2, mapViewFrame.frame.size.width - 4, mapViewFrame.frame.size.height - 4)];
-        _mapView.frame = CGRectMake(CONTENT_SPACING, CONTENT_SPACING, mapViewFrame.frame.size.width - (CONTENT_SPACING * 2), mapViewFrame.frame.size.height - (CONTENT_SPACING * 2));
-        _mapView.layer.cornerRadius = 5;
-        [mapViewFrame addSubview:_mapView];
-        [cell addSubview:mapViewFrame];
-        
-        textContent.frame = CGRectMake(CONTENT_SPACING, CONTENT_SPACING, (cell.frame.size.width/2) - (CONTENT_SPACING * 2), cell.frame.size.height - (CONTENT_SPACING * 2));
+        _mapView.frame = CGRectMake(0, 0, cell.frame.size.width, cell.frame.size.height);
+        [cell addSubview:_mapView];
     }
-    float yCoord = 2;
-    if (![_currentEvent.name isEqual:[NSNull null]] && [_currentEvent.name length] > 1) {
-        CGSize descSize = [_currentEvent.description sizeWithFont:[UIFont systemFontOfSize:14] constrainedToSize:textContent.frame.size lineBreakMode:NSLineBreakByWordWrapping];
-        UILabel * desc = [[UILabel alloc] initWithFrame:CGRectMake(2, yCoord, descSize.width-4, descSize.height)];
-        desc.text = _currentEvent.description;
-        desc.textColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",CONTENT_TEXT_COLOR]];
-        [desc setFont:[UIFont systemFontOfSize:9]];
-        yCoord = 6 + descSize.height;
-        [textContent addSubview:desc];
-    }
-    if (![_currentEvent.locationAddress isEqual:[NSNull null]]) {
-        UILabel * addressLabel = [[UILabel alloc] initWithFrame:CGRectMake(2, yCoord, textContent.frame.size.width - 4, 15)];
-        addressLabel.text = @"Location";
-        addressLabel.textColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",CONTENT_TEXT_COLOR]];
-        [addressLabel setFont:[UIFont systemFontOfSize:9.5]];
-        [textContent addSubview:addressLabel];
-        yCoord = yCoord + 1 + addressLabel.frame.size.height;
-        UILabel * address = [[UILabel alloc] initWithFrame:CGRectMake(2, yCoord, textContent.frame.size.width-4, 15)];
-        address.text = _currentEvent.locationAddress;
-        address.textColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",CONTENT_TEXT_COLOR]];
-        [address setFont:[UIFont systemFontOfSize:9]];
-        yCoord = yCoord + 6 + address.frame.size.height;
-        [textContent addSubview:address];
-    }
-    if (![_currentEvent.start_time isEqual:[NSNull null]]) {
-        NSMutableString *timeString = [[NSMutableString alloc] init];
-        NSTimeInterval startedTime = [_currentEvent.start_time doubleValue];
-        NSDate *startedDate = [[NSDate alloc] initWithTimeIntervalSince1970:startedTime];
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateFormat:@"MMM dd h:mm a"];
-        NSString * startTime = [dateFormatter stringFromDate:startedDate];
-        UILabel * startTimeLabel = [[UILabel alloc] initWithFrame:CGRectMake(2, yCoord, textContent.frame.size.width-4, 15)];
-        startTimeLabel.text = startTime;
-        startTimeLabel.textColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",CONTENT_TEXT_COLOR]];
-        [startTimeLabel setFont:[UIFont systemFontOfSize:9]];
-        [textContent addSubview:startTimeLabel];
-    }
-    [cell addSubview:textContent];
     return cell;
 }
 
@@ -510,12 +384,9 @@
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"eventInfoCell"];
     if (indexPath.row == 0) {
-        cell = [self titleCellView:cell];
-    }
-    else if (indexPath.row == 1) {
         cell = [self mainContentView:cell];
     }
-    else if (indexPath.row == 2) {
+    else if (indexPath.row == 1) {
         cell = [self externalLinksCellView:cell];
     }
     
@@ -605,7 +476,7 @@
     
     CIFilter *filter = [CIFilter filterWithName:@"CIGaussianBlur"];
     [filter setValue:imageToBlur forKey:kCIInputImageKey];
-    [filter setValue:[NSNumber numberWithFloat:1.5f] forKey:@"inputRadius"];
+    [filter setValue:[NSNumber numberWithFloat:0.8f] forKey:@"inputRadius"];
     CIImage * result = [filter valueForKey:kCIOutputImageKey];
     
     CGImageRef cgImage = [context createCGImage:result fromRect:[imageToBlur extent]];
@@ -616,8 +487,6 @@
     UIImageView * blurredImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, -(_bannerView.frame.size.width-_bannerView.frame.size.height)/2, _bannerView.frame.size.width, _bannerView.frame.size.width)];
     blurredImageView.image = blurredImage;
     [_bannerView addSubview:blurredImageView];
-    _bannerView.layer.shadowColor = [UIColor blackColor].CGColor;
-    _bannerView.layer.shadowRadius = 5.0f;
     
     CGSize maximumLabelSize = CGSizeMake(_bannerView.frame.size.width - 10,(_bannerView.frame.size.height*3/4));
     
@@ -633,9 +502,21 @@
     headerText.textColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",CONTENT_TEXT_COLOR]];
     headerText.lineBreakMode = NSLineBreakByWordWrapping;
     
+    UILabel * dateTimeText = [[UILabel alloc] initWithFrame:CGRectMake(0, _bannerView.frame.size.height*(7/8), _bannerView.frame.size.width/2, _bannerView.frame.size.height*(1/8))];
+    NSTimeInterval startedTime = [_currentEvent.start_time doubleValue];
+    NSDate *startedDate = [[NSDate alloc] initWithTimeIntervalSince1970:startedTime];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"MMM dd h:mm a"];
+    NSString * startTime = [dateFormatter stringFromDate:startedDate];
+
+    dateTimeText.text = startTime;
+    dateTimeText.textColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",CONTENT_TEXT_COLOR]];
+    [dateTimeText setFont:[UIFont systemFontOfSize:10.0f]];
+    
     // UIView * headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _bannerView.frame.size.width, _bannerView.frame.size.width*(3/4))];
     [_bannerView.layer addSublayer:gradient];
     [_bannerView addSubview:headerText];
+    [_bannerView addSubview:dateTimeText];
     _bannerView.layer.masksToBounds = YES;
     [self.view addSubview:_bannerView];
 }
@@ -685,7 +566,6 @@
         self.title = _currentEvent.description;
     }
     self.navigationController.navigationBar.titleTextAttributes = [NSDictionary dictionaryWithObject:[UIColor whiteColor] forKey:UITextAttributeTextColor];
-    [self getInvitedFriends];
     self.eventInfoTable.dataSource = self;
     self.eventInfoTable.delegate = self;
     //self.friendsCollection.dataSource = self;
@@ -694,6 +574,11 @@
     UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
     [flowLayout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
     [self.friendsCollection setCollectionViewLayout:flowLayout];
+    self.friendsCollection.backgroundColor = [UIColor whiteColor];
+    self.friendsCollection.delegate = self;
+    self.friendsCollection.dataSource = self;
+    
+    [self getInvitedFriends];
     
     UIBarButtonItem *customBarItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStyleBordered target:self action:@selector(backToCenterFromEventPage:)];
     
