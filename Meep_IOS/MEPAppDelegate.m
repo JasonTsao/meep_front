@@ -262,7 +262,7 @@
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
     NSLog(@"did recieve remote notification, application state: %@!", application.applicationState);
-    NSLog(@"user info dict: %@", userInfo);
+    NSLog(@"user info dict: %@", userInfo);	
     if( application.applicationState == UIApplicationStateInactive){
         NSLog(@"user is not in the application when it got the notification");
     }
