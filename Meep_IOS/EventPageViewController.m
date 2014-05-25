@@ -598,14 +598,14 @@
 
 - (void)initializeBannerWithImage:(UIImage*)image {
     CIContext * context = [CIContext contextWithOptions:nil];
-    if ([image isEqual:[NSNull null]]) {
-        image = [[UIImage alloc] initWithContentsOfFile:@"planet5.png"];
+    if ([image isEqual:[NSNull null]] || image == nil) {
+        image = [UIImage imageNamed:@"planet5.png"];
     }
     CIImage * imageToBlur = [CIImage imageWithCGImage:image.CGImage];
     
     CIFilter *filter = [CIFilter filterWithName:@"CIGaussianBlur"];
     [filter setValue:imageToBlur forKey:kCIInputImageKey];
-    [filter setValue:[NSNumber numberWithFloat:1.0f] forKey:@"inputRadius"];
+    [filter setValue:[NSNumber numberWithFloat:1.5f] forKey:@"inputRadius"];
     CIImage * result = [filter valueForKey:kCIOutputImageKey];
     
     CGImageRef cgImage = [context createCGImage:result fromRect:[imageToBlur extent]];
@@ -616,14 +616,25 @@
     UIImageView * blurredImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, -(_bannerView.frame.size.width-_bannerView.frame.size.height)/2, _bannerView.frame.size.width, _bannerView.frame.size.width)];
     blurredImageView.image = blurredImage;
     [_bannerView addSubview:blurredImageView];
+    _bannerView.layer.shadowColor = [UIColor blackColor].CGColor;
+    _bannerView.layer.shadowRadius = 5.0f;
     
-    CGSize maximumLabelSize = CGSizeMake(_bannerView.frame.size.width - 10,9999);
+    CGSize maximumLabelSize = CGSizeMake(_bannerView.frame.size.width - 10,(_bannerView.frame.size.height*3/4));
     
-    CGSize textLabelSize = [_currentEvent.description sizeWithFont:[UIFont systemFontOfSize:16] constrainedToSize:maximumLabelSize lineBreakMode:NSLineBreakByWordWrapping];
+    CGSize textLabelSize = [_currentEvent.description sizeWithFont:[UIFont systemFontOfSize:14.0f] constrainedToSize:maximumLabelSize lineBreakMode:NSLineBreakByWordWrapping];
+    
+    CAGradientLayer *gradient = [CAGradientLayer layer];
+    gradient.frame = CGRectMake(0, 0, _bannerView.frame.size.width, _bannerView.frame.size.height);
+    gradient.colors = [NSArray arrayWithObjects:(id)[[UIColor blackColor] CGColor], [[UIColor clearColor] CGColor], [[UIColor blackColor] CGColor], nil];
     
     UILabel * headerText = [[UILabel alloc] initWithFrame:CGRectMake(5, 0, textLabelSize.width, textLabelSize.height)];
+    headerText.text = _currentEvent.description;
+    [headerText setFont:[UIFont systemFontOfSize:14.0f]];
+    headerText.textColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",CONTENT_TEXT_COLOR]];
+    headerText.lineBreakMode = NSLineBreakByWordWrapping;
     
     // UIView * headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _bannerView.frame.size.width, _bannerView.frame.size.width*(3/4))];
+    [_bannerView.layer addSublayer:gradient];
     [_bannerView addSubview:headerText];
     _bannerView.layer.masksToBounds = YES;
     [self.view addSubview:_bannerView];
