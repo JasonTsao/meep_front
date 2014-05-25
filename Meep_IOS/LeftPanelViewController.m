@@ -174,7 +174,7 @@
             img.image = [UIImage imageNamed:@"friends"];
         }
         else if([_navItems[indexPath.row] isEqualToString:@"Notifications"] ){
-            //img.image = [UIImage imageNamed:@"notifications"];
+            img.image = [UIImage imageNamed:@"notificationBell"];
         }
         img.layer.cornerRadius = img.frame.size.height/2;
         img.layer.masksToBounds = YES;
