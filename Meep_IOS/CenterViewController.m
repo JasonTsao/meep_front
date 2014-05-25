@@ -118,6 +118,11 @@
     [_delegate openAddFriendsPage];
 }
 
+- (void)openNotificationsPage
+{
+    [_delegate openNotificationsPage];
+}
+
 - (IBAction)openLeftPanelPage:(id)sender {
     if(!_showingLeftPanel){
         _showingLeftPanel = YES;

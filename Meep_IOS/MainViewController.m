@@ -459,6 +459,7 @@
 
 - (void)openNotificationsPage
 {
+    NSLog(@"opening notification page");
     UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"CenterStoryboard" bundle:nil];
     _notificationsTableViewController = (NotificationsTableViewController *)[storyboard instantiateViewControllerWithIdentifier:@"notifications"];
     
