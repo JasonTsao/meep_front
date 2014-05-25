@@ -12,6 +12,7 @@
 #import "MEPLocationService.h"
 
 
+
 #define BORDER_WIDTH 1
 #define LINE_WIDTH 1
 #define BORDER_COLOR "ffffff"
@@ -315,6 +316,36 @@
     userName.textColor = [Colors colorWithHexString:@"FFFFFF"];
     [cell addSubview:userName];
     
+    return cell;
+}
+
++ (UITableViewCell*) customNotificationcell:(Notification*)notification
+                             forTable:(UITableView*)tableView
+                             selected:(BOOL)sel {
+    UITableViewCell * cell = [[UITableViewCell alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 54)];
+    cell.backgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_BACKGROUND_COLOR]];
+    UIView * lineMask = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 1)];
+    lineMask.backgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_BACKGROUND_COLOR]];
+    [cell addSubview:lineMask];
+    UIView * cellContents = [[UIView alloc] initWithFrame:CGRectMake(3, 3, cell.frame.size.width - 6, cell.frame.size.height + 6)];
+    if (!sel) {
+        cellContents.backgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_DATA_BACKGROUND_COLOR]];
+    }
+    else {
+        cellContents.backgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",CELL_SELECT_COLOR]];
+    }
+    cellContents.layer.cornerRadius = 10;
+    UILabel *notificationHeader = [[UILabel alloc] initWithFrame:CGRectMake(60, 14, 235, 21)];
+    notificationHeader.text = notification.message;
+    notificationHeader.textColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_DATA_TEXT_COLOR]];
+    [notificationHeader setFont:[UIFont systemFontOfSize:18]];
+    [cellContents addSubview:notificationHeader];
+    UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(8, 4, 40, 40)];
+    img.image = [UIImage imageNamed:@"ManSilhouette"];
+    img.layer.cornerRadius = img.frame.size.height/2;
+    img.layer.masksToBounds = YES;
+    [cellContents addSubview:img];
+    [cell addSubview:cellContents];
     return cell;
 }
 

@@ -9,6 +9,7 @@
 #import "Event.h"
 #import "Friend.h"
 #import "Group.h"
+#import "Notification.h"
 #import "InvitedFriend.h"
 #import <Foundation/Foundation.h>
 
@@ -20,6 +21,7 @@
 + (CGFloat) customFriendCellHeight;
 + (UITableViewCell*) customFriendCell:(Friend*)friend forTable:(UITableView*)tableView selected:(BOOL)sel;
 + (UITableViewCell*) customGroupCell:(Group*)group forCell:(UITableViewCell*)cell forTable:(UITableView*)tableView selected:(BOOL)sel;
++ (UITableViewCell*) customNotificationcell:(Notification*)notification forTable:(UITableView*)tableView selected:(BOOL)sel;
 
 +(UICollectionViewCell*) invitedFriendCell:(InvitedFriend*)friend forCollectionCell:(UICollectionViewCell*)cell;
 @end
