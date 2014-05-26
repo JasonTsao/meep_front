@@ -6,6 +6,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EventElementViewController">
             <connections>
+                <outlet property="locationSearchBar" destination="J8D-us-0VE" id="aa5-wR-P5f"/>
                 <outlet property="returnToEventPage" destination="91v-cR-7YR" id="r9l-qm-ROq"/>
                 <outlet property="view" destination="iN0-l3-epB" id="0Vm-iB-Yfs"/>
             </connections>

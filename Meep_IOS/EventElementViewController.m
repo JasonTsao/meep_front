@@ -7,10 +7,15 @@
 //
 
 #import "EventElementViewController.h"
+#import "MEEPhttp.h"
 
-@interface EventElementViewController ()
+@interface EventElementViewController () <UISearchBarDelegate>
+
 @property (weak, nonatomic) IBOutlet UIDatePicker *timeSelect;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *returnToEventPage;
+@property (weak, nonatomic) IBOutlet UISearchBar *locationSearchBar;
+
+@property (strong, nonatomic) NSMutableData * data;
 
 @end
 
@@ -23,6 +28,36 @@
 - (IBAction)selectTime:(id)sender {
     NSDate * selectedDay = [self.timeSelect date];
     [_delegate updateEventWithDateTime:selectedDay];
+}
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
+    NSString * query = _locationSearchBar.text;
+    NSString * requestUrl = [NSString stringWithFormat:@"%@searchlocations?query=%@",[MEEPhttp eventURL],query];
+    NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestUrl postDictionary:nil];
+    NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    [conn start];
+}
+
+-(void)connection:(NSURLConnection*)connection didReceiveResponse:(NSURLResponse*)response
+{
+    _data = [[NSMutableData alloc] init]; // _data being an ivar
+}
+-(void)connection:(NSURLConnection*)connection didReceiveData:(NSData*)data
+{
+    [_data appendData:data];
+}
+-(void)connection:(NSURLConnection*)connection didFailWithError:(NSError*)error
+{
+    // Handle the error properly
+    NSLog(@"Call Failed");
+}
+-(void)connectionDidFinishLoading:(NSURLConnection*)connection
+{
+    [self handleData]; // Deal with the data
+}
+-(void)handleData {
+    NSDictionary * response = [NSJSONSerialization JSONObjectWithData:_data options:0 error:nil];
+    NSLog(@"%@",response);
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -38,6 +73,7 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    _locationSearchBar.delegate = self;
 }
 
 - (void)didReceiveMemoryWarning
