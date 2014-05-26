@@ -13,8 +13,9 @@
 
 
 #define BORDER_WIDTH 1
+#define LINE_WIDTH 1
 #define BORDER_COLOR "ffffff"
-#define LINE_COLOR "#7f8c8d"
+#define LINE_COLOR "ffffff"
 #define STATIC_IMAGE_COLOR "ffffff"
 #define TABLE_BACKGROUND_COLOR "000000"
 #define HEADER_TEXT_COLOR "019875"
@@ -70,6 +71,7 @@
     float contentBoxWidth = cell.frame.size.width - contentBoxXCoord - 15;
     float contentBoxHeight = cell.frame.size.height - (contentBoxYCoord * 2);
     float bgndImgScale = BORDER_WIDTH;
+    float lineWeight = LINE_WIDTH;
     UIColor * framingColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",BORDER_COLOR]];
     UIColor * lineColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",LINE_COLOR]];
     UIColor * staticImageColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",STATIC_IMAGE_COLOR]];
@@ -96,8 +98,20 @@
     // This view creates the horizontal line between the image and the content frames.
     
     //(cell.frame.size.width/2)
-    UIView * horizontalLine = [[UIView alloc] initWithFrame:CGRectMake(21, (cell.frame.size.height/2), 44, bgndImgScale)];
+    UIView * horizontalLine = [[UIView alloc] initWithFrame:CGRectMake(21, (cell.frame.size.height/2), 52, lineWeight)];
     horizontalLine.backgroundColor = lineColor;
+    
+    //horizontal line gradient
+    CAGradientLayer *horizontalLineGradient = [CAGradientLayer layer];
+    horizontalLineGradient.frame = CGRectMake(0, 0, horizontalLine.frame.size.width, horizontalLine.frame.size.height);
+    [horizontalLineGradient setStartPoint:CGPointMake(0.5, 0.5)];
+    [horizontalLineGradient setEndPoint:CGPointMake(1.0, 0.5)];
+    horizontalLineGradient.colors = [NSArray arrayWithObjects:(id)[[UIColor clearColor] CGColor], [[UIColor blackColor] CGColor], nil];
+    
+    
+    //[_bannerView.layer addSublayer:gradient];
+    
+    [horizontalLine.layer addSublayer:horizontalLineGradient];
     [cell addSubview:horizontalLine];
     
     // This view creates the black background which the image and mid ground line on top of.
@@ -149,7 +163,7 @@
         //    contentView.backgroundColor = contentBackgroundColor;
         //    contentView.layer.cornerRadius = 0;
     
-    UIView * contentView = [[UIView alloc] initWithFrame:CGRectMake(contentBoxXCoord+10, contentBoxYCoord, contentBoxWidth, contentBoxHeight)];
+    UIView * contentView = [[UIView alloc] initWithFrame:CGRectMake(contentBoxXCoord+12, contentBoxYCoord, contentBoxWidth, contentBoxHeight)];
     contentView.backgroundColor = contentBackgroundColor;
     contentView.layer.cornerRadius = 0;
     
