@@ -74,6 +74,8 @@
 
 @property (nonatomic, strong) MEPLocationService *locationServiceManager;
 
+@property (nonatomic, strong) NSMutableDictionary *notifications;
+
 @end
 
 @implementation MainViewController
@@ -87,6 +89,8 @@
     BOOL viewExists = [self setupView];
     self.locationServiceManager = [[MEPLocationService alloc] init];
     
+    
+    _notifications = [[NSMutableArray alloc] init];
     if( viewExists){
         NSLog(@"view already exists");
     }

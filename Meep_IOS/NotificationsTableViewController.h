@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+
 @class NotificationsTableViewController;
 @protocol NotificationsTableViewControllerDelegate
 - (void) backToCenterFromNotifications:(NotificationsTableViewController *)controller;

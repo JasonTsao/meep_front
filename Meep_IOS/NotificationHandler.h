@@ -8,8 +8,10 @@
 
 #import <Foundation/Foundation.h>
 #import "Event.h"
+#import "MainViewController.h"
 
 @interface NotificationHandler : NSObject
 + (void)createAndSendLocalNotificationForEvent:(Event*)event;
 + (void)handleNotification:(NSDictionary*)userInfo;
+@property (strong, nonatomic) MainViewController *mainViewController;
 @end
