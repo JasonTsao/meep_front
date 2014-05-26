@@ -12,6 +12,6 @@
 
 @interface NotificationHandler : NSObject
 + (void)createAndSendLocalNotificationForEvent:(Event*)event;
-+ (void)handleNotification:(NSDictionary*)userInfo;
++ (void)handleNotification:(NSDictionary*)userInfo forMainView:(MainViewController*)viewController;
 @property (strong, nonatomic) MainViewController *mainViewController;
 @end

@@ -10,6 +10,7 @@
 
 @interface Notification : NSObject
 @property (nonatomic) NSString *message;
+@property (nonatomic) NSString *type;
 @property (nonatomic) NSString *time_stamp;
 @property (nonatomic) NSInteger notification_id;
 @end

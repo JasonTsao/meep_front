@@ -22,6 +22,8 @@
 @end
 
 @interface MainViewController : UIViewController<AccountViewControllerDelegate, CreateGroupViewControllerDelegate, GroupsViewControllerDelegate, InviteFriendsViewControllerDelegate>
+@property (nonatomic) NSMutableDictionary *groupNotifications;
+@property (nonatomic) NSMutableDictionary *eventNotifications;
 @property (nonatomic, assign) id<MainViewControllerDelegate> delegate;
 @property(nonatomic, strong) DjangoAuthClient * authClient;
 @end

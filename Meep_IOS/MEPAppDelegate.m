@@ -119,6 +119,15 @@
     //self.window.rootViewController = self.viewController;
     //[self.window makeKeyAndVisible];
     self.viewController = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
+    
+    //initialize notifications for main view controller
+    if (self.viewController.eventNotifications == nil){
+        self.viewController.eventNotifications = [[NSMutableDictionary alloc] init];
+    }
+    if (self.viewController.groupNotifications == nil){
+        self.viewController.groupNotifications = [[NSMutableDictionary alloc] init];
+    }
+    
 
     self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];
@@ -243,7 +252,6 @@
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
-    NSLog(@"Got Device token!: %@", deviceToken);
     const char* data = [deviceToken bytes];
     NSMutableString* token = [NSMutableString string];
     
@@ -251,8 +259,8 @@
         [token appendFormat:@"%02.2hhX", data[i]];
     }
     
+    //send token back to server
     NSString * requestURL = [NSString stringWithFormat:@"%@device/?token=%@&service=1",[MEEPhttp iosNotificationsURL], token];
-    NSLog(@"request url : %@", requestURL);
     NSString *service_id = [NSString stringWithFormat:@"%i", 1 ];
     NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:service_id,@"service",token, @"token",nil];
     NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
@@ -271,7 +279,7 @@
     NSLog(@"did recieve remote notification, application state: %@!", application.applicationState);
     NSLog(@"user info dict: %@", userInfo);
     
-    [NotificationHandler handleNotification:userInfo];
+    [NotificationHandler handleNotification:userInfo forMainView:_viewController];
     
     if( application.applicationState == UIApplicationStateInactive){
         NSLog(@"user is not in the application when it got the notification");

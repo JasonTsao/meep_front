@@ -336,7 +336,6 @@
     }
     cellContents.layer.cornerRadius = 10;
     UILabel *notificationHeader = [[UILabel alloc] initWithFrame:CGRectMake(60, 14, 235, 21)];
-    NSLog(@"adding message: %@", notification.message);
     notificationHeader.text = notification.message;
     notificationHeader.textColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_DATA_TEXT_COLOR]];
     [notificationHeader setFont:[UIFont systemFontOfSize:12]];
