@@ -11,6 +11,7 @@
 #import "InvitedFriend.h"
 #import "Event.h"
 #import "Group.h"
+#import "Notification.h"
 
 @implementation jsonParser
 +(NSArray*)friendsArray:(NSArray*)friends
@@ -174,6 +175,34 @@
         [groups addObject:new_group];
     }
     return groups;
+}
+
++(NSArray*)notificationsArray:(NSArray*)notifications_list{
+    NSMutableArray *notifications = [[NSMutableArray alloc] init];
+    for( int i = 0; i< [notifications_list count]; i++){
+        Notification *new_notification = [[Notification alloc]init];
+        
+        NSDictionary * new_notification_dict = notifications_list[i];
+        new_notification.message = new_notification_dict[@"name"];
+        new_notification.time_stamp = new_notification_dict[@"created_at"];
+        new_notification.notification_id = [new_notification_dict[@"id"] integerValue];
+        
+        /*if ([new_group_dict[@"group_pic_url"] length] == 0){
+            UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(8, 4, 40, 40)];
+            img.image = [UIImage imageNamed:@"ManSilhouette"];
+            //new_friend.profilePic = img;
+            new_group.groupProfilePic = img.image;
+        }
+        else{
+            NSURL *url = [[NSURL alloc] initWithString:new_group_dict[@"group_pic_url"]];
+            NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url];
+            NSData *urlData = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:nil error:nil];
+            UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
+            new_group.groupProfilePic = image;
+        }*/
+        [notifications addObject:new_notification];
+    }
+    return notifications;
 }
     
 

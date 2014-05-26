@@ -7,9 +7,12 @@
 //
 
 #import "NotificationsTableViewController.h"
+#import "MEEPhttp.h"
+#import "jsonParser.h"
+#import "MEPTableCell.h"
 
 @interface NotificationsTableViewController ()
-
+@property(nonatomic, weak) NSMutableArray *notifications_list;
 @end
 
 @implementation NotificationsTableViewController
@@ -23,9 +26,50 @@
     return self;
 }
 
+- (void)getNotifications
+{
+    NSString * requestURL = [NSString stringWithFormat:@"%@get",[MEEPhttp notificationsURL]];
+    NSDictionary * postDict = [[NSDictionary alloc] init];
+    NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
+    NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    [conn start];
+}
+
+-(void)connection:(NSURLConnection*)connection didReceiveResponse:(NSURLResponse*)response
+{
+    _data = [[NSMutableData alloc] init]; // _data being an ivar
+}
+-(void)connection:(NSURLConnection*)connection didReceiveData:(NSData*)data
+{
+    [_data appendData:data];
+}
+-(void)connection:(NSURLConnection*)connection didFailWithError:(NSError*)error
+{
+    // Handle the error properly
+    NSLog(@"Call Failed");
+}
+-(void)connectionDidFinishLoading:(NSURLConnection*)connection
+{
+    [self handleData]; // Deal with the data
+}
+
+
+-(void)handleData{
+    NSError* error;
+    NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:_data options:0 error:&error];
+    NSArray * notifications = jsonResponse[@"notifications"];
+    
+    _notifications_list = [jsonParser notificationsArray:notifications];
+    
+    [self.tableView reloadData];
+    
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.title = @"Notifications";
+    self.navigationController.navigationBar.titleTextAttributes = [NSDictionary dictionaryWithObject:[UIColor whiteColor] forKey:UITextAttributeTextColor];
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
