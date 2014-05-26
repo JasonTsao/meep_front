@@ -8,6 +8,10 @@
 
 #import "CreateMessageViewController.h"
 #import "MEPTextParse.h"
+#import "Colors.h"
+
+#define TABLE_ROW_HEIGHT 25.0;
+#define TABLE_BORDER_COLOR "F2F1EF"
 
 @interface CreateMessageViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *messageField;
@@ -21,6 +25,8 @@
 @property (nonatomic, assign) BOOL timeFieldEditable;
 @property (nonatomic, assign) BOOL dateFieldEditable;
 @property (nonatomic, assign) BOOL locationFieldEditable;
+
+@property (nonatomic, strong) NSMutableArray * tableCellViews;
 
 @end
 
@@ -154,7 +160,7 @@
 }
 
 
-
+/*
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     NSString *friend_name;
     Friend *selectedFriend;
@@ -171,27 +177,17 @@
     }
     
 }
+ */
+
+-(UIView*)tableView:(UITableView*)tableView viewForHeaderInSection:(NSInteger)section {
+    UIView * header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, tableView.sectionHeaderHeight)];
+    header.backgroundColor = [UIColor blackColor];
+    return header;
+}
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return 1;
-}
-
--(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-{
-    NSString *header;
-    if (section == 0){
-        
-        if( _selectedGroup != nil){
-            header = _selectedGroup.name;
-        }
-        else{
-            header = @"Invited";
-        }
-        
-    }
-    
-    return header;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -200,26 +196,39 @@
     if (section == 0){
         numRows = [_invited_friends_list count];
     }
-    return numRows;
+    return 3;
+}
+
+- (CGFloat)tableView:(UITableView*)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.row < 3) {
+        return TABLE_ROW_HEIGHT;
+    }
+    return 22;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"invitedFriendCell"];
-    
-    if (indexPath.section == 0){
-        Friend *currentFriend = _invited_friends_list[indexPath.row];
-        cell.textLabel.text = currentFriend.name;
+    /*
+    for (UIView *temp in cell.subviews)
+    {
+        [temp removeFromSuperview];
     }
-    
+     */
+    UIView * cellView = [_tableCellViews objectAtIndex:indexPath.row];
+    cell.frame = cellView.frame;
+    [cell addSubview:cellView];
     return cell;
 }
 
 - (void) textFieldDidChange {
     NSDictionary * contentDetails = [_parser parseText:[_messageField text]];
+    BOOL reload = NO;
     if (_dateFieldEditable) {
         if ([contentDetails objectForKey:@"startDate"]) {
-            [self.dateField setText:[contentDetails objectForKey:@"startDate"]];
+            // [self.dateField setText:[contentDetails objectForKey:@"startDate"]];
+            [_tableCellViews setObject:[self dateRowViewForTarget:[contentDetails objectForKey:@"startDate"]] atIndexedSubscript:2];
+            reload = YES;
         }
         else {
             [self.dateField setText:@""];
@@ -227,7 +236,9 @@
     }
     if (_timeFieldEditable) {
         if ([contentDetails objectForKey:@"startTime"]) {
-            [self.timeField setText:[contentDetails objectForKey:@"startTime"]];
+            // [self.timeField setText:[contentDetails objectForKey:@"startTime"]];
+            [_tableCellViews setObject:[self timeRowViewForTarget:[contentDetails objectForKey:@"startTime"]] atIndexedSubscript:1];
+            reload = YES;
         }
         else {
             [self.timeField setText:@""];
@@ -235,11 +246,16 @@
     }
     if (_locationFieldEditable) {
         if ([contentDetails objectForKey:@"location"]) {
-            [self.locationField setText:[contentDetails objectForKey:@"location"]];
+            // [self.locationField setText:[contentDetails objectForKey:@"location"]];
+            [_tableCellViews setObject:[self locationRowViewForTarget:[contentDetails objectForKey:@"location"]] atIndexedSubscript:0];
+            reload = YES;
         }
         else {
             [self.locationField setText:@""];
         }
+    }
+    if (reload) {
+        [self.invitedFriendsTable reloadData];
     }
     NSLog(@"%@",contentDetails);
 }
@@ -273,21 +289,111 @@
     NSLog(@"group : %@", _selectedGroup.name);
     NSLog(@"selected groups : %@", _selectedGroup);
     
+    /*
     if( _selectedGroup != nil){
         NSLog(@"selected group is not nil!!");
         [self getGroupMembers];
     }
+     */
     self.messageField.delegate = self;
+    [self.messageField addTarget:self action:@selector(textFieldDidChange) forControlEvents:UIControlEventEditingChanged];
     // Do any additional setup after loading the view.
     self.parser = [[MEPTextParse alloc] init];
-    [self.messageField addTarget:self action:@selector(textFieldDidChange) forControlEvents:UIControlEventEditingChanged];
-    [self.dateField addTarget:self action:@selector(dateFieldDidChange) forControlEvents:UIControlEventAllEditingEvents];
-    [self.timeField addTarget:self action:@selector(timeFieldDidChange) forControlEvents:UIControlEventAllEditingEvents];
-    [self.locationField addTarget:self action:@selector(locationFieldDidChange) forControlEvents:UIControlEventAllEditingEvents];
     self.parsedData = [[NSMutableDictionary alloc] init];
     self.locationFieldEditable = YES;
     self.timeFieldEditable = YES;
     self.dateFieldEditable = YES;
+    [self setupTableRowArray];
+    [self.invitedFriendsTable reloadData];
+}
+
+- (UIView*) locationRowViewForTarget:(NSString*)locationInfo {
+    CGFloat tableHeight = TABLE_ROW_HEIGHT;
+    UIColor * borderColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_BORDER_COLOR]];
+    
+    UIView * verticalLine1 = [[UIView alloc] initWithFrame:CGRectMake(_invitedFriendsTable.frame.size.width/5, 0, 1, tableHeight)];
+    verticalLine1.backgroundColor = borderColor;
+    UIView * horizontalLine1 = [[UIView alloc] initWithFrame:CGRectMake(0, tableHeight, _invitedFriendsTable.frame.size.width, 1)];
+    horizontalLine1.backgroundColor = borderColor;
+    
+    UIView * locationLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _invitedFriendsTable.frame.size.width, tableHeight)];
+    UILabel * locationLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, _invitedFriendsTable.frame.size.width/5 - 3, tableHeight)];
+    locationLabel.text = @"Place";
+    locationLabel.textAlignment = NSTextAlignmentRight;
+    UILabel * locationText = [[UILabel alloc] initWithFrame:CGRectMake((_invitedFriendsTable.frame.size.width/5) + 3, 0, (_invitedFriendsTable.frame.size.width*(4/5)) - 3, tableHeight)];
+    locationText.textAlignment = NSTextAlignmentLeft;
+    if (!(locationInfo == nil)) {
+        locationText.text = locationInfo;
+    }
+    NSLog(@"%@",locationInfo);
+    [locationLine addSubview:locationLabel];
+    [locationLine addSubview:locationText];
+    [locationLine addSubview:verticalLine1];
+    [locationLine addSubview:horizontalLine1];
+    return locationLine;
+}
+
+- (UIView *) timeRowViewForTarget:(NSString*)timeInfo {
+    CGFloat tableHeight = TABLE_ROW_HEIGHT;
+    UIColor * borderColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_BORDER_COLOR]];
+    
+    UIView * verticalLine2 = [[UIView alloc] initWithFrame:CGRectMake(_invitedFriendsTable.frame.size.width/5, 0, 1, tableHeight)];
+    verticalLine2.backgroundColor = borderColor;
+    UIView * horizontalLine2 = [[UIView alloc] initWithFrame:CGRectMake(0, tableHeight, _invitedFriendsTable.frame.size.width, 1)];
+    horizontalLine2.backgroundColor = borderColor;
+    
+    UIView * timeLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _invitedFriendsTable.frame.size.width, tableHeight)];
+    UILabel * timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, _invitedFriendsTable.frame.size.width/5 - 3, tableHeight)];
+    timeLabel.text = @"Time";
+    timeLabel.textAlignment = NSTextAlignmentRight;
+    UILabel * timeText = [[UILabel alloc] initWithFrame:CGRectMake(_invitedFriendsTable.frame.size.width/5 + 3, 0, _invitedFriendsTable.frame.size.width*(4/5) - 3, tableHeight)];
+    timeText.textAlignment = NSTextAlignmentLeft;
+    if (!(timeInfo == nil)) {
+        timeText.text = timeInfo;
+    }
+    [timeLine addSubview:timeLabel];
+    [timeLine addSubview:timeText];
+    [timeLine addSubview:verticalLine2];
+    [timeLine addSubview:horizontalLine2];
+    return timeLine;
+}
+
+- (UIView *) dateRowViewForTarget:(NSString*)dateInfo {
+    CGFloat tableHeight = TABLE_ROW_HEIGHT;
+    UIColor * borderColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_BORDER_COLOR]];
+    
+    UIView * verticalLine3 = [[UIView alloc] initWithFrame:CGRectMake(_invitedFriendsTable.frame.size.width/5, 0, 1, tableHeight)];
+    verticalLine3.backgroundColor = borderColor;
+    UIView * horizontalLine3 = [[UIView alloc] initWithFrame:CGRectMake(0, tableHeight, _invitedFriendsTable.frame.size.width, 1)];
+    horizontalLine3.backgroundColor = borderColor;
+    
+    UIView * dateLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _invitedFriendsTable.frame.size.width, tableHeight)];
+    UILabel * dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, _invitedFriendsTable.frame.size.width/5 - 3, tableHeight)];
+    dateLabel.text = @"Date";
+    dateLabel.textAlignment = NSTextAlignmentRight;
+    UILabel * dateText = [[UILabel alloc] initWithFrame:CGRectMake(_invitedFriendsTable.frame.size.width/5 + 3, 0, _invitedFriendsTable.frame.size.width*(4/5) - 3, tableHeight)];
+    dateText.textAlignment = NSTextAlignmentLeft;
+    if (!(dateInfo == nil)) {
+        dateText.text = dateInfo;
+    }
+    [dateLine addSubview:dateLabel];
+    [dateLine addSubview:dateText];
+    [dateLine addSubview:verticalLine3];
+    [dateLine addSubview:horizontalLine3];
+    return dateLine;
+}
+
+- (void) setupTableRowArray {
+    _tableCellViews = [[NSMutableArray alloc] init];
+    
+    UIView * locationLine = [self locationRowViewForTarget:nil];
+    [_tableCellViews addObject:locationLine];
+    
+    UIView * timeLine = [self timeRowViewForTarget:nil];
+    [_tableCellViews addObject:timeLine];
+    
+    UIView * dateLine = [self dateRowViewForTarget:nil];
+    [_tableCellViews addObject:dateLine];
 }
 
 - (void)didReceiveMemoryWarning
