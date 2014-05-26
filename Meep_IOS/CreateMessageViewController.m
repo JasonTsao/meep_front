@@ -7,13 +7,14 @@
 //
 
 #import "CreateMessageViewController.h"
+#import "EventElementViewController.h"
 #import "MEPTextParse.h"
 #import "Colors.h"
 
 #define TABLE_ROW_HEIGHT 25.0;
 #define TABLE_BORDER_COLOR "F2F1EF"
 
-@interface CreateMessageViewController ()
+@interface CreateMessageViewController () <EventElementViewControllerDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *messageField;
 @property (weak, nonatomic) IBOutlet UITableView *invitedFriendsTable;
 @property (weak, nonatomic) IBOutlet UITextField *timeField;
@@ -160,24 +161,14 @@
 }
 
 
-/*
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    NSString *friend_name;
-    Friend *selectedFriend;
-    
-    if(indexPath.section == 0){
-        selectedFriend = _invited_friends_list[indexPath.row];
-        friend_name = selectedFriend.name;
-        [tableView beginUpdates];
-        [_invited_friends_list removeObjectAtIndex: indexPath.row];
-        [tableView deleteRowsAtIndexPaths: [NSArray arrayWithObject:[NSIndexPath indexPathForRow:indexPath.row inSection:0]]
-                         withRowAnimation:UITableViewRowAnimationFade];
-        
-        [tableView endUpdates];
+    EventElementViewController * elem;
+    if (indexPath.row == 0) {
+        elem = [[EventElementViewController alloc] initWithNibName:@"LocationSearch" bundle:nil];
+        elem.delegate = self;
+        [self presentViewController:elem animated:YES completion:nil];
     }
-    
 }
- */
 
 -(UIView*)tableView:(UITableView*)tableView viewForHeaderInSection:(NSInteger)section {
     UIView * header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, tableView.sectionHeaderHeight)];
@@ -209,15 +200,15 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"invitedFriendCell"];
-    /*
-    for (UIView *temp in cell.subviews)
-    {
-        [temp removeFromSuperview];
+    for (UIView * subview in cell.contentView.subviews) {
+        if ([subview isKindOfClass:[UIView class]]) {
+            [subview removeFromSuperview];
+        }
     }
-     */
     UIView * cellView = [_tableCellViews objectAtIndex:indexPath.row];
     cell.frame = cellView.frame;
     [cell addSubview:cellView];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
 
@@ -305,27 +296,32 @@
     self.dateFieldEditable = YES;
     [self setupTableRowArray];
     [self.invitedFriendsTable reloadData];
+    [self.messageField becomeFirstResponder];
 }
 
 - (UIView*) locationRowViewForTarget:(NSString*)locationInfo {
     CGFloat tableHeight = TABLE_ROW_HEIGHT;
     UIColor * borderColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_BORDER_COLOR]];
     
-    UIView * verticalLine1 = [[UIView alloc] initWithFrame:CGRectMake(_invitedFriendsTable.frame.size.width/5, 0, 1, tableHeight)];
+    UIView * verticalLine1 = [[UIView alloc] initWithFrame:CGRectMake(_invitedFriendsTable.frame.size.width*0.2, 0, 1, tableHeight)];
     verticalLine1.backgroundColor = borderColor;
     UIView * horizontalLine1 = [[UIView alloc] initWithFrame:CGRectMake(0, tableHeight, _invitedFriendsTable.frame.size.width, 1)];
     horizontalLine1.backgroundColor = borderColor;
     
     UIView * locationLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _invitedFriendsTable.frame.size.width, tableHeight)];
-    UILabel * locationLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, _invitedFriendsTable.frame.size.width/5 - 3, tableHeight)];
+    
+    locationLine.backgroundColor = [Colors colorWithHexString:@"FCFCFC"];
+    
+    UILabel * locationLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, _invitedFriendsTable.frame.size.width * 0.2 - 3, tableHeight)];
     locationLabel.text = @"Place";
     locationLabel.textAlignment = NSTextAlignmentRight;
-    UILabel * locationText = [[UILabel alloc] initWithFrame:CGRectMake((_invitedFriendsTable.frame.size.width/5) + 3, 0, (_invitedFriendsTable.frame.size.width*(4/5)) - 3, tableHeight)];
+    [locationLabel setFont:[UIFont systemFontOfSize:14.0f]];
+    UILabel * locationText = [[UILabel alloc] initWithFrame:CGRectMake((_invitedFriendsTable.frame.size.width/5) + 3, 0, (_invitedFriendsTable.frame.size.width*0.8) - 3, tableHeight)];
     locationText.textAlignment = NSTextAlignmentLeft;
     if (!(locationInfo == nil)) {
         locationText.text = locationInfo;
     }
-    NSLog(@"%@",locationInfo);
+    [locationText setFont:[UIFont fontWithName:@"AvenirNext-UltraLightItalic" size:14.0f]];
     [locationLine addSubview:locationLabel];
     [locationLine addSubview:locationText];
     [locationLine addSubview:verticalLine1];
@@ -337,20 +333,23 @@
     CGFloat tableHeight = TABLE_ROW_HEIGHT;
     UIColor * borderColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_BORDER_COLOR]];
     
-    UIView * verticalLine2 = [[UIView alloc] initWithFrame:CGRectMake(_invitedFriendsTable.frame.size.width/5, 0, 1, tableHeight)];
+    UIView * verticalLine2 = [[UIView alloc] initWithFrame:CGRectMake(_invitedFriendsTable.frame.size.width*0.2, 0, 1, tableHeight)];
     verticalLine2.backgroundColor = borderColor;
     UIView * horizontalLine2 = [[UIView alloc] initWithFrame:CGRectMake(0, tableHeight, _invitedFriendsTable.frame.size.width, 1)];
     horizontalLine2.backgroundColor = borderColor;
     
     UIView * timeLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _invitedFriendsTable.frame.size.width, tableHeight)];
-    UILabel * timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, _invitedFriendsTable.frame.size.width/5 - 3, tableHeight)];
+    timeLine.backgroundColor = [Colors colorWithHexString:@"FCFCFC"];
+    UILabel * timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, _invitedFriendsTable.frame.size.width*0.2 - 3, tableHeight)];
     timeLabel.text = @"Time";
     timeLabel.textAlignment = NSTextAlignmentRight;
-    UILabel * timeText = [[UILabel alloc] initWithFrame:CGRectMake(_invitedFriendsTable.frame.size.width/5 + 3, 0, _invitedFriendsTable.frame.size.width*(4/5) - 3, tableHeight)];
+    [timeLabel setFont:[UIFont systemFontOfSize:14.0f]];
+    UILabel * timeText = [[UILabel alloc] initWithFrame:CGRectMake(_invitedFriendsTable.frame.size.width/5 + 3, 0, _invitedFriendsTable.frame.size.width*0.8 - 3, tableHeight)];
     timeText.textAlignment = NSTextAlignmentLeft;
     if (!(timeInfo == nil)) {
         timeText.text = timeInfo;
     }
+    [timeText setFont:[UIFont fontWithName:@"AvenirNext-UltraLightItalic" size:14.0f]];
     [timeLine addSubview:timeLabel];
     [timeLine addSubview:timeText];
     [timeLine addSubview:verticalLine2];
@@ -362,20 +361,23 @@
     CGFloat tableHeight = TABLE_ROW_HEIGHT;
     UIColor * borderColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_BORDER_COLOR]];
     
-    UIView * verticalLine3 = [[UIView alloc] initWithFrame:CGRectMake(_invitedFriendsTable.frame.size.width/5, 0, 1, tableHeight)];
+    UIView * verticalLine3 = [[UIView alloc] initWithFrame:CGRectMake(_invitedFriendsTable.frame.size.width*0.2, 0, 1, tableHeight)];
     verticalLine3.backgroundColor = borderColor;
     UIView * horizontalLine3 = [[UIView alloc] initWithFrame:CGRectMake(0, tableHeight, _invitedFriendsTable.frame.size.width, 1)];
     horizontalLine3.backgroundColor = borderColor;
     
     UIView * dateLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _invitedFriendsTable.frame.size.width, tableHeight)];
+    dateLine.backgroundColor = [Colors colorWithHexString:@"FCFCFC"];
     UILabel * dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, _invitedFriendsTable.frame.size.width/5 - 3, tableHeight)];
     dateLabel.text = @"Date";
     dateLabel.textAlignment = NSTextAlignmentRight;
-    UILabel * dateText = [[UILabel alloc] initWithFrame:CGRectMake(_invitedFriendsTable.frame.size.width/5 + 3, 0, _invitedFriendsTable.frame.size.width*(4/5) - 3, tableHeight)];
+    [dateLabel setFont:[UIFont systemFontOfSize:14.0f]];
+    UILabel * dateText = [[UILabel alloc] initWithFrame:CGRectMake(_invitedFriendsTable.frame.size.width*0.2 + 3, 0, _invitedFriendsTable.frame.size.width*0.8 - 3, tableHeight)];
     dateText.textAlignment = NSTextAlignmentLeft;
     if (!(dateInfo == nil)) {
         dateText.text = dateInfo;
     }
+    [dateText setFont:[UIFont fontWithName:@"AvenirNext-UltraLightItalic" size:14.0f]];
     [dateLine addSubview:dateLabel];
     [dateLine addSubview:dateText];
     [dateLine addSubview:verticalLine3];

@@ -10,6 +10,7 @@
 
 @interface EventElementViewController ()
 @property (weak, nonatomic) IBOutlet UIDatePicker *timeSelect;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *returnToEventPage;
 
 @end
 
