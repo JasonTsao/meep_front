@@ -299,6 +299,7 @@
     UILocalNotification *localNotif =
     [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
     NSDictionary *remoteNotif = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
+    
     if (localNotif) {
         NSLog(@"got local notificaiton!");
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"local notification"
@@ -313,6 +314,7 @@
     }
     if (remoteNotif){
         NSLog(@"got a remote notification!");
+        application.applicationIconBadgeNumber = 10;
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"remote notification!"
                                                         message:[NSString stringWithFormat:@"%@", remoteNotif]
                                                        delegate:self
@@ -321,6 +323,8 @@
         [alert show];
         NSLog(@"%@", remoteNotif);
     }
+    
+    
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
