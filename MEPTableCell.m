@@ -78,7 +78,7 @@
     UIColor * backgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_BACKGROUND_COLOR]];
     UIColor * contentBackgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",CONTENT_BACKGROUND_COLOR]];
     UIColor * iconBackgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",ICON_BACKGROUND_COLOR]];
-
+    
     
     cell.backgroundColor = backgroundColor;
     
@@ -89,7 +89,7 @@
     
     // This view creates the vertical line that lies behind the image.
     
-        //UIView * verticalLine = [[UIView alloc] initWithFrame:CGRectMake(vertLineXCoord + 1, 0, bgndImgScale, cell.frame.size.height)];
+    //UIView * verticalLine = [[UIView alloc] initWithFrame:CGRectMake(vertLineXCoord + 1, 0, bgndImgScale, cell.frame.size.height)];
     UIView * verticalLine = [[UIView alloc] initWithFrame:CGRectMake(-5, 0, bgndImgScale, cell.frame.size.height)];
     
     verticalLine.backgroundColor = lineColor;
@@ -158,18 +158,18 @@
     
     // This view contains the data fields and is placed on top of the background view.
     
-        //
-        //    UIView * contentView = [[UIView alloc] initWithFrame:CGRectMake(contentBoxXCoord, contentBoxYCoord, contentBoxWidth, contentBoxHeight)];
-        //    contentView.backgroundColor = contentBackgroundColor;
-        //    contentView.layer.cornerRadius = 0;
+    //
+    //    UIView * contentView = [[UIView alloc] initWithFrame:CGRectMake(contentBoxXCoord, contentBoxYCoord, contentBoxWidth, contentBoxHeight)];
+    //    contentView.backgroundColor = contentBackgroundColor;
+    //    contentView.layer.cornerRadius = 0;
     
     UIView * contentView = [[UIView alloc] initWithFrame:CGRectMake(contentBoxXCoord+12, contentBoxYCoord, contentBoxWidth, contentBoxHeight)];
     contentView.backgroundColor = contentBackgroundColor;
     contentView.layer.cornerRadius = 0;
     
-        //label position
-        //    float detailXCoord = 10;
-        //    float detailYCoord = contentView.frame.size.height * 6/8 - 5;
+    //label position
+    //    float detailXCoord = 10;
+    //    float detailYCoord = contentView.frame.size.height * 6/8 - 5;
     
     float detailXCoord = 10;
     float detailYCoord = contentView.frame.size.height * 6/8 - 5;
@@ -186,7 +186,7 @@
     
     UILabel *eventHeader = [[UILabel alloc] initWithFrame:CGRectMake(8, 3, contentView.frame.size.width - 12, 40)];
     eventHeader.text = event.description;
-        // [eventHeader setFont:[UIFont systemFontOfSize:14]];
+    // [eventHeader setFont:[UIFont systemFontOfSize:14]];
     
     [eventHeader setFont:[UIFont fontWithName:@"AppleSDGothicNeo-Light" size:14.0f]];
     
@@ -233,7 +233,7 @@
     [headerView addSubview:verticalLine];
     // [headerView addSubview:horizontalLine];
     headerView.backgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_BACKGROUND_COLOR]];
-
+    
     return headerView;
 }
 
@@ -243,8 +243,8 @@
 }
 
 + (UITableViewCell*) customFriendCell:(Friend*)friend
-                                   forTable:(UITableView*)tableView
-                                   selected:(BOOL)sel {
+                             forTable:(UITableView*)tableView
+                             selected:(BOOL)sel {
     UITableViewCell * cell = [[UITableViewCell alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 54)];
     cell.backgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_BACKGROUND_COLOR]];
     UIView * lineMask = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 1)];
