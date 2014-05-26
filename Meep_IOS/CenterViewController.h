@@ -29,6 +29,7 @@
 - (void)openCreateEventPage;
 - (void)openGroupsPage;
 - (void)openAddFriendsPage;
+- (void)openNotificationsPage;
 - (void)openProfilePage;
 
 @end

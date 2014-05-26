@@ -7,11 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+
 @class NotificationsTableViewController;
 @protocol NotificationsTableViewControllerDelegate
 - (void) backToCenterFromNotifications:(NotificationsTableViewController *)controller;
 
 @end
 @interface NotificationsTableViewController : UITableViewController
+@property(nonatomic, strong) NSMutableData * data;
 @property(nonatomic, strong) id <NotificationsTableViewControllerDelegate> delegate;
 @end

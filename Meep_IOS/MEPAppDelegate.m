@@ -10,6 +10,7 @@
 #import "MEEPhttp.h"
 #import "MainViewController.h"
 #import "DjangoAuthClient.h"
+#import "NotificationHandler.h"
 
 
 @interface MEPAppDelegate()
@@ -261,14 +262,17 @@
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"did receieve remote notification!"
+    /*UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"did receieve remote notification!"
                                                     message:[NSString stringWithFormat:@"%@", userInfo]
                                                    delegate:self
                                           cancelButtonTitle:@"OK"
                                           otherButtonTitles:nil];
-    [alert show];
+    [alert show];*/
     NSLog(@"did recieve remote notification, application state: %@!", application.applicationState);
     NSLog(@"user info dict: %@", userInfo);
+    
+    [NotificationHandler handleNotification:userInfo];
+    
     if( application.applicationState == UIApplicationStateInactive){
         NSLog(@"user is not in the application when it got the notification");
     }
@@ -295,6 +299,7 @@
     UILocalNotification *localNotif =
     [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
     NSDictionary *remoteNotif = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
+    
     if (localNotif) {
         NSLog(@"got local notificaiton!");
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"local notification"
@@ -309,6 +314,7 @@
     }
     if (remoteNotif){
         NSLog(@"got a remote notification!");
+        application.applicationIconBadgeNumber = 10;
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"remote notification!"
                                                         message:[NSString stringWithFormat:@"%@", remoteNotif]
                                                        delegate:self
@@ -317,6 +323,8 @@
         [alert show];
         NSLog(@"%@", remoteNotif);
     }
+    
+    
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.

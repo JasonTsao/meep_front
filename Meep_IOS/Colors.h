@@ -10,4 +10,5 @@
 
 @interface Colors : NSObject
 +(UIColor*)colorWithHexString:(NSString*)hex;
++ (UIImage *)imageWithColor:(UIColor *)color1;
 @end

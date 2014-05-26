@@ -7,9 +7,12 @@
 //
 
 #import "NotificationsTableViewController.h"
+#import "MEEPhttp.h"
+#import "jsonParser.h"
+#import "MEPTableCell.h"
 
 @interface NotificationsTableViewController ()
-
+@property(nonatomic, strong) NSMutableArray *notifications_list;
 @end
 
 @implementation NotificationsTableViewController
@@ -23,10 +26,62 @@
     return self;
 }
 
+- (void)backToCenterFromNotifications:(id)sender {
+    [_delegate backToCenterFromNotifications:self];
+}
+
+- (void)getNotifications
+{
+    NSString * requestURL = [NSString stringWithFormat:@"%@get",[MEEPhttp notificationsURL]];
+    NSLog(@"requesturl: %@", requestURL);
+    NSDictionary * postDict = [[NSDictionary alloc] init];
+    NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
+    NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    [conn start];
+}
+
+-(void)connection:(NSURLConnection*)connection didReceiveResponse:(NSURLResponse*)response
+{
+    _data = [[NSMutableData alloc] init]; // _data being an ivar
+}
+-(void)connection:(NSURLConnection*)connection didReceiveData:(NSData*)data
+{
+    [_data appendData:data];
+}
+-(void)connection:(NSURLConnection*)	connection didFailWithError:(NSError*)error
+{
+    // Handle the error properly
+    NSLog(@"Call Failed");
+}
+-(void)connectionDidFinishLoading:(NSURLConnection*)connection
+{
+    [self handleData]; // Deal with the data
+}
+
+
+-(void)handleData{
+    NSError* error;
+    NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:_data options:0 error:&error];
+    NSArray * notifications = jsonResponse[@"notifications"];
+    NSLog(@"notifications: %@", notifications);
+    _notifications_list = [jsonParser notificationsArray:notifications];
+    //NSLog(@"notifications_list:%@", );
+    
+    [self.tableView reloadData];
+    
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.title = @"Notifications";
+    self.navigationController.navigationBar.titleTextAttributes = [NSDictionary dictionaryWithObject:[UIColor whiteColor] forKey:UITextAttributeTextColor];
+    UIBarButtonItem *customBarItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStyleBordered target:self action:@selector(backToCenterFromNotifications:)];
     
+    self.navigationItem.leftBarButtonItem = customBarItem;
+    _notifications_list = [[NSMutableArray alloc] init];
+    
+    [self getNotifications];
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -41,31 +96,38 @@
 }
 
 #pragma mark - Table view data source
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return [MEPTableCell customFriendCellHeight];
+}
+
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
 #warning Potentially incomplete method implementation.
     // Return the number of sections.
-    return 0;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
 #warning Incomplete method implementation.
     // Return the number of rows in the section.
-    return 0;
+    return [_notifications_list count];
 }
 
-/*
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
+    //UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
+    UITableViewCell *cell;
     
+    cell = [MEPTableCell customNotificationcell:_notifications_list[indexPath.row] forTable:tableView selected:NO];
     // Configure the cell...
     
     return cell;
 }
-*/
+
 
 /*
 // Override to support conditional editing of the table view.

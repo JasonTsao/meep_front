@@ -14,4 +14,5 @@
 +(NSArray*)invitedFriendsArray:(NSArray*)invited_friends_list;
 +(NSArray*)eventsArray:(NSArray*)events_list;
 +(NSArray*)groupsArray:(NSArray*)groups_list;
++(NSArray*)notificationsArray:(NSArray*)notifications_list;
 @end

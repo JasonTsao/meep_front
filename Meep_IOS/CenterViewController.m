@@ -118,6 +118,11 @@
     [_delegate openAddFriendsPage];
 }
 
+- (void)openNotificationsPage
+{
+    [_delegate openNotificationsPage];
+}
+
 - (IBAction)openLeftPanelPage:(id)sender {
     if(!_showingLeftPanel){
         _showingLeftPanel = YES;
@@ -168,6 +173,10 @@
     [footerView addSubview:verticalLine];
     footerView.backgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_BACKGROUND_COLOR]];
     return footerView;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    return tableView.sectionHeaderHeight;
 }
 
 
