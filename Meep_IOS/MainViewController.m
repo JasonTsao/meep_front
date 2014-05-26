@@ -116,6 +116,17 @@
 - (void)viewDidAppear:(BOOL)animated
 {
 	[super viewDidAppear:animated];
+    
+    if([_eventNotifications count] > 0){
+        NSLog(@"event notification: %@", _eventNotifications);
+        NSString *event_notifications = [NSString stringWithFormat:@"%@", _eventNotifications];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"there are event notifications!!"
+                                                        message:event_notifications
+                                                       delegate:self
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        [alert show];
+    }
 }
 
 #pragma mark -
@@ -536,6 +547,15 @@
     UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"CenterStoryboard" bundle:nil];
     self.eventPageViewController = (EventPageViewController *)[storyboard instantiateViewControllerWithIdentifier:@"EventViewController"];
     _eventPageViewController.currentEvent = event;
+    NSString *event_id = [NSString stringWithFormat:@"%i", event.event_id];
+    
+    if([_eventNotifications objectForKey:event_id]){
+        _eventPageViewController.notifications = _eventNotifications[event_id];
+        NSInteger numNotificationsForEvent = [_eventNotifications[event_id] count];
+        [_eventNotifications removeObjectForKey:event_id];
+        [UIApplication sharedApplication].applicationIconBadgeNumber -= numNotificationsForEvent;
+    }
+    
     [self.eventPageViewController setDelegate:self];
     UINavigationController *navigation = [[UINavigationController alloc]initWithRootViewController:_eventPageViewController];
     [self presentViewController:navigation animated:YES completion:nil];

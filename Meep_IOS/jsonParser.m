@@ -186,7 +186,7 @@
         new_notification.message = new_notification_dict[@"message"];
         new_notification.time_stamp = new_notification_dict[@"created_at"];
         new_notification.notification_id = [new_notification_dict[@"id"] integerValue];
-        //new_notification.type = new_notification_dict[@"type"];
+        new_notification.type = new_notification_dict[@"notification_type"];
         
         /*if ([new_group_dict[@"group_pic_url"] length] == 0){
             UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(8, 4, 40, 40)];

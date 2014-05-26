@@ -279,6 +279,15 @@
     NSLog(@"did recieve remote notification, application state: %@!", application.applicationState);
     NSLog(@"user info dict: %@", userInfo);
     
+    /*if(!_viewController.numNotifications){
+        _viewController.numNotifications = 1;
+    }
+    else{
+        _viewController.numNotifications++;
+    }*/
+
+    application.applicationIconBadgeNumber++;
+    
     [NotificationHandler handleNotification:userInfo forMainView:_viewController];
     
     if( application.applicationState == UIApplicationStateInactive){

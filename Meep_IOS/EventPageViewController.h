@@ -26,6 +26,7 @@
 
 @interface EventPageViewController : UIViewController<UIActionSheetDelegate, UITableViewDataSource,UITableViewDelegate, MKMapViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate>
 @property (nonatomic) Event *currentEvent;
+@property (nonatomic) NSArray *notifications;
 @property (nonatomic) NSArray *invitedFriends;
 @property(nonatomic, strong) NSMutableData * data;
 //@property(nonatomic, weak) NSMutableData * data;

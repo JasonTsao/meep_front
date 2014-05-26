@@ -470,6 +470,8 @@
     NSError* error;
     NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:_data options:0 error:&error];
     NSArray * upcoming = jsonResponse[@"upcoming_events"];
+    
+    NSLog(@"upcoming events: %@", upcoming);
     _datesArray = [[NSMutableArray alloc] init];
     NSArray *upcomingEvents = [jsonParser eventsArray:upcoming];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];

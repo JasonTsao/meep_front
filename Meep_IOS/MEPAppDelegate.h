@@ -16,6 +16,8 @@
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) MainViewController *viewController;
 @property(nonatomic, strong) NSMutableData * data;
+@property (nonatomic) NSMutableDictionary *groupNotifications;
+@property (nonatomic) NSMutableDictionary *eventNotifications;
 @property (strong, nonatomic) AuthenticationViewController *authenticationViewController;
 @property (nonatomic, strong) AccountSettings * account_settings;
 -(void) sessionStateChanged:(FBSession*)session state:(FBSessionState*)sessionState error:(NSError *)ns_error;

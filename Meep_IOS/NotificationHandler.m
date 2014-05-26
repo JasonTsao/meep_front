@@ -7,6 +7,7 @@
 //
 
 #import "NotificationHandler.h"
+#import "Notification.h"
 
 //localNotif.alertAction = NSLocalizedString(@"View Details", nil); localized string example
 @implementation NotificationHandler
@@ -40,10 +41,10 @@
 
 + (void)handleNotification:(NSDictionary*)userInfo forMainView:(MainViewController*)viewController
 {
-    
-    
-    if( [userInfo[@"notification_type"] isEqualToString:@"chat"]){
+    if( [userInfo[@"notification_type"] isEqualToString:@"event_chat"]){
         NSMutableDictionary *eventNotifications = viewController.eventNotifications;
+        Notification *new_notification = [[Notification alloc] init];
+        
         //test alert to see if we can parse the dictionary in this fashion
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"in user handling data!"
                                                         message:userInfo[@"aps"][@"alert"]
@@ -52,14 +53,21 @@
                                               otherButtonTitles:nil];
         [alert show];
         
-        if( [eventNotifications objectForKey:@""]){
+        NSMutableArray *notifications_for_event;
+        if( [eventNotifications objectForKey:userInfo[@"event_id"]]){
+            notifications_for_event = eventNotifications[userInfo[@"event_id"]];
+        }else{
             
+            notifications_for_event = [[NSMutableArray alloc] init];
         }
         
+        new_notification.type = userInfo[@"notification_type"];
+        //new_notification.message = userInfo[@"aps"][@"alert"];
         
-
+        [notifications_for_event addObject:new_notification];
+        eventNotifications[userInfo[@"event_id"]] = eventNotifications;
         
-        
+        viewController.eventNotifications = eventNotifications;
     }
 }
 
