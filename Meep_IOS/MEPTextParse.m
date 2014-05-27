@@ -175,7 +175,6 @@
     NSMutableDictionary * returnDictionary = [[NSMutableDictionary alloc] init];
     content = [_timeIntRegex matchesInString:text options:0 range:NSMakeRange(0, [text length])];
     if ([content count] > 0) {
-        NSLog(@"%@",[self convertToConstructedTimeString:[text substringWithRange:[[content objectAtIndex:[content count] - 1] range]]]);
         NSString * timeContent = [self convertToConstructedTimeString:[text substringWithRange:[[content objectAtIndex:[content count] - 1] range]]];
         // [returnDictionary setObject:[text substringWithRange:[[content objectAtIndex:0] range]] forKey:@"startTime"];
         [returnDictionary setObject:[self convertToConstructedTimeString:[text substringWithRange:[[content objectAtIndex:[content count] - 1] range]]] forKey:@"startTime"];
@@ -204,6 +203,7 @@
     BOOL containsExplicitDate = NO;
     NSString * preceedingElement;
     for (NSString * textArrayElement in textArray) {
+        NSLog(@"%@",textArrayElement);
         if ([_dateIdentifiers containsObject:[textArrayElement lowercaseString]]) {
             if ([[textArrayElement lowercaseString] isEqualToString:@"tomorrow"]) {
                 [returnDictionary setObject:[self createDateString:1] forKey:@"startDate"];
@@ -220,6 +220,7 @@
             }
         }
         if ([[_dateExplicitRegex matchesInString:textArrayElement options:0 range:NSMakeRange(0, [textArrayElement length])] count] > 0) {
+            content = [_dateExplicitRegex matchesInString:textArrayElement options:0 range:NSMakeRange(0, [textArrayElement length])];
             containsExplicitDate = YES;
         }
         else {
@@ -232,6 +233,9 @@
                     weeks = 1;
                 }
             }
+            NSLog(@"%i",[content count]);
+            NSLog(@"%@",[text substringWithRange:[[content objectAtIndex:0] range]]);
+            NSLog(@"%@",[self evaluateExplicitDateString:[text substringWithRange:[[content objectAtIndex:0] range]] plusWeeks:weeks]);
             [returnDictionary setObject:[self evaluateExplicitDateString:[text substringWithRange:[[content objectAtIndex:0] range]] plusWeeks:weeks] forKey:@"startDate"];
         }
         if ([_datePreceedingExpressions containsObject:[textArrayElement lowercaseString]]) {
@@ -266,7 +270,8 @@
     NSString * writtenDay = [dayStringFormat stringFromDate:today];
     int currentDay = [writtenDay intValue];
     int daysFromToday = 0;
-    if ([text isEqualToString:@"sun"] | [text isEqualToString:@"sunday"]) {
+    NSLog(@"%@",text);
+    if ([text isEqualToString:@"sun"] | [text isEqualToString:@" sunda"]) {
         if (currentDay < 2) {
             daysFromToday = 0;
         }
@@ -274,7 +279,7 @@
             daysFromToday = 8 - currentDay;
         }
     }
-    if ([text isEqualToString:@"mon"] | [text isEqualToString:@"monday"]) {
+    if ([text isEqualToString:@"mon"] | [text isEqualToString:@" monda"]) {
         if (currentDay < 3) {
             daysFromToday = 2 - currentDay;
         }
@@ -282,7 +287,7 @@
             daysFromToday = 9 - currentDay;
         }
     }
-    if ([text isEqualToString:@"tue"] | [text isEqualToString:@"tues"] | [text isEqualToString:@"tuesday"]) {
+    if ([text isEqualToString:@"tue"] | [text isEqualToString:@"tues"] | [text isEqualToString:@" tuesda"]) {
         if (currentDay < 4) {
             daysFromToday = 3 - currentDay;
         }
@@ -290,7 +295,7 @@
             daysFromToday = 10 - currentDay;
         }
     }
-    if ([text isEqualToString:@"wed"] | [text isEqualToString:@"wednesday"]) {
+    if ([text isEqualToString:@"wed"] | [text isEqualToString:@" wednesda"]) {
         if (currentDay < 5) {
             daysFromToday = 4 - currentDay;
         }
@@ -298,7 +303,7 @@
             daysFromToday = 11 - currentDay;
         }
     }
-    if ([text isEqualToString:@"thu"] | [text isEqualToString:@"thur"] | [text isEqualToString:@"thurs"] | [text isEqualToString:@"thursday"]) {
+    if ([text isEqualToString:@"thu"] | [text isEqualToString:@"thur"] | [text isEqualToString:@"thurs"] | [text isEqualToString:@" thursda"]) {
         if (currentDay < 6) {
             daysFromToday = 5 - currentDay;
         }
@@ -306,7 +311,7 @@
             daysFromToday = 12 - currentDay;
         }
     }
-    if ([text isEqualToString:@"fri"] | [text isEqualToString:@"friday"]) {
+    if ([text isEqualToString:@"fri"] | [text isEqualToString:@" frida"]) {
         if (currentDay < 7) {
             daysFromToday = 6 - currentDay;
         }
@@ -314,10 +319,11 @@
             daysFromToday = 13 - currentDay;
         }
     }
-    if ([text isEqualToString:@"sat"] | [text isEqualToString:@"saturday"]) {
+    if ([text isEqualToString:@"sat"] | [text isEqualToString:@" saturda"]) {
         daysFromToday = 7 - currentDay;
     }
     int secondsFromToday = (daysFromToday + (weeks * 7)) * 24 * 60 * 60;
+    NSLog(@"%i",secondsFromToday);
     NSDate * targetDate = [NSDate dateWithTimeInterval:secondsFromToday sinceDate:today];
     [dayStringFormat setDateFormat:@"MMM dd, yyyy"];
     return [dayStringFormat stringFromDate:targetDate];
@@ -363,8 +369,16 @@
     if (([timeModifier length] >= 2)) {
         [formatter setDateFormat:@"HHmm"];
         if ([@"p" isEqualToString:[timeModifier substringToIndex:1]]) {
+            if (time <= 12) {
+                time = time * 100;
+            }
             if (time < 1200) {
                 time += 1200;
+            }
+        }
+        if ([@"a" isEqualToString:[timeModifier substringToIndex:1]]) {
+            if (time <= 12) {
+                time = time * 100;
             }
         }
         if ([@"a" isEqualToString:[timeModifier substringToIndex:1]] && time == 1200) {

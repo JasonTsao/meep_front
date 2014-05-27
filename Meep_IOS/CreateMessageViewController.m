@@ -29,6 +29,10 @@
 
 @property (nonatomic, strong) NSMutableArray * tableCellViews;
 
+@property (nonatomic, assign) NSString * locationString;
+@property (nonatomic, assign) NSString * dateString;
+@property (nonatomic, assign) NSString * timeString;
+
 @end
 
 @implementation CreateMessageViewController
@@ -117,6 +121,7 @@
     NSString * requestURL = [NSString stringWithFormat:@"%@new",[MEEPhttp eventURL]];
     //NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:@"2",@"user", messageText, @"description", invitedFriendsToSend, @"invited_friends", nil];
     
+    
     if(_selectedGroup != nil){
         // send group id to create event as well
         NSString *group_id = [NSString stringWithFormat:@"%i", _selectedGroup.group_id];
@@ -125,8 +130,19 @@
     else{
         postDict = [[NSMutableDictionary alloc] initWithObjectsAndKeys:messageText, @"description", invitedFriendsToSend, @"invited_friends", nil];
     }
-    if (![_locationField.text isEqualToString:@""]) {
-        [postDict setObject:_locationField.text forKey:@"location_name"];
+    if (![_locationString isEqualToString:@""]) {
+        [postDict setObject:_locationString forKey:@"location_name"];
+    }
+    if (![_dateString isEqualToString:@""] && ![_timeString isEqualToString:@""]) {
+        NSDateFormatter * df = [[NSDateFormatter alloc] init];
+        [df setDateFormat:@"yyyy-MM-dd HH:mm"];
+        NSDateFormatter * parsingFormat = [[NSDateFormatter alloc] init];
+        [parsingFormat setDateFormat:@"hh:mm a MMM dd, yyyy"];
+        
+        NSString * dateTimeString = [NSString stringWithFormat:@"%@ %@",_timeString, _dateString];
+        NSDate * startDateTime = [parsingFormat dateFromString:dateTimeString];
+        NSString * startDateTimeString = [df stringFromDate:startDateTime];
+        [postDict setObject:startDateTimeString forKey:@"start_time"];
     }
     
     NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
@@ -217,8 +233,8 @@
     BOOL reload = NO;
     if (_dateFieldEditable) {
         if ([contentDetails objectForKey:@"startDate"]) {
-            // [self.dateField setText:[contentDetails objectForKey:@"startDate"]];
-            [_tableCellViews setObject:[self dateRowViewForTarget:[contentDetails objectForKey:@"startDate"]] atIndexedSubscript:2];
+            _dateString = [contentDetails objectForKey:@"startDate"];
+            [_tableCellViews setObject:[self dateRowViewForTarget:_dateString] atIndexedSubscript:2];
             reload = YES;
         }
         else {
@@ -227,8 +243,8 @@
     }
     if (_timeFieldEditable) {
         if ([contentDetails objectForKey:@"startTime"]) {
-            // [self.timeField setText:[contentDetails objectForKey:@"startTime"]];
-            [_tableCellViews setObject:[self timeRowViewForTarget:[contentDetails objectForKey:@"startTime"]] atIndexedSubscript:1];
+            _timeString = [contentDetails objectForKey:@"startTime"];
+            [_tableCellViews setObject:[self timeRowViewForTarget:_timeString] atIndexedSubscript:1];
             reload = YES;
         }
         else {
@@ -237,8 +253,8 @@
     }
     if (_locationFieldEditable) {
         if ([contentDetails objectForKey:@"location"]) {
-            // [self.locationField setText:[contentDetails objectForKey:@"location"]];
-            [_tableCellViews setObject:[self locationRowViewForTarget:[contentDetails objectForKey:@"location"]] atIndexedSubscript:0];
+            _locationString = [contentDetails objectForKey:@"location"];
+            [_tableCellViews setObject:[self locationRowViewForTarget:_locationString] atIndexedSubscript:0];
             reload = YES;
         }
         else {
@@ -297,6 +313,9 @@
     [self setupTableRowArray];
     [self.invitedFriendsTable reloadData];
     [self.messageField becomeFirstResponder];
+    _locationString = @"";
+    _dateString = @"";
+    _timeString = @"";
 }
 
 - (UIView*) locationRowViewForTarget:(NSString*)locationInfo {
