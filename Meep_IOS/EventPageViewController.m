@@ -286,13 +286,13 @@
         extraFriendsLabel.text = [NSString stringWithFormat:@"+%i",([_invitedFriends count] - 4)];
         extraFriendsLabel.textColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",CONTENT_TEXT_COLOR]];
         extraFriendsLabel.textAlignment = NSTextAlignmentCenter;
-        [extraFriendsLabel setFont:[UIFont systemFontOfSize:40]];
+        [extraFriendsLabel setFont:[UIFont systemFontOfSize:30]];
         
         UILabel * tag = [[UILabel alloc] initWithFrame:CGRectMake(0, cell.frame.size.height * 0.8, cell.frame.size.width, cell.frame.size.height * 0.2)];
         tag.text = @"More";
         tag.textAlignment = NSTextAlignmentCenter;
         tag.textColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",CONTENT_TEXT_COLOR]];
-        [tag setFont:[UIFont systemFontOfSize:12]];
+        [tag setFont:[UIFont systemFontOfSize:10]];
         [cell addSubview:tag];
         [cell addSubview:extraFriendsLabel];
     }
