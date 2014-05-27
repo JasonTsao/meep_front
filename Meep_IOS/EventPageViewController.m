@@ -208,6 +208,7 @@
     NSError* error;
     NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:_data options:0 error:&error];
     NSArray * friends = jsonResponse[@"invited_friends"];
+    _invitedFriendCells = [[NSMutableArray alloc] init];
     if(friends != nil){
         _invitedFriends = [jsonParser invitedFriendsArray:friends];
         //Check if current user has viewed the Event already, if not, call server and tell it that this user did
@@ -217,10 +218,10 @@
                     [self userHasViewedEvent];
                 }
             }
+            [_invitedFriendCells addObject:[MEPTableCell invitedFriendCell:friend]];
         }
         [self.friendsCollection reloadData];
     }
-    _invitedFriendCells = [[NSMutableArray alloc] init];
     /*NSData *data = [NSKeyedArchiver archivedDataWithRootObject:_invitedFriends];
     [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"invited_friends_list"];
     [NSUserDefaults resetStandardUserDefaults];*/
@@ -238,7 +239,7 @@
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return [_invitedFriends count];
+    return ([_invitedFriends count] > 5 ? 5 : [_invitedFriends count]);
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
@@ -268,7 +269,43 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     UICollectionViewCell *cell = [_friendsCollection dequeueReusableCellWithReuseIdentifier:@"invitedFriendCell" forIndexPath:indexPath];
-    cell = [MEPTableCell invitedFriendCell:_invitedFriends[indexPath.row] forCollectionCell:cell];
+    for (UIView * subview in cell.contentView.subviews) {
+        if ([subview isKindOfClass:[UIView class]]) {
+            [subview removeFromSuperview];
+        }
+    }
+    if ([_invitedFriends count] > 5 && indexPath.row == 4) {
+        if (cell.frame.origin.y >= 0) {
+            CGRect cellFrame = cell.frame;
+            cellFrame.origin.y += -30;
+            cellFrame.size.height += 10;
+            cellFrame.size.width += 15;
+            cell.frame = cellFrame;
+        }
+        UILabel * extraFriendsLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, cell.frame.size.width, cell.frame.size.height * 0.8)];
+        extraFriendsLabel.text = [NSString stringWithFormat:@"+%i",([_invitedFriends count] - 4)];
+        extraFriendsLabel.textColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",CONTENT_TEXT_COLOR]];
+        extraFriendsLabel.textAlignment = NSTextAlignmentCenter;
+        [extraFriendsLabel setFont:[UIFont systemFontOfSize:30]];
+        
+        UILabel * tag = [[UILabel alloc] initWithFrame:CGRectMake(0, cell.frame.size.height * 0.8, cell.frame.size.width, cell.frame.size.height * 0.2)];
+        tag.text = @"More";
+        tag.textAlignment = NSTextAlignmentCenter;
+        tag.textColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",CONTENT_TEXT_COLOR]];
+        [tag setFont:[UIFont systemFontOfSize:10]];
+        [cell addSubview:tag];
+        [cell addSubview:extraFriendsLabel];
+    }
+    else {
+        if (cell.frame.origin.y >= 0) {
+            CGRect cellFrame = cell.frame;
+            cellFrame.origin.y += -30;
+            cellFrame.size.height += 10;
+            cell.frame = cellFrame;
+        }
+        UIView * cellView = [_invitedFriendCells objectAtIndex:indexPath.row];
+        [cell addSubview:cellView];
+    }
     
     return cell;
 }
