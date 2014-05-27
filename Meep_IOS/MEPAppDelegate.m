@@ -271,30 +271,29 @@
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
     
-    //application.applicationIconBadgeNumber++;
-    NSInteger badgeNumber = [application applicationIconBadgeNumber];
-    
-    [application setApplicationIconBadgeNumber:++badgeNumber];
+    application.applicationIconBadgeNumber++;
+    //NSInteger badgeNumber = [application applicationIconBadgeNumber];
+    //[application setApplicationIconBadgeNumber:++badgeNumber];
     
     [NotificationHandler handleNotification:userInfo forMainView:_viewController];
     
     if( application.applicationState == UIApplicationStateInactive){
         NSLog(@"user is not in the application when it got the notification");
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"did receieve remote notification!"
+        /*UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"did receieve remote notification!"
          message:@"user was not in app when he receieved this "
          delegate:self
          cancelButtonTitle:@"OK"
          otherButtonTitles:nil];
-         [alert show];
+         [alert show];*/
     }
     else if( application.applicationState == UIApplicationStateActive){
         NSLog(@"application is already open when user got notification");
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"did receieve remote notification!"
+        /*UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"did receieve remote notification!"
          message:@"user was in app when he receieved this "
          delegate:self
          cancelButtonTitle:@"OK"
          otherButtonTitles:nil];
-         [alert show];
+         [alert show];*/
     }
     
 }
