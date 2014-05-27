@@ -118,8 +118,8 @@
 	[super viewDidAppear:animated];
     
     if([_eventNotifications count] > 0){
-        NSLog(@"event notification: %@", _eventNotifications);
-        NSString *event_notifications = [NSString stringWithFormat:@"%@", _eventNotifications];
+        //NSLog(@"event notification: %@", _eventNotifications);
+        //NSString *event_notifications = [NSString stringWithFormat:@"%@", _eventNotifications];
         
     }
 }

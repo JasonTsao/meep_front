@@ -217,7 +217,12 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    if(indexPath.section == 3){
+    if(indexPath.section == 2){
+        if (indexPath.section == 1){
+            [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+        }
+    }
+    else if(indexPath.section == 3){
         if(indexPath.row == 0){
             NSLog(@"logout");
             UIActionSheet *logoutPopup = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Logout", nil];
@@ -239,9 +244,10 @@
                                                                       (cell.bounds.size.height/6.0),
                                                                       23,
                                                                       23)];
-        [cell addSubview:newSwitch];
+        
         
         if (indexPath.section == 0){
+            [cell addSubview:newSwitch];
             cell.textLabel.text = self.privacy[indexPath.row];
             
             if (indexPath.row == 0){
@@ -254,6 +260,7 @@
             }
         }
         else if (indexPath.section == 1){
+            [cell addSubview:newSwitch];
             cell.textLabel.text = self.reminders[indexPath.row];
             if (indexPath.row == 0){
                 //newSwitch.on = YES;
@@ -264,6 +271,7 @@
         else if (indexPath.section == 2){
             cell.textLabel.text = self.notifications[indexPath.row];
             if (indexPath.row == 0){
+                [cell addSubview:newSwitch];
                 //newSwitch.on = YES;
                 newSwitch.on =  _user_account_settings.vibrate_on_notification;
                 [newSwitch addTarget:self action:@selector(notificationsSwitch:) forControlEvents:UIControlEventTouchUpInside];
@@ -286,7 +294,7 @@
     [super viewDidLoad];
     self.privacy = @[@"Private", @"Searchable"];
     self.reminders = @[@"Reminder"];
-    self.notifications = @[@"Vibrate On Notification"];
+    self.notifications = @[@"Vibrate On Notification", @"Clear Badge Count"];
 
     self.title = @"Settings";
     self.navigationController.navigationBar.titleTextAttributes = [NSDictionary dictionaryWithObject:[UIColor whiteColor] forKey:UITextAttributeTextColor];
