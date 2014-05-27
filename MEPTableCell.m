@@ -298,11 +298,8 @@
     return cell;
 }
 
-+(UICollectionViewCell*) invitedFriendCell:(InvitedFriend*)friend forCollectionCell:(UICollectionViewCell*)cell {
-    CGRect viewFrame = cell.frame;
-    viewFrame.origin.y = - 20.0;
-    viewFrame.size.height = viewFrame.size.height + 10;
-    cell.frame = viewFrame;
++(UIView*) invitedFriendCell:(InvitedFriend*)friend {
+    UIView * cell = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 50, 60)];
     UIImageView * imageView = [[UIImageView alloc] initWithFrame:CGRectMake(2, 2, cell.frame.size.width - 4, cell.frame.size.width - 4)];
     imageView.image = friend.profilePic;
     imageView.layer.cornerRadius = imageView.frame.size.width/2;

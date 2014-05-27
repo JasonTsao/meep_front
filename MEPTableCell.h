@@ -23,5 +23,5 @@
 + (UITableViewCell*) customGroupCell:(Group*)group forCell:(UITableViewCell*)cell forTable:(UITableView*)tableView selected:(BOOL)sel;
 + (UITableViewCell*) customNotificationcell:(Notification*)notification forTable:(UITableView*)tableView selected:(BOOL)sel;
 
-+(UICollectionViewCell*) invitedFriendCell:(InvitedFriend*)friend forCollectionCell:(UICollectionViewCell*)cell;
++(UIView*) invitedFriendCell:(InvitedFriend*)friend;
 @end
