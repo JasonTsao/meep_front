@@ -13,7 +13,8 @@
 
 #define FRIEND_MAIN_TEXT_COLOR "000000"
 #define FRIEND_HEADER_TEXT_COLOR "ffffff"
-
+#define FRIEND_SEPARATOR_BACKGROUND_COLOR "000000"
+#define FRIEND_TABLE_BACKGROUND_COLOR "000000"
 
 
 #define BORDER_WIDTH 1
@@ -248,9 +249,9 @@
                              forTable:(UITableView*)tableView
                              selected:(BOOL)sel {
     UITableViewCell * cell = [[UITableViewCell alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 54)];
-    cell.backgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_BACKGROUND_COLOR]];
+    cell.backgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",FRIEND_TABLE_BACKGROUND_COLOR]];
     UIView * lineMask = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 1)];
-    lineMask.backgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_BACKGROUND_COLOR]];
+    lineMask.backgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",FRIEND_SEPARATOR_BACKGROUND_COLOR]];
     [cell addSubview:lineMask];
     UIView * cellContents = [[UIView alloc] initWithFrame:CGRectMake(3, 3, cell.frame.size.width - 6, cell.frame.size.height + 6)];
     if (!sel) {
