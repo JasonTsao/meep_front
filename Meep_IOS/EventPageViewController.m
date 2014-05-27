@@ -279,7 +279,7 @@
             CGRect cellFrame = cell.frame;
             cellFrame.origin.y += -30;
             cellFrame.size.height += 10;
-            cellFrame.size.width += 15;
+            cellFrame.size.width += 10;
             cell.frame = cellFrame;
         }
         UILabel * extraFriendsLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, cell.frame.size.width, cell.frame.size.height * 0.8)];
@@ -301,6 +301,7 @@
             CGRect cellFrame = cell.frame;
             cellFrame.origin.y += -30;
             cellFrame.size.height += 10;
+            cellFrame.size.width +=15;
             cell.frame = cellFrame;
         }
         UIView * cellView = [_invitedFriendCells objectAtIndex:indexPath.row];
@@ -627,7 +628,7 @@
     [_locationManager startUpdatingLocation];
     
     //page background
-    self.view.backgroundColor = [UIColor blackColor];
+    self.view.backgroundColor = [UIColor whiteColor];
     
     //bottom background
     self.eventInfoTable.backgroundColor = [UIColor blackColor];

@@ -298,6 +298,9 @@
     return cell;
 }
 
+
+//invited friends collection cell view
+
 +(UIView*) invitedFriendCell:(InvitedFriend*)friend {
     UIView * cell = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 50, 60)];
     UIImageView * imageView = [[UIImageView alloc] initWithFrame:CGRectMake(2, 2, cell.frame.size.width - 4, cell.frame.size.width - 4)];
