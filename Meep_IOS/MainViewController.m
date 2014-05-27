@@ -548,12 +548,16 @@
     self.eventPageViewController = (EventPageViewController *)[storyboard instantiateViewControllerWithIdentifier:@"EventViewController"];
     _eventPageViewController.currentEvent = event;
     NSString *event_id = [NSString stringWithFormat:@"%i", event.event_id];
+    NSLog(@"all event notifications: %@", _eventNotifications);
     
     if([_eventNotifications objectForKey:event_id]){
+        NSLog(@"there is a notification for this event!: %@", _eventNotifications[event_id]);
         _eventPageViewController.notifications = _eventNotifications[event_id];
         NSInteger numNotificationsForEvent = [_eventNotifications[event_id] count];
         [_eventNotifications removeObjectForKey:event_id];
         [UIApplication sharedApplication].applicationIconBadgeNumber -= numNotificationsForEvent;
+        
+        NSLog(@"now event notifications is: %@", _eventNotifications);
     }
     
     [self.eventPageViewController setDelegate:self];
