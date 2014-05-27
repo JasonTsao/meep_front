@@ -41,12 +41,12 @@
 
 + (void)handleNotification:(NSDictionary*)userInfo forMainView:(MainViewController*)viewController
 {
-    if( [userInfo[@"notification_type"] isEqualToString:@"event_chat"]){
+    
+    //EVENT CREATION
+    if([userInfo[@"notification_type"] isEqualToString:@"event_creation"]){
         NSMutableDictionary *eventNotifications = viewController.eventNotifications;
         Notification *new_notification = [[Notification alloc] init];
-        
-        //test alert to see if we can parse the dictionary in this fashion
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"in user handling data!"
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"handling an event creation notification!"
                                                         message:userInfo[@"aps"][@"alert"]
                                                        delegate:self
                                               cancelButtonTitle:@"OK"
@@ -68,6 +68,101 @@
         eventNotifications[key] = notifications_for_event;
         
         viewController.eventNotifications = eventNotifications;
+    }
+    //EVENT UPDATE
+    else if( [userInfo[@"notification_type"] isEqualToString:@"event_update"]){
+        NSMutableDictionary *eventNotifications = viewController.eventNotifications;
+        Notification *new_notification = [[Notification alloc] init];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"handling an event update notification!"
+                                                        message:userInfo[@"aps"][@"alert"]
+                                                       delegate:self
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        [alert show];
+        NSMutableArray *notifications_for_event;
+        NSString *key = [NSString stringWithFormat:@"%@",userInfo[@"event_id"]];
+        if( [eventNotifications objectForKey:key]){
+            notifications_for_event = eventNotifications[key];
+        }else{
+            
+            notifications_for_event = [[NSMutableArray alloc] init];
+        }
+        
+        new_notification.type = userInfo[@"notification_type"];
+        
+        [notifications_for_event addObject:new_notification];
+        eventNotifications[key] = notifications_for_event;
+        
+        viewController.eventNotifications = eventNotifications;
+    }
+    //EVENT CHAT
+    else if( [userInfo[@"notification_type"] isEqualToString:@"event_chat"]){
+        NSMutableDictionary *eventNotifications = viewController.eventNotifications;
+        Notification *new_notification = [[Notification alloc] init];
+        
+        //test alert to see if we can parse the dictionary in this fashion
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"handling a chat notification!"
+                                                        message:userInfo[@"aps"][@"alert"]
+                                                       delegate:self
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        [alert show];
+        
+        NSMutableArray *notifications_for_event;
+        NSString *key = [NSString stringWithFormat:@"%@",userInfo[@"event_id"]];
+        if( [eventNotifications objectForKey:key]){
+            notifications_for_event = eventNotifications[key];
+        }else{
+            
+            notifications_for_event = [[NSMutableArray alloc] init];
+        }
+        
+        new_notification.type = userInfo[@"notification_type"];
+        
+        [notifications_for_event addObject:new_notification];
+        eventNotifications[key] = notifications_for_event;
+        
+        viewController.eventNotifications = eventNotifications;
+    }
+    // USER ADDED TO GROUP
+    else if( [userInfo[@"notification_type"] isEqualToString:@"group_added"]){
+        // TODO FILL OUT
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"handling being added to a group notification!"
+                                                        message:userInfo[@"aps"][@"alert"]
+                                                       delegate:self
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        [alert show];
+    }
+    // GROUP CHAT
+    else if( [userInfo[@"notification_type"] isEqualToString:@"group_chat"]){
+        // TODO FILL OUT
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"handling being added to a group notification!"
+                                                        message:userInfo[@"aps"][@"alert"]
+                                                       delegate:self
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        [alert show];
+    }
+    // USER REQUESTED YOU AS A FRIEND
+    else if( [userInfo[@"notification_type"] isEqualToString:@"friend_request"]){
+        // TODO FILL OUT
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"handling being added to a group notification!"
+                                                        message:userInfo[@"aps"][@"alert"]
+                                                       delegate:self
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        [alert show];
+    }
+    // USER ADDED YOU AS A FRIEND
+    else if( [userInfo[@"notification_type"] isEqualToString:@"friend_added"]){
+        // TODO FILL OUT
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"handling being added to a group notification!"
+                                                        message:userInfo[@"aps"][@"alert"]
+                                                       delegate:self
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        [alert show];
     }
 }
 
