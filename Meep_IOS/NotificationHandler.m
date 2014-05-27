@@ -67,7 +67,7 @@
         //new_notification.message = userInfo[@"aps"][@"alert"];
         
         [notifications_for_event addObject:new_notification];
-        eventNotifications[userInfo[@"event_id"]] = eventNotifications;
+        eventNotifications[userInfo[@"event_id"]] = notifications_for_event;
         
         NSString *eventNotificationsString = [NSString stringWithFormat:@"%@",eventNotifications];
         UIAlertView *new_alert = [[UIAlertView alloc] initWithTitle:@"now event notifications is!"
