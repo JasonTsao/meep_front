@@ -11,6 +11,9 @@
 #import "MEPTextParse.h"
 #import "MEPLocationService.h"
 
+#define FRIEND_MAIN_TEXT_COLOR "000000"
+#define FRIEND_HEADER_TEXT_COLOR "ffffff"
+
 
 
 #define BORDER_WIDTH 1
@@ -19,13 +22,11 @@
 #define LINE_COLOR "ffffff"
 #define STATIC_IMAGE_COLOR "ffffff"
 #define TABLE_BACKGROUND_COLOR "000000"
-#define HEADER_TEXT_COLOR "019875"
+#define HEADER_TEXT_COLOR "000000"
 #define CONTENT_BACKGROUND_COLOR "000000"
 #define ICON_BACKGROUND_COLOR "000000"
 #define MAIN_TEXT_COLOR "FFFFFF"
 #define NAV_BAR_COLOR "000000"
-
-#define TABLE_BACKGROUND_COLOR "000000"
 
 
 //also defined in CenterPanelViewController
@@ -227,7 +228,7 @@
     // headerContainer.backgroundColor = [UIColor colorWithRed:1.f green:1.f blue:1.f alpha:1.f];
     headerTitle.text = dateText;
     // [headerTitle setFont:[UIFont fontWithName:@"GurmukhiMN" size:10]];
-    headerTitle.textColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",HEADER_TEXT_COLOR]];
+    // headerTitle.textColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",HEADER_TEXT_COLOR]];
     [headerContainer addSubview:headerTitle];
     
     [headerView addSubview:headerContainer];
@@ -240,7 +241,7 @@
 
 + (CGFloat) customFriendCellHeight
 {
-    return 54;
+    return 60;
 }
 
 + (UITableViewCell*) customFriendCell:(Friend*)friend
@@ -253,15 +254,15 @@
     [cell addSubview:lineMask];
     UIView * cellContents = [[UIView alloc] initWithFrame:CGRectMake(3, 3, cell.frame.size.width - 6, cell.frame.size.height + 6)];
     if (!sel) {
-        cellContents.backgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_DATA_BACKGROUND_COLOR]];
+        cellContents.backgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_BACKGROUND_COLOR]];
     }
     else {
-        cellContents.backgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",CELL_SELECT_COLOR]];
+        cellContents.backgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",FRIEND_MAIN_TEXT_COLOR]];
     }
     cellContents.layer.cornerRadius = 10;
     UILabel *friendHeader = [[UILabel alloc] initWithFrame:CGRectMake(60, 14, 235, 21)];
     friendHeader.text = friend.name;
-    friendHeader.textColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_DATA_TEXT_COLOR]];
+    friendHeader.textColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",FRIEND_HEADER_TEXT_COLOR]];
     [friendHeader setFont:[UIFont systemFontOfSize:18]];
     [cellContents addSubview:friendHeader];
     UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(8, 4, 40, 40)];
@@ -279,6 +280,7 @@
     lineSeparatorMask.backgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_BACKGROUND_COLOR]];
     [cell addSubview:lineSeparatorMask];
     UIView * contentView = [[UIView alloc] initWithFrame:CGRectMake(3, 3, tableView.frame.size.width - 6, cell.frame.size.height - 6)];
+    
     contentView.backgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_DATA_BACKGROUND_COLOR]];
     contentView.layer.cornerRadius = 10;
     [contentView setTag:1];

@@ -85,6 +85,7 @@
 {
     [super viewDidLoad];
     
+
     self.title = @"Friends";
     self.navigationController.navigationBar.titleTextAttributes = [NSDictionary dictionaryWithObject:[UIColor whiteColor] forKey:UITextAttributeTextColor];
     UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
