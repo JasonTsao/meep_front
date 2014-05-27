@@ -70,14 +70,6 @@
         NSString *key = [NSString stringWithFormat:@"%@",userInfo[@"event_id"]];
         eventNotifications[key] = notifications_for_event;
         
-        NSString *eventNotificationsString = [NSString stringWithFormat:@"%@",eventNotifications];
-        UIAlertView *new_alert = [[UIAlertView alloc] initWithTitle:@"now event notifications is!"
-                                                            message:eventNotificationsString
-                                                       delegate:self
-                                              cancelButtonTitle:@"OK"
-                                              otherButtonTitles:nil];
-        [new_alert show];
-        
         viewController.eventNotifications = eventNotifications;
     }
 }
