@@ -549,13 +549,22 @@
     _eventPageViewController.currentEvent = event;
     NSString *event_id = [NSString stringWithFormat:@"%i", event.event_id];
     NSString *allevents = [NSString stringWithFormat:@"%@", _eventNotifications];
-    NSLog(@"all event notifications: %@", _eventNotifications);
+    NSLog(@"all event notifications: %@: keys is: %@", _eventNotifications, event_id);
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"all event notifications"
                                                     message:allevents
                                                    delegate:self
                                           cancelButtonTitle:@"OK"
                                           otherButtonTitles:nil];
     [alert show];
+    
+    NSString *eventForKey = [NSString stringWithFormat:@"%@", [_eventNotifications objectForKey:event_id]];
+    
+    UIAlertView *key_alert = [[UIAlertView alloc] initWithTitle:@"event for key!"
+                                                    message:eventForKey
+                                                   delegate:self
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+    [key_alert show];
     
     if([_eventNotifications objectForKey:event_id]){
         NSLog(@"there is a notification for this event!: %@", _eventNotifications[event_id]);
