@@ -548,10 +548,27 @@
     self.eventPageViewController = (EventPageViewController *)[storyboard instantiateViewControllerWithIdentifier:@"EventViewController"];
     _eventPageViewController.currentEvent = event;
     NSString *event_id = [NSString stringWithFormat:@"%i", event.event_id];
+    NSString *allevents = [NSString stringWithFormat:@"%@", _eventNotifications];
     NSLog(@"all event notifications: %@", _eventNotifications);
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"all event notifications"
+                                                    message:allevents
+                                                   delegate:self
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+    [alert show];
     
     if([_eventNotifications objectForKey:event_id]){
         NSLog(@"there is a notification for this event!: %@", _eventNotifications[event_id]);
+        NSString *event_notifications = [NSString stringWithFormat:@"%@", _eventNotifications[event_id]];
+        NSLog(@"all event notifications: %@", _eventNotifications);
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"there is a notification for this event!"
+                                                        message:event_notifications
+                                                       delegate:self
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        [alert show];
+        
+        
         _eventPageViewController.notifications = _eventNotifications[event_id];
         NSInteger numNotificationsForEvent = [_eventNotifications[event_id] count];
         [_eventNotifications removeObjectForKey:event_id];
