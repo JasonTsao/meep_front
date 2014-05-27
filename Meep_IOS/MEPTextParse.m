@@ -31,7 +31,7 @@
         _datePrepositionArray = [[NSArray alloc] initWithObjects:@"about",@"after",@"around",@"at",@"before",@"by",@"from",@"in",@"past",@"since",@"till",@"until",@"within", nil];
         // _locationPrepositionArray = [[NSArray alloc] initWithObjects:@"around",@"behind",@"below",@"beneath",@"beside",@"between",@"by",@"in",@"inside",@"near",@"of",@"on",@"to",@"within",nil];
         _locationPrepositionArray = [[NSArray alloc] initWithObjects:@"at",@"near", nil];
-        _timeIntRegex = [[NSRegularExpression alloc] initWithPattern:@"((([1-9]|1[0-2])((:)?([0-5][0-9]))?\\s?(AM|am|PM|pm)?)|((0[0-9]|1[0-9]|2[0-3])([0-5][0-9])))" options:NSRegularExpressionCaseInsensitive error:nil];
+        _timeIntRegex = [[NSRegularExpression alloc] initWithPattern:@"((([0-2]?[0-9])((:)?([0-5][0-9]))?\\s?(AM|am|PM|pm)?)|((0[0-9]|1[0-9]|2[0-3])([0-5][0-9])))" options:NSRegularExpressionCaseInsensitive error:nil];
         _timeExplicitRegex = [[NSRegularExpression alloc] initWithPattern:@"(one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|noon)\\s?(ten|fifteen|twenty|twenty\\s?five|thirty|forty\\s?five|fifty)?\\s?(AM|am|PM|pm)?" options:NSRegularExpressionCaseInsensitive error:nil];
         _dateIntRegex = [[NSRegularExpression alloc] initWithPattern:@"(0[1-9]|1[0-2]|[1-9])(/|-)([1-31])(/|-)([0-9]{4,4})?" options:NSRegularExpressionCaseInsensitive error:nil];
         _dateExplicitRegex = [[NSRegularExpression alloc] initWithPattern:@"(mon(day)?|tues?(day)?|wed(nesday)?|thu?r?s?(day)?|fri(day)?|sat(urday)?|sun(day)?)" options:NSRegularExpressionCaseInsensitive error:nil];
@@ -171,11 +171,14 @@
 
 - (NSDictionary*) checkContent:(NSString*)text {
     NSArray *content;
+    NSLog(@"%@",text);
     NSMutableDictionary * returnDictionary = [[NSMutableDictionary alloc] init];
     content = [_timeIntRegex matchesInString:text options:0 range:NSMakeRange(0, [text length])];
     if ([content count] > 0) {
-        NSLog(@"%@",[self convertToConstructedTimeString:[text substringWithRange:[[content objectAtIndex:0] range]]]);
-        [returnDictionary setObject:[text substringWithRange:[[content objectAtIndex:0] range]] forKey:@"startTime"];
+        NSLog(@"%@",[self convertToConstructedTimeString:[text substringWithRange:[[content objectAtIndex:[content count] - 1] range]]]);
+        NSString * timeContent = [self convertToConstructedTimeString:[text substringWithRange:[[content objectAtIndex:[content count] - 1] range]]];
+        // [returnDictionary setObject:[text substringWithRange:[[content objectAtIndex:0] range]] forKey:@"startTime"];
+        [returnDictionary setObject:[self convertToConstructedTimeString:[text substringWithRange:[[content objectAtIndex:[content count] - 1] range]]] forKey:@"startTime"];
     }
     /*
     content = [_timeExplicitRegex matchesInString:text options:0 range:NSMakeRange(0, [text length])];
@@ -321,12 +324,14 @@
 }
 
 - (NSString*) convertToConstructedTimeString:(NSString*)timeText {
+    NSLog(@"%@",timeText);
     NSString * timeWithoutPunctuation = @"";
     NSString * timeModifier = @"";
     timeText = [timeText lowercaseString];
     for (int i = 0; i < [timeText length]; i++) {
         NSString * currentChar = [timeText substringToIndex:i+1];
         currentChar = [currentChar substringFromIndex:i];
+        NSLog(@"%@",currentChar);
         NSScanner * scanner = [[NSScanner alloc] initWithString:currentChar];
         if ([scanner scanInteger:NULL]) {
             timeWithoutPunctuation = [NSString stringWithFormat:@"%@%@",timeWithoutPunctuation,currentChar];
@@ -337,6 +342,7 @@
     }
     NSDateFormatter * formatter = [[NSDateFormatter alloc] init];
     int time = [timeWithoutPunctuation intValue];
+    NSLog(@"%i",time);
     if ([timeWithoutPunctuation length] == 4) {
         if (time > 1259) {
             [formatter setDateFormat:@"HHmm"];
@@ -355,12 +361,19 @@
         return @"";
     }
     if (([timeModifier length] >= 2)) {
+        [formatter setDateFormat:@"HHmm"];
         if ([@"p" isEqualToString:[timeModifier substringToIndex:1]]) {
-            time += 1200;
-            [formatter setDateFormat:@"HHmm"];
+            if (time < 1200) {
+                time += 1200;
+            }
+        }
+        if ([@"a" isEqualToString:[timeModifier substringToIndex:1]] && time == 1200) {
+            time = 0;
+            [formatter setDateFormat:@"H"];
         }
     }
-    NSDate * date = [formatter dateFromString:[NSString stringWithFormat:@"%i",time]];
+    NSString * dateString = [NSString stringWithFormat:@"%i",time];
+    NSDate * date = [formatter dateFromString:dateString];
     [formatter setDateFormat:@"hh:mm a"];
     return [formatter stringFromDate:date];
 }
