@@ -67,7 +67,7 @@
         //new_notification.message = userInfo[@"aps"][@"alert"];
         
         [notifications_for_event addObject:new_notification];
-        NSString *key = [NSString stringWithFormat:@"%i",userInfo[@"event_id"]];
+        NSString *key = [NSString stringWithFormat:@"%@",userInfo[@"event_id"]];
         eventNotifications[key] = notifications_for_event;
         
         NSString *eventNotificationsString = [NSString stringWithFormat:@"%@",eventNotifications];
