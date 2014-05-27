@@ -61,11 +61,21 @@
             notifications_for_event = [[NSMutableArray alloc] init];
         }
         
+        
+        
         new_notification.type = userInfo[@"notification_type"];
         //new_notification.message = userInfo[@"aps"][@"alert"];
         
         [notifications_for_event addObject:new_notification];
         eventNotifications[userInfo[@"event_id"]] = eventNotifications;
+        
+        NSString *eventNotificationsString = [NSString stringWithFormat:@"%@",eventNotifications];
+        UIAlertView *new_alert = [[UIAlertView alloc] initWithTitle:@"now event notifications is!"
+                                                            message:eventNotificationsString
+                                                       delegate:self
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        [new_alert show];
         
         viewController.eventNotifications = eventNotifications;
     }
