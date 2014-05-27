@@ -548,10 +548,36 @@
     self.eventPageViewController = (EventPageViewController *)[storyboard instantiateViewControllerWithIdentifier:@"EventViewController"];
     _eventPageViewController.currentEvent = event;
     NSString *event_id = [NSString stringWithFormat:@"%i", event.event_id];
-    NSLog(@"all event notifications: %@", _eventNotifications);
+    NSString *allevents = [NSString stringWithFormat:@"%@", _eventNotifications];
+    NSLog(@"all event notifications: %@: keys is: %@", _eventNotifications, event_id);
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"all event notifications"
+                                                    message:allevents
+                                                   delegate:self
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+    [alert show];
+    
+    NSString *eventForKey = [NSString stringWithFormat:@"%@", [_eventNotifications objectForKey:event_id]];
+    
+    UIAlertView *key_alert = [[UIAlertView alloc] initWithTitle:@"event for key!"
+                                                    message:eventForKey
+                                                   delegate:self
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+    [key_alert show];
     
     if([_eventNotifications objectForKey:event_id]){
         NSLog(@"there is a notification for this event!: %@", _eventNotifications[event_id]);
+        NSString *event_notifications = [NSString stringWithFormat:@"%@", _eventNotifications[event_id]];
+        NSLog(@"all event notifications: %@", _eventNotifications);
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"there is a notification for this event!"
+                                                        message:event_notifications
+                                                       delegate:self
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        [alert show];
+        
+        
         _eventPageViewController.notifications = _eventNotifications[event_id];
         NSInteger numNotificationsForEvent = [_eventNotifications[event_id] count];
         [_eventNotifications removeObjectForKey:event_id];
