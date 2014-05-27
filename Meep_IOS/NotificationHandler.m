@@ -54,20 +54,17 @@
         [alert show];
         
         NSMutableArray *notifications_for_event;
-        if( [eventNotifications objectForKey:userInfo[@"event_id"]]){
-            notifications_for_event = eventNotifications[userInfo[@"event_id"]];
+        NSString *key = [NSString stringWithFormat:@"%@",userInfo[@"event_id"]];
+        if( [eventNotifications objectForKey:key]){
+            notifications_for_event = eventNotifications[key];
         }else{
             
             notifications_for_event = [[NSMutableArray alloc] init];
         }
         
-        
-        
         new_notification.type = userInfo[@"notification_type"];
-        //new_notification.message = userInfo[@"aps"][@"alert"];
         
         [notifications_for_event addObject:new_notification];
-        NSString *key = [NSString stringWithFormat:@"%@",userInfo[@"event_id"]];
         eventNotifications[key] = notifications_for_event;
         
         viewController.eventNotifications = eventNotifications;

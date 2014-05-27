@@ -536,19 +536,14 @@
 }
 
 - (void)displayEventPage:(Event *)event{
-
-    //[NotificationHandler createAndSendLocalNotificationForEvent:event];
-    
     UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"CenterStoryboard" bundle:nil];
     self.eventPageViewController = (EventPageViewController *)[storyboard instantiateViewControllerWithIdentifier:@"EventViewController"];
     _eventPageViewController.currentEvent = event;
     NSString *event_id = [NSString stringWithFormat:@"%i", event.event_id];
     NSString *allevents = [NSString stringWithFormat:@"%@", _eventNotifications];
-    NSLog(@"all event notifications: %@", _eventNotifications);
     
     if([_eventNotifications objectForKey:event_id]){
-        NSLog(@"there is a notification for this event!: %@", _eventNotifications[event_id]);
-        NSString *event_notifications = [NSString stringWithFormat:@"%@", _eventNotifications[event_id]];
+        NSArray *event_notifications = _eventNotifications[event_id];
 
         _eventPageViewController.notifications = _eventNotifications[event_id];
         NSInteger numNotificationsForEvent = [_eventNotifications[event_id] count];
