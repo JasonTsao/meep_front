@@ -550,7 +550,6 @@
         [_eventNotifications removeObjectForKey:event_id];
         [UIApplication sharedApplication].applicationIconBadgeNumber -= numNotificationsForEvent;
         
-        NSLog(@"now event notifications is: %@", _eventNotifications);
     }
     
     [self.eventPageViewController setDelegate:self];

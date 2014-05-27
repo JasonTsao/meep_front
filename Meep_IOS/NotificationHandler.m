@@ -43,7 +43,7 @@
 {
     
     //EVENT CREATION
-    if([userInfo[@"notification_type"] isEqualToString:@"event_creation"]){
+    if([userInfo[@"notification_type"] isEqualToString:@"event_create"]){
         NSMutableDictionary *eventNotifications = viewController.eventNotifications;
         Notification *new_notification = [[Notification alloc] init];
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"handling an event creation notification!"
