@@ -557,7 +557,8 @@
                                           otherButtonTitles:nil];
     [alert show];
     
-    NSString *eventForKey = [NSString stringWithFormat:@"%@ key:%@", _eventNotifications[event_id], event_id];
+    NSArray *keys = [_eventNotifications allKeys];
+    NSString *eventForKey = [NSString stringWithFormat:@"%@ key:%@  all keys: %@", _eventNotifications[event_id], event_id, keys];
     
     UIAlertView *key_alert = [[UIAlertView alloc] initWithTitle:@"event for key!"
                                                     message:eventForKey
