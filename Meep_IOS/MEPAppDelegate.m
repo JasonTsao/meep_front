@@ -268,8 +268,8 @@
     [conn start];
 }
 
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
-{
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler{
+//{
     
     application.applicationIconBadgeNumber++;
     //NSInteger badgeNumber = [application applicationIconBadgeNumber];
@@ -298,7 +298,7 @@
     
 }
 
--(void)application:(UIApplication *)application
+/*-(void)application:(UIApplication *)application
 didReceiveRemoteNotification:(NSDictionary *)userInfo
 fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler{
     
@@ -307,7 +307,7 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler{
     [application setApplicationIconBadgeNumber:++badgeNumber];
     
     
-}
+}*/
 
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
 {

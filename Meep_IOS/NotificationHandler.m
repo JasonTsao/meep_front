@@ -41,13 +41,13 @@
 
 + (void)handleNotification:(NSDictionary*)userInfo forMainView:(MainViewController*)viewController
 {
-    
+
     //EVENT CREATION
     if([userInfo[@"notification_type"] isEqualToString:@"event_create"]){
         NSMutableDictionary *eventNotifications = viewController.eventNotifications;
         Notification *new_notification = [[Notification alloc] init];
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"handling an event creation notification!"
-                                                        message:userInfo[@"aps"][@"alert"]
+                                                        message:[NSString stringWithFormat:@"%@", userInfo[@"aps"][@"alert"]]
                                                        delegate:self
                                               cancelButtonTitle:@"OK"
                                               otherButtonTitles:nil];
@@ -74,7 +74,7 @@
         NSMutableDictionary *eventNotifications = viewController.eventNotifications;
         Notification *new_notification = [[Notification alloc] init];
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"handling an event update notification!"
-                                                        message:userInfo[@"aps"][@"alert"]
+                                                        message:[NSString stringWithFormat:@"%@", userInfo[@"aps"][@"alert"]]
                                                        delegate:self
                                               cancelButtonTitle:@"OK"
                                               otherButtonTitles:nil];
@@ -102,7 +102,7 @@
         
         //test alert to see if we can parse the dictionary in this fashion
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"handling a chat notification!"
-                                                        message:userInfo[@"aps"][@"alert"]
+                                                        message:[NSString stringWithFormat:@"%@", userInfo[@"aps"][@"alert"]]
                                                        delegate:self
                                               cancelButtonTitle:@"OK"
                                               otherButtonTitles:nil];
