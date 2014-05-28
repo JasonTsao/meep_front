@@ -268,7 +268,7 @@
     [conn start];
 }
 
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler{
+/*- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler{
 //{
     
     application.applicationIconBadgeNumber++;
@@ -279,35 +279,29 @@
     
     if( application.applicationState == UIApplicationStateInactive){
         NSLog(@"user is not in the application when it got the notification");
-        /*UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"did receieve remote notification!"
-         message:@"user was not in app when he receieved this "
-         delegate:self
-         cancelButtonTitle:@"OK"
-         otherButtonTitles:nil];
-         [alert show];*/
     }
     else if( application.applicationState == UIApplicationStateActive){
         NSLog(@"application is already open when user got notification");
-        /*UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"did receieve remote notification!"
-         message:@"user was in app when he receieved this "
-         delegate:self
-         cancelButtonTitle:@"OK"
-         otherButtonTitles:nil];
-         [alert show];*/
     }
     
-}
+}*/
 
-/*-(void)application:(UIApplication *)application
+-(void)application:(UIApplication *)application
 didReceiveRemoteNotification:(NSDictionary *)userInfo
 fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler{
     
-    NSInteger badgeNumber = [application applicationIconBadgeNumber];
+    application.applicationIconBadgeNumber++;
     
-    [application setApplicationIconBadgeNumber:++badgeNumber];
+    [NotificationHandler handleNotification:userInfo forMainView:_viewController];
     
+    if( application.applicationState == UIApplicationStateInactive){
+        NSLog(@"user is not in the application when it got the notification");
+    }
+    else if( application.applicationState == UIApplicationStateActive){
+        NSLog(@"application is already open when user got notification");
+    }
     
-}*/
+}
 
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
 {
