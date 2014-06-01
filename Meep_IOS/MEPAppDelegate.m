@@ -290,6 +290,9 @@
 didReceiveRemoteNotification:(NSDictionary *)userInfo
 fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler{
     
+    NSLog(@"in did receieve remote notification fetch completion handler");
+    NSLog(@"user info: %@", userInfo);
+    
     application.applicationIconBadgeNumber++;
     
     [NotificationHandler handleNotification:userInfo forMainView:_viewController];
