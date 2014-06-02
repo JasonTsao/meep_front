@@ -42,6 +42,47 @@
     return self;
 }
 
+-(NSIndexPath *)lastIndexPath
+{
+    NSInteger lastSectionIndex = MAX(0, [_chatMessageTable numberOfSections] - 1);
+    NSInteger lastRowIndex = MAX(0, [_chatMessageTable numberOfRowsInSection:lastSectionIndex] - 1);
+    return [NSIndexPath indexPathForRow:lastRowIndex inSection:lastSectionIndex];
+}
+
+-(void)scrollToBottom
+{
+    NSIndexPath *lastIndexPath = [self lastIndexPath];
+    [_chatMessageTable scrollToRowAtIndexPath:lastIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+}
+
+- (void)reloadEventChat:(NSString *)message withAccount:(NSString*)account_id withName:(NSString *)user_name
+{
+    EventChatMessage * chatMessage = [[EventChatMessage alloc] init];
+    NSInteger creator_id = [account_id integerValue];
+    NSString *creator_name = user_name;
+    //NSString * currentTime = @"2014-05-15 04:33:22";
+    
+    NSLog(@"creator_id: %i", creator_id);
+    chatMessage.event_id = _currentEvent.event_id;
+    chatMessage.creator_id = creator_id;
+    chatMessage.creator_name = creator_name;
+    chatMessage.message = message;
+    //chatMessage.time_stamp = currentTime;
+    chatMessage.new_message = YES;
+    
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:[_chatMessages indexOfObject:chatMessage] inSection:0];
+    NSArray *indexPaths = [[NSArray alloc] initWithObjects:indexPath, nil];
+    
+    
+    [_chatMessageTable beginUpdates];
+    [_chatMessages addObject:chatMessage];
+    [_chatMessageTable insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:[_chatMessages indexOfObject:chatMessage] inSection:0]]
+                             withRowAnimation:UITableViewRowAnimationFade];
+    [_chatMessageTable endUpdates];
+    
+    [self scrollToBottom];
+}
+
 - (void)putMessageOnTable:(NSString *)message
 {
     EventChatMessage * chatMessage = [[EventChatMessage alloc] init];
@@ -147,6 +188,7 @@
         }
         [self.chatMessageTable reloadData];
     }
+    [self scrollToBottom];
 }
 
 - (void) observeKeyboard {

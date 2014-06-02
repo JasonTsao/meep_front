@@ -18,4 +18,5 @@
 @property (nonatomic) NSString *user_name;
 @property(nonatomic, strong) NSMutableData * data;
 +(UIColor*)colorWithHexString:(NSString*)hex;
+- (void)reloadEventChat:(NSString *)message withAccount:(NSString*)account_id withName:(NSString *)user_name;
 @end
