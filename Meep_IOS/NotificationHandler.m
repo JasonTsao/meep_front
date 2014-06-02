@@ -102,7 +102,6 @@
         NSMutableDictionary *eventNotifications = viewController.eventNotifications;
         Notification *new_notification = [[Notification alloc] init];
         
-        
         //Code for updating chat table if person is looking at it
         MEPAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
         UINavigationController *navigation = appDelegate.viewController.presentedViewController;
@@ -116,7 +115,7 @@
                 NSString *message = userInfo[@"message"];
                 NSString *account_id = userInfo[@"creator_id"];
                 NSString *user_name = userInfo[@"user_name"];
-                [eventchat reloadEventChat:message withAccount:account_id withName:user_name];
+                [eventchat putPushNotificationMessageOnTable:message withAccount:account_id withName:user_name];
             }
             
         }

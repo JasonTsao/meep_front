@@ -55,7 +55,7 @@
     [_chatMessageTable scrollToRowAtIndexPath:lastIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
 }
 
-- (void)reloadEventChat:(NSString *)message withAccount:(NSString*)account_id withName:(NSString *)user_name
+- (void)putPushNotificationMessageOnTable:(NSString *)message withAccount:(NSString*)account_id withName:(NSString *)user_name
 {
     EventChatMessage * chatMessage = [[EventChatMessage alloc] init];
     NSInteger creator_id = [account_id integerValue];
@@ -90,7 +90,6 @@
     NSString *creator_name = _user_name;
     //NSString * currentTime = @"2014-05-15 04:33:22";
     
-    NSLog(@"creator_id: %i", creator_id);
     chatMessage.event_id = _currentEvent.event_id;
     chatMessage.creator_id = creator_id;
     chatMessage.creator_name = creator_name;
@@ -109,14 +108,7 @@
     [_chatMessageTable insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:[_chatMessages indexOfObject:chatMessage] inSection:0]]
                      withRowAnimation:UITableViewRowAnimationFade];
     [_chatMessageTable endUpdates];
-    NSLog(@"indexPath %@", indexPath);
-    NSLog(@"indexPaths %@", indexPaths);
     
-    /*[_chatMessageTable beginUpdates];
-    [_chatMessageTable reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPaths] withRowAnimation:UITableViewRowAnimationBottom];
-    [_chatMessageTable endUpdates];*/
-    
-    NSLog(@"updates to table complete");
 }
 
 - (void) getPreviousChats{
@@ -165,7 +157,6 @@
     NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:_data options:0 error:&error];
     
     if([jsonResponse objectForKey:@"chat_created"] != nil){
-        NSLog(@"new chat created and saved on server!");
         NSInteger index = [_chatMessages count] - 1 ;
         EventChatMessage *newChatMessage = _chatMessages[index];
         newChatMessage.new_message = NO;
@@ -197,7 +188,6 @@
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    NSLog(@"pressed return!!");
     return YES;
 }
 
