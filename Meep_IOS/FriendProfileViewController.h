@@ -16,8 +16,9 @@
 - (void) backToEventPage:(FriendProfileViewController *)controller;
 - (void) backToEventAttendeesPage:(FriendProfileViewController *)controller;
 @end
-@interface FriendProfileViewController : UIViewController
+@interface FriendProfileViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic) Friend *currentFriend;
+@property(nonatomic, strong) NSMutableData * data;
 @property(nonatomic, strong) id <FriendProfileViewControllerDelegate> delegate;
 @end
