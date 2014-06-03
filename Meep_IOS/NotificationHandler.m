@@ -8,6 +8,8 @@
 
 #import "NotificationHandler.h"
 #import "Notification.h"
+#import "EventChatViewController.h"
+#import "MEPAppDelegate.h"
 
 //localNotif.alertAction = NSLocalizedString(@"View Details", nil); localized string example
 @implementation NotificationHandler
@@ -41,13 +43,13 @@
 
 + (void)handleNotification:(NSDictionary*)userInfo forMainView:(MainViewController*)viewController
 {
-    
+
     //EVENT CREATION
     if([userInfo[@"notification_type"] isEqualToString:@"event_create"]){
         NSMutableDictionary *eventNotifications = viewController.eventNotifications;
         Notification *new_notification = [[Notification alloc] init];
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"handling an event creation notification!"
-                                                        message:userInfo[@"aps"][@"alert"]
+                                                        message:[NSString stringWithFormat:@"%@", userInfo[@"aps"][@"alert"]]
                                                        delegate:self
                                               cancelButtonTitle:@"OK"
                                               otherButtonTitles:nil];
@@ -74,7 +76,7 @@
         NSMutableDictionary *eventNotifications = viewController.eventNotifications;
         Notification *new_notification = [[Notification alloc] init];
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"handling an event update notification!"
-                                                        message:userInfo[@"aps"][@"alert"]
+                                                        message:[NSString stringWithFormat:@"%@", userInfo[@"aps"][@"alert"]]
                                                        delegate:self
                                               cancelButtonTitle:@"OK"
                                               otherButtonTitles:nil];
@@ -100,13 +102,29 @@
         NSMutableDictionary *eventNotifications = viewController.eventNotifications;
         Notification *new_notification = [[Notification alloc] init];
         
-        //test alert to see if we can parse the dictionary in this fashion
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"handling a chat notification!"
-                                                        message:userInfo[@"aps"][@"alert"]
+        //Code for updating chat table if person is looking at it
+        MEPAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+        UINavigationController *navigation = appDelegate.viewController.presentedViewController;
+        EventChatViewController *eventchat = navigation.topViewController;
+        
+        NSString *classString = [NSString stringWithFormat:@"%@",[eventchat class]];
+        if( [classString isEqualToString:@"EventChatViewController"]){
+            NSInteger event_id = [userInfo[@"event_id"] integerValue];
+            if(event_id == eventchat.currentEvent.event_id){
+                NSLog(@"the class is an event chat view controller!!");
+                NSString *message = userInfo[@"message"];
+                NSString *account_id = userInfo[@"creator_id"];
+                NSString *user_name = userInfo[@"user_name"];
+                [eventchat putPushNotificationMessageOnTable:message withAccount:account_id withName:user_name];
+            }
+            
+        }
+        /*UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"handling a chat notification!"
+                                                        message:[NSString stringWithFormat:@"%@", userInfo[@"aps"][@"alert"]]
                                                        delegate:self
                                               cancelButtonTitle:@"OK"
                                               otherButtonTitles:nil];
-        [alert show];
+        [alert show];*/
         
         NSMutableArray *notifications_for_event;
         NSString *key = [NSString stringWithFormat:@"%@",userInfo[@"event_id"]];

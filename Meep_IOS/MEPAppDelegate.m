@@ -268,45 +268,38 @@
     [conn start];
 }
 
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
-{
+/*- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler{
+//{
     
-    //application.applicationIconBadgeNumber++;
-    NSInteger badgeNumber = [application applicationIconBadgeNumber];
-    
-    [application setApplicationIconBadgeNumber:++badgeNumber];
+    application.applicationIconBadgeNumber++;
+    //NSInteger badgeNumber = [application applicationIconBadgeNumber];
+    //[application setApplicationIconBadgeNumber:++badgeNumber];
     
     [NotificationHandler handleNotification:userInfo forMainView:_viewController];
     
     if( application.applicationState == UIApplicationStateInactive){
         NSLog(@"user is not in the application when it got the notification");
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"did receieve remote notification!"
-         message:@"user was not in app when he receieved this "
-         delegate:self
-         cancelButtonTitle:@"OK"
-         otherButtonTitles:nil];
-         [alert show];
     }
     else if( application.applicationState == UIApplicationStateActive){
         NSLog(@"application is already open when user got notification");
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"did receieve remote notification!"
-         message:@"user was in app when he receieved this "
-         delegate:self
-         cancelButtonTitle:@"OK"
-         otherButtonTitles:nil];
-         [alert show];
     }
     
-}
+}*/
 
 -(void)application:(UIApplication *)application
 didReceiveRemoteNotification:(NSDictionary *)userInfo
 fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler{
     
-    NSInteger badgeNumber = [application applicationIconBadgeNumber];
+    application.applicationIconBadgeNumber++;
     
-    [application setApplicationIconBadgeNumber:++badgeNumber];
+    [NotificationHandler handleNotification:userInfo forMainView:_viewController];
     
+    if( application.applicationState == UIApplicationStateInactive){
+        NSLog(@"user is not in the application when it got the notification");
+    }
+    else if( application.applicationState == UIApplicationStateActive){
+        NSLog(@"application is already open when user got notification");
+    }
     
 }
 
@@ -425,51 +418,6 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler{
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     NSLog(@"application did enter background");
-    
-    /*dispatch_async(dispatch_get_main_queue(), ^{
-        while ([application backgroundTimeRemaining] > 1.0) {
-            NSLog(@"making local notification in backgorund");
-            UILocalNotification *localNotif = [[UILocalNotification alloc] init];
-            localNotif.alertAction = NSLocalizedString(@"Read Message", nil);
-            localNotif.soundName = @"alarmsound.caf";
-            localNotif.applicationIconBadgeNumber = 1;
-            [application presentLocalNotificationNow:localNotif];
-        }
-    });*/
-   /*
-    SOME EXAMPLE CODE ON HOW TO HANDLE PUSH NOTIFICATIONS IN THE BACKGROUND
-    NSLog(@"Application entered background state.");
-    // bgTask is a property of the class
-    NSAssert(self.bgTask == UIInvalidBackgroundTask, nil);
-    
-    bgTask = [application beginBackgroundTaskWithExpirationHandler: ^{
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [application endBackgroundTask:self.bgTask];
-            self.bgTask = UIInvalidBackgroundTask;
-        });
-    }];
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        while ([application backgroundTimeRemaining] > 1.0) {
-            NSString *friend = [self checkForIncomingChat];
-            if (friend) {
-                UILocalNotification *localNotif = [[UILocalNotification alloc] init];
-                if (localNotif) {
-                    localNotif.alertBody = [NSString stringWithFormat:
-                                            NSLocalizedString(@"%@ has a message for you.", nil), friend];
-                    localNotif.alertAction = NSLocalizedString(@"Read Message", nil);
-                    localNotif.soundName = @"alarmsound.caf";
-                    localNotif.applicationIconBadgeNumber = 1;
-                    [application presentLocalNotificationNow:localNotif];
-                    [localNotif release];
-                    friend = nil;
-                    break;
-                }
-            }
-        }
-        [application endBackgroundTask:self.bgTask];
-        self.bgTask = UIInvalidBackgroundTask;
-    });*/
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
