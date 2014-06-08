@@ -83,6 +83,10 @@
         [_delegate openProfilePage];
     }
     
+    if([_navItems[indexPath.row] isEqualToString:@"Groups"]){
+        
+    }
+    
     if (indexPath.section == 1){
         NSLog(@"cell was 1");
         if(indexPath.row == 1){
@@ -188,7 +192,7 @@
         settingsHeader.textColor = leftTextColor;
         [cell.contentView addSubview:settingsHeader];
         
-        UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(8, 4, 40, 40)];
+        UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(8, 4, 22, 22)];
         img.image = [UIImage imageNamed:@"settings"];
         img.layer.cornerRadius = img.frame.size.height/2;
         img.layer.masksToBounds = YES;

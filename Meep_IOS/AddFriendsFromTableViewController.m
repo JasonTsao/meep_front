@@ -68,7 +68,6 @@
 -(void)handleData{
     NSError* nserror;
     NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:_data options:0 error:&nserror];
-    //NSLog(@"jsonResponse: %@", jsonResponse);
     if ([_viewTitle isEqualToString:@"From Contacts"]){
         if ([jsonResponse objectForKey:@"registered_users"] != nil){
             _phoneRegisteredUsers = [[NSMutableArray alloc] init];
@@ -83,70 +82,86 @@
                 NSInteger index = [_phoneNonFriendUsersNumbers indexOfObject:nonregisteredUsers[i]];
                 [_phoneNonRegisteredUsers addObject:_phoneNonFriendUsers[index]];
             }
-
             [self.tableView reloadData];
-            
         }
         else if([jsonResponse objectForKey:@"friends"] != nil){
-            //_phoneRegisteredUsers = [[NSMutableArray alloc]init];
+            // initialize variables for class to pass around user contact data
             _phoneNonFriendUsersNumbers = [[NSMutableArray alloc]init];
             _phoneNonFriendUsers = [[NSMutableArray alloc]init];
             _phoneContacts = [[NSMutableArray alloc]init];
             _phoneContactNumbers = [[NSMutableArray alloc]init];
-            
-            //ABAuthorizationStatus addressBookStatus = ABAddressBookGetAuthorizationStatus();
-            //NSLog(@"my address book status: %@", addressBookStatus);
-            
+
+            // Initialize variables for getting access to a users contact list
             CFErrorRef error = NULL;
-            ABAddressBookRef addressBook = ABAddressBookCreate();
-            //ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(nil, (CFErrorRef *)&error);
-            CFArrayRef allPeople = ABAddressBookCopyArrayOfAllPeople( addressBook );
+            ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(nil, (CFErrorRef *)&error);
+            CFArrayRef allPeople;
             CFIndex nPeople = ABAddressBookGetPersonCount( addressBook );
             
-            for ( int i = 0; i < nPeople; i++ )
-            {
-                ABRecordRef person = CFArrayGetValueAtIndex( allPeople, i );
-                NSString *firstName = (__bridge NSString *)(ABRecordCopyValue(person, kABPersonFirstNameProperty));
-                NSString *lastName = (__bridge NSString *)(ABRecordCopyValue(person, kABPersonLastNameProperty));
-                if(!firstName){
-                    firstName = @"";
-                }
-                if(!lastName){
-                    lastName = @"";
-                }
-                ABMultiValueRef phoneNumbers = ABRecordCopyValue(person, kABPersonPhoneProperty);
-                NSString *phoneNumber;
-                for (CFIndex i = 0; i < ABMultiValueGetCount(phoneNumbers); i++) {
-                    NSString *numberFromPhone = (__bridge_transfer NSString *) ABMultiValueCopyValueAtIndex(phoneNumbers, i);
-                    NSCharacterSet *onlyAllowedChars = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789"] invertedSet];
-                    phoneNumber = [[numberFromPhone componentsSeparatedByCharactersInSet:onlyAllowedChars] componentsJoinedByString:@""];
-                }
-                NSDictionary *user_dictionary = [[NSDictionary alloc]initWithObjectsAndKeys:lastName, @"last_name", firstName, @"first_name", phoneNumber, @"phone_number", nil];
-                [_phoneContacts addObject:user_dictionary];
-                [_phoneContactNumbers addObject:phoneNumber];
+            __block BOOL accessGranted = NO;
+            if (ABAddressBookRequestAccessWithCompletion != NULL) { // we're on iOS 6
+                dispatch_semaphore_t sema = dispatch_semaphore_create(0);
+                
+                ABAddressBookRequestAccessWithCompletion(addressBook, ^(bool granted, CFErrorRef error) {
+                    accessGranted = granted;
+                    dispatch_semaphore_signal(sema);
+                });
+                
+                dispatch_semaphore_wait(sema, DISPATCH_TIME_FOREVER);
             }
-            CFRelease(addressBook);
-
-            NSArray * friends = jsonResponse[@"friends"];
-            _friendsList = [[NSMutableArray alloc]init];
+            else { // we're on iOS 5 or older
+                accessGranted = YES;
+            }
             
-            for( int i = 0; i< [friends count]; i++){
-                NSDictionary * new_friend_dict = [NSJSONSerialization JSONObjectWithData: [friends[i] dataUsingEncoding:NSUTF8StringEncoding]
-                                                                                 options: NSJSONReadingMutableContainers
-                                                                                   error: &nserror];
-                [_friendsList addObject:new_friend_dict[@"phone_number"]];
-            }
-            for (int k = 0; k < [_phoneContacts count]; k++)
-            {
-                if (![_friendsList containsObject:_phoneContactNumbers[k]]){
-                    [_phoneNonFriendUsers addObject:_phoneContacts[k]];
-                    [_phoneNonFriendUsersNumbers addObject:_phoneContactNumbers[k]];
+            // If we have access to their contacts
+            if(accessGranted){
+                allPeople = ABAddressBookCopyArrayOfAllPeople(addressBook);
+                for ( int i = 0; i < nPeople; i++ )
+                {
+                    ABRecordRef person = CFArrayGetValueAtIndex( allPeople, i );
+                    NSString *firstName = (__bridge NSString *)(ABRecordCopyValue(person, kABPersonFirstNameProperty));
+                    NSString *lastName = (__bridge NSString *)(ABRecordCopyValue(person, kABPersonLastNameProperty));
+                    if(!firstName){
+                        firstName = @"";
+                    }
+                    if(!lastName){
+                        lastName = @"";
+                    }
+                    ABMultiValueRef phoneNumbers = ABRecordCopyValue(person, kABPersonPhoneProperty);
+                    NSString *phoneNumber;
+                    for (CFIndex i = 0; i < ABMultiValueGetCount(phoneNumbers); i++) {
+                        NSString *numberFromPhone = (__bridge_transfer NSString *) ABMultiValueCopyValueAtIndex(phoneNumbers, i);
+                        NSCharacterSet *onlyAllowedChars = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789"] invertedSet];
+                        phoneNumber = [[numberFromPhone componentsSeparatedByCharactersInSet:onlyAllowedChars] componentsJoinedByString:@""];
+                        
+                        if([phoneNumber length] == 11 && [[phoneNumber substringToIndex:1] isEqualToString:@"1"] ){
+                            NSRange phoneNumberRange = NSMakeRange(1, phoneNumber.length - 1);
+                            phoneNumber = [phoneNumber substringWithRange:phoneNumberRange];
+                        }
+                    }
+                    NSDictionary *user_dictionary = [[NSDictionary alloc]initWithObjectsAndKeys:lastName, @"last_name", firstName, @"first_name", phoneNumber, @"phone_number", nil];
+                    [_phoneContacts addObject:user_dictionary];
+                    [_phoneContactNumbers addObject:phoneNumber];
                 }
+                
+                CFRelease(addressBook);
+                NSArray * friends = jsonResponse[@"friends"];
+                _friendsList = [[NSMutableArray alloc]init];
+                
+                for( int i = 0; i< [friends count]; i++){
+                    NSDictionary * new_friend_dict = [NSJSONSerialization JSONObjectWithData: [friends[i] dataUsingEncoding:NSUTF8StringEncoding]
+                                                                                     options: NSJSONReadingMutableContainers
+                                                                                       error: &nserror];
+                    [_friendsList addObject:new_friend_dict[@"phone_number"]];
+                }
+                for (int k = 0; k < [_phoneContacts count]; k++)
+                {
+                    if (![_friendsList containsObject:_phoneContactNumbers[k]]){
+                        [_phoneNonFriendUsers addObject:_phoneContacts[k]];
+                        [_phoneNonFriendUsersNumbers addObject:_phoneContactNumbers[k]];
+                    }
+                }
+                [self getFriendsToInviteAndRegisteredUsers:_phoneNonFriendUsers];
             }
-            [self getFriendsToInviteAndRegisteredUsers:_phoneNonFriendUsers];
-        }
-        else{
-            
         }
     }
     
@@ -161,7 +176,6 @@
                 [_allFacebookFriends addObject: fb_friend];
             }
             NSLog(@"all_fb_friends array:%@", _allFacebookFriends);
-            
             [self.tableView reloadData];
         }
     }
@@ -569,6 +583,7 @@
                  
                  NSMutableString *full_name = [[NSMutableString alloc] initWithString: _searchResultRegistered[indexPath.row][@"first_name"]];
                  [full_name appendString: @" "];
+                 [full_name appendString: _searchResultRegistered[indexPath.row][@"last_name"]];
                  cell.textLabel.text = full_name;
              }
              else if(indexPath.section == 1){
@@ -591,6 +606,7 @@
                  
                  NSMutableString *full_name = [[NSMutableString alloc] initWithString: _searchResultNonRegistered[indexPath.row][@"first_name"]];
                  [full_name appendString: @" "];
+                 [full_name appendString: _searchResultRegistered[indexPath.row][@"last_name"]];
                  cell.textLabel.text = full_name;
              }
 
@@ -617,6 +633,7 @@
                  
                  NSMutableString *full_name = [[NSMutableString alloc] initWithString: _phoneRegisteredUsers[indexPath.row][@"first_name"]];
                  [full_name appendString: @" "];
+                 [full_name appendString: _phoneRegisteredUsers[indexPath.row][@"last_name"]];
                  cell.textLabel.text = full_name;
              }
              else if(indexPath.section == 1){
@@ -639,6 +656,7 @@
                  
                  NSMutableString *full_name = [[NSMutableString alloc] initWithString: _phoneNonRegisteredUsers[indexPath.row][@"first_name"]];
                  [full_name appendString: @" "];
+                 [full_name appendString: _phoneNonRegisteredUsers[indexPath.row][@"last_name"]];
                  cell.textLabel.text = full_name;
              }
          }
