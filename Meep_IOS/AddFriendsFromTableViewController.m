@@ -237,9 +237,7 @@
 {
     _searchResultRegistered = [[NSMutableArray alloc] init];
     _searchResultNonRegistered = [[NSMutableArray alloc] init];
-    
-    // needs case insensitive searching!
-    
+
     if([_viewTitle isEqualToString:@"From Contacts"]){
         for( int i = 0; i < [_phoneRegisteredUsers count]; i++){
             if([Search string:_phoneRegisteredUsers[i][@"first_name"] hasPrefix:searchText caseInsensitive:YES] || [Search string:_phoneRegisteredUsers[i][@"last_name"] hasPrefix:searchText caseInsensitive:YES] ){

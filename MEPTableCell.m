@@ -245,6 +245,11 @@
     return 60;
 }
 
++ (CGFloat) customLeftPanelBarHeight
+{
+    return 70;
+}
+
 + (UITableViewCell*) customFriendCell:(Friend*)friend
                              forTable:(UITableView*)tableView
                              selected:(BOOL)sel {
@@ -278,18 +283,18 @@
 + (UITableViewCell*) customGroupCell:(Group*)group forCell:(UITableViewCell*)cell forTable:(UITableView*)tableView selected:(BOOL)sel
 {
     UIView * lineSeparatorMask = [[UIView alloc] initWithFrame:CGRectMake(0, cell.frame.size.height-1, cell.frame.size.width, 1)];
-    lineSeparatorMask.backgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_BACKGROUND_COLOR]];
+    lineSeparatorMask.backgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",FRIEND_SEPARATOR_BACKGROUND_COLOR]];
     [cell addSubview:lineSeparatorMask];
     UIView * contentView = [[UIView alloc] initWithFrame:CGRectMake(3, 3, tableView.frame.size.width - 6, cell.frame.size.height - 6)];
     
-    contentView.backgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_DATA_BACKGROUND_COLOR]];
+    contentView.backgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",FRIEND_TABLE_BACKGROUND_COLOR]];
     contentView.layer.cornerRadius = 10;
     [contentView setTag:1];
     
     //Group *currentGroup = groups_list[indexPath.row];
     UILabel *groupHeader = [[UILabel alloc] initWithFrame:CGRectMake(60, 14, 235, 21)];
     groupHeader.text = group.name;
-    groupHeader.textColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_DATA_TEXT_COLOR]];
+    groupHeader.textColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",FRIEND_HEADER_TEXT_COLOR]];
     [groupHeader setFont:[UIFont systemFontOfSize:18]];
     [contentView addSubview:groupHeader];
     UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(8, 4, 40, 40)];
@@ -326,13 +331,13 @@
                              forTable:(UITableView*)tableView
                              selected:(BOOL)sel {
     UITableViewCell * cell = [[UITableViewCell alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 54)];
-    cell.backgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_BACKGROUND_COLOR]];
+    cell.backgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",FRIEND_TABLE_BACKGROUND_COLOR]];
     UIView * lineMask = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 1)];
     lineMask.backgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_BACKGROUND_COLOR]];
     [cell addSubview:lineMask];
     UIView * cellContents = [[UIView alloc] initWithFrame:CGRectMake(3, 3, cell.frame.size.width - 6, cell.frame.size.height + 6)];
     if (!sel) {
-        cellContents.backgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_DATA_BACKGROUND_COLOR]];
+        cellContents.backgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",FRIEND_TABLE_BACKGROUND_COLOR]];
     }
     else {
         cellContents.backgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",CELL_SELECT_COLOR]];
@@ -340,7 +345,7 @@
     cellContents.layer.cornerRadius = 10;
     UILabel *notificationHeader = [[UILabel alloc] initWithFrame:CGRectMake(60, 14, 235, 21)];
     notificationHeader.text = notification.message;
-    notificationHeader.textColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_DATA_TEXT_COLOR]];
+    notificationHeader.textColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",FRIEND_HEADER_TEXT_COLOR]];
     [notificationHeader setFont:[UIFont systemFontOfSize:12]];
     [cellContents addSubview:notificationHeader];
     UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(8, 4, 40, 40)];

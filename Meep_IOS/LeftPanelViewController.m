@@ -9,6 +9,7 @@
 #import "LeftPanelViewController.h"
 #import "DjangoAuthClient.h"
 #import "Colors.h"
+#import "MEPTableCell.h"
 
 #define LEFTTEXTCOLOR "FFFFFF"
 #define CELLBACKGROUNDCOLOR "34495e"
@@ -42,24 +43,16 @@
     [_delegate openAddFriendsPage];
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return [MEPTableCell customLeftPanelBarHeight];
+}
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return 3;
 }
 
-/*-(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
- {
- NSString *header;
- 
- if(section == 0){
- NSData *authenticated = [[NSUserDefaults standardUserDefaults] objectForKey:@"auth_client"];
- _authClient = [NSKeyedUnarchiver unarchiveObjectWithData:authenticated];
- header = _authClient.enc_username;
- }
- 
- return header;
- }*/
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -69,7 +62,7 @@
         numRows = 1;
     }
     else if(section == 1){
-        numRows = numRows -1;
+        numRows = numRows;
     }
     else{
         numRows = 1;
@@ -80,25 +73,21 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     if( indexPath.section == 0){
+        NSLog(@"selected profile section!!");
         [_delegate openProfilePage];
     }
-    
-    if([_navItems[indexPath.row] isEqualToString:@"Groups"]){
-        
-    }
-    
-    if (indexPath.section == 1){
-        NSLog(@"cell was 1");
-        if(indexPath.row == 1){
+
+    else if (indexPath.section == 1){
+        if([_navItems[indexPath.row] isEqualToString:@"Groups"]){
             [_delegate openGroupsPage];
         }
-        else if(indexPath.row == 2){
+        else if([_navItems[indexPath.row] isEqualToString:@"Friends"]){
             [_delegate openFriendsListPage];
         }
-        else if(indexPath.row == 3){
+        else if([_navItems[indexPath.row] isEqualToString:@"Search"]){
             [_delegate openAddFriendsPage];
         }
-        else if(indexPath.row == 4){
+        if([_navItems[indexPath.row] isEqualToString:@"Notifications"]){
             [_delegate openNotificationsPage];
         }
     }
@@ -111,11 +100,6 @@
     
 }
 
-
--(void)openProfilePage:(id)sender{
-    NSLog(@"in openprofile page sender");
-    //[_delegate openProfilePage];
-}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -137,14 +121,11 @@
         NSData *authenticated = [[NSUserDefaults standardUserDefaults] objectForKey:@"auth_client"];
         _authClient = [NSKeyedUnarchiver unarchiveObjectWithData:authenticated];
         name = _authClient.enc_username;
-        
-        //UILabel *userHeader = [[UILabel alloc] initWithFrame:CGRectMake(60, 10, 235, 21)];
-        UILabel *userHeader = [[UILabel alloc] initWithFrame:CGRectMake(60, 10, 70, 21)];
+
+        UILabel *userHeader = [[UILabel alloc] initWithFrame:CGRectMake(60, 10, 120, 21)];
         userHeader.text = name;
         [userHeader setFont:[UIFont systemFontOfSize:18]];
         userHeader.textColor = leftTextColor;
-        
-        userHeader.tag = 1;
         [cell.contentView addSubview:userHeader];
         
         //NEED TO ACTUALLY GET REAL PF PIC LATER!
@@ -156,7 +137,6 @@
         [cell.contentView addSubview:img];
     }
     else if(indexPath.section == 1){
-        //cell.textLabel.text = _navItems[indexPath.row];
         UILabel *leftNavHeader = [[UILabel alloc] initWithFrame:CGRectMake(60, 10, 120, 21)];
         leftNavHeader.text = _navItems[indexPath.row];
         [leftNavHeader setFont:[UIFont systemFontOfSize:18]];
@@ -185,14 +165,13 @@
         [cell.contentView addSubview:img];
     }
     else if(indexPath.section == 2){
-        NSInteger index = indexPath.row + 5;
         UILabel *settingsHeader = [[UILabel alloc] initWithFrame:CGRectMake(60, 10, 120, 21)];
-        settingsHeader.text = _navItems[index];
+        settingsHeader.text = @"Settings";
         [settingsHeader setFont:[UIFont systemFontOfSize:18]];
         settingsHeader.textColor = leftTextColor;
         [cell.contentView addSubview:settingsHeader];
         
-        UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(8, 4, 22, 22)];
+        UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(8, 4, 40, 40)];
         img.image = [UIImage imageNamed:@"settings"];
         img.layer.cornerRadius = img.frame.size.height/2;
         img.layer.masksToBounds = YES;
@@ -202,13 +181,13 @@
     return cell;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView indentationLevelForRowAtIndexPath:(NSIndexPath *)indexPath
+/*- (NSInteger)tableView:(UITableView *)tableView indentationLevelForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if(indexPath.section != 0){
         return 1;
     }
-    return 0;
-}
+    return 1;
+}*/
 
 
 #pragma mark -
@@ -218,9 +197,9 @@
 {
     UIColor * tableViewBackgroundColor = [Colors colorWithHexString: [NSString stringWithFormat:@"%s",TABLEBACKGROUNDCOLOR]];
     [super viewDidLoad];
-    _navItems = [[NSArray alloc] initWithObjects:@"Home",@"Groups", @"Friends",@"Search", @"Notifications",@"Settings" ,nil];
+    _navItems = [[NSArray alloc] initWithObjects:@"Groups", @"Friends", @"Notifications",nil];
     [self.navTable registerClass:[UITableViewCell class] forCellReuseIdentifier:@"navItem"];
-    self.navTable.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    //self.navTable.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     self.navTable.backgroundColor = tableViewBackgroundColor;
 }
 

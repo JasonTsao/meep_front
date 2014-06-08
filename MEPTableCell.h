@@ -17,7 +17,7 @@
 
 +(UIView*)eventCell:(Event*)event userLatitude:(float)lat userLongitude:(float)lng;
 +(UIView*)eventHeaderCell:(NSString*)dateText;
-
++ (CGFloat) customLeftPanelBarHeight;
 + (CGFloat) customFriendCellHeight;
 + (UITableViewCell*) customFriendCell:(Friend*)friend forTable:(UITableView*)tableView selected:(BOOL)sel;
 + (UITableViewCell*) customGroupCell:(Group*)group forCell:(UITableViewCell*)cell forTable:(UITableView*)tableView selected:(BOOL)sel;
