@@ -14,6 +14,9 @@
 
 @protocol FriendsListTableViewControllerDelegate
 - (void) backToCenterFromFriends:(FriendsListTableViewController *)controller;
+
+@required
+- (void)openAddFriendsPage;
 @end
 @interface FriendsListTableViewController : UITableViewController
 @property(nonatomic, strong) id <FriendsListTableViewControllerDelegate> delegate;

@@ -10,6 +10,7 @@
 #import "jsonParser.h"
 #import "MEPTableCell.h"
 #import "MEEPhttp.h"
+#import "AddFriendsViewController.h"
 
 @interface FriendsListTableViewController (){
     NSMutableArray *friends_list;
@@ -31,7 +32,6 @@
 - (IBAction)backToMain:(id)sender {
     [self.delegate backToCenterFromFriends:self];
 }
-
 
 - (void)getFriendsList
 {
@@ -85,7 +85,6 @@
 {
     [super viewDidLoad];
     
-
     self.title = @"Friends";
     self.navigationController.navigationBar.titleTextAttributes = [NSDictionary dictionaryWithObject:[UIColor whiteColor] forKey:UITextAttributeTextColor];
     UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
@@ -215,13 +214,19 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     //toFriendProfilePage
+    if ([segue.identifier isEqualToString:@"friendToSearchFriends"]){
+        AddFriendsViewController * add_friends = [segue destinationViewController];
+        [add_friends setDelegate:self];
+    }
+    else{
+        // Get the new view controller using [segue destinationViewController].
+        // Pass the selected object to the new view controller.
+        FriendProfileViewController * friend_profile = [segue destinationViewController];
+        NSIndexPath *path = [self.tableView indexPathForSelectedRow];
+        Friend *selected_friend = friends_list[path.row];
+        friend_profile.currentFriend = selected_friend;
+    }
     
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-    FriendProfileViewController * friend_profile = [segue destinationViewController];
-    NSIndexPath *path = [self.tableView indexPathForSelectedRow];
-    Friend *selected_friend = friends_list[path.row];
-    friend_profile.currentFriend = selected_friend;
 }
 
 

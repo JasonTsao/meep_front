@@ -1271,11 +1271,16 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                 <action selector="backToMain:" destination="2Td-NB-PR4" id="Vd6-BE-njo"/>
                             </connections>
                         </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" style="plain" systemItem="add" id="ar2-bL-RUq">
+                            <connections>
+                                <segue destination="5FU-yS-c5b" kind="push" identifier="friendToSearchFriends" id="DGJ-Mb-AHc"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HrG-Bf-XGG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="218" y="2448"/>
+            <point key="canvasLocation" x="-560" y="2512"/>
         </scene>
         <!--Friend Profile View Controller-->
         <scene sceneID="IYH-tF-8i4">
@@ -1386,7 +1391,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7hk-pQ-Gze" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-266" y="2412"/>
+            <point key="canvasLocation" x="-1194" y="2424"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="EYm-JU-T7i">
@@ -1476,21 +1481,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </objects>
             <point key="canvasLocation" x="-1547" y="1713"/>
         </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="DbO-72-mmP">
-            <objects>
-                <navigationController definesPresentationContext="YES" id="bUy-Pa-QHO" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Mou-Vw-FuM">
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="5FU-yS-c5b" kind="relationship" relationship="rootViewController" id="ROR-4y-UGT"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="E8d-Ug-2VU" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-1527" y="2481"/>
-        </scene>
         <!--Add Friends View Controller-->
         <scene sceneID="Gxd-YQ-Ip6">
             <objects>
@@ -1517,17 +1507,11 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                             <outlet property="delegate" destination="5FU-yS-c5b" id="PXh-KO-ubc"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="QJM-JB-ltX">
-                        <barButtonItem key="leftBarButtonItem" title="Back" id="Mcl-Vk-t1g">
-                            <connections>
-                                <action selector="backToCenterFromAddFriends:" destination="5FU-yS-c5b" id="z22-iF-EMH"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" id="QJM-JB-ltX"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5et-b3-8LH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1074" y="2557"/>
+            <point key="canvasLocation" x="-140" y="3041"/>
         </scene>
         <!--Add Friends From Table View Controller-->
         <scene sceneID="hbC-vo-khu">
@@ -1578,7 +1562,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                     </connections>
                 </searchDisplayController>
             </objects>
-            <point key="canvasLocation" x="-637" y="2535"/>
+            <point key="canvasLocation" x="323" y="3329"/>
         </scene>
     </scenes>
     <resources>
@@ -1593,6 +1577,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="5q4-5L-BtY"/>
+        <segue reference="SkQ-ts-ddb"/>
     </inferredMetricsTieBreakers>
 </document>
