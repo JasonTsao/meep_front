@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3C1959D61944FFBD00A6390C /* Search.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C1959D51944FFBD00A6390C /* Search.m */; };
 		3C1FD80A19287EC000AA4593 /* MEPGlossyUIView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C1FD80919287EC000AA4593 /* MEPGlossyUIView.m */; };
 		3C22DBFE1928A823006BCF7B /* UIBarButtonAdd_2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C22DBFD1928A823006BCF7B /* UIBarButtonAdd_2x.png */; };
 		3CB231FE192176B900684E1D /* MEPLocationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CB231FD192176B900684E1D /* MEPLocationService.m */; };
@@ -150,6 +151,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3C1959D41944FFBD00A6390C /* Search.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Search.h; path = ../Search.h; sourceTree = "<group>"; };
+		3C1959D51944FFBD00A6390C /* Search.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Search.m; path = ../Search.m; sourceTree = "<group>"; };
 		3C1FD80819287EC000AA4593 /* MEPGlossyUIView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MEPGlossyUIView.h; sourceTree = "<group>"; };
 		3C1FD80919287EC000AA4593 /* MEPGlossyUIView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MEPGlossyUIView.m; sourceTree = "<group>"; };
 		3C22DBFD1928A823006BCF7B /* UIBarButtonAdd_2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = UIBarButtonAdd_2x.png; sourceTree = "<group>"; };
@@ -473,6 +476,8 @@
 				96ACDDD9192C3E3D0040D5FC /* Colors.m */,
 				96ACDDDB192D49990040D5FC /* jsonParser.h */,
 				96ACDDDC192D49990040D5FC /* jsonParser.m */,
+				3C1959D41944FFBD00A6390C /* Search.h */,
+				3C1959D51944FFBD00A6390C /* Search.m */,
 			);
 			path = Meep_IOS;
 			sourceTree = "<group>";
@@ -896,6 +901,7 @@
 				968630351909FAB200CAE305 /* Friend.m in Sources */,
 				3CDDCDA419087D0000F851EE /* EventElementViewController.m in Sources */,
 				3CCCECEC192DAF8C000A9CCE /* MEPTableCell.m in Sources */,
+				3C1959D61944FFBD00A6390C /* Search.m in Sources */,
 				3C1FD80A19287EC000AA4593 /* MEPGlossyUIView.m in Sources */,
 				3CCF971B190827CE005FA454 /* AccountViewController.m in Sources */,
 				968466D3191E9DC600E56901 /* AddRemoveFriendsFromGroupTableViewController.m in Sources */,

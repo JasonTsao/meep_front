@@ -8,6 +8,7 @@
 #import <FacebookSDK/FacebookSDK.h>
 #import "AddFriendsFromTableViewController.h"
 #import "MEPAppDelegate.h"
+#import "Search.h"
 
 @interface AddFriendsFromTableViewController ()
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
@@ -231,6 +232,7 @@
     return YES;
 }*/
 
+
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
     _searchResultRegistered = [[NSMutableArray alloc] init];
@@ -240,12 +242,12 @@
     
     if([_viewTitle isEqualToString:@"From Contacts"]){
         for( int i = 0; i < [_phoneRegisteredUsers count]; i++){
-            if([_phoneRegisteredUsers[i][@"first_name"] hasPrefix:searchText]){
+            if([Search string:_phoneRegisteredUsers[i][@"first_name"] hasPrefix:searchText caseInsensitive:YES] || [Search string:_phoneRegisteredUsers[i][@"last_name"] hasPrefix:searchText caseInsensitive:YES] ){
                 [_searchResultRegistered addObject:_phoneRegisteredUsers[i]];
             }
         }
         for( int i = 0; i < [_phoneNonRegisteredUsers count]; i++){
-            if([_phoneNonRegisteredUsers[i][@"first_name"] hasPrefix:searchText]){
+            if([Search string:_phoneNonRegisteredUsers[i][@"first_name"] hasPrefix:searchText caseInsensitive:YES] || [Search string:_phoneNonRegisteredUsers[i][@"last_name"] hasPrefix:searchText caseInsensitive:YES] ){
                 [_searchResultNonRegistered addObject:_phoneNonRegisteredUsers[i]];
             }
         }
@@ -606,7 +608,7 @@
                  
                  NSMutableString *full_name = [[NSMutableString alloc] initWithString: _searchResultNonRegistered[indexPath.row][@"first_name"]];
                  [full_name appendString: @" "];
-                 [full_name appendString: _searchResultRegistered[indexPath.row][@"last_name"]];
+                 [full_name appendString: _searchResultNonRegistered[indexPath.row][@"last_name"]];
                  cell.textLabel.text = full_name;
              }
 
