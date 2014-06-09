@@ -350,6 +350,19 @@
 
 
 #pragma mark - Navigation
+- (BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender
+{
+    if( [selected_friends_list count] == 0){
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No Friends Selected!"
+                                                        message:@"Please Select a friend"
+                                                       delegate:self
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        [alert show];
+        return NO;
+    }
+    return YES;
+}
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender

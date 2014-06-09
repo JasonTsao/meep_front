@@ -111,69 +111,81 @@
     NSMutableArray *invitedFriendsToSend = [[NSMutableArray alloc] init];
     NSMutableDictionary * postDict;
     
-    for (int i = 0; i < [_invited_friends_list count]; i++){
-        NSString *user_id = [NSString stringWithFormat: @"%i", [_invited_friends_list[i] account_id]];
-        NSDictionary *friend_dict = [[NSDictionary alloc] initWithObjectsAndKeys:user_id,@"user_id", @"false", @"can_invite_friends", nil];
-        [invitedFriendsToSend addObject:friend_dict];
-        NSLog(@"invited friend: %i", [_invited_friends_list[i] account_id]);
-    }
-    
-    NSString * requestURL = [NSString stringWithFormat:@"%@new",[MEEPhttp eventURL]];
-    //NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:@"2",@"user", messageText, @"description", invitedFriendsToSend, @"invited_friends", nil];
-    
-    
-    if(_selectedGroup != nil){
-        // send group id to create event as well
-        NSString *group_id = [NSString stringWithFormat:@"%i", _selectedGroup.group_id];
-        postDict = [[NSMutableDictionary alloc] initWithObjectsAndKeys:messageText, @"description", invitedFriendsToSend, @"invited_friends", group_id,@"group_id", nil];
+    if([messageText length] > 0){
+        for (int i = 0; i < [_invited_friends_list count]; i++){
+            NSString *user_id = [NSString stringWithFormat: @"%i", [_invited_friends_list[i] account_id]];
+            NSDictionary *friend_dict = [[NSDictionary alloc] initWithObjectsAndKeys:user_id,@"user_id", @"false", @"can_invite_friends", nil];
+            [invitedFriendsToSend addObject:friend_dict];
+            NSLog(@"invited friend: %i", [_invited_friends_list[i] account_id]);
+        }
+        
+        NSString * requestURL = [NSString stringWithFormat:@"%@new",[MEEPhttp eventURL]];
+        //NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:@"2",@"user", messageText, @"description", invitedFriendsToSend, @"invited_friends", nil];
+        
+        
+        if(_selectedGroup != nil){
+            // send group id to create event as well
+            NSString *group_id = [NSString stringWithFormat:@"%i", _selectedGroup.group_id];
+            postDict = [[NSMutableDictionary alloc] initWithObjectsAndKeys:messageText, @"description", invitedFriendsToSend, @"invited_friends", group_id,@"group_id", nil];
+        }
+        else{
+            postDict = [[NSMutableDictionary alloc] initWithObjectsAndKeys:messageText, @"description", invitedFriendsToSend, @"invited_friends", nil];
+        }
+        if (![_locationString isEqualToString:@""]) {
+            [postDict setObject:_locationString forKey:@"location_name"];
+        }
+        if (![_dateString isEqualToString:@""] && ![_timeString isEqualToString:@""]) {
+            NSDateFormatter * df = [[NSDateFormatter alloc] init];
+            [df setDateFormat:@"yyyy-MM-dd HH:mm"];
+            NSDateFormatter * parsingFormat = [[NSDateFormatter alloc] init];
+            [parsingFormat setDateFormat:@"hh:mm a MMM dd, yyyy"];
+            
+            NSString * dateTimeString = [NSString stringWithFormat:@"%@ %@",_timeString, _dateString];
+            NSDate * startDateTime = [parsingFormat dateFromString:dateTimeString];
+            NSString * startDateTimeString = [df stringFromDate:startDateTime];
+            [postDict setObject:startDateTimeString forKey:@"start_time"];
+        }
+        
+        NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
+        NSURLResponse * response = nil;
+        NSError * error = nil;
+        NSData *return_data = [NSURLConnection sendSynchronousRequest:request
+                                                    returningResponse:&response
+                                                                error:&error];
+        
+        NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:return_data options:0 error:&error];
+        NSLog(@"jsonResponse: %@", jsonResponse);
+        /*
+         NSArray * success = jsonResponse[@"success"];
+         NSMutableArray * return_invited_friends = jsonResponse[@"invited_friends"];
+         NSMutableArray * invitedFriendsList = [[NSMutableArray alloc]init];
+         
+         for (int i = 0; i < [return_invited_friends count]; i++){
+         
+         InvitedFriend * invited_friend = [[InvitedFriend alloc] initWithName:[_invited_friends_list[i] name] withAccountID:return_invited_friends[i][@"user"] withAttending:return_invited_friends[i][@"attending"] withCanInvite:return_invited_friends[i][@"can_invite_friends"]];
+         [invitedFriendsList addObject: invited_friend];
+         }*/
+        
+        Event * newEvent = [[Event alloc] initWithDescription:jsonResponse[@"event"][@"description"] withName:jsonResponse[@"event"][@"name"] startTime:jsonResponse[@"event"][@"start_time"] eventId:[jsonResponse[@"event"][@"id"] integerValue]];
+        
+        UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"CenterStoryboard" bundle:nil];
+        EventPageViewController *eventPageViewController = (EventPageViewController *)[storyboard instantiateViewControllerWithIdentifier:@"EventViewController"];
+        eventPageViewController.currentEvent = newEvent;
+        [eventPageViewController setDelegate:self.delegate];
+        UINavigationController *navigation = [[UINavigationController alloc]initWithRootViewController:eventPageViewController];
+        [self presentViewController:navigation animated:YES completion:nil];
+        //[self presentViewController:eventPageViewController animated:YES completion:nil];
     }
     else{
-        postDict = [[NSMutableDictionary alloc] initWithObjectsAndKeys:messageText, @"description", invitedFriendsToSend, @"invited_friends", nil];
-    }
-    if (![_locationString isEqualToString:@""]) {
-        [postDict setObject:_locationString forKey:@"location_name"];
-    }
-    if (![_dateString isEqualToString:@""] && ![_timeString isEqualToString:@""]) {
-        NSDateFormatter * df = [[NSDateFormatter alloc] init];
-        [df setDateFormat:@"yyyy-MM-dd HH:mm"];
-        NSDateFormatter * parsingFormat = [[NSDateFormatter alloc] init];
-        [parsingFormat setDateFormat:@"hh:mm a MMM dd, yyyy"];
-        
-        NSString * dateTimeString = [NSString stringWithFormat:@"%@ %@",_timeString, _dateString];
-        NSDate * startDateTime = [parsingFormat dateFromString:dateTimeString];
-        NSString * startDateTimeString = [df stringFromDate:startDateTime];
-        [postDict setObject:startDateTimeString forKey:@"start_time"];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Message is empty!"
+                                                        message:@"Please Write a message"
+                                                       delegate:self
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        [alert show];
     }
     
-    NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
-    NSURLResponse * response = nil;
-    NSError * error = nil;
-    NSData *return_data = [NSURLConnection sendSynchronousRequest:request
-                                                returningResponse:&response
-                                                            error:&error];
     
-    NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:return_data options:0 error:&error];
-    NSLog(@"jsonResponse: %@", jsonResponse);
-    /*
-    NSArray * success = jsonResponse[@"success"];
-    NSMutableArray * return_invited_friends = jsonResponse[@"invited_friends"];
-    NSMutableArray * invitedFriendsList = [[NSMutableArray alloc]init];
-    
-    for (int i = 0; i < [return_invited_friends count]; i++){
-     
-     InvitedFriend * invited_friend = [[InvitedFriend alloc] initWithName:[_invited_friends_list[i] name] withAccountID:return_invited_friends[i][@"user"] withAttending:return_invited_friends[i][@"attending"] withCanInvite:return_invited_friends[i][@"can_invite_friends"]];
-     [invitedFriendsList addObject: invited_friend];
-     }*/
-    
-    Event * newEvent = [[Event alloc] initWithDescription:jsonResponse[@"event"][@"description"] withName:jsonResponse[@"event"][@"name"] startTime:jsonResponse[@"event"][@"start_time"] eventId:[jsonResponse[@"event"][@"id"] integerValue]];
-    
-    UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"CenterStoryboard" bundle:nil];
-    EventPageViewController *eventPageViewController = (EventPageViewController *)[storyboard instantiateViewControllerWithIdentifier:@"EventViewController"];
-    eventPageViewController.currentEvent = newEvent;
-    [eventPageViewController setDelegate:self.delegate];
-    UINavigationController *navigation = [[UINavigationController alloc]initWithRootViewController:eventPageViewController];
-    [self presentViewController:navigation animated:YES completion:nil];
-    //[self presentViewController:eventPageViewController animated:YES completion:nil];
 }
 
 
