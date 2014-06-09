@@ -152,7 +152,7 @@
     img.layer.cornerRadius = imageHeight/2;
     // img.layer.masksToBounds = YES;
     [cell addSubview:img];
-    
+
     // This view creates the background for the content
     UIView * contentFrame = [[UIView alloc] initWithFrame:CGRectMake(contentBoxXCoord - bgndImgScale, contentBoxYCoord - bgndImgScale + 1, contentBoxWidth + (bgndImgScale*2) - 2, contentBoxHeight + (bgndImgScale*2) - 2)];
     contentFrame.layer.cornerRadius = 6;

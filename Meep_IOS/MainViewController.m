@@ -87,7 +87,6 @@
     BOOL viewExists = [self setupView];
     self.locationServiceManager = [[MEPLocationService alloc] init];
     
-
     if( viewExists){
         NSLog(@"view already exists");
     }
@@ -548,8 +547,12 @@
         _eventPageViewController.notifications = _eventNotifications[event_id];
         NSInteger numNotificationsForEvent = [_eventNotifications[event_id] count];
         [_eventNotifications removeObjectForKey:event_id];
-        [UIApplication sharedApplication].applicationIconBadgeNumber -= numNotificationsForEvent;
         
+        // remove the event notifications from user defaults
+        NSData *data = [NSKeyedArchiver archivedDataWithRootObject:_eventNotifications];
+        [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"eventNotifications"];
+        [NSUserDefaults resetStandardUserDefaults];
+        [UIApplication sharedApplication].applicationIconBadgeNumber -= numNotificationsForEvent;
     }
     
     [self.eventPageViewController setDelegate:self];
