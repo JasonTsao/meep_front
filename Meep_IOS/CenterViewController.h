@@ -37,7 +37,7 @@
 @interface CenterViewController : UIViewController <LeftPanelViewControllerDelegate, RightPanelViewControllerDelegate, EventCreatorViewControllerDelegate, EventPageViewControllerDelegate, AccountViewControllerDelegate, UITableViewDelegate>
 
 @property (nonatomic, assign) id<CenterViewControllerDelegate> delegate;
-
+@property (nonatomic) NSMutableDictionary *eventNotifications;
 @property (nonatomic, weak) IBOutlet UIButton *leftButton;
 @property (nonatomic, weak) IBOutlet UIButton *rightButton;
 @property(nonatomic) BOOL showingLeftPanel;

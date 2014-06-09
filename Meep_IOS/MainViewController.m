@@ -152,6 +152,7 @@
     if(_centerViewController == nil){
         _centerViewController = (GroupsViewController *)[storyboard instantiateViewControllerWithIdentifier:@"centerView"];
         _centerViewController.delegate = self;
+        _centerViewController.eventNotifications = self.eventNotifications;
         
         [self.view addSubview:_centerViewController.view];
         [self addChildViewController:_centerViewController];
@@ -544,7 +545,10 @@
     if([_eventNotifications objectForKey:event_id]){
         NSArray *event_notifications = _eventNotifications[event_id];
 
+        // set notifications for event page
         _eventPageViewController.notifications = _eventNotifications[event_id];
+        
+        //code for effectively saying you've viewed these notifications and persist that
         NSInteger numNotificationsForEvent = [_eventNotifications[event_id] count];
         [_eventNotifications removeObjectForKey:event_id];
         

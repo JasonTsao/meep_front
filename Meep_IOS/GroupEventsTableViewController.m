@@ -129,7 +129,7 @@
     
     self.eventCellArray = [[NSMutableArray alloc] init];
     for (Event * event in unsortedEventArray) {
-        [_eventCellArray addObject:[MEPTableCell eventCell:event userLatitude:_lat userLongitude:_lng]];
+        [_eventCellArray addObject:[MEPTableCell eventCell:event userLatitude:_lat userLongitude:_lng hasNotification:NO]];
     }
 
     

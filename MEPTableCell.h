@@ -15,7 +15,7 @@
 
 @interface MEPTableCell : NSObject
 
-+(UIView*)eventCell:(Event*)event userLatitude:(float)lat userLongitude:(float)lng;
++(UIView*)eventCell:(Event*)event userLatitude:(float)lat userLongitude:(float)lng hasNotification:(BOOL)notification;
 +(UIView*)eventHeaderCell:(NSString*)dateText;
 + (CGFloat) customLeftPanelBarHeight;
 + (CGFloat) customFriendCellHeight;

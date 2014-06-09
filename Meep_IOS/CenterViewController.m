@@ -503,7 +503,14 @@
     for (NSString * key in [_eventData allKeys]) {
         orderedTableCells = [[NSMutableArray alloc] init];
         for (Event * event in [_eventData objectForKey:key]) {
-            UIView * eventCover = [MEPTableCell eventCell:event userLatitude:_lat userLongitude:_lng];
+            BOOL hasNotification = NO;
+            
+            if([_eventNotifications objectForKey:[NSString stringWithFormat:@"%i", event.event_id ]]){
+                NSLog(@"there is a notification for : %i", event.event_id);
+                hasNotification = YES;
+            }
+            
+            UIView * eventCover = [MEPTableCell eventCell:event userLatitude:_lat userLongitude:_lng hasNotification:hasNotification];
             [orderedTableCells addObject:eventCover];
         }
         [_eventCellData setObject:orderedTableCells forKey:key];

@@ -295,7 +295,12 @@
 -(void)application:(UIApplication *)application
 didReceiveRemoteNotification:(NSDictionary *)userInfo
 fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler{
+    NSLog(@"receieved remote notification");
+    NSLog(@"number of badge icons: %i", application.applicationIconBadgeNumber);
     
+    if(application.applicationIconBadgeNumber < 0){
+        application.applicationIconBadgeNumber = 0;
+    }
     application.applicationIconBadgeNumber++;
     
     [NotificationHandler handleNotification:userInfo forMainView:_viewController];

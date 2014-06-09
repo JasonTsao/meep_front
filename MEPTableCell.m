@@ -28,6 +28,7 @@
 #define ICON_BACKGROUND_COLOR "000000"
 #define MAIN_TEXT_COLOR "FFFFFF"
 #define NAV_BAR_COLOR "000000"
+#define RECIEVED_NOTIFICATION_COLOR "#FF0000"
 
 
 //also defined in CenterPanelViewController
@@ -42,7 +43,7 @@
 
 @implementation MEPTableCell
 
-+(UIView*)eventCell:(Event*)event userLatitude:(float)lat userLongitude:(float)lng{
++(UIView*)eventCell:(Event*)event userLatitude:(float)lat userLongitude:(float)lng hasNotification:(BOOL)notification{
     // UITableViewCell * cell = [[UITableViewCell alloc] initWithFrame:CGRectMake(0, 0, 320, 80)];
     UIView * cell = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 80)];
     NSString * description = event.description;
@@ -80,7 +81,15 @@
     UIColor * staticImageColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",STATIC_IMAGE_COLOR]];
     UIColor * backgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_BACKGROUND_COLOR]];
     UIColor * contentBackgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",CONTENT_BACKGROUND_COLOR]];
-    UIColor * iconBackgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",ICON_BACKGROUND_COLOR]];
+    UIColor * iconBackgroundColor;
+    
+    if(notification){
+        //iconBackgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",RECIEVED_NOTIFICATION_COLOR]];
+        iconBackgroundColor = [UIColor redColor];
+    }
+    else{
+        iconBackgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",ICON_BACKGROUND_COLOR]];
+    }
     
     
     cell.backgroundColor = backgroundColor;
