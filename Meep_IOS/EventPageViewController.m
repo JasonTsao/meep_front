@@ -28,6 +28,8 @@
 
 @interface EventPageViewController ()
 @property (weak, nonatomic) IBOutlet UIView *bannerView;
+@property (weak, nonatomic) UIView *slideMenu;
+@property (nonatomic, assign) BOOL slideMenuShowing;
 
 @property (weak, nonatomic) IBOutlet UITableView *eventInfoTable;
 @property (weak, nonatomic) IBOutlet UICollectionView *friendsCollection;
@@ -149,6 +151,9 @@
 }
 
 - (IBAction)openEventOptions:(id)sender {
+    
+    
+    //[self toggleSlideMenu]; // FOR TOGGLING SLIDE OPTIONS BAR
     
     //if user is host
     UIActionSheet *eventOptionsPopup = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Chat",@"Leave Event", @"Edit Event", @"Add/Remove Friends",nil];
@@ -555,6 +560,47 @@
     [self.view addSubview:_bannerView];
 }
 
+// SHOW AND HIDE SLIDE MENU NOT WORKING BUT TOGGLE WORKS
+-(void) showSlideMenu
+{
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:1.5];
+    [UIView setAnimationDelay:0.0];
+    _slideMenu.frame = CGRectMake(0, 100, 320, 500);
+    [UIView commitAnimations];
+}
+
+-(void) hideSlideMenu
+{
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:1.5];
+    [UIView setAnimationDelay:0.0];
+    _slideMenu.frame = CGRectMake(0, 470, 320, 500);
+    [UIView commitAnimations];
+}
+
+-(void) toggleSlideMenu
+{
+    NSLog(@"toggline slide menu!");
+    if(!self.slideMenuShowing){
+        NSLog(@"about to show slide menu!");
+        [self showSlideMenu];
+        _slideMenuShowing = YES;
+    }else{
+        NSLog(@"about to hide slide menu");
+        [self hideSlideMenu];
+        _slideMenuShowing = NO;
+    }
+}
+
+- (void)createSlideMenu
+{
+    _slideMenu = [[UIView alloc]initWithFrame:CGRectMake(0,470,320,200)]; // subView is an ivar
+    // Add stuffs to your subview
+    _slideMenu.backgroundColor = [UIColor greenColor];
+    [self.view addSubview:_slideMenu];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -575,7 +621,8 @@
     _mapView = [[MKMapView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 120.0)];
     
     //ADD CODE FOR CHECKING IF CURRENT USER HAS VIeWED THIS PAGE, IF NOT AND THIS IS FIRST TIME VIEWING, SAVE has_viewed AS TRUE
-    
+    self.slideMenuShowing = NO;
+    [self createSlideMenu];
     
     //getting location data
     if (!(_currentEvent.locationAddress == (id)[NSNull null] || _currentEvent.locationAddress.length == 0)) {

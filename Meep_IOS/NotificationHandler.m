@@ -99,7 +99,12 @@
     }
     //EVENT CHAT
     else if( [userInfo[@"notification_type"] isEqualToString:@"event_chat"]){
-        NSMutableDictionary *eventNotifications = viewController.eventNotifications;
+        //NSMutableDictionary *eventNotifications = viewController.eventNotifications;
+        
+        NSData *eventNotificationData = [[NSUserDefaults standardUserDefaults] objectForKey:@"eventNotifications"];
+        NSMutableDictionary *eventNotifications = [NSKeyedUnarchiver unarchiveObjectWithData:eventNotificationData];
+        NSLog(@"event notifications in notificaiton handler: %@", eventNotifications);
+        
         Notification *new_notification = [[Notification alloc] init];
         
         //Code for updating chat table if person is looking at it
@@ -119,13 +124,7 @@
             }
             
         }
-        /*UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"handling a chat notification!"
-                                                        message:[NSString stringWithFormat:@"%@", userInfo[@"aps"][@"alert"]]
-                                                       delegate:self
-                                              cancelButtonTitle:@"OK"
-                                              otherButtonTitles:nil];
-        [alert show];*/
-        
+
         NSMutableArray *notifications_for_event;
         NSString *key = [NSString stringWithFormat:@"%@",userInfo[@"event_id"]];
         if( [eventNotifications objectForKey:key]){
@@ -141,6 +140,10 @@
         eventNotifications[key] = notifications_for_event;
         
         viewController.eventNotifications = eventNotifications;
+        
+        NSData *data = [NSKeyedArchiver archivedDataWithRootObject:eventNotifications];
+        [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"eventNotifications"];
+        [NSUserDefaults resetStandardUserDefaults];
     }
     // USER ADDED TO GROUP
     else if( [userInfo[@"notification_type"] isEqualToString:@"group_added"]){

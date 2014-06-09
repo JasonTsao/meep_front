@@ -111,18 +111,24 @@
 
 - (void) loadMainViewAfterAuthentication
 {
-    
-    NSLog(@"loading main view after authentication");
     [_authenticationViewController dismissViewControllerAnimated:YES completion:nil];
-    NSLog(@"main view controller %@", self.viewController);
     
     //self.window.rootViewController = self.viewController;
     //[self.window makeKeyAndVisible];
     self.viewController = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
     
     //initialize notifications for main view controller
+    NSData *eventNotificationData = [[NSUserDefaults standardUserDefaults] objectForKey:@"eventNotifications"];
+    self.viewController.eventNotifications  = [NSKeyedUnarchiver unarchiveObjectWithData:eventNotificationData];
+    NSLog(@"event notifications in MEP app delegate: %@", self.viewController.eventNotifications);
+    
     if (self.viewController.eventNotifications == nil){
+        NSLog(@"initializing event notifications in mep app delegate!");
         self.viewController.eventNotifications = [[NSMutableDictionary alloc] init];
+        
+        NSData *data = [NSKeyedArchiver archivedDataWithRootObject:self.viewController.eventNotifications];
+        [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"eventNotifications"];
+        [NSUserDefaults resetStandardUserDefaults];
     }
     if (self.viewController.groupNotifications == nil){
         self.viewController.groupNotifications = [[NSMutableDictionary alloc] init];
