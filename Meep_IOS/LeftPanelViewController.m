@@ -12,8 +12,9 @@
 #import "MEPTableCell.h"
 
 #define LEFTTEXTCOLOR "FFFFFF"
-#define CELLBACKGROUNDCOLOR "34495e"
-#define TABLEBACKGROUNDCOLOR "34495e"
+#define CELLBACKGROUNDCOLOR "2ecc71"
+#define TABLEBACKGROUNDCOLOR "2ecc71"
+#define VIEWBACKGROUNDCOLOR "2ecc71"
 
 @interface LeftPanelViewController ()
 
@@ -124,7 +125,7 @@
 
         UILabel *userHeader = [[UILabel alloc] initWithFrame:CGRectMake(60, 10, 120, 21)];
         userHeader.text = name;
-        [userHeader setFont:[UIFont systemFontOfSize:18]];
+        [userHeader setFont:[UIFont fontWithName:@"AppleSDGothicNeo-Regular" size:18.0f]];
         userHeader.textColor = leftTextColor;
         [cell.contentView addSubview:userHeader];
         
@@ -139,7 +140,7 @@
     else if(indexPath.section == 1){
         UILabel *leftNavHeader = [[UILabel alloc] initWithFrame:CGRectMake(60, 10, 120, 21)];
         leftNavHeader.text = _navItems[indexPath.row];
-        [leftNavHeader setFont:[UIFont systemFontOfSize:18]];
+        [leftNavHeader setFont:[UIFont fontWithName:@"AppleSDGothicNeo-Regular" size:18.0f]];
         leftNavHeader.textColor = leftTextColor;
         [cell.contentView addSubview:leftNavHeader];
         
@@ -167,7 +168,7 @@
     else if(indexPath.section == 2){
         UILabel *settingsHeader = [[UILabel alloc] initWithFrame:CGRectMake(60, 10, 120, 21)];
         settingsHeader.text = @"Settings";
-        [settingsHeader setFont:[UIFont systemFontOfSize:18]];
+        [settingsHeader setFont:[UIFont fontWithName:@"AppleSDGothicNeo-Regular" size:18.0f]];
         settingsHeader.textColor = leftTextColor;
         [cell.contentView addSubview:settingsHeader];
         
@@ -195,12 +196,18 @@
 
 - (void)viewDidLoad
 {
+    
     UIColor * tableViewBackgroundColor = [Colors colorWithHexString: [NSString stringWithFormat:@"%s",TABLEBACKGROUNDCOLOR]];
+    UIColor * viewControllerBackgroundColor = [Colors colorWithHexString: [NSString stringWithFormat:@"%s", VIEWBACKGROUNDCOLOR]];
+    
+    self.view.backgroundColor = viewControllerBackgroundColor;
+    
     [super viewDidLoad];
     _navItems = [[NSArray alloc] initWithObjects:@"Groups", @"Friends", @"Notifications",nil];
     [self.navTable registerClass:[UITableViewCell class] forCellReuseIdentifier:@"navItem"];
     //self.navTable.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     self.navTable.backgroundColor = tableViewBackgroundColor;
+    
 }
 
 - (void)viewDidUnload
