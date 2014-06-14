@@ -67,6 +67,7 @@
 @property (nonatomic, assign) NSInteger numDates;
 
 @property (nonatomic, strong) NSMutableArray *datesArray;
+@property (nonatomic, strong) NSMutableArray *datesEpochTimeArray;
 
 @property (nonatomic, strong) NSMutableDictionary * eventData;
 @property (nonatomic, strong) NSMutableDictionary * eventCellData;
@@ -300,6 +301,48 @@
     return UIStatusBarStyleLightContent;
 }
 */
+-(NSInteger)getIndexOfClosestDay
+{
+    NSInteger indexOfClosestDay = 0;
+    NSTimeInterval closest_time_difference = 0;
+    
+    NSDate* date = [NSDate date];
+    NSTimeInterval current_epoch_time_date = [date timeIntervalSince1970];
+
+    for (NSInteger i=0; i < [_datesEpochTimeArray count]; i++){
+        if (closest_time_difference == 0){
+            closest_time_difference = current_epoch_time_date - [_datesEpochTimeArray[i] doubleValue];
+            
+            if(closest_time_difference < 0){
+                closest_time_difference = -closest_time_difference;
+            }
+            indexOfClosestDay = i;
+            continue;
+        }
+        
+        NSTimeInterval time_difference = current_epoch_time_date - [_datesEpochTimeArray[i] doubleValue];
+        if(time_difference < 0){
+            time_difference = -time_difference;
+        }
+        
+        if(time_difference < closest_time_difference){
+            closest_time_difference = time_difference;
+            indexOfClosestDay = i;
+        }
+
+    }
+    return indexOfClosestDay;
+}
+
+-(void)scrollToClosestToCurrentDay
+{
+    if([_datesArray count] > 0){
+        NSInteger currentDaySectionIndex = [self getIndexOfClosestDay];
+        NSInteger currentDayRowIndex = 0;
+        NSIndexPath *currentDayIndexPath = [NSIndexPath indexPathForRow:currentDayRowIndex inSection:currentDaySectionIndex];
+        [_upcomingEvents scrollToRowAtIndexPath:currentDayIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+    }
+}
 
 - (void)viewDidLoad
 {
@@ -471,6 +514,7 @@
     NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:_data options:0 error:&error];
     NSArray * upcoming = jsonResponse[@"upcoming_events"];
     _datesArray = [[NSMutableArray alloc] init];
+    _datesEpochTimeArray = [[NSMutableArray alloc] init];
     NSArray *upcomingEvents = [jsonParser eventsArray:upcoming];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"yyyy-MM-dd"];
@@ -485,6 +529,7 @@
         NSTimeInterval interval = [event.start_time doubleValue];
         NSDate * eventDate = [[NSDate alloc] initWithTimeIntervalSince1970:interval];
         NSString * dateString = [dateFormatter stringFromDate:eventDate];
+        [_datesEpochTimeArray addObject:[NSString stringWithFormat:@"%f",interval]];
         if ([_eventData objectForKey:dateString]) {
             NSMutableArray * unsortedEventData = [_eventData objectForKey:dateString];
             [unsortedEventData addObject:event];
@@ -505,6 +550,7 @@
         for (Event * event in [_eventData objectForKey:key]) {
             BOOL hasNotification = NO;
             
+            //Checking if this event has notifications and setting a flag so the view can be adjugsted accordingly
             if([_eventNotifications objectForKey:[NSString stringWithFormat:@"%i", event.event_id ]]){
                 NSLog(@"there is a notification for : %i", event.event_id);
                 hasNotification = YES;
@@ -517,6 +563,8 @@
     }
     [_datesArray addObjectsFromArray:[[_eventData allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)]];
     [_upcomingEvents reloadData];
+    
+    [self scrollToClosestToCurrentDay];
 }
 
 -(void)closeEventModal {
