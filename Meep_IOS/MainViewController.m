@@ -186,6 +186,7 @@
 - (void)resetMainView
 {
     if(_leftPanelViewController != nil) {
+        NSLog(@"removing left panel from superview");
         [self.leftPanelViewController.view removeFromSuperview];
         self.leftPanelViewController = nil;
         
@@ -210,6 +211,7 @@
     }
     if (_eventPageViewController != nil)
     {
+        NSLog(@"removing event page from super view");
         [self.eventPageViewController.view removeFromSuperview];
         self.eventPageViewController = nil;
         
@@ -343,7 +345,7 @@
 
 - (void)movePanelLeft // to show right panel
 {
-    /*UIView *childView = [self getRightView];
+    UIView *childView = [self getRightView];
     [self.view sendSubviewToBack:childView];
     
     [UIView animateWithDuration:SLIDE_TIMING delay:0 options:UIViewAnimationOptionBeginFromCurrentState
@@ -355,7 +357,7 @@
                              
                              _centerViewController.rightButton.tag = 0;
                          }
-                     }];*/
+                     }];
 }
 
 - (void)movePanelRight // to show left panel
@@ -526,10 +528,12 @@
 
 - (void)movePanelToOriginalPosition
 {
+    NSLog(@"moving panel to original position");
     [UIView animateWithDuration:SLIDE_TIMING delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
         _centerViewController.view.frame = CGRectMake(0,0,self.view.frame.size.width, self.view.frame.size.height);
     } completion:^(BOOL finished) {
         if(finished) {
+            NSLog(@"about to reset main view");
             [self resetMainView];
         }
     }];

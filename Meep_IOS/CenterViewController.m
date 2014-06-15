@@ -19,6 +19,8 @@
 
 #define BORDER_WIDTH 1
 
+#define LINE_WIDTH 1
+#define LINE_COLOR "ffffff"
 
 //Color Settings for date header: white text, black background.
 #define HEADER_TEXT_COLOR "ffffff"
@@ -238,9 +240,39 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"upcomingEvent" forIndexPath:indexPath];
+    
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.backgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_BACKGROUND_COLOR]];
     NSString * key = _datesArray[indexPath.section];
+    UIView * eventView = _eventCellData[key][indexPath.row];
+    
+    /*dispatch_queue_t downloadQueue = dispatch_queue_create("image downloader", NULL);
+    dispatch_async(downloadQueue, ^{
+        NSString * dateText = [_datesArray objectAtIndex:indexPath.section];
+        Event * event = [[_eventData objectForKey:dateText] objectAtIndex:indexPath.row];
+
+        float imageHeight = 40;
+        float imageXCoord = 8;
+        float imageYCoord = (cell.frame.size.height/2) - (imageHeight/2);
+
+        // This view creates uses the image provided in the parameters to display the image on top of the background and midground
+        //UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(imageXCoord + 10, imageYCoord + 10, imageHeight - 20, imageHeight - 20)];
+        if (![event.yelpImageLink isEqual:[NSNull null]] && [event.yelpImageLink length] > 1 && YES) {
+            UIImageView *img = [[UIImageView alloc] initWithFrame:CGRectMake(imageXCoord-0.75, imageYCoord-0.75, imageHeight+1.5, imageHeight+1.5)];
+            UIImage* image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:event.yelpImageLink]]];
+            img.layer.masksToBounds = imageHeight/2;
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                img.image = image;
+                img.layer.cornerRadius = imageHeight/2;
+                // img.layer.masksToBounds = YES;
+                [cell addSubview:img];
+            });
+        }
+    });
+    
+    [cell addSubview:eventView];*/
+    
     [cell addSubview:_eventCellData[key][indexPath.row]];
     
     return cell;
@@ -249,7 +281,7 @@
  // Override to support conditional editing of the table view.
  - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
  {
- // Return NO if you do not want the specified item to be editable.
+ // Return NO if you do not want the specified item to be editable. 3108956853
  return YES;
  }
 
@@ -419,7 +451,7 @@
 - (void)viewDidAppear:(BOOL)animated
 {
 	[super viewDidAppear:animated];
-    [self getUpcomingEvents];
+    //[self getUpcomingEvents];
 }
 
 #pragma mark -
@@ -510,6 +542,7 @@
 }
 
 -(void)handleData{
+    NSLog(@"got some upcoming events!");
     NSError* error;
     NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:_data options:0 error:&error];
     NSArray * upcoming = jsonResponse[@"upcoming_events"];
@@ -524,7 +557,11 @@
     // _lng = _locationManager.location.coordinate.longitude;
     _lat = 0;
     _lng = 0;
-    _eventCellData = [[NSMutableDictionary alloc] init];
+    
+    if(!_eventCellData){
+        _eventCellData = [[NSMutableDictionary alloc] init];
+    }
+    
     for (Event * event in upcomingEvents) {
         NSTimeInterval interval = [event.start_time doubleValue];
         NSDate * eventDate = [[NSDate alloc] initWithTimeIntervalSince1970:interval];
@@ -540,7 +577,8 @@
             [_eventData setObject:unsortedEventData forKey:dateString];
         }
     }
-    NSSortDescriptor * nameSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"start_time" ascending:YES];
+    //NSSortDescriptor * nameSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"start_time" ascending:YES];
+    NSSortDescriptor * nameSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"start_time" ascending:NO];
     for (NSString * key in [_eventData allKeys]) {
         _eventData[key] = [_eventData[key] sortedArrayUsingDescriptors:[NSArray arrayWithObject:nameSortDescriptor]];
     }

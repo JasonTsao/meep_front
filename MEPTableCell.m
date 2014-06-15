@@ -64,21 +64,21 @@
     else if ([category isEqualToString:@"outdoors"]) {
         imageFileName = @"sun23.png";
     }
-    UIImage * image = [UIImage imageNamed:imageFileName];
     
+    UIImage * image = [UIImage imageNamed:imageFileName];
     float imageHeight = 40;
     float imageXCoord = 8;
     float imageYCoord = (cell.frame.size.height/2) - (imageHeight/2);
-    float vertLineXCoord = (imageHeight/2) + imageXCoord;
-    float contentBoxXCoord = imageXCoord + imageHeight + 12;
-    float contentBoxYCoord = 12;
-    float contentBoxWidth = cell.frame.size.width - contentBoxXCoord - 15;
-    float contentBoxHeight = cell.frame.size.height - (contentBoxYCoord * 2);
     float bgndImgScale = BORDER_WIDTH;
     float lineWeight = LINE_WIDTH;
     UIColor * framingColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",BORDER_COLOR]];
     UIColor * lineColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",LINE_COLOR]];
     UIColor * staticImageColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",STATIC_IMAGE_COLOR]];
+    float vertLineXCoord = (imageHeight/2) + imageXCoord;
+    float contentBoxXCoord = imageXCoord + imageHeight + 12;
+    float contentBoxYCoord = 12;
+    float contentBoxWidth = cell.frame.size.width - contentBoxXCoord - 15;
+    float contentBoxHeight = cell.frame.size.height - (contentBoxYCoord * 2);
     UIColor * backgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_BACKGROUND_COLOR]];
     UIColor * contentBackgroundColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",CONTENT_BACKGROUND_COLOR]];
     UIColor * iconBackgroundColor;
@@ -100,7 +100,7 @@
     [cell addSubview:separatorLineView];
     
     // This view creates the vertical line that lies behind the image.
-    
+
     //UIView * verticalLine = [[UIView alloc] initWithFrame:CGRectMake(vertLineXCoord + 1, 0, bgndImgScale, cell.frame.size.height)];
     UIView * verticalLine = [[UIView alloc] initWithFrame:CGRectMake(-5, 0, bgndImgScale, cell.frame.size.height)];
     
@@ -126,6 +126,7 @@
     [horizontalLine.layer addSublayer:horizontalLineGradient];
     [cell addSubview:horizontalLine];
     
+    
     // This view creates the black background which the image and mid ground line on top of.
     UIView * imageBackGround = [[UIView alloc] initWithFrame:CGRectMake(imageXCoord - bgndImgScale, imageYCoord - bgndImgScale, imageHeight + (bgndImgScale*2), imageHeight + (bgndImgScale*2))];
     imageBackGround.layer.cornerRadius = 21;
@@ -141,9 +142,22 @@
     // This view creates uses the image provided in the parameters to display the image on top of the background and midground
     UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(imageXCoord + 10, imageYCoord + 10, imageHeight - 20, imageHeight - 20)];
     if (![event.yelpImageLink isEqual:[NSNull null]] && [event.yelpImageLink length] > 1 && YES) {
-        img = [[UIImageView alloc] initWithFrame:CGRectMake(imageXCoord-0.75, imageYCoord-0.75, imageHeight+1.5, imageHeight+1.5)];
+        /*img = [[UIImageView alloc] initWithFrame:CGRectMake(imageXCoord-0.75, imageYCoord-0.75, imageHeight+1.5, imageHeight+1.5)];
         image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:event.yelpImageLink]]];
-        img.layer.masksToBounds = imageHeight/2;
+        img.layer.masksToBounds = imageHeight/2;*/
+        /*dispatch_queue_t downloadQueue = dispatch_queue_create("image downloader", NULL);
+        dispatch_async(downloadQueue, ^{
+            UIImageView *img = [[UIImageView alloc] initWithFrame:CGRectMake(imageXCoord-0.75, imageYCoord-0.75, imageHeight+1.5, imageHeight+1.5)];
+            UIImage* image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:event.yelpImageLink]]];
+            img.layer.masksToBounds = imageHeight/2;
+        
+            dispatch_async(dispatch_get_main_queue(), ^{
+                img.image = image;
+                img.layer.cornerRadius = imageHeight/2;
+                // img.layer.masksToBounds = YES;
+                [cell addSubview:img];
+            });
+        });*/
     }
     else {
         CGRect rect = CGRectMake(0, 0, image.size.width, image.size.height);
@@ -156,6 +170,11 @@
         UIGraphicsEndImageContext();
         
         image = [UIImage imageWithCGImage:image2.CGImage scale:1.0 orientation: UIImageOrientationDownMirrored];
+        
+        /*img.image = image;
+        img.layer.cornerRadius = imageHeight/2;
+        // img.layer.masksToBounds = YES;
+        [cell addSubview:img];*/
     }
     img.image = image;
     img.layer.cornerRadius = imageHeight/2;
@@ -163,10 +182,10 @@
     [cell addSubview:img];
 
     // This view creates the background for the content
-    UIView * contentFrame = [[UIView alloc] initWithFrame:CGRectMake(contentBoxXCoord - bgndImgScale, contentBoxYCoord - bgndImgScale + 1, contentBoxWidth + (bgndImgScale*2) - 2, contentBoxHeight + (bgndImgScale*2) - 2)];
+    /*UIView * contentFrame = [[UIView alloc] initWithFrame:CGRectMake(contentBoxXCoord - bgndImgScale, contentBoxYCoord - bgndImgScale + 1, contentBoxWidth + (bgndImgScale*2) - 2, contentBoxHeight + (bgndImgScale*2) - 2)];
     contentFrame.layer.cornerRadius = 6;
     contentFrame.backgroundColor = framingColor;
-    // [cell addSubview:contentFrame];
+    // [cell addSubview:contentFrame];*/
     
     // This view contains the data fields and is placed on top of the background view.
     
