@@ -70,9 +70,9 @@
     
     [self.tableView reloadData];
     
-    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:friends_list];
+    /*NSData *data = [NSKeyedArchiver archivedDataWithRootObject:friends_list];
     [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"friends_list"];
-    [NSUserDefaults resetStandardUserDefaults];
+    [NSUserDefaults resetStandardUserDefaults];*/
 
 }
 
@@ -92,7 +92,7 @@
     [self.tableView addSubview:refreshControl];
     friends_list = [[NSMutableArray alloc]init];
     
-    NSData *friendsListData = [[NSUserDefaults standardUserDefaults] objectForKey:@"friends_list"];
+    //NSData *friendsListData = [[NSUserDefaults standardUserDefaults] objectForKey:@"friends_list"];
     [self getFriendsList];
     
     
