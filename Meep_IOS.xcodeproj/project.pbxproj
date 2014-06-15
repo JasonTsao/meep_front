@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3C1959D61944FFBD00A6390C /* Search.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C1959D51944FFBD00A6390C /* Search.m */; };
+		3C1959D9194D207600A6390C /* ImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C1959D8194D207600A6390C /* ImageCache.m */; };
 		3C1FD80A19287EC000AA4593 /* MEPGlossyUIView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C1FD80919287EC000AA4593 /* MEPGlossyUIView.m */; };
 		3C22DBFE1928A823006BCF7B /* UIBarButtonAdd_2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C22DBFD1928A823006BCF7B /* UIBarButtonAdd_2x.png */; };
 		3CB231FE192176B900684E1D /* MEPLocationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CB231FD192176B900684E1D /* MEPLocationService.m */; };
@@ -153,6 +154,8 @@
 /* Begin PBXFileReference section */
 		3C1959D41944FFBD00A6390C /* Search.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Search.h; path = ../Search.h; sourceTree = "<group>"; };
 		3C1959D51944FFBD00A6390C /* Search.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Search.m; path = ../Search.m; sourceTree = "<group>"; };
+		3C1959D7194D207600A6390C /* ImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageCache.h; sourceTree = "<group>"; };
+		3C1959D8194D207600A6390C /* ImageCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageCache.m; sourceTree = "<group>"; };
 		3C1FD80819287EC000AA4593 /* MEPGlossyUIView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MEPGlossyUIView.h; sourceTree = "<group>"; };
 		3C1FD80919287EC000AA4593 /* MEPGlossyUIView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MEPGlossyUIView.m; sourceTree = "<group>"; };
 		3C22DBFD1928A823006BCF7B /* UIBarButtonAdd_2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = UIBarButtonAdd_2x.png; sourceTree = "<group>"; };
@@ -478,6 +481,8 @@
 				96ACDDDC192D49990040D5FC /* jsonParser.m */,
 				3C1959D41944FFBD00A6390C /* Search.h */,
 				3C1959D51944FFBD00A6390C /* Search.m */,
+				3C1959D7194D207600A6390C /* ImageCache.h */,
+				3C1959D8194D207600A6390C /* ImageCache.m */,
 			);
 			path = Meep_IOS;
 			sourceTree = "<group>";
@@ -891,6 +896,7 @@
 				3CCC508919059F9500EB0980 /* MEPAppDelegate.m in Sources */,
 				96F338EF1921F8430031FB2E /* EventAttendeesDistanceViewController.m in Sources */,
 				3CCC51591905A20D00EB0980 /* EventCreatorViewController.m in Sources */,
+				3C1959D9194D207600A6390C /* ImageCache.m in Sources */,
 				96E1D2371915977400951DEB /* Group.m in Sources */,
 				3CCC51621905A20D00EB0980 /* MainViewController.m in Sources */,
 				96E1D2741918549400951DEB /* DjangoAuthLoginResultObject.m in Sources */,

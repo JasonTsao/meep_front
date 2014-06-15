@@ -14,6 +14,7 @@
 #import "Colors.h"
 #import "MEPTableCell.h"
 #import "jsonParser.h"
+#import "ImageCache.h"
 #import <CoreLocation/CoreLocation.h>
 
 
@@ -246,6 +247,48 @@
     NSString * key = _datesArray[indexPath.section];
     UIView * eventView = _eventCellData[key][indexPath.row];
     
+    
+    NSString * dateText = [_datesArray objectAtIndex:indexPath.section];
+    Event * event = [[_eventData objectForKey:dateText] objectAtIndex:indexPath.row];
+    if (![event.yelpImageLink isEqual:[NSNull null]] && [event.yelpImageLink length] > 1 && YES) {
+    
+        dispatch_queue_t downloadQueue = dispatch_queue_create("image downloader", NULL);
+        dispatch_async(downloadQueue, ^{
+            NSString *imgUrl = event.yelpImageLink;
+            float imageHeight = 40;
+            float imageXCoord = 8;
+            float imageYCoord = (cell.frame.size.height/2) - (imageHeight/2);
+            UIImageView *img = [[UIImageView alloc] initWithFrame:CGRectMake(imageXCoord-0.75, imageYCoord-0.75, imageHeight+1.5, imageHeight+1.5)];
+            UIImage* image;
+    
+            if ([[ImageCache sharedImageCache] DoesExist:imgUrl] == true)
+            {
+                image = [[ImageCache sharedImageCache] GetImage:imgUrl];
+            }
+            else
+            {
+                NSData *imageData = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: imgUrl]];
+                image = [[UIImage alloc] initWithData:imageData];
+                // Add the image to the cache
+                [[ImageCache sharedImageCache] AddImage:imgUrl :image];
+            }
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                img.image = image;
+                img.layer.cornerRadius = imageHeight/2;
+                // img.layer.masksToBounds = YES;
+                [eventView addSubview:img];
+                
+            });
+        });
+        [cell addSubview:eventView];
+        
+    }
+    else{
+        [cell addSubview:_eventCellData[key][indexPath.row]];
+    }
+
+    
     /*dispatch_queue_t downloadQueue = dispatch_queue_create("image downloader", NULL);
     dispatch_async(downloadQueue, ^{
         NSString * dateText = [_datesArray objectAtIndex:indexPath.section];
@@ -273,7 +316,7 @@
     
     [cell addSubview:eventView];*/
     
-    [cell addSubview:_eventCellData[key][indexPath.row]];
+    //[cell addSubview:_eventCellData[key][indexPath.row]];
     
     return cell;
 }
