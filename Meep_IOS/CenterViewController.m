@@ -267,17 +267,28 @@
             }
             else
             {
+                // Create new image data to be cached
                 NSData *imageData = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: imgUrl]];
                 image = [[UIImage alloc] initWithData:imageData];
+
+                // Create a rounded image from the square ones we would get from online
+                UIImageView* tmpImageView = [[UIImageView alloc] initWithFrame:CGRectMake(imageXCoord-0.75, imageYCoord-0.75, imageHeight+1.5, imageHeight+1.5)];
+                tmpImageView.image = image;
+                tmpImageView.layer.cornerRadius = imageHeight/2;
+                tmpImageView.layer.masksToBounds = YES;
+                UIImage* roundedImage = [ImageCache screenshotOfView: tmpImageView];
+                
+                image = roundedImage;
+                
                 // Add the image to the cache
-                [[ImageCache sharedImageCache] AddImage:imgUrl :image];
+                [[ImageCache sharedImageCache] AddImage:imgUrl :roundedImage];
             }
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 img.image = image;
-                img.layer.cornerRadius = imageHeight/2;
-                // img.layer.masksToBounds = YES;
-                [eventView addSubview:img];
+                //img.layer.cornerRadius = imageHeight/2;
+                //img.layer.masksToBounds = YES;
+                [cell addSubview:img];
                 
             });
         });
@@ -287,35 +298,6 @@
     else{
         [cell addSubview:_eventCellData[key][indexPath.row]];
     }
-
-    
-    /*dispatch_queue_t downloadQueue = dispatch_queue_create("image downloader", NULL);
-    dispatch_async(downloadQueue, ^{
-        NSString * dateText = [_datesArray objectAtIndex:indexPath.section];
-        Event * event = [[_eventData objectForKey:dateText] objectAtIndex:indexPath.row];
-
-        float imageHeight = 40;
-        float imageXCoord = 8;
-        float imageYCoord = (cell.frame.size.height/2) - (imageHeight/2);
-
-        // This view creates uses the image provided in the parameters to display the image on top of the background and midground
-        //UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(imageXCoord + 10, imageYCoord + 10, imageHeight - 20, imageHeight - 20)];
-        if (![event.yelpImageLink isEqual:[NSNull null]] && [event.yelpImageLink length] > 1 && YES) {
-            UIImageView *img = [[UIImageView alloc] initWithFrame:CGRectMake(imageXCoord-0.75, imageYCoord-0.75, imageHeight+1.5, imageHeight+1.5)];
-            UIImage* image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:event.yelpImageLink]]];
-            img.layer.masksToBounds = imageHeight/2;
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                img.image = image;
-                img.layer.cornerRadius = imageHeight/2;
-                // img.layer.masksToBounds = YES;
-                [cell addSubview:img];
-            });
-        }
-    });
-    
-    [cell addSubview:eventView];*/
-    
     //[cell addSubview:_eventCellData[key][indexPath.row]];
     
     return cell;

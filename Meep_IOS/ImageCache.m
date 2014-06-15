@@ -72,4 +72,14 @@ static ImageCache* sharedImageCache = nil;
     
     return true;
 }
+
++ (UIImage*) screenshotOfView: (UIView*) view
+{
+    UIGraphicsBeginImageContext(view.frame.size);
+    [view.layer renderInContext:UIGraphicsGetCurrentContext()];
+    UIImage *viewImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return viewImage;
+}
 @end

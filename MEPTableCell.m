@@ -10,6 +10,7 @@
 #import "Colors.h"
 #import "MEPTextParse.h"
 #import "MEPLocationService.h"
+#import "ImageCache.h"
 
 #define FRIEND_MAIN_TEXT_COLOR "000000"
 #define FRIEND_HEADER_TEXT_COLOR "ffffff"
@@ -142,22 +143,11 @@
     // This view creates uses the image provided in the parameters to display the image on top of the background and midground
     UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(imageXCoord + 10, imageYCoord + 10, imageHeight - 20, imageHeight - 20)];
     if (![event.yelpImageLink isEqual:[NSNull null]] && [event.yelpImageLink length] > 1 && YES) {
+        // OLD CODE FOR GETTING IMAGES FROM AN OUTSIDE SOURCE.
+        // DO THIS ON THE TABLE ITSELF NOW
         /*img = [[UIImageView alloc] initWithFrame:CGRectMake(imageXCoord-0.75, imageYCoord-0.75, imageHeight+1.5, imageHeight+1.5)];
         image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:event.yelpImageLink]]];
         img.layer.masksToBounds = imageHeight/2;*/
-        /*dispatch_queue_t downloadQueue = dispatch_queue_create("image downloader", NULL);
-        dispatch_async(downloadQueue, ^{
-            UIImageView *img = [[UIImageView alloc] initWithFrame:CGRectMake(imageXCoord-0.75, imageYCoord-0.75, imageHeight+1.5, imageHeight+1.5)];
-            UIImage* image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:event.yelpImageLink]]];
-            img.layer.masksToBounds = imageHeight/2;
-        
-            dispatch_async(dispatch_get_main_queue(), ^{
-                img.image = image;
-                img.layer.cornerRadius = imageHeight/2;
-                // img.layer.masksToBounds = YES;
-                [cell addSubview:img];
-            });
-        });*/
     }
     else {
         CGRect rect = CGRectMake(0, 0, image.size.width, image.size.height);
@@ -170,15 +160,10 @@
         UIGraphicsEndImageContext();
         
         image = [UIImage imageWithCGImage:image2.CGImage scale:1.0 orientation: UIImageOrientationDownMirrored];
-        
-        /*img.image = image;
-        img.layer.cornerRadius = imageHeight/2;
-        // img.layer.masksToBounds = YES;
-        [cell addSubview:img];*/
     }
     img.image = image;
     img.layer.cornerRadius = imageHeight/2;
-    // img.layer.masksToBounds = YES;
+    //img.layer.masksToBounds = YES;
     [cell addSubview:img];
 
     // This view creates the background for the content

@@ -17,4 +17,5 @@
 - (void) AddImage:(NSString *)imageURL: (UIImage *)image;
 - (UIImage*) GetImage:(NSString *)imageURL;
 - (BOOL) DoesExist:(NSString *)imageURL;
++ (UIImage*) screenshotOfView: (UIView*) view;
 @end
