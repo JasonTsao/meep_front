@@ -51,8 +51,11 @@
 
 -(void)scrollToBottom
 {
-    NSIndexPath *lastIndexPath = [self lastIndexPath];
-    [_chatMessageTable scrollToRowAtIndexPath:lastIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+    if([_chatMessages count] > 0){
+        NSIndexPath *lastIndexPath = [self lastIndexPath];
+        [_chatMessageTable scrollToRowAtIndexPath:lastIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+    }
+    
 }
 
 - (void)putPushNotificationMessageOnTable:(NSString *)message withAccount:(NSString*)account_id withName:(NSString *)user_name
