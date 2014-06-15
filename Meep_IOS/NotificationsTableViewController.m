@@ -10,9 +10,12 @@
 #import "MEEPhttp.h"
 #import "jsonParser.h"
 #import "MEPTableCell.h"
+#import "EventPageViewController.h"
+#import "Event.h"
 
 @interface NotificationsTableViewController ()
 @property(nonatomic, strong) NSMutableArray *notifications_list;
+@property (nonatomic, strong) EventPageViewController *eventPageViewController;
 @end
 
 @implementation NotificationsTableViewController
@@ -40,6 +43,17 @@
     [conn start];
 }
 
+
+- (void)getEvent:(NSString*)event_id
+{
+    NSString * requestURL = [NSString stringWithFormat:@"%@%@",[MEEPhttp eventURL], event_id];
+    NSLog(@"requesturl: %@", requestURL);
+    NSDictionary * postDict = [[NSDictionary alloc] init];
+    NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
+    NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    [conn start];
+}
+
 -(void)connection:(NSURLConnection*)connection didReceiveResponse:(NSURLResponse*)response
 {
     _data = [[NSMutableData alloc] init]; // _data being an ivar
@@ -58,16 +72,24 @@
     [self handleData]; // Deal with the data
 }
 
-
 -(void)handleData{
     NSError* error;
     NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:_data options:0 error:&error];
-    NSArray * notifications = jsonResponse[@"notifications"];
-    NSLog(@"notifications: %@", notifications);
-    _notifications_list = [jsonParser notificationsArray:notifications];
-    //NSLog(@"notifications_list:%@", );
     
-    [self.tableView reloadData];
+    if([jsonResponse objectForKey:@"notifications"]){
+        NSArray * notifications = jsonResponse[@"notifications"];
+        _notifications_list = [jsonParser notificationsArray:notifications];
+        
+        [self.tableView reloadData];
+    }
+    else{
+        NSLog(@"json response: %@", jsonResponse);
+        Event *event = [jsonParser eventObject:jsonResponse[@"event"]];
+        
+        //Event *event = [Event alloc]initWithDescription:<#(NSString *)#> withName:<#(NSString *)#> startTime:<#(NSString *)#> eventId:<#(NSInteger)#>
+        [self displayEventPage:event];
+    }
+    
     
 }
 
@@ -95,6 +117,44 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void) backToCenterFromEventPage:(EventPageViewController *)controller
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+
+- (void)displayEventPage:(Event *)event{
+    UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"CenterStoryboard" bundle:nil];
+    self.eventPageViewController = (EventPageViewController *)[storyboard instantiateViewControllerWithIdentifier:@"EventViewController"];
+    _eventPageViewController.currentEvent = event;
+    NSString *event_id = [NSString stringWithFormat:@"%i", event.event_id];
+    
+    /* FOR CHANGING THE NOTIFICATON BADGE ICON NUMBER
+     NSString *allevents = [NSString stringWithFormat:@"%@", _eventNotifications];
+    
+    if([_eventNotifications objectForKey:event_id]){
+        NSArray *event_notifications = _eventNotifications[event_id];
+        
+        // set notifications for event page
+        _eventPageViewController.notifications = _eventNotifications[event_id];
+        
+        //code for effectively saying you've viewed these notifications and persist that
+        NSInteger numNotificationsForEvent = [_eventNotifications[event_id] count];
+        [_eventNotifications removeObjectForKey:event_id];
+        
+        // remove the event notifications from user defaults
+        NSData *data = [NSKeyedArchiver archivedDataWithRootObject:_eventNotifications];
+        [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"eventNotifications"];
+        [NSUserDefaults resetStandardUserDefaults];
+        [UIApplication sharedApplication].applicationIconBadgeNumber -= numNotificationsForEvent;
+    }
+    */
+    
+    [self.eventPageViewController setDelegate:self];
+    UINavigationController *navigation = [[UINavigationController alloc]initWithRootViewController:_eventPageViewController];
+    [self presentViewController:navigation animated:YES completion:nil];
+}
+
 #pragma mark - Table view data source
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -114,6 +174,27 @@
 #warning Incomplete method implementation.
     // Return the number of rows in the section.
     return [_notifications_list count];
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    Notification * selected = [_notifications_list objectAtIndex:indexPath.row];
+    //[_delegate displayEventPage:currentRecord];
+    NSLog(@"custom payload: %@", selected.custom_payload);
+    NSLog(@"event id: %@", [selected.custom_payload objectForKey:@"event_id"]);
+    if(selected.custom_payload[@"event_id"]){
+        NSLog(@"there was an event id in the custom payload");
+        Event *event;
+        if([selected.type isEqualToString:@"event_chat"]){
+            //GO TO EVENT CHAT PAGE
+            [self getEvent:selected.custom_payload[@"event_id"]];
+        }
+        else{
+            [self getEvent:selected.custom_payload[@"event_id"]];
+        }
+    }
+    
+    
 }
 
 

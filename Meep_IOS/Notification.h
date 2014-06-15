@@ -15,6 +15,7 @@
     NSString *message;
     NSString *type;
     NSString *time_stamp;
+    NSDictionary *custom_payload;
 }
 @property (nonatomic) NSInteger notification_id;
 @property (nonatomic) NSInteger event_id;
@@ -22,5 +23,5 @@
 @property (nonatomic) NSString *message;
 @property (nonatomic) NSString *type;
 @property (nonatomic) NSString *time_stamp;
-
+@property (nonatomic) NSDictionary *custom_payload;
 @end

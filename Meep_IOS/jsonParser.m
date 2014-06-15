@@ -9,7 +9,6 @@
 #import "jsonParser.h"
 #import "Friend.h"
 #import "InvitedFriend.h"
-#import "Event.h"
 #import "Group.h"
 #import "Notification.h"
 #import "ImageCache.h"
@@ -40,16 +39,7 @@
             new_friend.profilePic = img.image;
         }
         else{
-            /*NSURL *url = [[NSURL alloc] initWithString:new_friend_dict[@"fb_pfpic_url"]];
-            //NSURL *url = [[NSURL alloc] initWithString:@"https://graph.facebook.com/jason.s.tsao/picture"];
-            NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url];
-            //NSData *urlData = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:&response error:nil];
-            NSData *urlData = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:nil error:nil];
-            UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
-            new_friend.profilePic = image;*/
-            
-            UIImage *image;
-            
+            // Set up a background task to get set the users profile from cache or if cache is empty pull from online
             dispatch_queue_t downloadQueue = dispatch_queue_create("image downloader", NULL);
             dispatch_async(downloadQueue, ^{
                 NSString *imgUrl = new_friend_dict[@"fb_pfpic_url"];
@@ -58,17 +48,13 @@
                 float imageYCoord = (60/2) - (imageHeight/2);
                 UIImageView *img = [[UIImageView alloc] initWithFrame:CGRectMake(imageXCoord-0.75, imageYCoord-0.75, imageHeight+1.5, imageHeight+1.5)];
                 UIImage* image;
-                
-                NSLog(@"img url: %@", imgUrl);
-                
+
                 if ([[ImageCache sharedImageCache] DoesExist:imgUrl] == true)
                 {
-                    NSLog(@"picture has been cached before");
                     image = [[ImageCache sharedImageCache] GetImage:imgUrl];
                 }
                 else
                 {
-                    NSLog(@"picture has never been cached before");
                     // Create new image data to be cached
                     NSData *imageData = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: imgUrl]];
                     image = [[UIImage alloc] initWithData:imageData];
@@ -88,16 +74,10 @@
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
                     img.image = image;
-                    //img.layer.cornerRadius = imageHeight/2;
-                    //img.layer.masksToBounds = YES;
-                    //[cell addSubview:img];
                     new_friend.profilePic = image;
                     
                 });
             });
-            
-            
-            
         }
         
         [friends_list addObject:new_friend];
@@ -201,6 +181,28 @@
     return events;
 }
 
++(Event*)eventObject:(NSDictionary*)eventObj
+{
+
+    NSString *startTime;
+    if ([eventObj[@"start_time"]  isEqual:[NSNull null]]){
+        startTime = eventObj[@"created"];
+    }
+    else {
+        startTime = eventObj[@"start_time"];
+    }
+    Event * event = [[Event alloc] initWithDescription:eventObj[@"description"] withName:eventObj[@"name"] startTime:startTime eventId:[eventObj[@"id"] integerValue]] ;
+    event.locationName = eventObj[@"location_name"];
+    event.locationAddress = eventObj[@"location_address"];
+    event.end_time = eventObj[@"end_time"];
+    event.yelpLink = eventObj[@"yelp_url"];
+    event.locationLatitude = eventObj[@"location_latitude"];
+    event.locationLongitude = eventObj[@"location_longitude"];
+    event.yelpImageLink = eventObj[@"yelp_img_url"];
+    
+    return event;
+}
+
 +(NSArray*)groupsArray:(NSArray*)groups_list
 {
     NSMutableArray *groups = [[NSMutableArray alloc] init];
@@ -231,6 +233,7 @@
 
 +(NSArray*)notificationsArray:(NSArray*)notifications_list{
     NSMutableArray *notifications = [[NSMutableArray alloc] init];
+    NSError* error;
     for( int i = 0; i< [notifications_list count]; i++){
         Notification *new_notification = [[Notification alloc]init];
         
@@ -239,6 +242,12 @@
         new_notification.time_stamp = new_notification_dict[@"created_at"];
         new_notification.notification_id = [new_notification_dict[@"id"] integerValue];
         new_notification.type = new_notification_dict[@"notification_type"];
+        
+        
+        
+        new_notification.custom_payload = [NSJSONSerialization JSONObjectWithData: [new_notification_dict[@"extra"] dataUsingEncoding:NSUTF8StringEncoding]
+                                        options: NSJSONReadingMutableContainers
+                                          error: &error];
         
         /*if ([new_group_dict[@"group_pic_url"] length] == 0){
             UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(8, 4, 40, 40)];

@@ -16,6 +16,7 @@
 @synthesize message;
 @synthesize type;
 @synthesize time_stamp;
+@synthesize custom_payload;
 
 
 
@@ -24,6 +25,7 @@
         self.time_stamp = [decoder decodeObjectForKey:time_stamp];
         self.type = [decoder decodeObjectForKey:@"type"];
         self.message = [decoder decodeObjectForKey:@"message"];
+        self.custom_payload = [decoder decodeObjectForKey:@"custom_payload"];
         self.notification_id = [decoder decodeIntegerForKey:@"notification_id"];
         self.event_id = [decoder decodeIntegerForKey:@"event_id"];
         self.group_id = [decoder decodeIntegerForKey:@"group_id"];
@@ -38,5 +40,6 @@
     [encoder encodeObject: time_stamp forKey:@"time_stamp"];
     [encoder encodeObject: type forKey:@"type"];
     [encoder encodeObject: message forKey:@"message"];
+    [encoder encodeObject: custom_payload forKey:@"custom_payload"];
 }
 @end
