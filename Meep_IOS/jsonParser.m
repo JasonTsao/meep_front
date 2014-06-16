@@ -9,7 +9,6 @@
 #import "jsonParser.h"
 #import "Friend.h"
 #import "InvitedFriend.h"
-#import "Group.h"
 #import "Notification.h"
 #import "ImageCache.h"
 
@@ -181,24 +180,24 @@
     return events;
 }
 
-+(Event*)eventObject:(NSDictionary*)eventObj
++(Event*)eventObject:(NSDictionary*)eventDict
 {
 
     NSString *startTime;
-    if ([eventObj[@"start_time"]  isEqual:[NSNull null]]){
-        startTime = eventObj[@"created"];
+    if ([eventDict[@"start_time"]  isEqual:[NSNull null]]){
+        startTime = eventDict[@"created"];
     }
     else {
-        startTime = eventObj[@"start_time"];
+        startTime = eventDict[@"start_time"];
     }
-    Event * event = [[Event alloc] initWithDescription:eventObj[@"description"] withName:eventObj[@"name"] startTime:startTime eventId:[eventObj[@"id"] integerValue]] ;
-    event.locationName = eventObj[@"location_name"];
-    event.locationAddress = eventObj[@"location_address"];
-    event.end_time = eventObj[@"end_time"];
-    event.yelpLink = eventObj[@"yelp_url"];
-    event.locationLatitude = eventObj[@"location_latitude"];
-    event.locationLongitude = eventObj[@"location_longitude"];
-    event.yelpImageLink = eventObj[@"yelp_img_url"];
+    Event * event = [[Event alloc] initWithDescription:eventDict[@"description"] withName:eventDict[@"name"] startTime:startTime eventId:[eventDict[@"id"] integerValue]] ;
+    event.locationName = eventDict[@"location_name"];
+    event.locationAddress = eventDict[@"location_address"];
+    event.end_time = eventDict[@"end_time"];
+    event.yelpLink = eventDict[@"yelp_url"];
+    event.locationLatitude = eventDict[@"location_latitude"];
+    event.locationLongitude = eventDict[@"location_longitude"];
+    event.yelpImageLink = eventDict[@"yelp_img_url"];
     
     return event;
 }
@@ -231,6 +230,31 @@
     return groups;
 }
 
++(Group*)groupObject:(NSDictionary*)groupDict
+{
+
+    Group *group = [[Group alloc]init];
+    
+    group.name = groupDict[@"name"];
+    group.group_id = [groupDict[@"id"] integerValue];
+        
+    if ([groupDict[@"group_pic_url"] length] == 0){
+        UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(8, 4, 40, 40)];
+        img.image = [UIImage imageNamed:@"ManSilhouette"];
+        //new_friend.profilePic = img;
+        group.groupProfilePic = img.image;
+    }
+    else{
+        NSURL *url = [[NSURL alloc] initWithString:groupDict[@"group_pic_url"]];
+        NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url];
+        NSData *urlData = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:nil error:nil];
+        UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
+        group.groupProfilePic = image;
+    }
+
+    return group;
+}
+
 +(NSArray*)notificationsArray:(NSArray*)notifications_list{
     NSMutableArray *notifications = [[NSMutableArray alloc] init];
     NSError* error;
@@ -249,19 +273,7 @@
                                         options: NSJSONReadingMutableContainers
                                           error: &error];
         
-        /*if ([new_group_dict[@"group_pic_url"] length] == 0){
-            UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(8, 4, 40, 40)];
-            img.image = [UIImage imageNamed:@"ManSilhouette"];
-            //new_friend.profilePic = img;
-            new_group.groupProfilePic = img.image;
-        }
-        else{
-            NSURL *url = [[NSURL alloc] initWithString:new_group_dict[@"group_pic_url"]];
-            NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url];
-            NSData *urlData = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:nil error:nil];
-            UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
-            new_group.groupProfilePic = image;
-        }*/
+
         [notifications addObject:new_notification];
     }
     return notifications;

@@ -12,10 +12,14 @@
 #import "MEPTableCell.h"
 #import "EventPageViewController.h"
 #import "Event.h"
+#import "GroupEventsTableViewController.h"
+#import "Group.h"
 
 @interface NotificationsTableViewController ()
 @property(nonatomic, strong) NSMutableArray *notifications_list;
 @property (nonatomic, strong) EventPageViewController *eventPageViewController;
+@property (nonatomic, strong) GroupEventsTableViewController *groupEventsTableViewController;
+@property (nonatomic, strong) Group * selectedGroup;
 @end
 
 @implementation NotificationsTableViewController
@@ -54,6 +58,16 @@
     [conn start];
 }
 
+- (void)getGroup:(NSString*)group_id
+{
+    NSString * requestURL = [NSString stringWithFormat:@"%@group/%@",[MEEPhttp accountURL], group_id];
+    NSLog(@"requesturl: %@", requestURL);
+    NSDictionary * postDict = [[NSDictionary alloc] init];
+    NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
+    NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    [conn start];
+}
+
 -(void)connection:(NSURLConnection*)connection didReceiveResponse:(NSURLResponse*)response
 {
     _data = [[NSMutableData alloc] init]; // _data being an ivar
@@ -79,17 +93,16 @@
     if([jsonResponse objectForKey:@"notifications"]){
         NSArray * notifications = jsonResponse[@"notifications"];
         _notifications_list = [jsonParser notificationsArray:notifications];
-        
         [self.tableView reloadData];
     }
-    else{
-        NSLog(@"json response: %@", jsonResponse);
+    else if([jsonResponse objectForKey:@"event"]){
         Event *event = [jsonParser eventObject:jsonResponse[@"event"]];
-        
-        //Event *event = [Event alloc]initWithDescription:<#(NSString *)#> withName:<#(NSString *)#> startTime:<#(NSString *)#> eventId:<#(NSInteger)#>
         [self displayEventPage:event];
     }
-    
+    else if([jsonResponse objectForKey:@"group"]){
+        _selectedGroup = [jsonParser groupObject:jsonResponse[@"group"]];
+        [self performSegueWithIdentifier:@"groupFromNotifications" sender:self];
+    }
     
 }
 
@@ -180,20 +193,27 @@
 {
     Notification * selected = [_notifications_list objectAtIndex:indexPath.row];
     //[_delegate displayEventPage:currentRecord];
-    NSLog(@"custom payload: %@", selected.custom_payload);
-    NSLog(@"event id: %@", [selected.custom_payload objectForKey:@"event_id"]);
+    NSLog(@"selected notifications: %@", selected.type);
     if(selected.custom_payload[@"event_id"]){
-        NSLog(@"there was an event id in the custom payload");
         Event *event;
         if([selected.type isEqualToString:@"event_chat"]){
             //GO TO EVENT CHAT PAGE
             [self getEvent:selected.custom_payload[@"event_id"]];
         }
-        else{
+        else if([selected.type isEqualToString:@"event_create"] || [selected.type isEqualToString:@"event_update"] ){
             [self getEvent:selected.custom_payload[@"event_id"]];
         }
     }
     
+    if([selected.type isEqualToString:@"group_added"]){
+        if(selected.custom_payload[@"group_id"]){
+            [self getGroup:selected.custom_payload[@"group_id"]];
+        }
+    }
+    
+    if([selected.type isEqualToString:@"friend_added"]){
+        
+    }
     
 }
 
@@ -248,7 +268,7 @@
 }
 */
 
-/*
+
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -256,7 +276,10 @@
 {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
+    GroupEventsTableViewController * groupEvents = [segue destinationViewController];
+    //NSIndexPath *path = [self.tableView indexPathForSelectedRow];
+    [groupEvents setDelegate:self];
+    groupEvents.group = _selectedGroup;
 }
-*/
 
 @end

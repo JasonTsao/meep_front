@@ -361,11 +361,15 @@
     notificationHeader.textColor = [Colors colorWithHexString:[NSString stringWithFormat:@"%s",FRIEND_HEADER_TEXT_COLOR]];
     [notificationHeader setFont:[UIFont systemFontOfSize:12]];
     [cellContents addSubview:notificationHeader];
+    
+    
     UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(8, 4, 40, 40)];
     img.image = [UIImage imageNamed:@"ManSilhouette"];
     img.layer.cornerRadius = img.frame.size.height/2;
     img.layer.masksToBounds = YES;
     [cellContents addSubview:img];
+    
+    
     [cell addSubview:cellContents];
     return cell;
 }

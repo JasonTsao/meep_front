@@ -367,6 +367,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3C1959DA194E61CB00A6390C /* Cache */ = {
+			isa = PBXGroup;
+			children = (
+				3C1959D7194D207600A6390C /* ImageCache.h */,
+				3C1959D8194D207600A6390C /* ImageCache.m */,
+			);
+			name = Cache;
+			sourceTree = "<group>";
+		};
 		3CC119F91923E5E1003A6A57 /* icons */ = {
 			isa = PBXGroup;
 			children = (
@@ -443,6 +452,7 @@
 		3CCC507E19059F9500EB0980 /* Meep_IOS */ = {
 			isa = PBXGroup;
 			children = (
+				3C1959DA194E61CB00A6390C /* Cache */,
 				3CCCECEA192DAF8C000A9CCE /* MEPTableCell.h */,
 				3CCCECEB192DAF8C000A9CCE /* MEPTableCell.m */,
 				96C2DC27192FEE060030DBE3 /* Notiifications */,
@@ -481,8 +491,6 @@
 				96ACDDDC192D49990040D5FC /* jsonParser.m */,
 				3C1959D41944FFBD00A6390C /* Search.h */,
 				3C1959D51944FFBD00A6390C /* Search.m */,
-				3C1959D7194D207600A6390C /* ImageCache.h */,
-				3C1959D8194D207600A6390C /* ImageCache.m */,
 			);
 			path = Meep_IOS;
 			sourceTree = "<group>";

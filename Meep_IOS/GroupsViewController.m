@@ -199,7 +199,6 @@
     // Pass the selected object to the new view controller.
     
     if (![[segue identifier] isEqualToString:@"createGroup"]){
-        
         GroupEventsTableViewController * groupEvents = [segue destinationViewController];
         NSIndexPath *path = [self.tableView indexPathForSelectedRow];
         [groupEvents setDelegate:self];

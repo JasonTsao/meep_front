@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "Event.h"
+#import "Group.h"
 
 @interface jsonParser : NSObject
 +(NSArray*)friendsArray:(NSArray*)friends_list;
@@ -15,6 +16,7 @@
 +(NSArray*)invitedFriendsArray:(NSArray*)invited_friends_list;
 +(Event*)eventObject:(NSDictionary*)eventObj;
 +(NSArray*)eventsArray:(NSArray*)events_list;
++(Group*)groupObject:(NSDictionary*)groupDict;
 +(NSArray*)groupsArray:(NSArray*)groups_list;
 +(NSArray*)notificationsArray:(NSArray*)notifications_list;
 @end
