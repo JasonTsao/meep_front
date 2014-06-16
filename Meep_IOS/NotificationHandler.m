@@ -158,7 +158,7 @@
     // GROUP CHAT
     else if( [userInfo[@"notification_type"] isEqualToString:@"group_chat"]){
         // TODO FILL OUT
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"handling being added to a group notification!"
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"handling group chat notification!"
                                                         message:userInfo[@"aps"][@"alert"]
                                                        delegate:self
                                               cancelButtonTitle:@"OK"
@@ -168,7 +168,7 @@
     // USER REQUESTED YOU AS A FRIEND
     else if( [userInfo[@"notification_type"] isEqualToString:@"friend_request"]){
         // TODO FILL OUT
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"handling being added to a group notification!"
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"handling friend request notification!"
                                                         message:userInfo[@"aps"][@"alert"]
                                                        delegate:self
                                               cancelButtonTitle:@"OK"
@@ -178,7 +178,7 @@
     // USER ADDED YOU AS A FRIEND
     else if( [userInfo[@"notification_type"] isEqualToString:@"friend_added"]){
         // TODO FILL OUT
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"handling being added to a group notification!"
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"handling friend added notification!"
                                                         message:userInfo[@"aps"][@"alert"]
                                                        delegate:self
                                               cancelButtonTitle:@"OK"

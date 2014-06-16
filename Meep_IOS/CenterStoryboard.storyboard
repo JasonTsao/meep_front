@@ -933,6 +933,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                     <navigationItem key="navigationItem" id="gGl-je-EMn"/>
                     <connections>
                         <segue destination="vDl-RO-5ga" kind="push" identifier="groupFromNotifications" id="5tW-ti-uCq"/>
+                        <segue destination="y3l-cT-LGs" kind="push" identifier="friendFromNotifications" id="MDj-1N-lKu"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sBw-Ht-iab" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1580,7 +1581,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="SkQ-ts-ddb"/>
+        <segue reference="MDj-1N-lKu"/>
         <segue reference="5tW-ti-uCq"/>
     </inferredMetricsTieBreakers>
 </document>

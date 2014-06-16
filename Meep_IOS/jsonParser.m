@@ -7,12 +7,78 @@
 //
 
 #import "jsonParser.h"
-#import "Friend.h"
 #import "InvitedFriend.h"
 #import "Notification.h"
 #import "ImageCache.h"
 
 @implementation jsonParser
+
++(Friend*)friendObject:(NSDictionary*)friendDict
+{
+    NSError* error;
+        Friend *friend = [[Friend alloc]init];
+        
+        /*NSDictionary * new_friend_dict = [NSJSONSerialization JSONObjectWithData: [friendDict dataUsingEncoding:NSUTF8StringEncoding]
+                                                                         options: NSJSONReadingMutableContainers
+                                                                           error: &error];*/
+        
+        
+        friend.name = friendDict[@"name"];
+        friend.numTimesInvitedByMe = friendDict[@"invited_count"];
+        friend.phoneNumber= friendDict[@"phone_number"];
+        friend.imageFileName = friendDict[@"pf_pic"];
+        friend.bio = friendDict[@"bio"];
+        friend.account_id = [friendDict[@"account_id"] intValue];
+        
+        if ([friendDict[@"pf_pic"] length] == 0){
+            UIImageView * img = [[UIImageView alloc] initWithFrame:CGRectMake(8, 4, 40, 40)];
+            img.image = [UIImage imageNamed:@"ManSilhouette"];
+            friend.profilePic = img.image;
+        }
+        else{
+            // Set up a background task to get set the users profile from cache or if cache is empty pull from online
+            dispatch_queue_t downloadQueue = dispatch_queue_create("image downloader", NULL);
+            dispatch_async(downloadQueue, ^{
+                NSString *imgUrl = friendDict[@"fb_pfpic_url"];
+                float imageHeight = 40;
+                float imageXCoord = 8;
+                float imageYCoord = (60/2) - (imageHeight/2);
+                UIImageView *img = [[UIImageView alloc] initWithFrame:CGRectMake(imageXCoord-0.75, imageYCoord-0.75, imageHeight+1.5, imageHeight+1.5)];
+                UIImage* image;
+                
+                if ([[ImageCache sharedImageCache] DoesExist:imgUrl] == true)
+                {
+                    image = [[ImageCache sharedImageCache] GetImage:imgUrl];
+                }
+                else
+                {
+                    // Create new image data to be cached
+                    NSData *imageData = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: imgUrl]];
+                    image = [[UIImage alloc] initWithData:imageData];
+                    
+                    // Create a rounded image from the square ones we would get from online
+                    UIImageView* tmpImageView = [[UIImageView alloc] initWithFrame:CGRectMake(imageXCoord-0.75, imageYCoord-0.75, imageHeight+1.5, imageHeight+1.5)];
+                    tmpImageView.image = image;
+                    tmpImageView.layer.cornerRadius = imageHeight/2;
+                    tmpImageView.layer.masksToBounds = YES;
+                    UIImage* roundedImage = [ImageCache screenshotOfView: tmpImageView];
+                    
+                    image = roundedImage;
+                    
+                    // Add the image to the cache
+                    [[ImageCache sharedImageCache] AddImage:imgUrl :roundedImage];
+                }
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    img.image = image;
+                    friend.profilePic = image;
+                    
+                });
+            });
+        }
+    
+    return friend;
+}
 +(NSArray*)friendsArray:(NSArray*)friends
 {
     NSError* error;

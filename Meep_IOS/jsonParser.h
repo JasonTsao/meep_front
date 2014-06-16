@@ -9,8 +9,10 @@
 #import <Foundation/Foundation.h>
 #import "Event.h"
 #import "Group.h"
+#import "Friend.h"
 
 @interface jsonParser : NSObject
++(Friend*)friendObject:(NSDictionary*)friendDict;
 +(NSArray*)friendsArray:(NSArray*)friends_list;
 +(NSArray*)friendsArrayNoEncoding:(NSArray*)friends;
 +(NSArray*)invitedFriendsArray:(NSArray*)invited_friends_list;

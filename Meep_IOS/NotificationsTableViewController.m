@@ -14,12 +14,16 @@
 #import "Event.h"
 #import "GroupEventsTableViewController.h"
 #import "Group.h"
+#import "Friend.h"
+#import "FriendProfileViewController.h"
 
 @interface NotificationsTableViewController ()
 @property(nonatomic, strong) NSMutableArray *notifications_list;
 @property (nonatomic, strong) EventPageViewController *eventPageViewController;
 @property (nonatomic, strong) GroupEventsTableViewController *groupEventsTableViewController;
 @property (nonatomic, strong) Group * selectedGroup;
+@property (nonatomic, strong) FriendProfileViewController *friendProfileViewController;
+@property (nonatomic, strong) Friend * selectedFriend;
 @end
 
 @implementation NotificationsTableViewController
@@ -68,6 +72,16 @@
     [conn start];
 }
 
+- (void)getFriend:(NSString*)friend_id
+{
+    NSString * requestURL = [NSString stringWithFormat:@"%@friends/%@",[MEEPhttp accountURL], friend_id];
+    NSLog(@"requesturl: %@", requestURL);
+    NSDictionary * postDict = [[NSDictionary alloc] init];
+    NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
+    NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    [conn start];
+}
+
 -(void)connection:(NSURLConnection*)connection didReceiveResponse:(NSURLResponse*)response
 {
     _data = [[NSMutableData alloc] init]; // _data being an ivar
@@ -102,6 +116,10 @@
     else if([jsonResponse objectForKey:@"group"]){
         _selectedGroup = [jsonParser groupObject:jsonResponse[@"group"]];
         [self performSegueWithIdentifier:@"groupFromNotifications" sender:self];
+    }
+    else if([jsonResponse objectForKey:@"friend"]){
+        _selectedFriend = [jsonParser friendObject:jsonResponse[@"friend"]];
+        [self performSegueWithIdentifier:@"friendFromNotifications" sender:self];
     }
     
 }
@@ -211,8 +229,10 @@
         }
     }
     
-    if([selected.type isEqualToString:@"friend_added"]){
-        
+    if([selected.type isEqualToString:@"friend_request"]){
+        if(selected.custom_payload[@"friend_id"]){
+            [self getFriend:selected.custom_payload[@"friend_id"]];
+        }
     }
     
 }
@@ -276,10 +296,20 @@
 {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
-    GroupEventsTableViewController * groupEvents = [segue destinationViewController];
-    //NSIndexPath *path = [self.tableView indexPathForSelectedRow];
-    [groupEvents setDelegate:self];
-    groupEvents.group = _selectedGroup;
+    
+    if([segue.identifier isEqualToString:@"groupFromNotifications"]){
+        GroupEventsTableViewController * groupEvents = [segue destinationViewController];
+        //NSIndexPath *path = [self.tableView indexPathForSelectedRow];
+        [groupEvents setDelegate:self];
+        groupEvents.group = _selectedGroup;
+    }
+    else if([segue.identifier isEqualToString:@"friendFromNotifications"]){
+        // Get the new view controller using [segue destinationViewController].
+        // Pass the selected object to the new view controller.
+        FriendProfileViewController * friend_profile = [segue destinationViewController];
+        friend_profile.currentFriend = _selectedFriend;
+    }
+    
 }
 
 @end

@@ -112,7 +112,6 @@
     
     for( Event *event in unsortedEventArray){
         //event.group = eventObj[@"group"];
-        NSLog(@"event: %@", event);
         //getting number of differnt days
         if (![event.locationLatitude isEqual:[NSNull null]] &&
             ![event.locationLongitude isEqual:[NSNull null]]) {
@@ -214,7 +213,6 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    NSLog(@"number of sections in table: %i", [_datesArray count]);
     return [_datesArray count];
     //return 1;
 }

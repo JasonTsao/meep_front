@@ -479,6 +479,8 @@
 {
     UIButton *button = (UIButton*) sender;
     
+    NSLog(@"pressed add friend button ");
+    
     if([_viewTitle isEqualToString:@"From Contacts"] ){
         if([button isSelected]){
             [button setSelected:NO];
@@ -500,12 +502,39 @@
         }
     }
     
+    else if([_viewTitle isEqualToString:@"From Everyone"]){
+        if([button isSelected]){
+            [button setSelected:NO];
+            NSString * requestURL = [NSString stringWithFormat:@"%@friends/unfriend",[MEEPhttp accountURL]];
+            
+            /*
+             NOT IMPLEMENTED ON THE SERVER YET. UNCOMMENT WHEN IMPLEMENTED
+             NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:_buttonTagDictionary[[NSString stringWithFormat:@"%i", button.tag]],@"friend_id", nil];
+             NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
+             NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+             [conn start];*/
+        }
+        else if( ![button isSelected]){
+            [button setSelected:YES];
+            NSString * requestURL = [NSString stringWithFormat:@"%@friends/new",[MEEPhttp accountURL]];
+
+            //NSLog(@"friending : %@", [_searchResultFriendsList[_buttonTagDictionary[button.tag]] name]);
+            NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:_buttonTagDictionary[[NSString stringWithFormat:@"%i", button.tag]],@"friend_id", nil];
+             NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
+             NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+             [conn start];
+        }
+        
+    }
+    
     
 }
 
 - (void)selectFriendFromSearch:(id)sender
 {
     UIButton *button = (UIButton*) sender;
+    
+    NSLog(@"pressed add friend button from search");
     
     if([_viewTitle isEqualToString:@"From Contacts"] ){
         if([button isSelected]){
@@ -696,7 +725,8 @@
          
              [newButton setTag: _buttonTagNumber];
              NSString *key = [NSString stringWithFormat:@"%i", _buttonTagNumber];
-             [_buttonTagDictionary setObject:[_searchResultFriendsList[indexPath.row] name] forKey:key];
+             //[_buttonTagDictionary setObject:[_searchResultFriendsList[indexPath.row] name] forKey:key];
+             [_buttonTagDictionary setObject:[NSString stringWithFormat:@"%i",[_searchResultFriendsList[indexPath.row] account_id]] forKey:key];
              _buttonTagNumber++;
              
              [cell addSubview:newButton];
