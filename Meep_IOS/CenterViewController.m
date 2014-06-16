@@ -346,6 +346,7 @@
 {
     NSString * dateText = [_datesArray objectAtIndex:indexPath.section];
     Event * currentRecord = [[_eventData objectForKey:dateText] objectAtIndex:indexPath.row];
+    
     [_delegate displayEventPage:currentRecord];
 }
 
@@ -604,6 +605,8 @@
             NSMutableArray * unsortedEventData = [[NSMutableArray alloc] initWithObjects:event, nil];
             [_eventData setObject:unsortedEventData forKey:dateString];
         }
+        
+        [CacheObjects cacheEvent:event];
     }
     //NSSortDescriptor * nameSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"start_time" ascending:YES];
     NSSortDescriptor * nameSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"start_time" ascending:YES];

@@ -11,9 +11,10 @@
 #import "MEPTableCell.h"
 #import "MEEPhttp.h"
 #import "AddFriendsViewController.h"
+#import "CacheObjects.h"
 
 @interface FriendsListTableViewController (){
-    NSMutableArray *friends_list;
+    NSArray *friends_list;
 }
 
 @end
@@ -35,6 +36,15 @@
 
 - (void)getFriendsList
 {
+    NSArray *friends = [CacheObjects getCachedList:@"friends_list"];
+    if(friends){
+        NSLog(@"There are friends in cache");
+        [self putFriendsOnTable:friends];
+    }
+    else{
+        NSLog(@"no friends in cache");
+    }
+    
     NSString * requestURL = [NSString stringWithFormat:@"%@friends/list",[MEEPhttp accountURL]];
     NSLog(@"request url : %@", requestURL);
     NSDictionary * postDict = [[NSDictionary alloc] init];
@@ -61,12 +71,25 @@
     [self handleData]; // Deal with the data
 }
 
+-(void)putFriendsOnTable:(NSArray*)friends
+{
+    for(Friend * friend in friends){
+        [CacheObjects cacheFriend:friend];
+    }
+    friends_list = friends;
+    [self.tableView reloadData];
+}
+
 
 -(void)handleData{
     NSError* error;
     NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:_data options:0 error:&error];
     NSArray * friends = jsonResponse[@"friends"];
-    friends_list = [jsonParser friendsArray:friends];
+    //friends_list = [jsonParser friendsArray:friends];
+    
+    NSArray *friends_object_list = [jsonParser friendsArray:friends];
+    [CacheObjects cacheFriends:friends_object_list];
+    [self putFriendsOnTable:friends_object_list];
     
     [self.tableView reloadData];
     

@@ -9,9 +9,10 @@
 #import "GroupsViewController.h"
 #import "jsonParser.h"
 #import "MEPTableCell.h"
+#import "CacheObjects.h";
 
 @interface GroupsViewController (){
-    NSMutableArray *groups_list;
+    NSArray *groups_list;
 }
 
 @end
@@ -31,13 +32,28 @@
 }
 
 
+
 - (void)getGroupList
 {
+    NSArray *groups = [CacheObjects getCachedList:@"groups_list"];
+    if(groups){
+        [self putGroupsOnTable:groups];
+    }
+    
     NSString * requestURL = [NSString stringWithFormat:@"%@group/list",[MEEPhttp accountURL]];
     NSDictionary * postDict = [[NSDictionary alloc] init];
     NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
     NSURLConnection * conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
     [conn start];
+}
+
+-(void)putGroupsOnTable:(NSArray*)groups
+{
+    for(Group* group in groups){
+        [CacheObjects cacheGroup:group];
+    }
+    groups_list = groups;
+    [self.tableView reloadData];
 }
 
 -(void)connection:(NSURLConnection*)connection didReceiveResponse:(NSURLResponse*)response
@@ -64,13 +80,15 @@
     NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:_data options:0 error:&error];
     NSArray * groups = jsonResponse[@"groups"];
     
-    groups_list = [jsonParser groupsArray:groups];
+    
+    //groups_list = [jsonParser groupsArray:groups];
+    NSArray *group_objects_list = [jsonParser groupsArray:groups];
+    [CacheObjects cacheGroups:group_objects_list];
+    [self putGroupsOnTable:group_objects_list];
 
    /* NSData *data = [NSKeyedArchiver archivedDataWithRootObject:groups_list];
     [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"groups"];
     [NSUserDefaults resetStandardUserDefaults];*/
-    
-    [self.tableView reloadData];
 
 }
 

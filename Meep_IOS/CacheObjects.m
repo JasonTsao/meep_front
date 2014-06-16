@@ -65,9 +65,9 @@
     return YES;
 }
 
-+(BOOL)cacheGroupUpcomingEvents:(NSArray*)upcomingEvents
++(BOOL)cacheGroupUpcomingEvents:(NSArray*)upcomingEvents :(NSString *)group_id
 {
-    NSString *group_upcoming_events_key = @"group_upcoming_events";
+    NSString *group_upcoming_events_key = [NSString stringWithFormat:@"group_upcoming_events.%@", group_id];
     
     NSData *data = [NSKeyedArchiver archivedDataWithRootObject:upcomingEvents];
     [[NSUserDefaults standardUserDefaults] setObject:data forKey:group_upcoming_events_key];
@@ -100,7 +100,7 @@
 
 +(BOOL)cacheNotifications:(NSArray*)notifications
 {
-    NSString *notifications_key = @"notificaitons_list";
+    NSString *notifications_key = @"notifications_list";
     
     NSData *data = [NSKeyedArchiver archivedDataWithRootObject:notifications];
     [[NSUserDefaults standardUserDefaults] setObject:data forKey:notifications_key];

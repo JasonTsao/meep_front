@@ -413,9 +413,23 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler{
     return YES;
 }
 
+- (void)resetDefaults {
+    NSUserDefaults * defs = [NSUserDefaults standardUserDefaults];
+    NSDictionary * dict = [defs dictionaryRepresentation];
+    for (id key in dict) {
+        NSString *key_str = key;
+        if(![key_str isEqualToString:@"auth_client"] || ![key_str isEqualToString:@"account_settings"]){
+            [defs removeObjectForKey:key];
+        }
+        
+    }
+    [defs synchronize];
+}
+
 - (void)applicationDidReceiveMemoryWarning:(UIApplication *)application
 {
     NSLog(@"low memory!!");
+    [self resetDefaults];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application

@@ -16,6 +16,7 @@
 #import "Group.h"
 #import "Friend.h"
 #import "FriendProfileViewController.h"
+#import "CacheObjects.h"
 
 @interface NotificationsTableViewController ()
 @property(nonatomic, strong) NSMutableArray *notifications_list;
@@ -43,6 +44,16 @@
 
 - (void)getNotifications
 {
+    
+    NSArray *notifications = [CacheObjects getCachedList:@"notifications_list"];
+    if(notifications){
+        NSLog(@"there are notifications in cache");
+        [self putNotificationsOnTable:notifications];
+    }
+    else{
+        NSLog(@"no notifications in cache");
+    }
+    
     NSString * requestURL = [NSString stringWithFormat:@"%@get",[MEEPhttp notificationsURL]];
     NSLog(@"requesturl: %@", requestURL);
     NSDictionary * postDict = [[NSDictionary alloc] init];
@@ -54,6 +65,7 @@
 
 - (void)getEvent:(NSString*)event_id
 {
+    NSLog(@"getting event from server!");
     NSString * requestURL = [NSString stringWithFormat:@"%@%@",[MEEPhttp eventURL], event_id];
     NSLog(@"requesturl: %@", requestURL);
     NSDictionary * postDict = [[NSDictionary alloc] init];
@@ -94,10 +106,20 @@
 {
     // Handle the error properly
     NSLog(@"Call Failed");
+    [self getNotifications];
 }
 -(void)connectionDidFinishLoading:(NSURLConnection*)connection
 {
     [self handleData]; // Deal with the data
+}
+
+-(void)putNotificationsOnTable:(NSArray*)notifications
+{
+    for(Notification* notification in notifications){
+        [CacheObjects cacheNotification:notification];
+    }
+    _notifications_list = notifications;
+    [self.tableView reloadData];
 }
 
 -(void)handleData{
@@ -106,8 +128,11 @@
     
     if([jsonResponse objectForKey:@"notifications"]){
         NSArray * notifications = jsonResponse[@"notifications"];
-        _notifications_list = [jsonParser notificationsArray:notifications];
-        [self.tableView reloadData];
+        NSArray * notification_objects_list = [jsonParser notificationsArray:notifications];
+        [CacheObjects cacheNotifications:notification_objects_list];
+        [self putNotificationsOnTable:notification_objects_list];
+        //_notifications_list = [jsonParser notificationsArray:notifications];
+        //[self.tableView reloadData];
     }
     else if([jsonResponse objectForKey:@"event"]){
         Event *event = [jsonParser eventObject:jsonResponse[@"event"]];
@@ -122,6 +147,11 @@
         [self performSegueWithIdentifier:@"friendFromNotifications" sender:self];
     }
     
+}
+
+- (void)refresh:(UIRefreshControl *)refreshControl {
+    [self getNotifications];
+    [refreshControl endRefreshing];
 }
 
 - (void)viewDidLoad
@@ -211,28 +241,59 @@
 {
     Notification * selected = [_notifications_list objectAtIndex:indexPath.row];
     //[_delegate displayEventPage:currentRecord];
-    NSLog(@"selected notifications: %@", selected.type);
     if(selected.custom_payload[@"event_id"]){
-        Event *event;
-        if([selected.type isEqualToString:@"event_chat"]){
-            //GO TO EVENT CHAT PAGE
-            [self getEvent:selected.custom_payload[@"event_id"]];
+        Event *event = [CacheObjects getCachedEvent:selected.custom_payload[@"event_id"]];
+        
+        // If there is no event in the cache
+        if(!event){
+            if([selected.type isEqualToString:@"event_chat"]){
+                //GO TO EVENT CHAT PAGE
+                [self getEvent:selected.custom_payload[@"event_id"]];
+            }
+            else if([selected.type isEqualToString:@"event_create"] || [selected.type isEqualToString:@"event_update"] ){
+                [self getEvent:selected.custom_payload[@"event_id"]];
+            }
         }
-        else if([selected.type isEqualToString:@"event_create"] || [selected.type isEqualToString:@"event_update"] ){
-            [self getEvent:selected.custom_payload[@"event_id"]];
+        // If there is an event in the cache
+        else{
+            [self displayEventPage:event];
         }
+        
     }
     
     if([selected.type isEqualToString:@"group_added"]){
-        if(selected.custom_payload[@"group_id"]){
-            [self getGroup:selected.custom_payload[@"group_id"]];
+        Group *group = [CacheObjects getCachedGroup:selected.custom_payload[@"group_id"]];
+        
+        
+        if(!group){
+            NSLog(@"no group in cache");
+            if(selected.custom_payload[@"group_id"]){
+                [self getGroup:selected.custom_payload[@"group_id"]];
+            }
         }
+        else{
+            NSLog(@"there is a group in the cache");
+            _selectedGroup = group;
+            [self performSegueWithIdentifier:@"groupFromNotifications" sender:self];
+        }
+        
     }
     
     if([selected.type isEqualToString:@"friend_request"]){
-        if(selected.custom_payload[@"friend_id"]){
-            [self getFriend:selected.custom_payload[@"friend_id"]];
+        Friend *friend = [CacheObjects getCachedFriend:selected.custom_payload[@"friend_id"]];
+        
+        if(!friend){
+            NSLog(@"no friend in cache");
+            if(selected.custom_payload[@"friend_id"]){
+                [self getFriend:selected.custom_payload[@"friend_id"]];
+            }
         }
+        else{
+            NSLog(@"there is a friend in cache");
+            _selectedFriend = friend;
+            [self performSegueWithIdentifier:@"friendFromNotifications" sender:self];
+        }
+        
     }
     
 }
