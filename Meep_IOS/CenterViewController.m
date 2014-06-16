@@ -15,6 +15,7 @@
 #import "MEPTableCell.h"
 #import "jsonParser.h"
 #import "ImageCache.h"
+#import "CacheObjects.h"
 #import <CoreLocation/CoreLocation.h>
 
 
@@ -433,7 +434,9 @@
     self.eventArray = [[NSMutableArray alloc] init];
     self.numDates = 0;
     // self.upcomingEventsTable.backgroundColor = [self colorWithHexString:[NSString stringWithFormat:@"%s",TABLE_BACKGROUND_COLOR]];
+    
     [self setTitleView];
+
     [self getUpcomingEvents];
 }
 
@@ -449,8 +452,14 @@
 }
 
 - (void) getUpcomingEvents {
-    //NSString * requestURL = [NSString stringWithFormat:@"%@upcoming/1",[MEEPhttp eventURL]];
-    //NSDictionary * postDict = [[NSDictionary alloc] initWithObjectsAndKeys:@"1",@"user", nil];
+
+    _datesArray = [[NSMutableArray alloc] init];
+    _datesEpochTimeArray = [[NSMutableArray alloc] init];
+    
+    NSArray *upcomingEvents = [CacheObjects getCachedList:@"upcoming_events"];
+    if(upcomingEvents){
+        [self putEventsOnTable:upcomingEvents];
+    }
     NSString * requestURL = [NSString stringWithFormat:@"%@upcoming",[MEEPhttp eventURL]];
     NSDictionary * postDict = [[NSDictionary alloc] init];
     NSMutableURLRequest * request = [MEEPhttp makePOSTRequestWithString:requestURL postDictionary:postDict];
@@ -566,14 +575,8 @@
     [self handleData]; // Deal with the data
 }
 
--(void)handleData{
-    NSLog(@"got some upcoming events!");
-    NSError* error;
-    NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:_data options:0 error:&error];
-    NSArray * upcoming = jsonResponse[@"upcoming_events"];
-    _datesArray = [[NSMutableArray alloc] init];
-    _datesEpochTimeArray = [[NSMutableArray alloc] init];
-    NSArray *upcomingEvents = [jsonParser eventsArray:upcoming];
+-(void)putEventsOnTable:(NSArray*)upcomingEvents
+{
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"yyyy-MM-dd"];
     _eventData = [[NSMutableDictionary alloc] init];
@@ -584,7 +587,7 @@
     _lng = 0;
     
     if(!_eventCellData){
-        _eventCellData = [[NSMutableDictionary alloc] init];
+    _eventCellData = [[NSMutableDictionary alloc] init];
     }
     
     for (Event * event in upcomingEvents) {
@@ -607,6 +610,7 @@
     for (NSString * key in [_eventData allKeys]) {
         _eventData[key] = [_eventData[key] sortedArrayUsingDescriptors:[NSArray arrayWithObject:nameSortDescriptor]];
     }
+
     NSMutableArray * orderedTableCells;
     for (NSString * key in [_eventData allKeys]) {
         orderedTableCells = [[NSMutableArray alloc] init];
@@ -620,14 +624,26 @@
             }
             
             UIView * eventCover = [MEPTableCell eventCell:event userLatitude:_lat userLongitude:_lng hasNotification:hasNotification];
-            [orderedTableCells addObject:eventCover];
-        }
+            [orderedTableCells addObject:eventCover];        }
         [_eventCellData setObject:orderedTableCells forKey:key];
     }
+    
     [_datesArray addObjectsFromArray:[[_eventData allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)]];
     [_upcomingEvents reloadData];
     
     [self scrollToClosestToCurrentDay];
+}
+
+-(void)handleData{
+    NSLog(@"got some upcoming events!");
+    NSError* error;
+    _datesArray = [[NSMutableArray alloc] init];
+    _datesEpochTimeArray = [[NSMutableArray alloc] init];
+    NSDictionary * jsonResponse = [NSJSONSerialization JSONObjectWithData:_data options:0 error:&error];
+    NSArray * upcoming = jsonResponse[@"upcoming_events"];
+    NSArray *upcomingEvents = [jsonParser eventsArray:upcoming];
+    [CacheObjects cacheUpcomingEvents:upcomingEvents];
+    [self putEventsOnTable:upcomingEvents];
 }
 
 -(void)closeEventModal {
@@ -636,7 +652,6 @@
 
 #pragma mark -
 #pragma mark Default System Code
-
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];

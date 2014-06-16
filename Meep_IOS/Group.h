@@ -8,7 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
-@interface Group : NSObject
+@interface Group : NSObject<NSCoding>{
+    NSInteger group_creator_id;
+    NSString *name;
+    NSInteger group_id;
+    NSMutableArray * group_members;
+    UIImage * groupProfilePic;
+}
 @property (nonatomic) NSInteger group_creator_id;
 @property (nonatomic) NSString *name;
 @property (nonatomic) NSInteger group_id;

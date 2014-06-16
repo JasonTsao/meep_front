@@ -9,7 +9,23 @@
 #import <Foundation/Foundation.h>
 #import "Group.h"
 
-@interface Event : NSObject
+@interface Event : NSObject<NSCoding>{
+    NSInteger event_id;
+    NSString * name;
+    NSString * description;
+    NSString * locationName;
+    NSString * locationAddress;
+    NSString * locationLatitude;
+    NSString * locationLongitude;
+    NSString * meetUpSpot;
+    NSString * start_time;
+    NSString * end_time;
+    NSString * yelpLink;
+    NSString * uberLink;
+    NSString * yelpImageLink;
+    Group * eventGroup;
+    double createdUTC;
+}
 @property NSInteger event_id;
 @property NSString * name;
 @property NSString * description;
