@@ -26,7 +26,7 @@
 
 //Color Settings for date header: white text, black background.
 #define HEADER_TEXT_COLOR "ffffff"
-#define TABLE_BACKGROUND_COLOR "000000"
+#define TABLE_BACKGROUND_COLOR "1E824C"
 
 
 
@@ -197,11 +197,14 @@
     [dateFormatter setDateFormat:@"MMM dd"];
     NSString * header = [dateFormatter stringFromDate:startedDate];
     
-    UIView * headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, tableView.sectionHeaderHeight)];
+    
+    UIView * headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
+    
+//    UIView * headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, tableView.sectionHeaderHeight)];
     
     UIView * horizontalLine = [[UIView alloc] initWithFrame:CGRectMake(28, headerView.frame.size.height/2 + 1 - (BORDER_WIDTH/2), headerView.frame.size.width/5 - 28, BORDER_WIDTH)];
     horizontalLine.backgroundColor = framingColor;
-    UIView * verticalLine = [[UIView alloc] initWithFrame:CGRectMake(30 - BORDER_WIDTH, 0, BORDER_WIDTH, headerView.frame.size.height)];
+    UIView * verticalLine = [[UIView alloc] initWithFrame:CGRectMake(30 - BORDER_WIDTH, 0, 0, headerView.frame.size.height)];
     verticalLine.backgroundColor = framingColor;
     
     
